@@ -1,0 +1,149 @@
+{
+  // Provider, model và cường độ suy luận (reasoning effort) mặc định.
+  // ★ Giá trị của provider là một key trong mục providers bên dưới (như một "con trỏ"), không phải tên giao thức —
+  //   Khi đổi provider phải đảm bảo trong providers có mục cùng tên, nếu không khởi động sẽ báo "chưa cấu hình thông tin xác thực".
+  //   Khi đang chạy dùng /config để quản lý kho Provider/mô hình, dùng /model để chuyển đổi giữa các mô hình đã lưu.
+  "provider": "openrouter",
+  "model": "google/gemini-2.5-flash",
+  // Tùy chọn. Cường độ suy luận mặc định: off / low / medium / high / xhigh / max.
+  // Bỏ qua hoặc chuỗi rỗng = không ghi đè, dùng mặc định của model/provider.
+  "reasoning_effort": "medium",
+
+  // Kho thông tin xác thực Provider. Key tự đặt, dùng làm mục tiêu tham chiếu cho trường provider ở trên.
+  // Các provider đã biết (openai/anthropic/gemini/openrouter/deepseek/qwen/glm/grok/mimo/ollama/bedrock)
+  // có thể bỏ qua type; proxy tùy chỉnh phải khai báo rõ ràng type để chỉ định giao thức API.
+  "providers": {
+    "openrouter": {
+      "api_key": "sk-or-v1-xxx",
+      "base_url": "https://openrouter.ai/api/v1",
+      // Tùy chọn. Khai báo danh sách ứng viên trong bảng /model và cửa sổ ngữ cảnh riêng của mô hình; mảng chuỗi cũ vẫn tương thích.
+      // json_schema là ghi đè rõ ràng cho hỗ trợ structured outputs gốc: true=xác nhận hỗ trợ, false=xác nhận không hỗ trợ,
+      // bỏ qua=dùng theo khả năng của adapter. Nên ghi rõ nếu dùng proxy tùy chỉnh hoặc khi khả năng phụ thuộc vào từng mô hình cụ thể.
+      "models": [
+        { "name": "google/gemini-3.0-flash", "context_window": 200000 },
+        { "name": "google/gemini-3.1-pro", "context_window": 1000000 }
+      ],
+      // Tùy chọn. Tham số bổ sung gửi kèm mỗi request tới provider (tham số lấy mẫu như temperature/top_p/
+      // min_p, hoặc key riêng của hãng như chat_template_kwargs bật think của nvidia), gộp nguyên văn vào body request.
+      // Chỉ có hiệu lực với provider tương thích OpenAI (openrouter/deepseek/qwen/glm/grok/ollama…);
+      // type:"openai" sẽ lọc theo danh sách tham số chính thức. Người dùng tự chịu trách nhiệm về giá trị cấu hình.
+      "extra_body": { "temperature": 0.8, "min_p": 0.05 },
+      // Tùy chọn. Cấu hình cấp provider, chuyển tiếp tới tầng HTTP client (không phải body request), dùng cho proxy
+      // cần tùy chỉnh User-Agent / headers / anthropic_beta.
+      "extra": {
+        "user_agent": "my-client/1.0",
+        "headers": { "X-Custom-Client": "my-client" }
+      }
+    },
+    "anthropic": {
+      "api_key": "sk-ant-xxx",
+      "models": [{ "name": "claude-sonnet-4-6", "json_schema": true }]
+    },
+    "ollama": {
+      // ollama / bedrock / proxy tùy chỉnh có type rõ ràng có thể bỏ qua api_key
+      // base_url cần có /v1 (endpoint tương thích OpenAI của ollama nằm ở /v1)
+      "base_url": "http://localhost:11434/v1",
+      "models": [{ "name": "qwen3:14b", "context_window": 32768 }],
+      // Tùy chọn. Watchdog rảnh rỗi dạng streaming (Go duration, mặc định "5m"): LocalAI/ollama v.v.
+      // suy luận chậm cục bộ chunk đầu có thể quá 5 phút, nới lỏng theo provider, không ảnh hưởng kênh khác
+      "stream_idle_timeout": "15m"
+    },
+    "claude-code-proxy": {
+      // Proxy Anthropic tùy chỉnh. Nếu upstream giới hạn chỉ cho phép client Claude Code truy cập,
+      // dùng extra để chuyển tiếp user_agent / anthropic_beta / headers.
+      // base_url không cần có /v1.
+      "type": "anthropic",
+      "api_key": "sk-xxx",
+      "base_url": "https://proxy.example.com",
+      "models": [{ "name": "claude-sonnet-4-6", "context_window": 1000000 }],
+      "extra": {
+        "user_agent": "claude-code/2.1.183",
+        "anthropic_beta": "claude-code-20250219",
+        "headers": {
+          "X-Stainless-Lang": "js",
+          "X-Stainless-Package-Version": "0.94.0",
+          "X-Stainless-Runtime": "node"
+        }
+      }
+    },
+    "codex-proxy": {
+      // Proxy OpenAI/NewAPI tùy chỉnh. Nếu upstream giới hạn chỉ cho phép client Codex truy cập,
+      // dùng extra để ghi đè User-Agent và chuyển tiếp header nhận diện Codex.
+      // base_url điền theo địa chỉ thực tế của proxy; giao thức OpenAI thường cần /v1.
+      "type": "openai",
+      "api_key": "sk-xxx",
+      "base_url": "https://proxy.example.com/v1",
+      "models": [
+        { "name": "gpt-5.4", "context_window": 400000, "json_schema": true },
+        { "name": "gpt-5.4-mini" },
+        { "name": "MiniMax-M3", "context_window": 1000000 }
+      ],
+      // Tùy chọn. Endpoint giao thức OpenAI: chat (mặc định /v1/chat/completions) /
+      // responses (/v1/responses). Proxy kiểu Codex thường cần responses.
+      "api": "responses",
+      "extra": {
+        // Tùy chọn. Khóa định tuyến cache prompt_cache_key mặc định chỉ gửi tới api.openai.com chính thức —
+        // Các đầu cuối tương thích bên thứ ba không có quy chuẩn thống nhất cho trường lạ (đầu cuối nghiêm ngặt như Groq/Cerebras/Volcengine sẽ lỗi 400,
+        // trung chuyển sắp xếp lại gói tin sẽ âm thầm bỏ qua). Khi xác nhận trung chuyển chuyển tiếp nguyên vẹn body tới OpenAI,
+        // bật mục này có thể tận dụng định tuyến cache (tăng tỷ lệ trúng cache).
+        "prompt_cache_params": true,
+        "user_agent": "codex-tui/0.142.3 (Mac OS 26.5.1; arm64) Apple_Terminal/470.2 (codex-tui; 0.142.3)",
+        "headers": {
+          "Originator": "codex-tui",
+          "Session_id": "replace-with-random-session-id",
+          "X-Codex-Turn-Metadata": "replace-with-random-turn-metadata"
+        }
+      }
+    }
+  },
+
+  // Tùy chọn. Ghi đè mô hình mặc định theo vai trò; vai trò chưa cấu hình sẽ dùng model ở trên.
+  // reasoning_effort cũng có thể ghi đè theo vai trò; khi chưa cấu hình sẽ kế thừa reasoning_effort cấp trên.
+  // Vai trò: architect / writer / editor. fallbacks sẽ thử theo thứ tự khi mô hình chính thất bại.
+  // Lưu ý: provider ở đây cũng là "con trỏ", phải trỏ tới key tồn tại trong providers.
+  // "roles": {
+  //   "writer": {
+  //     "provider": "anthropic",
+  //     "model": "claude-sonnet-4",
+  //     "reasoning_effort": "high",
+  //     "fallbacks": [{ "provider": "openrouter", "model": "google/gemini-3.0-pro" }]
+  //   },
+  //   "architect": { "provider": "openrouter", "model": "google/gemini-3.1-pro" }
+  // },
+
+  // Phong cách sáng tác: default / suspense / fantasy / romance.
+  "style": "default"
+
+  // Cửa sổ ngữ cảnh toàn cục kiểu cũ, giữ lại làm giá trị fallback cho mọi mô hình. Ưu tiên thấp hơn models[].context_window,
+  // cao hơn registry mô hình và giá trị mặc định 200k. Chỉ ảnh hưởng ngưỡng nén ngữ cảnh, không đổi độ dài request thực tế tới API.
+  // "context_window": 300000
+
+  // Tùy chọn. Ngân sách chi phí cho một cuốn sách (thư mục output), cầu chì an toàn khi treo máy. Chỉ kích hoạt khi book_usd > 0.
+  // Khi tổng chi phí đạt warn_ratio sẽ cảnh báo nhưng không dừng; đạt 100% sẽ dừng nhẹ nhàng
+  // sau khi tác vụ của subagent hiện tại kết thúc (hard_stop=true thì dừng ngay lập tức khi vượt mốc). Sau khi dừng chỉ cần tăng book_usd là có thể tiếp tục.
+  // Lưu ý: với mô hình tùy chỉnh nếu registry không tra được giá và provider không tự báo cost, ngân sách sẽ không có tác dụng.
+  // "budget": {
+  //   "book_usd": 50,
+  //   "warn_ratio": 0.8,
+  //   "hard_stop": false
+  // },
+
+  // Tùy chọn. Thông báo khi không có người giám sát, mặc định bật (thông báo Windows / macOS osascript / Linux notify-send).
+  // Khi cấu hình command sẽ chuyển sang lệnh tùy chỉnh (thông báo đẩy điện thoại dùng ở đây): các trường
+  // NOTIFY_TITLE / NOTIFY_BODY / NOTIFY_KIND / NOTIFY_LEVEL được truyền qua biến môi trường, đồng thời ghi toàn bộ JSON vào stdin.
+  // Unix shell dùng $NOTIFY_TITLE; Windows PowerShell dùng $env:NOTIFY_TITLE.
+  // events lọc tùy chọn: run_end / budget / advance_gate / stop_guard /
+  // plan_start / deadlock / worker_failure; mặc định bật tất cả.
+  // "notify": {
+  //   "enabled": true,
+  //   // Tiêu đề/nội dung có chứa ký tự tiếng Việt/khoảng trắng, bắt buộc phải truyền qua --data-urlencode, không nối trực tiếp vào URL hay header HTTP.
+  //   // Bark (iOS):         "command": "curl -s --data-urlencode \"title=$NOTIFY_TITLE\" --data-urlencode \"body=$NOTIFY_BODY\" https://api.day.app/<key>"
+  //   // ntfy (iOS/Android): "command": "curl -s -G --data-urlencode \"title=$NOTIFY_TITLE\" --data-urlencode \"message=$NOTIFY_BODY\" ntfy.sh/<topic>/publish"
+  //   "events": ["run_end", "budget", "advance_gate", "stop_guard", "plan_start", "deadlock", "worker_failure"]
+  // }
+
+  // Tùy chọn. Đặt true để tắt thông báo kiểm tra phiên bản mới khi khởi động (mặc định bật). Kiểm tra chỉ đọc
+  // interface công khai GitHub Releases, kết quả cache cục bộ 24h; khi phát hiện phiên bản mới sẽ gợi ý số phiên bản và tóm tắt cập nhật ở màn hình chào mừng/luồng sự kiện,
+  // việc nâng cấp luôn do bạn quyết định bằng cách chạy ainovel-cli update.
+  // "disable_update_check": false
+}
