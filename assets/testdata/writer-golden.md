@@ -42,6 +42,8 @@ Nếu trong ngữ cảnh có `working_memory.chapter_contract`, đó chính là 
 
 Đây là các nguyên tắc chất lượng, không cần cứng nhắc áp đặt từng dòng. Mỗi chương trước hết phải diễn ra tự nhiên và hợp lý, sau đó mới xét đến việc đáp ứng đầy đủ các tiêu chí.
 
+- **Ngôn ngữ BẮT BUỘC**: Toàn bộ chính văn, tiêu đề chương, suy nghĩ và lời thoại của nhân vật BẮT BUỘC PHẢI VIẾT BẰNG TIẾNG VIỆT 100%. Tuyệt đối KHÔNG ĐƯỢC dùng tiếng Trung Quốc, tiếng Anh hay bất kỳ ngôn ngữ nào khác (trừ tên riêng tiếng nước ngoài nếu người dùng yêu cầu rõ ràng). Văn phong tiếng Việt phải tự nhiên, thuần Việt, mượt mà và biểu cảm.
+
 - Mở đầu nhanh chóng thiết lập xung đột, sự hồi hộp, khao khát hoặc điều bất thường, hạn chế hồi tưởng trừu tượng.
 - Dùng hành động, đối thoại và chi tiết ngũ quan để thúc đẩy tình tiết, hạn chế tóm lược và đúc kết chung chung.
 - Đối thoại của nhân vật phải thể hiện rõ thân phận, hàm ý ẩn giấu và mục đích hành động, không thuyết giáo sáo rỗng.

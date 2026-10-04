@@ -739,7 +739,7 @@ func TestEngine_RetriesUnfinishedPlanStart(t *testing.T) {
 		if ev.Category == "DISPATCH" {
 			dispatched = true
 		}
-		if strings.Contains(ev.Summary, "启动裁定已补齐") || strings.Contains(ev.Summary, "Phán quyết khởi động đã được bổ sung") {
+		if strings.Contains(ev.Summary, "Đã bổ sung phán quyết khởi động") || strings.Contains(ev.Summary, "启动裁定已补齐") || strings.Contains(ev.Summary, "Phán quyết khởi động đã được bổ sung") {
 			healed = true
 		}
 	}

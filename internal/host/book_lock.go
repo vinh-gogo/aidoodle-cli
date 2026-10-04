@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/gofrs/flock"
 )
@@ -20,17 +21,37 @@ type bookLease struct {
 	lock *flock.Flock
 }
 
+func isAccessDenied(err error) bool {
+	if err == nil {
+		return false
+	}
+	if os.IsPermission(err) || errors.Is(err, os.ErrPermission) {
+		return true
+	}
+	s := strings.ToLower(err.Error())
+	return strings.Contains(s, "access is denied") || strings.Contains(s, "permission denied")
+}
+
 func acquireBookLease(dir string) (*bookLease, error) {
 	absDir, err := filepath.Abs(dir)
 	if err != nil {
 		return nil, fmt.Errorf("phân tích thư mục tiểu thuyết: %w", err)
 	}
 	if err := os.MkdirAll(absDir, 0o755); err != nil {
+		if isAccessDenied(err) {
+			return nil, fmt.Errorf("lỗi quyền truy cập: không thể tạo thư mục tiểu thuyết %q (Access is denied). Vui lòng cấp quyền ghi hoặc sử dụng --dir chỉ định thư mục khác: %w", absDir, err)
+		}
 		return nil, fmt.Errorf("tạo thư mục tiểu thuyết: %w", err)
 	}
-	fileLock := flock.New(filepath.Join(absDir, bookLockFile), flock.SetPermissions(0o600))
+	fileLock := flock.New(filepath.Join(absDir, bookLockFile), flock.SetPermissions(0o666))
 	locked, err := fileLock.TryLock()
 	if err != nil {
+		if isAccessDenied(err) {
+			return nil, closeBookLockAfterFailure(fileLock, fmt.Errorf(
+				"chiếm dụng thư mục tiểu thuyết %q: không thể tạo hoặc mở tệp khóa %s (Access is denied). Vui lòng kiểm tra quyền ghi thư mục hoặc đóng tiến trình terminal khác đang giữ tệp này: %w",
+				absDir, bookLockFile, err,
+			))
+		}
 		return nil, closeBookLockAfterFailure(fileLock, fmt.Errorf("chiếm dụng thư mục tiểu thuyết %q: %w", absDir, err))
 	}
 	if !locked {

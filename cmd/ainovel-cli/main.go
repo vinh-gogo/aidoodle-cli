@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"sort"
 	"strings"
 
 	"github.com/voocel/ainovel-cli/assets"
@@ -105,10 +106,20 @@ func runWithConfig(cfg bootstrap.Config, opts cliOptions, args []string) {
 		die("error: không còn hỗ trợ truyền trực tiếp nhu cầu tiểu thuyết qua dòng lệnh, vui lòng nhập trong ô nhập liệu của TUI sau khi khởi động")
 	}
 
+	if opts.Style != "" {
+		cfg.Style = opts.Style
+	}
+	if opts.Dir != "" {
+		cfg.OutputDir = opts.Dir
+	}
+
 	// FillDefaults 必须先于资产加载:OutputDir 是运行时字段,默认值在此归一——
 	// 否则默认配置下 <书目录>/style/ 的本书级文风覆盖永远不会被加载。
 	cfg.FillDefaults()
 	bundle := assets.Load(cfg.Style, assets.DefaultLoadOptions(cfg.OutputDir))
+	if _, ok := bundle.Styles[cfg.Style]; !ok {
+		die("error: không tìm thấy phong cách %q. Các phong cách khả dụng: %s", cfg.Style, availableStyles(bundle.Styles))
+	}
 	if opts.Headless {
 		prompt, err := loadPrompt(opts)
 		if err != nil {
@@ -127,6 +138,15 @@ func runWithConfig(cfg bootstrap.Config, opts cliOptions, args []string) {
 	}
 }
 
+func availableStyles(m map[string]string) string {
+	names := make([]string, 0, len(m))
+	for k := range m {
+		names = append(names, k)
+	}
+	sort.Strings(names)
+	return strings.Join(names, ", ")
+}
+
 type cliOptions struct {
 	Headless      bool
 	Prompt        string
@@ -134,6 +154,8 @@ type cliOptions struct {
 	Version       bool
 	Update        bool
 	UpdateVersion string
+	Style         string
+	Dir           string
 }
 
 // parseCLIOptions 提取 CLI flag，返回选项和剩余参数。
@@ -177,6 +199,18 @@ func parseCLIOptions(argv []string) (cliOptions, []string, error) {
 				return opts, nil, fmt.Errorf("--prompt-file thiếu giá trị")
 			}
 			opts.PromptFile = argv[i+1]
+			i++
+		case "--style", "-s":
+			if i+1 >= len(argv) {
+				return opts, nil, fmt.Errorf("--style thiếu giá trị")
+			}
+			opts.Style = argv[i+1]
+			i++
+		case "--dir", "-d":
+			if i+1 >= len(argv) {
+				return opts, nil, fmt.Errorf("--dir thiếu giá trị")
+			}
+			opts.Dir = argv[i+1]
 			i++
 		default:
 			args = append(args, argv[i])

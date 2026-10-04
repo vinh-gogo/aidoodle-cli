@@ -49,6 +49,18 @@ func TestLoad_NoOverrides(t *testing.T) {
 	if _, ok := b.Styles["default"]; !ok {
 		t.Fatal("内置风格集应含 default")
 	}
+	for _, style := range []string{"psychological", "stone-age-doodle", "vietnamese-history", "stone-age-doodle-explain"} {
+		if _, ok := b.Styles[style]; !ok {
+			t.Fatalf("phong cách %s chưa có trong b.Styles", style)
+		}
+		sb := Load(style, LoadOptions{})
+		if sb.References.StyleReference == "" {
+			t.Fatalf("phong cách %s thiếu tài liệu tham khảo thể loại StyleReference", style)
+		}
+		if sb.References.ArcTemplates == "" {
+			t.Fatalf("phong cách %s thiếu mẫu hồi ArcTemplates", style)
+		}
+	}
 }
 
 func TestInterventionPromptsKeepScopeContract(t *testing.T) {
