@@ -1,0 +1,24 @@
+{
+  "provider": "kaggle-llama",
+  "model": "qwen-27b",
+  "reasoning_effort": "off",
+  "providers": {
+    "kaggle-llama": {
+      "type": "openai",
+      "api_key": "kaggle-key",
+      "base_url": "https://snowcapped-denice-unprudent.ngrok-free.dev/v1",
+      "models": [
+        {
+          "name": "qwen-27b",
+          "context_window": 32768
+        }
+      ],
+      "extra": {
+        "headers": {
+          "ngrok-skip-browser-warning": "true"
+        }
+      }
+    }
+  },
+  "style": "doodle-explainer"
+}
