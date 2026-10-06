@@ -811,10 +811,10 @@ func TestContextToolSelectedMemoryRecallsStoryThreadsAndReviewLessons(t *testing
 	if containsRecallSummary(payload.Selected.StoryThreads, "建议回看第") {
 		t.Fatalf("expected related_chapters not to be duplicated into story_threads, got %+v", payload.Selected.StoryThreads)
 	}
-	if !containsRecallSummary(payload.Selected.ReviewLessons, "contract 漏项") {
+	if !containsRecallSummary(payload.Selected.ReviewLessons, "thiếu sót contract") {
 		t.Fatalf("expected review lesson recall to mention contract miss, got %+v", payload.Selected.ReviewLessons)
 	}
-	if !strings.Contains(payload.Summary, "线索召回:") || !strings.Contains(payload.Summary, "评审召回:") {
+	if !strings.Contains(payload.Summary, "gợi lại mạch truyện:") || !strings.Contains(payload.Summary, "gợi lại thẩm định:") {
 		t.Fatalf("expected loading summary to report selected memory, got %q", payload.Summary)
 	}
 }
@@ -875,7 +875,7 @@ func TestContextToolSelectedMemorySurfacesAgingForeshadow(t *testing.T) {
 	if !containsRecallSummary(payload.Selected.StoryThreads, "失落的血脉") {
 		t.Fatalf("expected second aging foreshadow to surface, got %+v", payload.Selected.StoryThreads)
 	}
-	if !containsRecallSummary(payload.Selected.StoryThreads, "未回收") {
+	if !containsRecallSummary(payload.Selected.StoryThreads, "chưa thu hồi") {
 		t.Fatalf("expected aging item to carry overdue annotation, got %+v", payload.Selected.StoryThreads)
 	}
 	// 近期伏笔（账龄 <30 且不相关）不应被回填。
@@ -1228,13 +1228,13 @@ func TestContextToolComputesRuleViolationsFromAcceptedContent(t *testing.T) {
 		t.Fatalf("progress: %v", err)
 	}
 	snap := rules.BuildSnapshot([]rules.Candidate{{
-		Source: "test", Structured: rules.Structured{ForbiddenPhrases: []string{"不禁"}},
+		Source: "test", Structured: rules.Structured{ForbiddenPhrases: []string{"thực sự"}},
 	}})
 	if err := st.UserRules.Save(&snap); err != nil {
 		t.Fatalf("save rules: %v", err)
 	}
-	if _, err := st.ChapterRecords.Accept(2, domain.ChapterOriginGenerated, "他不禁回头。", domain.ChapterFacts{
-		Title: "第二章", Summary: "回头", KeyEvents: []string{"回头"},
+	if _, err := st.ChapterRecords.Accept(2, domain.ChapterOriginGenerated, "Anh ấy thực sự quay đầu lại.", domain.ChapterFacts{
+		Title: "Chương hai", Summary: "Quay đầu", KeyEvents: []string{"quay đầu"},
 	}, domain.StyleDelta{}); err != nil {
 		t.Fatalf("accept chapter: %v", err)
 	}

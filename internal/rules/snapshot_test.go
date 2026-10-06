@@ -3,6 +3,8 @@ package rules
 import (
 	"strings"
 	"testing"
+
+	"golang.org/x/text/unicode/norm"
 )
 
 func TestBuildSnapshot_FieldOverridePrecedence(t *testing.T) {
@@ -86,12 +88,57 @@ func TestBuildSnapshot_DegradedPropagates(t *testing.T) {
 	}
 }
 
-func TestSystemDefaults_MatchesLegacyDefaultMD(t *testing.T) {
+func TestSystemDefaults_VietnameseBaseline(t *testing.T) {
 	d := SystemDefaults().Structured
-	if len(d.ForbiddenPhrases) != 4 {
-		t.Fatalf("默认禁语应为 4 条，得到 %d", len(d.ForbiddenPhrases))
+	if len(d.ForbiddenPhrases) != 6 {
+		t.Fatalf("mặc định cần 6 cụm cấm, có %d", len(d.ForbiddenPhrases))
 	}
 	if len(d.FatigueWords) != 16 {
-		t.Fatalf("默认疲劳词应为 16 条，得到 %d", len(d.FatigueWords))
+		t.Fatalf("mặc định cần 16 từ mệt mỏi, có %d", len(d.FatigueWords))
+	}
+	var all []string
+	all = append(all, d.ForbiddenPhrases...)
+	for w, limit := range d.FatigueWords {
+		all = append(all, w)
+		if limit <= 0 {
+			t.Errorf("ngưỡng của %q phải > 0, có %d", w, limit)
+		}
+	}
+	for _, s := range all {
+		if s != strings.ToLower(s) {
+			t.Errorf("%q phải viết thường (Check so khớp không phân biệt hoa/thường)", s)
+		}
+		if hanRe.MatchString(s) {
+			t.Errorf("%q còn chữ Hán: đường cơ sở phải là tiếng Việt", s)
+		}
+	}
+}
+
+// Đường cơ sở phải thực sự bắt được văn sáo tiếng Việt, kể cả chữ hoa đầu câu và
+// chữ có dấu ở dạng tổ hợp (NFD).
+func TestSystemDefaults_CatchesVietnameseText(t *testing.T) {
+	s := SystemDefaults().Structured
+
+	vs := Check("Có thể nói rằng người tiền sử đã đúng.", s)
+	if findViolation(vs, "forbidden_phrases", "có thể nói rằng") == nil {
+		t.Errorf("chữ hoa đầu câu phải bị bắt: %+v", vs)
+	}
+
+	nfd := norm.NFD.String("hãy cùng khám phá nhé")
+	if nfd == "hãy cùng khám phá nhé" {
+		t.Fatal("test cần chuỗi NFD khác chuỗi NFC")
+	}
+	if findViolation(Check(nfd, s), "forbidden_phrases", "hãy cùng khám phá") == nil {
+		t.Error("chuỗi NFD phải khớp sau khi chuẩn hóa")
+	}
+
+	over := Check("Thực sự thì thực sự rất vui, thực sự đấy.", s)
+	v := findViolation(over, "fatigue_words", "thực sự")
+	if v == nil || v.Actual != 3 || v.Limit != 2 {
+		t.Errorf("thực sự x3 vượt ngưỡng 2: %+v", over)
+	}
+
+	if vs := Check("Ông Gậy vẽ một vòng tròn lên vách đá rồi cười.", s); len(vs) != 0 {
+		t.Errorf("câu sạch không được bị bắt: %+v", vs)
 	}
 }

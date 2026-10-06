@@ -117,8 +117,8 @@ func (s *StoreSummaryCompactStrategy) apply(_ context.Context, msgs []agentcore.
 }
 
 const (
-	storeSummaryPreamble = "以下内容来自小说持久化 store，用于在压缩后恢复写作上下文。"
-	taskHeading          = "## 当前任务\n"
+	storeSummaryPreamble = "Nội dung dưới đây lấy từ store lưu trữ bền vững của tiểu thuyết, dùng để khôi phục ngữ cảnh viết sau khi nén."
+	taskHeading          = "## Nhiệm vụ hiện tại\n"
 )
 
 // leadingTask 取回协调器下发的任务：首次压缩来自首条 user 消息，之后来自上一份摘要。
