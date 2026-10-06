@@ -35,9 +35,7 @@ func (t *SaveFoundationTool) ConcurrencySafe(_ json.RawMessage) bool { return fa
 func (t *SaveFoundationTool) Schema() map[string]any {
 	return schema.Object(
 		schema.Property("type", schema.Enum("Loại thiết lập", "premise", "outline", "layered_outline", "characters", "world_rules", "append_volume", "update_compass", "complete_book")).Required(),
-		schema.Property("content", map[string]any{
-			"description": "Nội dung. Với premise truyền chuỗi Markdown; các type khác truyền thẳng mảng hoặc đối tượng JSON là được, cũng chấp nhận chuỗi JSON.",
-		}).Required(),
+		schema.Property("content", schema.String("Nội dung. Với premise truyền chuỗi Markdown; các type khác truyền chuỗi JSON hoặc đối tượng JSON.")).Required(),
 		schema.Property("scale", schema.Enum("Cấp độ kế hoạch", "short", "mid", "long")),
 		schema.Property("reason", schema.String("Lý do phán định cuối quyển (bắt buộc khi append_volume / complete_book): đối chiếu danh sách kiểm tra hoàn tất, nêu một câu vì sao tiếp tục quyển mới, tuyên bố quyển kết thúc hay hoàn tất")),
 	)
