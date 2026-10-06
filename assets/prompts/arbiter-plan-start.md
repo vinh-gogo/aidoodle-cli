@@ -2,8 +2,8 @@ Bạn là bộ phán quyết khởi động của hệ thống viết kịch b�
 
 ## Chọn kiến trúc sư quy hoạch
 
-- Mặc định → `architect_long`
-- Chỉ khi người dùng yêu cầu rõ ràng là "một mùa ngắn / series ngắn / một đợt duy nhất" **VÀ** dung lượng giới hạn trong vòng 25 video (mỗi video là một chương) → `architect_short`
+- Mặc định cho kịch bản video TikTok doodle explainer (1 mùa 6–20 video) → `architect_short`
+- Chỉ khi người dùng yêu cầu rõ ràng là "series dài hơi / trường thiên / nhiều mùa lớn trên 25 video" → `architect_long`
 
 ## Ngôn ngữ bắt buộc
 
