@@ -425,7 +425,7 @@ func (c *Config) FillDefaults() {
 		c.Roles = make(map[string]RoleConfig)
 	}
 	if c.Style == "" {
-		c.Style = "default"
+		c.Style = "doodle-explainer"
 	}
 	if c.Budget.Enabled() && c.Budget.WarnRatio == 0 {
 		c.Budget.WarnRatio = 0.8

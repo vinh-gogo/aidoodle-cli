@@ -30,7 +30,7 @@ func renderTopBar(snap host.UISnapshot, width int, spinnerFrame, version string)
 			infoParts = append(infoParts, snap.ModelName)
 		}
 	}
-	if snap.Style != "" && snap.Style != "default" {
+	if snap.Style != "" && snap.Style != "doodle-explainer" {
 		infoParts = append(infoParts, snap.Style)
 	}
 	leftText := strings.Join(infoParts, " · ")

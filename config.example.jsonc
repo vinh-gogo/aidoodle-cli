@@ -111,8 +111,8 @@
   //   "architect": { "provider": "openrouter", "model": "google/gemini-3.1-pro" }
   // },
 
-  // Phong cách sáng tác: default / suspense / fantasy / romance.
-  "style": "default"
+  // Phong cách sáng tác: doodle-explainer (mặc định, kịch bản TikTok doodle explainer tiếng Việt) / default / suspense / fantasy / romance...
+  "style": "doodle-explainer"
 
   // Cửa sổ ngữ cảnh toàn cục kiểu cũ, giữ lại làm giá trị fallback cho mọi mô hình. Ưu tiên thấp hơn models[].context_window,
   // cao hơn registry mô hình và giá trị mặc định 200k. Chỉ ảnh hưởng ngưỡng nén ngữ cảnh, không đổi độ dài request thực tế tới API.

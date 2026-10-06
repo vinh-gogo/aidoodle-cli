@@ -154,7 +154,7 @@ func RunSetup() (Config, error) {
 		ModelName: modelName,
 		Providers: map[string]ProviderConfig{providerName: pc},
 		Roles:     map[string]RoleConfig{},
-		Style:     "default",
+		Style:     "doodle-explainer",
 	}
 
 	// 保存

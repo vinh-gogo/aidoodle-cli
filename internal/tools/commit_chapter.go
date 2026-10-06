@@ -518,6 +518,8 @@ func (t *CommitChapterTool) appendCommitCheckpoint(chapter int) error {
 // + 用户规则 Check（读本书快照的 structured；快照缺失退到内置默认，保证机械底线始终在）。
 func (t *CommitChapterTool) checkRules(text string) []rules.Violation {
 	violations := rules.Lint(text)
+	// Validator định dạng kịch bản (docs/script-format.md): chỉ là cảnh báo sự thật, không chặn commit.
+	violations = append(violations, lintScript(text)...)
 	structured := rules.SystemDefaults().Structured
 	if snap, err := t.store.UserRules.Load(); err == nil && snap != nil {
 		structured = snap.Structured

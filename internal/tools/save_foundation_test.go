@@ -81,7 +81,7 @@ func TestSaveFoundationPremiseDoesNotOwnBookMetadata(t *testing.T) {
 		"type": "premise",
 		"content": `# 长夜燃灯
 
-## 题材和基调
+## Kênh và khán giả
 东方玄幻，冷硬求生。`,
 	})
 	if err != nil {

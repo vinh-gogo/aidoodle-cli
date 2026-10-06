@@ -9,53 +9,48 @@ import (
 	"github.com/voocel/ainovel-cli/internal/domain"
 )
 
-// Tiêu đề chuẩn của premise (tiếng Việt, khớp đúng tên tiêu đề mà prompt Architect yêu cầu).
-// Key chuẩn này được đưa nguyên vào novel_context (premise_sections / premise_structure)
-// nên model nhìn thấy đúng tiếng Việt thay vì tiêu đề tiếng Trung như bản gốc.
+// Tiêu đề chuẩn của premise = series bible của kênh doodle explainer (tiếng Việt).
+// Danh sách này PHẢI đồng bộ với docs/script-format.md (mục 4) và prompt Architect
+// (assets/prompts/architect-short.md, architect-long.md). Key chuẩn được đưa nguyên vào
+// novel_context (premise_sections / premise_structure) nên model nhìn thấy đúng tiếng Việt.
 const (
-	headingGenreTone      = "Thể loại và sắc thái"
-	headingPositioning    = "Định vị thể loại"
-	headingCoreConflict   = "Xung đột cốt lõi"
-	headingProtagonist    = "Mục tiêu của nhân vật chính"
-	headingEnding         = "Hướng kết thúc"
+	headingChannel        = "Kênh và khán giả"
+	headingVoiceCast      = "Giọng kể và nhân vật dẫn chuyện"
+	headingCoreQuestion   = "Câu hỏi cốt lõi của series"
+	headingFormula        = "Công thức video"
+	headingHookFormula    = "Công thức hook"
+	headingDoodleLaw      = "Luật vũ trụ doodle"
+	headingSourcing       = "Chuẩn nguồn và kiểm chứng"
 	headingTaboo          = "Vùng cấm kỵ khi viết"
-	headingSellingPoint   = "Điểm bán khác biệt"
-	headingHook           = "Móc câu khác biệt"
-	headingPromise        = "Cam kết cốt lõi"
-	headingStoryEngine    = "Động cơ câu chuyện"
-	headingRelationArc    = "Tuyến chính quan hệ/trưởng thành"
-	headingProgression    = "Lộ trình nâng cấp"
-	headingMidTurn        = "Chuyển hướng giữa kỳ"
-	headingEndingQuestion = "Mệnh đề hồi kết"
-	headingShortFit       = "Khả năng thích ứng truyện ngắn"
+	headingDifferentiator = "Điểm khác biệt của kênh"
+	headingPromise        = "Cam kết với người xem"
+	headingSeasonPlan     = "Kế hoạch mùa"
+	headingBatches        = "Các đợt chủ đề"
+	headingGagCallback    = "Running gag và callback"
+	headingGrowth         = "Hướng phát triển series"
 )
 
-// premiseHeadingSpecs liệt kê, cho mỗi tiêu đề chuẩn, các tên được chấp nhận. Tiêu đề tiếng
-// Trung của bản gốc được giữ làm alias để dữ liệu cũ vẫn phân tích được.
-// Đây là nơi duy nhất cần sửa khi đổi bộ tiêu đề premise (phải đồng bộ với prompt Architect).
+// premiseHeadingSpecs liệt kê, cho mỗi tiêu đề chuẩn, các tên khác được chấp nhận
+// (model hay viết biến thể gần giống). Đây là nơi duy nhất cần sửa khi đổi bộ tiêu đề
+// premise (phải đồng bộ với prompt Architect).
 var premiseHeadingSpecs = []struct {
 	canonical string
 	aliases   []string
 }{
-	{headingGenreTone, []string{"题材和基调"}},
-	{headingPositioning, []string{"题材定位"}},
-	{headingCoreConflict, []string{"核心冲突"}},
-	{headingProtagonist, []string{"主角目标"}},
-	{headingEnding, []string{"终局方向", "结局方向", "Hướng kết cục"}},
-	{headingTaboo, []string{"写作禁区", "Vùng cấm khi viết"}},
-	{headingSellingPoint, []string{"差异化卖点"}},
-	{headingHook, []string{"差异化钩子"}},
-	{headingPromise, []string{"核心兑现承诺", "Cam kết thực hiện cốt lõi"}},
-	{headingStoryEngine, []string{"故事引擎"}},
-	{headingRelationArc, []string{"关系/成长主线", "Tuyến chính quan hệ và trưởng thành"}},
-	{headingProgression, []string{"升级路径"}},
-	{headingMidTurn, []string{"中段转折", "中期转向", "Chuyển hướng giữa truyện", "Bước ngoặt giữa kỳ"}},
-	{headingEndingQuestion, []string{"终局命题"}},
-	{headingShortFit, []string{
-		"短篇适配性", "本作为什么适合短篇/单卷收束",
-		"Lý do phù hợp với truyện ngắn / khép lại trong một quyển",
-		"Khả năng thích ứng truyện ngắn",
-	}},
+	{headingChannel, []string{"Kênh và người xem", "Định vị kênh"}},
+	{headingVoiceCast, []string{"Giọng kể", "Nhân vật dẫn chuyện", "Giọng điệu và nhân vật dẫn chuyện"}},
+	{headingCoreQuestion, []string{"Câu hỏi cốt lõi"}},
+	{headingFormula, []string{"Công thức tập", "Cấu trúc video"}},
+	{headingHookFormula, []string{"Công thức mở đầu", "Hook"}},
+	{headingDoodleLaw, []string{"Luật vũ trụ", "Luật thế giới doodle"}},
+	{headingSourcing, []string{"Chuẩn nguồn", "Nguồn và kiểm chứng"}},
+	{headingTaboo, []string{"Vùng cấm", "Vùng cấm kỵ"}},
+	{headingDifferentiator, []string{"Điểm khác biệt", "Điểm khác biệt của series"}},
+	{headingPromise, []string{"Cam kết với khán giả", "Cam kết"}},
+	{headingSeasonPlan, []string{"Kế hoạch mùa video", "Kế hoạch series"}},
+	{headingBatches, []string{"Đợt chủ đề", "Các đợt chủ đề video"}},
+	{headingGagCallback, []string{"Running gag", "Gag và callback"}},
+	{headingGrowth, []string{"Hướng phát triển", "Hướng đi của series"}},
 }
 
 // premiseHeadingAliases ánh xạ tên tiêu đề đã chuẩn hóa -> tiêu đề chuẩn.
@@ -74,7 +69,7 @@ func buildPremiseHeadingAliases() map[string]string {
 
 // normalizeHeading đưa tiêu đề về dạng so khớp: NFC, hạ chữ thường, bỏ phần mô tả sau
 // dấu hai chấm / trong ngoặc ở cuối và dấu câu thừa. Model hay viết
-// "Định vị thể loại (độc giả mục tiêu…)" hoặc chép cả "Móc câu khác biệt: Điểm độc đáo…"
+// "Công thức hook (3 giây đầu)" hoặc chép cả "Cam kết với người xem: Người xem nhận được gì"
 // thay vì đúng tên tiêu đề (chính prompt cũng liệt kê theo dạng "Tên: mô tả").
 func normalizeHeading(s string) string {
 	s = norm.NFC.String(strings.TrimSpace(s))
@@ -157,34 +152,33 @@ func premiseStructure(premise string, tier domain.PlanningTier) map[string]any {
 
 func requiredPremiseHeadings(tier domain.PlanningTier) []string {
 	common := []string{
-		headingGenreTone,
-		headingPositioning,
-		headingCoreConflict,
-		headingProtagonist,
-		headingEnding,
+		headingChannel,
+		headingVoiceCast,
+		headingCoreQuestion,
+		headingFormula,
+		headingHookFormula,
+		headingDoodleLaw,
+		headingSourcing,
 		headingTaboo,
-		headingSellingPoint,
-		headingHook,
+		headingDifferentiator,
 		headingPromise,
 	}
 
 	switch tier {
 	case domain.PlanningTierLong:
 		return append(common,
-			headingStoryEngine,
-			headingRelationArc,
-			headingProgression,
-			headingMidTurn,
-			headingEndingQuestion,
+			headingBatches,
+			headingGagCallback,
+			headingGrowth,
 		)
 	case domain.PlanningTierMid:
 		return append(common,
-			headingStoryEngine,
-			headingMidTurn,
+			headingBatches,
+			headingGagCallback,
 		)
 	case domain.PlanningTierShort:
 		return append(common,
-			headingShortFit,
+			headingSeasonPlan,
 		)
 	default:
 		return common

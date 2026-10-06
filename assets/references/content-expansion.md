@@ -1,66 +1,39 @@
-# Kỹ thuật mở rộng nội dung
+# Co giãn kịch bản khi thiếu hoặc thừa từ
 
-Khi dung lượng hoặc chi tiết của chương chưa đạt yêu cầu, hãy sử dụng các kỹ thuật sau để mở rộng một cách tự nhiên.
+Mục tiêu: LỜI nằm trong 150-450 từ, thời lượng 60-180 giây, mà không nhồi chữ hay độn ý. Quy đổi: ~2,5 từ/giây.
 
-## 1. Miêu tả chi tiết bối cảnh
+## Khi thiếu (dưới 150 từ, hoặc thời lượng non)
 
-Đừng chỉ nói ngắn gọn "Anh bước vào phòng", hãy miêu tả:
-- Bố cục căn phòng, hướng sáng, mùi hương phảng phất
-- Chi tiết và chất liệu của các đồ vật xung quanh
-- Tác động qua lại của môi trường lên trạng thái nhân vật
-- Quỹ đạo di chuyển của nhân vật trong không gian
+Thêm ý có giá trị, không thêm chữ đệm:
 
-## 2. Diễn biến nội tâm nhân vật
+1. Thêm một ví dụ ẩn dụ thứ hai cùng hệ (cùng ẩn dụ, góc khác) cho ý khó.
+2. Thêm cảnh "tại sao": người xem sẽ hỏi gì ở cuối cảnh 1? Trả lời nó.
+3. Thêm cú twist hoặc hệ quả: "Rồi chuyện gì xảy ra ngày hôm sau?"
+4. Thêm một lượt thoại ngắn giữa các que để show cái đang giảng.
+5. Thêm một con số/dữ kiện có nguồn, kèm hình so sánh.
+6. Thêm khoảng lặng hình ảnh: 1-2 giây cảnh câm cho punchline (tăng thời lượng mà không cần thêm từ).
+7. Thêm callback tới tập trước hoặc running gag (ngắn).
 
-Thể hiện bằng hành vi và suy tưởng thay vì chỉ trần thuật thô cứng:
-- Sự do dự, đấu tranh và giằng xé của nhân vật
-- Những đoạn hồi tưởng ký ức thoáng qua (1-2 đoạn)
-- Mối lo âu và kỳ vọng đối với tương lai
-- Những cuộc tranh luận nội tâm trước các ngã rẽ đạo đức
+Đừng: lặp lại ý bằng lời khác, thêm lời chào, thêm đoạn "tóm lại", kéo dài câu bằng từ đệm.
 
-## 3. Mở rộng lời thoại
+## Khi thừa (trên 450 từ, hoặc vượt 180 giây)
 
-Không chỉ đối thoại để đẩy cốt truyện, hãy để lời thoại:
-- Khắc họa sâu sắc tính cách và phong cách ăn nói của nhân vật
-- Chứa đựng các hàm ý ngầm, ẩn ý và lời nói bóng gió
-- Có sự đối đáp qua lại, dò xét và thăm dò tâm lý
-- Thỉnh thoảng lạc đề một chút rồi kéo lại mạch chính (tạo cảm giác đời thực)
+Cắt theo thứ tự ưu tiên:
 
-## 4. Trải nghiệm đa giác quan
+1. Câu lặp ý đã có trong HÌNH.
+2. Ý phụ, ngoại lệ, "nói thêm" (dồn sang tập khác nếu hay, ghi vào ý tưởng series).
+3. Con số thừa: giữ một con số mạnh nhất mỗi cảnh.
+4. Thuật ngữ khó không cần thiết: thay bằng tên ẩn dụ.
+5. Thu hai cảnh gần nghĩa thành một.
+6. Rút câu: bỏ "thật ra", "về cơ bản", "có thể nói là".
 
-Huy động trọn vẹn năm giác quan vào miêu tả:
-- Thị giác: màu sắc, quang ảnh, hình khối
-- Thính giác: âm thanh nền, tiếng nhạc, sự im lặng ngột ngạt
-- Xúc giác: nhiệt độ, chất liệu va chạm, cảm giác đau đớn
-- Khứu giác: mùi hương quen thuộc, mùi thức ăn, mùi tanh nồng
-- Vị giác: dư vị thức ăn, nước uống, vị máu tanh trong miệng
+Không cắt: hook, câu bản lề ẩn dụ -> khái niệm, cú twist, câu chốt.
 
-## 5. Tuyến tình tiết phụ
+Nếu vẫn dư vì ý quá lớn: tách thành hai tập (chốt tập 1 bằng câu hỏi mở), đừng ép nói nhanh quá ~3 từ/giây.
 
-Cài cắm đan xen vào mạch truyện chính:
-- Câu chuyện nhỏ của các nhân vật phụ
-- Sự phát triển âm thầm của tuyến mạch ngầm (ám tuyến)
-- Đặt phục bút gợi mở
-- Biến chuyển vi tế trong mối quan hệ giữa các nhân vật
+## Kiểm tra sau khi co/giãn
 
-## 6. Làm chậm nhịp điệu (Slow Motion)
-
-Ở những thời khắc then chốt, hãy cố ý làm chậm nhịp độ để miêu tả kỹ càng:
-- Bóc tách từng phân đoạn hành động
-- Quá trình biến chuyển cảm xúc phức tạp
-- Khoảnh khắc chân tướng sự việc hé lộ
-- Kéo dài bầu không khí đối đầu căng thẳng nghẹt thở
-
-## 7. Mượn cảnh điểm sắc (Tạo bầu không khí)
-
-Dùng khung cảnh môi trường để phản chiếu tâm trạng:
-- Thời tiết và bầu không khí bao quanh
-- Bối cảnh xã hội rộng lớn hơn
-- Chi tiết phong tục văn hóa bản địa
-- Khắc họa đặc trưng của thời đại
-
-## Nguyên tắc mở rộng
-
-- **Hòa nhập tự nhiên** - Nội dung mở rộng phải phục vụ câu chuyện, tuyệt đối không "bơm nước câu chữ".
-- **Duy trì sức căng kịch tính** - Kể cả khi mở rộng tả cảnh cũng không được làm loãng xung đột cốt lõi.
-- **Thúc đẩy mạch chính** - Mọi sự mở rộng cuối cùng đều phải hướng về diễn biến trung tâm của cốt truyện.
+- Đếm lại từ trong thẻ LỜI (chỉ thẻ LỜI được tính) và chỉnh mốc giờ từng khối cho khớp.
+- Mốc kết thúc của khối cuối ≈ tổng từ / 2,5 (cộng thêm giây cảnh câm).
+- Ý chính (core_event) vẫn là một; hook vẫn được thân video giao đúng.
+- Nhịp 3 giây còn nguyên: không có khoảng >5 giây không đổi hình hoặc ý.

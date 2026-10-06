@@ -168,37 +168,37 @@ func TestContextToolChapterModeIncludesWorkingAndReferenceFields(t *testing.T) {
 	if err := s.Init(); err != nil {
 		t.Fatalf("Init: %v", err)
 	}
-	if err := s.Outline.SavePremise(`## 题材和基调
+	if err := s.Outline.SavePremise(`## Kênh và khán giả
 少年成长，偏紧张压迫。
 
-## 题材定位
+## Giọng kể và nhân vật dẫn chuyện
 少年升级流
 
-## 核心冲突
+## Câu hỏi cốt lõi của series
 主角必须在宗门竞争中活下来。
 
-## 主角目标
+## Công thức video
 进入内门。
 
-## 终局方向
+## Công thức hook
 成为真正的执棋者。
 
-## 写作禁区
+## Vùng cấm kỵ khi viết
 不提前揭露师尊真相。
 
-## 差异化卖点
+## Điểm khác biệt của kênh
 弱者逆袭。
 
-## 差异化钩子
+## Luật vũ trụ doodle
 每阶段都要用更高代价换成长。
 
-## 核心兑现承诺
+## Cam kết với người xem
 持续兑现危机与突破。
 
-## 故事引擎
+## Các đợt chủ đề
 试炼、资源争夺与身份升级共同推进。
 
-## 中段转折
+## Running gag và callback
 主角被迫转向另一条修行路线。
 `); err != nil {
 		t.Fatalf("SavePremise: %v", err)
@@ -332,46 +332,46 @@ func TestContextToolArchitectModeIncludesPlanningAndFoundation(t *testing.T) {
 	if err := s.Progress.UpdateVolumeArc(1, 1); err != nil {
 		t.Fatalf("UpdateVolumeArc: %v", err)
 	}
-	if err := s.Outline.SavePremise(`## 题材和基调
+	if err := s.Outline.SavePremise(`## Kênh và khán giả
 群像冒险，偏冷峻史诗。
 
-## 题材定位
+## Giọng kể và nhân vật dẫn chuyện
 群像长篇冒险
 
-## 核心冲突
+## Câu hỏi cốt lõi của series
 众人必须在不断失控的旧秩序中寻找新秩序。
 
-## 主角目标
+## Công thức video
 抵达真相核心。
 
-## 终局方向
+## Công thức hook
 揭开古老真相并重建秩序。
 
-## 写作禁区
+## Vùng cấm kỵ khi viết
 不靠天降设定收尾。
 
-## 差异化卖点
+## Điểm khác biệt của kênh
 群像关系推进。
 
-## 差异化钩子
+## Luật vũ trụ doodle
 每卷都改变队伍关系结构。
 
-## 核心兑现承诺
+## Cam kết với người xem
 持续提供发现、牺牲与选择。
 
-## 故事引擎
+## Các đợt chủ đề
 旅途推进、真相调查与队伍关系共同驱动。
 
-## 关系/成长主线
+## Chuẩn nguồn và kiểm chứng
 队伍从互不信任走向分裂再重组。
 
-## 升级路径
+## Hướng phát triển series
 从地方事件走向世界级危机。
 
 ## 中期转向
 真相并非敌人，而是秩序本身有问题。
 
-## 终局命题
+## Kế hoạch mùa
 秩序应由谁定义。
 `); err != nil {
 		t.Fatalf("SavePremise: %v", err)

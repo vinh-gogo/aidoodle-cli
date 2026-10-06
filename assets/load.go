@@ -137,7 +137,7 @@ var styleNameRe = regexp.MustCompile(`^[a-z0-9-]+$`)
 
 func loadReferences(style string, opts LoadOptions) tools.References {
 	if style == "" {
-		style = "default"
+		style = "doodle-explainer"
 	}
 	refs := tools.References{
 		ChapterGuide:      mustRead(referencesFS, "references/chapter-guide.md"),
@@ -152,6 +152,8 @@ func loadReferences(style string, opts LoadOptions) tools.References {
 		LongformPlanning:  mustRead(referencesFS, "references/longform-planning.md"),
 		Differentiation:   mustRead(referencesFS, "references/differentiation.md"),
 		AntiAITone:        resolveAppendable(mustRead(referencesFS, "references/anti-ai-tone.md"), "anti-ai-tone.md", opts),
+		DoodleVisual:      mustRead(referencesFS, "references/doodle-visual-language.md"),
+		FactGrounding:     mustRead(referencesFS, "references/fact-grounding.md"),
 	}
 	if style != "" && style != "default" {
 		genreDir := "references/genres/" + style + "/"
