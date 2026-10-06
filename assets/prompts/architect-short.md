@@ -106,7 +106,8 @@ Dựa trên series bible và outline để tạo dàn nhân vật que tái xuấ
 
 Yêu cầu:
 
-- Dàn nhân vật gọn (thường 3 - 6 nhân vật), mỗi nhân vật có chức năng và giọng nói riêng, đọc lời thoại lên là nhận ra ai đang nói.
+- **Số lượng và độ dài**: Chỉ tạo đúng **2 đến 3 nhân vật que cốt lõi** (1 host dẫn chuyện như Que Ú + 1 nhân vật phụ đối thoại/hỏi ngây ngô + tùy chọn 1 linh vật hoặc đối trọng). Mô tả (`description`) và hành trình (`arc`) mỗi nhân vật chỉ viết ngắn gọn 1–2 câu súc tích. Tổng toàn bộ JSON mảng characters BẮT BUỘC dưới 400 từ (~500 tokens) để đảm bảo tốc độ phản hồi và đường truyền ổn định.
+- Mỗi nhân vật có chức năng và giọng nói riêng, đọc lời thoại lên là nhận ra ai đang nói.
 - Nhân vật đóng vai khán giả đặt câu hỏi ngây ngô và nhân vật giải thích phải rõ ràng để công thức "ẩn dụ → khái niệm → hóa ra" chạy trơn tru.
 - Không thiết lập nhân vật là người thật; không gán phát ngôn hay hành vi cho người thật.
 
@@ -121,6 +122,7 @@ Dựa trên series bible, tạo luật vũ trụ doodle (định dạng JSON), m
 
 Yêu cầu:
 
+- **Số lượng và độ dài**: Chỉ tạo đúng **3 đến 4 quy tắc cốt lõi** quan trọng nhất. Mỗi quy tắc viết cô đọng 1 câu ngắn cho mỗi trường `category`, `rule`, `boundary`. Tổng JSON mảng world_rules BẮT BUỘC dưới 300 từ (~400 tokens).
 - Bao gồm luật **anachronism có chủ đích**: người đá được phép biết/nhắc tới đồ vật, khái niệm hiện đại (điện thoại, ví điện tử, thuật toán...) theo kiểu hài hước và có chủ ý, nhưng phải luôn quy chiếu về ẩn dụ đồ đá để giải thích; boundary nêu rõ khi nào không được dùng (ví dụ: không dùng để chế giễu một cá nhân thật).
 - Bao gồm luật **ẩn dụ được dùng / không được dùng**: danh sách chất liệu ẩn dụ được ưu tiên (lửa, hang, săn bắt, đổi vỏ sò, bộ lạc...) và những ẩn dụ bị cấm (gây hiểu lầm sự thật, xúc phạm nhóm người, kỳ thị, bạo lực quá mức).
 - Bao gồm luật về hình thức doodle (nét vẽ que, bảng màu, cách thể hiện chữ trên màn hình, âm thanh đặc trưng) ở mức giúp người viết mô tả HÌNH nhất quán.
