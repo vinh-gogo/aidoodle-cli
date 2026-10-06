@@ -289,12 +289,15 @@ func ModelName(m agentcore.ChatModel) string {
 }
 
 // ModelProvider 从 ChatModel 中提取当前 provider 名称，失败返回空字符串。
+// 优先提取配置层定义的 ProviderName（如 "kaggle-llama"），若无则回退到底层的 llm.ModelInfo.Provider（如 "openai"）。
 func ModelProvider(m agentcore.ChatModel) string {
+	if provider, ok := m.(interface{ ProviderName() string }); ok {
+		if p := provider.ProviderName(); p != "" {
+			return p
+		}
+	}
 	if info, ok := m.(interface{ Info() llm.ModelInfo }); ok {
 		return info.Info().Provider
-	}
-	if provider, ok := m.(interface{ ProviderName() string }); ok {
-		return provider.ProviderName()
 	}
 	return ""
 }
