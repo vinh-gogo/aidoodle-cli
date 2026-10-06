@@ -268,7 +268,14 @@ Trong quá trình hệ thống đang hoạt động trong TUI, bạn có thể g
 
 ---
 
+## Lời cảm ơn & Nguồn tham khảo
+
+Dự án này được kế thừa, tùy biến và phát triển dựa trên nền tảng kiến trúc Deterministic Engine mã nguồn mở từ dự án gốc [ainovel-cli](https://github.com/voocel/ainovel-cli) của tác giả [voocel](https://github.com/voocel). Xin chân thành cảm ơn tác giả và cộng đồng [linux.do](https://linux.do/) đã xây dựng nền tảng kiến trúc tuyệt vời này.
+
+---
+
 ## Giấy phép
 
 Phần mềm phát hành theo giấy phép [MIT License](LICENSE).
 Tương thích hoàn toàn trên Windows, Linux và macOS.
+
