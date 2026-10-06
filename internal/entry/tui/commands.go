@@ -320,8 +320,8 @@ func commandRegistryInstance() commandRegistry {
 		{
 			Name:        "export",
 			Group:       "writing",
-			Usage:       "/export [path] [from=N] [to=M] [--overwrite]",
-			Description: "Xuất các chương đã hoàn thành ra định dạng TXT/EPUB",
+			Usage:       "/export [path] [format=video|txt|epub] [from=N] [to=M] [--overwrite]",
+			Description: "Xuất các tập kịch bản video TikTok (scripts, voiceover, csv) hoặc TXT/EPUB",
 			AutoExecute: true,
 			Run: func(m Model, args []string) (tea.Model, tea.Cmd) {
 				cmd, err := startExport(m.runtime, args)

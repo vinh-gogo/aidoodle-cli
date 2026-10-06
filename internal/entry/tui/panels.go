@@ -145,7 +145,7 @@ func renderWelcome(width, height int, errMsg string, mode startupMode, importHin
 	subtitle := lipgloss.NewStyle().
 		Foreground(colorMuted).
 		Italic(true).
-		Render("AI-Powered Novel Creation Engine")
+		Render("AI-Powered TikTok Doodle Explainer Script Engine")
 
 	// 分隔线
 	divW := 44
@@ -157,10 +157,10 @@ func renderWelcome(width, height int, errMsg string, mode startupMode, importHin
 
 	// 功能亮点
 	features := []struct{ icon, label, desc string }{
-		{">>", "Phối hợp đa mô hình", "Architect quy hoạch / Writer sáng tác / Editor thẩm định"},
-		{"::", "Khôi phục điểm ngắt", "Tự động viết tiếp từ tiến độ gần nhất sau sự cố hoặc gián đoạn"},
-		{"<>", "Can thiệp thời gian thực", "Điều chỉnh hướng đi cốt truyện bất kỳ lúc nào trong quá trình sáng tác"},
-		{"##", "Trường thiên phân tầng", "Hỗ trợ cấu trúc phân tầng Quyển - Arc - Chương cho truyện dài"},
+		{">>", "Phối hợp đa tác nhân", "Architect lập series / Writer viết kịch bản / Editor thẩm định"},
+		{"::", "Khôi phục điểm ngắt", "Tự động viết tiếp từ tập kịch bản gần nhất sau sự cố hoặc gián đoạn"},
+		{"<>", "Bám sát xu hướng & nguồn tin", "Tự động lấy Google Trends / RSS, neo dữ kiện và phân vùng an toàn"},
+		{"##", "Quy cách kịch bản TikTok", "HOOK 3s, nhịp 3-5s, nhân vật đồ đá, xuất scripts / voiceover / csv"},
 	}
 	iconStyle := lipgloss.NewStyle().Foreground(colorAccent2).Bold(true)
 	featLabelStyle := lipgloss.NewStyle().Foreground(bodyTextColor)
@@ -175,7 +175,7 @@ func renderWelcome(width, height int, errMsg string, mode startupMode, importHin
 	feats := strings.Join(featLines, "\n")
 
 	// 输入提示
-	prompt := lipgloss.NewStyle().Foreground(bodyTextColor).Render("Nhập nhu cầu tiểu thuyết của bạn bên dưới để bắt đầu sáng tác")
+	prompt := lipgloss.NewStyle().Foreground(bodyTextColor).Render("Nhập chủ đề hoặc yêu cầu series kịch bản video TikTok doodle explainer của bạn:")
 
 	modeLine := lipgloss.NewStyle().
 		Foreground(colorMuted).
@@ -183,9 +183,9 @@ func renderWelcome(width, height int, errMsg string, mode startupMode, importHin
 
 	// 示例
 	examples := []string{
-		"Viết một tiểu thuyết trinh thám đô thị 12 chương, nhân vật chính là nữ pháp y",
-		"Sáng tác một bộ tiên hiệp trường thiên, nhân vật chính từ phàm nhân tu luyện đến phi thăng",
-		"Viết một truyện ngắn khoa học viễn tưởng, kể về tình thế tiến thoái lưỡng nan của AI sau khi thức tỉnh",
+		"Giải thích lạm phát và tiền mất giá qua củ khoai và vỏ sò thời đồ đá (series 8 tập)",
+		"Xu hướng trí tuệ nhân tạo (AI): tại sao AI thông minh nhưng hay bịa chuyện? (series 10 tập)",
+		"Thuật toán mạng xã hội giữ chân người xem như thế nào: giải thích bằng bộ lạc săn bắt hái lượm",
 	}
 	exStyle := lipgloss.NewStyle().Foreground(colorAccent)
 	dotStyle := lipgloss.NewStyle().Foreground(colorDim)
@@ -220,7 +220,7 @@ func renderWelcome(width, height int, errMsg string, mode startupMode, importHin
 			Render("! " + importHint))
 	} else {
 		b.WriteString(lipgloss.NewStyle().Foreground(colorDim).
-			Render("Đã có thiết lập/đề cương? /start <đường_dẫn_file> để tạo sách mới · Đã có bản thảo tiểu thuyết? /import <đường_dẫn_file> để nhập và viết tiếp"))
+			Render("Đã có đề cương? /start <đường_dẫn_file> để tạo series mới · Xem xu hướng nóng? ainovel-cli --trends · Xuất kịch bản: /export --video"))
 	}
 	if updateHint != "" {
 		// 启动版本检查命中新版本：与 importHint 同款强调样式追加一行。

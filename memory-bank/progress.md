@@ -48,7 +48,13 @@ _Last updated: 2026-10-06 (initial bootstrap)_
   - Validator `internal/tools/script_format.go` bắt buộc kiểm tra thẻ chân `CẦN KIỂM CHỨNG:` (`script_missing_unverified` warning), cập nhật test và `docs/script-format.md`.
   - Cấu hình `advance_mode` ("auto" / "review") trong `bootstrap.Config`, `config.example.jsonc` và mặc định `review` cho series xu hướng mới trong `host.New`. Cung cấp cờ `--review` và `--next` (cho headless) trong `main.go`.
   - Nghiệm thu: `go test -buildvcs=false -count=1 ./...` toàn bộ 35 package pass 100%.
-- [ ] P6 export & docs & TUI.
+- [x] P6 export video formats, TUI polish & Vietnamese README:
+  - Gói xuất video TikTok `internal/host/exp/video.go`: `slugify` tiếng Việt chuẩn (bỏ dấu NFD, chuyển đ/Đ thành d, sinh slug URL an toàn), `renderVideoPackage` xuất `scripts/NN-slug.md`, `voiceover/NN-slug.txt`, `shotlist.csv` (UTF-8 BOM), `publish.csv` (UTF-8 BOM).
+  - Tích hợp `FormatVideo` ("video") trong `internal/host/exp/types.go` và `exporter.go`. Unit test `TestSlugify` và `TestRun_VideoFormat` pass 100%.
+  - TUI & CLI: `/export --video` hoặc `format=video` trong `internal/entry/tui/export.go`, `commands.go`.
+  - Cập nhật TUI polish: màn hình chào mừng (`panels.go`), gợi ý chủ đề doodle đồ đá, placeholder cocreate và model update (`cocreate.go`, `model_update.go`).
+  - Viết lại toàn bộ `README.md` sang tiếng Việt, định vị đúng sản phẩm công cụ tạo kịch bản video TikTok Doodle Explainer.
+  - Nghiệm thu: `gofmt`, `go vet ./...`, `go test -buildvcs=false -count=1 ./...` toàn bộ 35 package pass 100%.
 - `.github/` deleted by user's choice (recoverable from `novel-baseline`).
 
 ## Verified on this machine

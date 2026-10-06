@@ -28,16 +28,18 @@ Branch `doodle-explainer` (tag `novel-baseline` = pre-change state; recover anyt
 - **P2 committed** (`45b228e P2: script format, validator, series bible headings, doodle-explainer style and prompts`).
 - **P3 committed** (`aae68af P3: Vietnamese stylestat, smoke eval cases, and Editor rubric integration`).
 - **P4 committed** (`d47c43c P4: automated trend intake, source pack grounding, and Arbiter topic selection`).
-- **P5 done** (An toàn nội dung & cổng duyệt người):
-  - Tài liệu chuẩn: [`assets/references/tiktok-content-safety.md`](file:///D:/ainovel-cli/assets/references/tiktok-content-safety.md) dựa trên Luật An ninh mạng 2018, Nghị định 15/2020/NĐ-CP (Điều 101) và Tiêu chuẩn cộng đồng TikTok (Vùng đỏ - Vùng vàng - Vùng xanh, cơ chế thẩm định, bám nguồn và cổng duyệt). Nối dây qua `novel_context.go`, `assets/load.go`, `assets/load_test.go`.
-  - Vùng cấm kỵ cốt lõi đưa vào `rules.SystemDefaults().Preferences`, tự động nạp vào `user_rules.preferences` của mọi phiên sáng tác.
-  - Validator kịch bản `internal/tools/script_format.go`: kiểm tra trường `CẦN KIỂM CHỨNG` trong chân kịch bản (`script_missing_unverified` warning), cập nhật `script_format_test.go` và `docs/script-format.md`.
-  - Chế độ duyệt từng tập (`advance_mode`): hỗ trợ trong `Config`, `mergeConfig`, mẫu cấu hình `config.example.jsonc`, tự động kích hoạt `review` mode cho series xu hướng mới trong `host.New`. Cung cấp cờ `--review` và `--next` (cho headless) trong `main.go`. Unit test `internal/host/advance_mode_config_test.go` và `cmd/ainovel-cli/main_test.go` đạt 100%.
-  - Toàn bộ 35 package pass test suite (`go test -buildvcs=false -count=1 ./...`).
+- **P5 committed** (`6ce9300 P5: content safety reference, SystemDefaults safety preferences, script unverified fact validation, and review advance mode`).
+- **P6 done** (TikTok video export formats, TUI polish & Vietnamese README):
+  - Gói xuất video TikTok `internal/host/exp/video.go`: `slugify` tiếng Việt chuẩn (bỏ dấu NFD, chuyển đ/Đ thành d, sinh slug URL an toàn), `renderVideoPackage` xuất `scripts/NN-slug.md`, `voiceover/NN-slug.txt`, `shotlist.csv` (UTF-8 BOM), `publish.csv` (UTF-8 BOM).
+  - Tích hợp `FormatVideo` ("video") trong `internal/host/exp/types.go` và `exporter.go`. Unit test `TestSlugify` và `TestRun_VideoFormat` pass 100%.
+  - TUI & CLI: `/export --video` hoặc `format=video` trong `internal/entry/tui/export.go`, `commands.go`.
+  - Cập nhật TUI polish: màn hình chào mừng (`panels.go`), gợi ý chủ đề doodle đồ đá, placeholder cocreate và model update (`cocreate.go`, `model_update.go`).
+  - Viết lại toàn bộ `README.md` sang tiếng Việt, định vị đúng sản phẩm công cụ tạo kịch bản video TikTok Doodle Explainer.
+  - Nghiệm thu: `gofmt`, `go vet ./...`, `go test -buildvcs=false -count=1 ./...` toàn bộ 35 package pass 100%.
 
 **Decision: user deleted `.github/` (CI/docker/release workflows). Keep deleted; do NOT restore unless asked.**
 
-**Next: Commit P5** sau đó chuyển sang **P6** (Export kịch bản video TikTok, tài liệu tiếng Việt, cập nhật README và TUI polish).
+**Next: Commit P6** hoàn tất toàn bộ kế hoạch chuyển đổi.
 
 
 ## Recent changes (from git history)
