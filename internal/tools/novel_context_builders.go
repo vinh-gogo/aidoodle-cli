@@ -3,8 +3,10 @@ package tools
 import (
 	"fmt"
 	"slices"
+	"strings"
 
 	"github.com/voocel/ainovel-cli/internal/domain"
+	"github.com/voocel/ainovel-cli/internal/host/trend"
 	"github.com/voocel/ainovel-cli/internal/rules"
 )
 
@@ -520,6 +522,41 @@ func (t *ContextTool) buildChapterWorkingMemory(envelope *chapterContextEnvelope
 			reads.require("previous_chapter", err)
 		}
 	}
+
+	if entry := state.currentEntry; entry != nil {
+		t.loadSourcePack(envelope.Working, entry)
+	}
+}
+
+// loadSourcePack nạp tài liệu nguồn nếu có cho tập này để Writer bám dữ kiện.
+func (t *ContextTool) loadSourcePack(working map[string]any, entry *domain.OutlineEntry) {
+	if entry == nil {
+		return
+	}
+	// 1. Thử nạp theo ch<N>
+	if sp, err := trend.LoadSourcePack(t.store.Dir(), fmt.Sprintf("ch%d", entry.Chapter)); err == nil && sp != nil {
+		working["source_pack"] = sp
+		return
+	}
+	// 2. Thử nạp theo tiêu đề
+	if sp, err := trend.LoadSourcePack(t.store.Dir(), entry.Title); err == nil && sp != nil {
+		working["source_pack"] = sp
+		return
+	}
+	// 3. Nếu CoreEvent có chứa 'Trend: ...'
+	if idx := strings.Index(entry.CoreEvent, "Trend:"); idx >= 0 {
+		sub := entry.CoreEvent[idx+len("Trend:"):]
+		if end := strings.Index(sub, "|"); end >= 0 {
+			sub = sub[:end]
+		}
+		sub = strings.TrimSpace(sub)
+		if sub != "" {
+			if sp, err := trend.LoadSourcePack(t.store.Dir(), sub); err == nil && sp != nil {
+				working["source_pack"] = sp
+				return
+			}
+		}
+	}
 }
 
 // buildOutlineWindow 为 Writer/Editor 保留与当前任务直接相关的大纲，而不是注入
@@ -783,10 +820,17 @@ func (t *ContextTool) buildArchitectPlanning(envelope *architectContextEnvelope,
 		reads.require("progress_for_arc_summaries", progressErr)
 	}
 
-	// completion_signals 把"全书是否该结尾"的关键事实集中呈现，
-	// 让架构师在裁定 complete_book / append_volume 时一眼看到对照面。
-	// 散落在 progress / compass / foreshadow / layered_outline 里靠 LLM 脑算容易漏。
 	envelope.Planning["completion_signals"] = t.completionSignals(layered, compass, reads)
+
+	// trend_brief: nạp snapshot xu hướng mới nhất nếu có để Architect tham khảo khi lập dàn ý
+	if snap, err := trend.LoadLatestSnapshot(t.store.Dir()); err == nil && snap != nil && len(snap.Items) > 0 {
+		envelope.Planning["trend_brief"] = map[string]any{
+			"id":         snap.ID,
+			"geo":        snap.Geo,
+			"fetched_at": snap.FetchedAt,
+			"items":      snap.Items,
+		}
+	}
 }
 
 // planningDetailScope 选择本轮唯一携带完整章节的大纲弧。显式请求优先；

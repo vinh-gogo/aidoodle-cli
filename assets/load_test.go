@@ -88,6 +88,7 @@ func TestStructuredArbiterPromptsContainOnlySemantics(t *testing.T) {
 	for name, prompt := range map[string]string{
 		"plan_start": prompts.ArbiterPlanStart,
 		"failure":    prompts.ArbiterFailure,
+		"topics":     prompts.ArbiterTopics,
 	} {
 		for _, duplicate := range []string{"```json", "不要 Markdown", "输出一个 JSON 对象"} {
 			if strings.Contains(prompt, duplicate) {

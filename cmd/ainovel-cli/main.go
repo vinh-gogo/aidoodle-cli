@@ -14,6 +14,7 @@ import (
 	"github.com/voocel/ainovel-cli/internal/entry/startup"
 	"github.com/voocel/ainovel-cli/internal/entry/tui"
 	"github.com/voocel/ainovel-cli/internal/eval"
+	"github.com/voocel/ainovel-cli/internal/host/trend"
 	"github.com/voocel/ainovel-cli/internal/rules"
 	buildversion "github.com/voocel/ainovel-cli/internal/version"
 )
@@ -120,10 +121,36 @@ func runWithConfig(cfg bootstrap.Config, opts cliOptions, args []string) {
 	if _, ok := bundle.Styles[cfg.Style]; !ok {
 		die("error: không tìm thấy phong cách %q. Các phong cách khả dụng: %s", cfg.Style, availableStyles(bundle.Styles))
 	}
+	if opts.Trends {
+		fmt.Println("Đang thu thập các xu hướng tin tức hot (trends)...")
+		snap, err := trend.RunIntake(context.Background(), cfg, cfg.OutputDir, nil)
+		if err != nil {
+			die("lỗi thu thập xu hướng: %v", err)
+		}
+		fmt.Printf("Đã thu thập %d xu hướng vào %s/meta/trends/\n", len(snap.Items), cfg.OutputDir)
+		for i, it := range snap.Items {
+			if i >= 10 {
+				fmt.Printf("... và %d xu hướng khác.\n", len(snap.Items)-10)
+				break
+			}
+			traffic := ""
+			if it.Traffic != "" {
+				traffic = fmt.Sprintf(" [%s]", it.Traffic)
+			}
+			fmt.Printf("  %d. %s%s (%s)\n", i+1, it.Title, traffic, it.Source)
+		}
+		if opts.Prompt == "" && opts.PromptFile == "" && !opts.Headless {
+			return
+		}
+	}
+
 	if opts.Headless {
 		prompt, err := loadPrompt(opts)
 		if err != nil {
 			die("error: %v", err)
+		}
+		if prompt == "" && opts.Trends {
+			prompt = "Viết series video TikTok doodle explainer các chủ đề hot xu hướng mới nhất bằng hình tượng người que thời đồ đá."
 		}
 		if err := headless.Run(cfg, bundle, headless.Options{Prompt: prompt}); err != nil {
 			die("error: %v", err)
@@ -149,6 +176,7 @@ func availableStyles(m map[string]string) string {
 
 type cliOptions struct {
 	Headless      bool
+	Trends        bool
 	Prompt        string
 	PromptFile    string
 	Version       bool
@@ -212,6 +240,8 @@ func parseCLIOptions(argv []string) (cliOptions, []string, error) {
 			}
 			opts.Dir = argv[i+1]
 			i++
+		case "--trends":
+			opts.Trends = true
 		default:
 			args = append(args, argv[i])
 		}

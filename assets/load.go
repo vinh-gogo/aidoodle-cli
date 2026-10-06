@@ -42,6 +42,7 @@ type Prompts struct {
 	ArbiterPlanStart    string
 	ArbiterIntervention string
 	ArbiterFailure      string
+	ArbiterTopics       string
 }
 
 // Bundle 表示运行所需的静态资源集合。
@@ -192,6 +193,7 @@ func loadPrompts() Prompts {
 		ArbiterPlanStart:    mustRead(promptsFS, "prompts/arbiter-plan-start.md"),
 		ArbiterIntervention: mustRead(promptsFS, "prompts/arbiter-intervention.md"),
 		ArbiterFailure:      mustRead(promptsFS, "prompts/arbiter-failure.md"),
+		ArbiterTopics:       mustRead(promptsFS, "prompts/arbiter-topics.md"),
 	}
 }
 

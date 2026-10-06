@@ -262,6 +262,9 @@ func buildLoadingSummary(result map[string]any, chapter int) string {
 	if _, ok := working["previous_tail"]; ok {
 		items = append(items, "đoạn cuối chương trước:ok")
 	}
+	if _, ok := working["source_pack"]; ok {
+		items = append(items, "tài liệu nguồn (source_pack):ok")
+	}
 	if _, ok := referencePack["style_rules"]; ok {
 		items = append(items, "quy tắc văn phong:ok")
 	}
@@ -290,6 +293,9 @@ func buildLoadingSummary(result map[string]any, chapter int) string {
 		items = append(items, "hồ sơ mô phỏng văn phong:ok")
 	} else if _, ok := planning["simulation_profile"]; ok {
 		items = append(items, "hồ sơ mô phỏng văn phong:ok")
+	}
+	if _, ok := planning["trend_brief"]; ok {
+		items = append(items, "tóm tắt xu hướng (trend_brief):ok")
 	}
 	if warnings, ok := result["_warnings"].([]string); ok && len(warnings) > 0 {
 		items = append(items, fmt.Sprintf("cảnh báo:%d", len(warnings)))

@@ -26,17 +26,19 @@ Branch `doodle-explainer` (tag `novel-baseline` = pre-change state; recover anyt
 - **P0 done.**
 - **P1 committed** (`d649d58 P1: harden engine for Vietnamese output (word count, rules, lint, premise headings, model-facing strings)`).
 - **P2 committed** (`45b228e P2: script format, validator, series bible headings, doodle-explainer style and prompts`).
-- **P3 done** (Editor rubric, stylestat Vietnamese port, eval smoke cases):
-  - `internal/stylestat/stylestat.go`: Đổi 8 pattern AI cliché sang tiếng Việt (hỗ trợ song ngữ), regex câu thời gian, n-gram tiếng Việt 2-4 từ với stopwords cạnh `vnEdgeStops`, nhận diện tiền tố tiêu đề `Tập N`.
-  - `internal/stylestat/stylestat_test.go`: Cập nhật `want` map sang tên tiếng Việt, thêm test suite tiếng Việt đầy đủ (`TestComputePatterns_Vietnamese`, `TestComputeTopPhrases_Vietnamese`, `TestComputeRepeatedSentences_Vietnamese`, `TestComputeTitleFormats_Vietnamese`).
-  - `internal/tools/commit_chapter_test.go`: Cập nhật test pattern `Câu phủ định`.
-  - `internal/diag/rules_quality.go`: Đổi thông báo `HookWeakChain` sang "liên tiếp %d tập".
-  - `evals/cases/smoke/`: Cập nhật 3 case smoke (`architect_short.json`, `writer_first_chapter.json`, `architect_long.json`) sang kịch bản doodle explainer tiếng Việt (tài chính, lạm phát, công nghệ).
-  - Toàn bộ test suite `go test -buildvcs=false -count=1 ./...` đều PASS.
+- **P3 committed** (`aae68af P3: Vietnamese stylestat, smoke eval cases, and Editor rubric integration`).
+- **P4 done** (Trend intake tự động & grounding dữ kiện):
+  - Gói mới `internal/host/trend/`: `types.go`, `fetcher.go` (Google Trends RSS VN + standard RSS parser, sanitization HTML), `article.go` (bóc tách bài báo HTML, làm sạch script/style/nav, giới hạn số từ), `store.go` (lưu snapshot và source pack nguyên tử vào `meta/trends/`), `runner.go` (`RunIntake`, `FetchAndPrepareSources`, `RecordTopicsDecision`), và bộ unit test đầy đủ (`fetcher_test.go`, `article_test.go`, `store_test.go`, `runner_test.go`) dùng httptest server fixture.
+  - Arbiter topic selection: `internal/arbiter/topics.go`, `topics_test.go` với contract `arbiter_trend_topics`, kiểm tra cơ học `trend_ref` hợp lệ, số lượng chủ đề.
+  - Prompt Arbiter: `assets/prompts/arbiter-topics.md` lọc tin xổ số/tai nạn/bôi nhọ, ưu tiên chủ đề kinh tế/công nghệ/xã hội có thể giải thích bằng ẩn dụ người que đồ đá. Nối dây qua `assets/load.go` và `assets/load_test.go`.
+  - Cấu hình: `TrendsConfig` trong `internal/bootstrap/config.go`, tích hợp `mergeConfig`/`CloneConfig`, cập nhật `config.example.jsonc` (giữ byte-identical giữa root và bootstrap).
+  - Ngữ cảnh kịch bản: `novel_context.go` và `novel_context_builders.go` tự động nạp `source_pack` cho Writer và `trend_brief` cho Architect.
+  - CLI: `cmd/ainovel-cli/main.go` hỗ trợ cờ `--trends`.
+  - Toàn bộ 35 package pass test suite (`go test -buildvcs=false -count=1 ./...`).
 
 **Decision: user deleted `.github/` (CI/docker/release workflows). Keep deleted; do NOT restore unless asked.**
 
-**Next: Commit P3** sau đó chuyển sang **P4** (Trend Intake tự động: Google Trends RSS VN, VnExpress RSS, article fetcher, Arbiter topic selection).
+**Next: Commit P4** sau đó chuyển sang **P5** (An toàn nội dung & cổng duyệt người: rules/preferences vùng cấm, trường `CẦN KIỂM CHỨNG`, advance gate `/review on`, tài liệu an toàn nội dung TikTok).
 
 
 ## Recent changes (from git history)

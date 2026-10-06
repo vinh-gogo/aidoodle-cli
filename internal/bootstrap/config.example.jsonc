@@ -145,6 +145,16 @@
   //   "events": ["run_end", "budget", "advance_gate", "stop_guard", "plan_start", "deadlock", "worker_failure"]
   // }
 
+  // Tùy chọn. Cấu hình lấy xu hướng (trends) tự động từ RSS cho kịch bản doodle explainer.
+  // "trends": {
+  //   "enabled": true,
+  //   "geo": "VN",
+  //   "sources": ["google_trends", "rss:vnexpress", "rss:tuoitre"],
+  //   "max_items": 30,
+  //   "topics_per_batch": 8,
+  //   "fetch_article_chars": 6000
+  // },
+
   // Tùy chọn. Đặt true để tắt thông báo kiểm tra phiên bản mới khi khởi động (mặc định bật). Kiểm tra chỉ đọc
   // interface công khai GitHub Releases, kết quả cache cục bộ 24h; khi phát hiện phiên bản mới sẽ gợi ý số phiên bản và tóm tắt cập nhật ở màn hình chào mừng/luồng sự kiện,
   // việc nâng cấp luôn do bạn quyết định bằng cách chạy ainovel-cli update.

@@ -35,7 +35,13 @@ _Last updated: 2026-10-06 (initial bootstrap)_
   - Chuẩn hóa thông báo `HookWeakChain` trong `internal/diag/rules_quality.go` thành "liên tiếp %d tập".
   - Chuyển 3 case smoke trong `evals/cases/smoke/` (`architect_short.json`, `writer_first_chapter.json`, `architect_long.json`) sang nội dung doodle explainer tiếng Việt.
   - Nghiệm thu: `go test -buildvcs=false -count=1 ./...` toàn bộ repo PASS 100%.
-- [ ] P4 trend intake (Google Trends RSS / VnExpress RSS fetcher, source pack, Arbiter topic selection).
+- [x] P4 trend intake & fact-grounding:
+  - Gói mới `internal/host/trend/`: `types.go`, `fetcher.go`, `article.go`, `store.go`, `runner.go` và toàn bộ unit test với httptest fixtures.
+  - Arbiter topic selection: `internal/arbiter/topics.go`, `topics_test.go`, prompt `assets/prompts/arbiter-topics.md` lọc rác/xổ số/tai nạn và ưu tiên góc nhìn đồ đá viral. Nối vào `assets/load.go`.
+  - Cấu hình: `TrendsConfig` trong `internal/bootstrap/config.go`, `configfile.go`, cập nhật `config.example.jsonc` (giữ byte-identical).
+  - Tích hợp: `novel_context.go` và `novel_context_builders.go` nạp `source_pack` cho Writer và `trend_brief` cho Architect.
+  - CLI: `cmd/ainovel-cli/main.go` hỗ trợ cờ `--trends`.
+  - Nghiệm thu: `go test -buildvcs=false -count=1 ./...` toàn bộ 35 package pass 100%.
 - [ ] P5 safety & human gate; P6 export & docs & TUI.
 - `.github/` deleted by user's choice (recoverable from `novel-baseline`).
 
