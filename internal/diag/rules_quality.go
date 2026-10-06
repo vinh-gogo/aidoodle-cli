@@ -122,9 +122,9 @@ func HookWeakChain(snap *Snapshot) []Finding {
 		Confidence: ConfMedium,
 		AutoLevel:  AutoNone,
 		Target:     "prompt.writer",
-		Title:      fmt.Sprintf("Móc câu cuối chương (hook) liên tục yếu (liên tiếp %d chương)", len(weakChain)),
+		Title:      fmt.Sprintf("Móc câu (hook) liên tục yếu (liên tiếp %d tập)", len(weakChain)),
 		Evidence:   strings.Join(parts, ", "),
-		Suggestion: "Kiểm tra xem việc thực thi hook_goal trong writer.md có rõ ràng không, khi cần thiết hãy nêu rõ ham muốn theo dõi tiếp của chương này trong plan_chapter, và hiệu chuẩn tiêu chuẩn đánh giá hook của Editor.",
+		Suggestion: "Kiểm tra xem việc thực thi hook_goal trong writer.md có rõ ràng không, khi cần thiết hãy nêu rõ ham muốn theo dõi tiếp của tập này trong plan_chapter, và hiệu chuẩn tiêu chuẩn đánh giá hook của Editor.",
 	}}
 }
 

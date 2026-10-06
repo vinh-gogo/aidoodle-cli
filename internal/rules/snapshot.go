@@ -172,21 +172,33 @@ func cloneFatigue(m map[string]int) map[string]int {
 	return out
 }
 
-// SystemDefaults 是代码内置的机械基线（最低优先级来源），不走 LLM 归一化。
+// SystemDefaults là đường cơ sở cơ học tích hợp trong mã (nguồn có ưu tiên thấp nhất),
+// không đi qua LLM chuẩn hóa.
 //
-// 数值迁自旧 assets/rules/default.md 的 front matter。阈值依据一并保留：
-// 后段疲劳词（像一/沉默了/没有说话/X息）来自 196 章长跑产物实证——传统 AI 套话被前段
-// 表灭绝后，模型转而把这些"节拍词"用到章均 5-7 次，阈值放宽以容忍正常使用。
+// Bản gốc là danh sách tiếng Trung nên hoàn toàn vô tác dụng với văn bản tiếng Việt.
+// Danh sách dưới đây nhắm tới những câu sáo và từ đệm hay lặp của văn "AI" tiếng Việt,
+// với ngưỡng thấp vì lời đọc doodle explainer chỉ dài ~150–450 từ. Toàn bộ mục viết thường
+// vì Check so khớp không phân biệt hoa/thường.
+// Ngưỡng cần hiệu chỉnh theo dữ liệu chạy thật (bản gốc dựa trên 196 chương thực nghiệm).
 func SystemDefaults() Candidate {
 	return Candidate{
 		Source: "system_defaults",
+		Preferences: "## VÙNG CẤM KỴ & AN TOÀN NỘI DUNG (Bắt buộc cho mọi kịch bản)\n" +
+			"- Tuyệt đối KHÔNG viết về: bệnh tật/đơn thuốc/chữa bệnh, tư vấn đầu tư tài chính/tiền mã hóa/chứng khoán, bầu cử và chính trị nhạy cảm/chủ quyền quốc gia, tai nạn thảm khốc/chết người, trẻ vị thành niên/bạo lực học đường, vu khống/xúc phạm người thật hoặc thương hiệu cụ thể.\n" +
+			"- Mọi số liệu, trích dẫn, sự kiện thời sự BẮT BUỘC phải dựa trên nguồn trong source_pack; dữ kiện chưa chắc chắn PHẢI ghi rõ vào phần 'CẦN KIỂM CHỨNG'. Tuyệt đối không tự bịa đặt số liệu hay tên người.\n" +
+			"- Tuân thủ tiêu chuẩn cộng đồng TikTok và quy định pháp luật Việt Nam (Nghị định 15/2020/NĐ-CP và Luật An ninh mạng).",
 		Structured: Structured{
-			// 定长固定串的 AI 套句；checker 字面子串匹配，带变量的模式（不是X而是Y）归语义层。
-			ForbiddenPhrases: []string{"某种程度上", "值得注意的是", "不知为何", "五味杂陈"},
+			// Câu sáo cố định; checker khớp chuỗi con nguyên văn. Mẫu có biến
+			// (không phải X mà là Y) thuộc tầng ngữ nghĩa, không đưa vào đây.
+			ForbiddenPhrases: []string{
+				"có thể nói rằng", "điều đáng chú ý là", "không thể phủ nhận rằng",
+				"trong thế giới ngày nay", "hãy cùng khám phá", "trong bối cảnh hiện nay",
+			},
 			FatigueWords: map[string]int{
-				"不禁": 1, "竟然": 1, "仿佛": 2, "此外": 1, "然而": 2,
-				"一丝": 2, "一抹": 2, "一缕": 2, "宛如": 1, "不由得": 1,
-				"像一": 3, "沉默了": 2, "没有说话": 2, "几息": 3, "一息": 3, "数息": 2,
+				"thực sự": 2, "vô cùng": 1, "dường như": 1, "hơn nữa": 1,
+				"ngoài ra": 1, "tuy nhiên": 2, "do đó": 1, "chính vì vậy": 1,
+				"một cách": 2, "đặc biệt": 2, "không khỏi": 1, "như thể": 2,
+				"bỗng nhiên": 1, "chợt": 1, "khẽ": 1, "nhấn mạnh rằng": 1,
 			},
 		},
 	}

@@ -17,6 +17,7 @@ import (
 
 type Options struct {
 	Prompt string
+	Next   bool
 	Stdout io.Writer
 	Stderr io.Writer
 }
@@ -48,6 +49,14 @@ func Run(cfg bootstrap.Config, bundle assets.Bundle, opts Options) error {
 			fmt.Fprintf(stderr, "Cảnh báo: xuất báo cáo chẩn đoán thất bại: %v\n", err)
 		}
 	}()
+
+	if opts.Next {
+		if err := eng.AdvanceOneChapter(); err != nil {
+			return err
+		}
+		fmt.Fprintf(stderr, "Cấp phép tập tiếp theo trong headless: %s\n", eng.Dir())
+		return consume(eng, stdout, stderr, false)
+	}
 
 	prompt := strings.TrimSpace(opts.Prompt)
 	if prompt != "" {

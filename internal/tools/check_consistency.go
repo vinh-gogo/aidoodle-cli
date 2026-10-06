@@ -23,7 +23,7 @@ func NewCheckConsistencyTool(store *store.Store) *CheckConsistencyTool {
 
 func (t *CheckConsistencyTool) Name() string { return "check_consistency" }
 func (t *CheckConsistencyTool) Description() string {
-	return "加载已写草稿和对照数据（世界规则、伏笔、关系、别名、最近摘要），供你检查一致性。必须在 draft_chapter 之后调用"
+	return "Tải bản thảo đã viết và dữ liệu đối chiếu (quy tắc thế giới, phục bút, quan hệ, tên gọi khác, tóm tắt gần nhất) để bạn kiểm tra tính nhất quán. Phải gọi sau draft_chapter"
 }
 func (t *CheckConsistencyTool) Label() string { return "Kiểm tra tính nhất quán" }
 
@@ -33,7 +33,7 @@ func (t *CheckConsistencyTool) ConcurrencySafe(_ json.RawMessage) bool { return 
 
 func (t *CheckConsistencyTool) Schema() map[string]any {
 	return schema.Object(
-		schema.Property("chapter", schema.Int("要检查的章节号")).Required(),
+		schema.Property("chapter", schema.Int("Số chương cần kiểm tra")).Required(),
 	)
 }
 
@@ -52,7 +52,7 @@ func (t *CheckConsistencyTool) Execute(_ context.Context, args json.RawMessage) 
 	var warnings []string
 	warn := func(scope string, err error) {
 		if err != nil {
-			warnings = append(warnings, fmt.Sprintf("%s 读取失败: %v", scope, err))
+			warnings = append(warnings, fmt.Sprintf("đọc %s thất bại: %v", scope, err))
 		}
 	}
 

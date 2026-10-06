@@ -227,10 +227,29 @@ type Config struct {
 	// Notify 无人值守告警配置；缺省启用（system 通道兜底）。
 	Notify NotifyConfig `json:"notify,omitzero"`
 
+	// Trends Cấu hình thu thập xu hướng (trends) tự động từ RSS cho kịch bản doodle explainer.
+	Trends TrendsConfig `json:"trends,omitzero"`
+
+	// AdvanceMode Chế độ duyệt từng tập: "auto" (mặc định cho tiểu thuyết) hoặc "review" (duyệt từng tập trước khi viết tiếp).
+	AdvanceMode string `json:"advance_mode,omitempty"`
+
 	// DisableUpdateCheck 关闭启动时的新版本检查提醒（默认开）。检查只读
 	// GitHub Releases 公开接口，结果缓存在本地配置目录，不上报任何数据。
 	DisableUpdateCheck bool `json:"disable_update_check,omitempty"`
 }
+
+// TrendsConfig cấu hình thu thập xu hướng (trends) tự động từ RSS cho kịch bản doodle explainer.
+type TrendsConfig struct {
+	Enabled           bool     `json:"enabled,omitempty"`
+	Geo               string   `json:"geo,omitempty"`
+	Sources           []string `json:"sources,omitempty"`
+	MaxItems          int      `json:"max_items,omitempty"`
+	TopicsPerBatch    int      `json:"topics_per_batch,omitempty"`
+	FetchArticleChars int      `json:"fetch_article_chars,omitempty"`
+}
+
+// IsEnabled trả về true nếu chức năng lấy xu hướng được bật.
+func (t TrendsConfig) IsEnabled() bool { return t.Enabled }
 
 // BudgetConfig 是用户对单本书钱包的政策声明。越线停机等同于用户在那一刻
 // 手动 Abort——Host 只代为执行，不评估模型行为（架构 §10 合宪边界）。
@@ -425,7 +444,7 @@ func (c *Config) FillDefaults() {
 		c.Roles = make(map[string]RoleConfig)
 	}
 	if c.Style == "" {
-		c.Style = "default"
+		c.Style = "doodle-explainer"
 	}
 	if c.Budget.Enabled() && c.Budget.WarnRatio == 0 {
 		c.Budget.WarnRatio = 0.8

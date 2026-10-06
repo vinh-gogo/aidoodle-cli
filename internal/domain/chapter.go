@@ -2,7 +2,8 @@ package domain
 
 import (
 	"fmt"
-	"unicode/utf8"
+	"math"
+	"unicode"
 )
 
 // ReviewInterval 全局审阅间隔（每 N 章触发一次）。
@@ -27,7 +28,45 @@ func ShouldArcReview(isArcEnd, isVolumeEnd bool, volume, arc int) (bool, string)
 	return false, ""
 }
 
-// WordCount 按 rune 计算字数。
+// WordCount đếm số "từ" của văn bản.
+//
+// Tiếng Việt viết tách từng âm tiết bằng khoảng trắng, nên mỗi token ngăn cách bởi
+// khoảng trắng tính là 1 từ (đúng với cách đo lời đọc: số âm tiết). Đếm theo rune như
+// trước sẽ cộng cả dấu cách và dấu câu, làm số liệu lệch khoảng 4–5 lần.
+// Chữ Hán vẫn tính mỗi ký tự 1 từ để nội dung cũ bằng tiếng Trung không bị đếm thiếu.
 func WordCount(content string) int {
-	return utf8.RuneCountInString(content)
+	count := 0
+	inToken := false
+	for _, r := range content {
+		switch {
+		case unicode.IsSpace(r):
+			inToken = false
+		case unicode.Is(unicode.Han, r):
+			count++
+			inToken = false
+		default:
+			if !inToken {
+				count++
+				inToken = true
+			}
+		}
+	}
+	return count
+}
+
+// DefaultWordsPerSecond là tốc độ đọc lời dẫn mặc định (từ/giây). 2,5 từ/giây khớp với
+// khoảng 150–450 từ cho video 60–180 giây của phong cách doodle explainer, đã gồm cả
+// khoảng ngắt cho hình vẽ. Con số này là ước lượng, cần hiệu chỉnh bằng bản đọc thật.
+const DefaultWordsPerSecond = 2.5
+
+// SpeechSeconds ước lượng thời lượng đọc (giây, làm tròn lên) của số từ cho trước.
+// wordsPerSecond <= 0 dùng DefaultWordsPerSecond.
+func SpeechSeconds(words int, wordsPerSecond float64) int {
+	if words <= 0 {
+		return 0
+	}
+	if wordsPerSecond <= 0 {
+		wordsPerSecond = DefaultWordsPerSecond
+	}
+	return int(math.Ceil(float64(words) / wordsPerSecond))
 }

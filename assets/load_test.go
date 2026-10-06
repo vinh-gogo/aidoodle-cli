@@ -49,7 +49,7 @@ func TestLoad_NoOverrides(t *testing.T) {
 	if _, ok := b.Styles["default"]; !ok {
 		t.Fatal("内置风格集应含 default")
 	}
-	for _, style := range []string{"psychological", "stone-age-doodle", "vietnamese-history", "stone-age-doodle-explain"} {
+	for _, style := range []string{"psychological", "stone-age-doodle", "vietnamese-history", "stone-age-doodle-explain", "doodle-explainer"} {
 		if _, ok := b.Styles[style]; !ok {
 			t.Fatalf("phong cách %s chưa có trong b.Styles", style)
 		}
@@ -60,6 +60,15 @@ func TestLoad_NoOverrides(t *testing.T) {
 		if sb.References.ArcTemplates == "" {
 			t.Fatalf("phong cách %s thiếu mẫu hồi ArcTemplates", style)
 		}
+	}
+	if b.References.DoodleVisual == "" {
+		t.Fatal("thiếu tài liệu tham khảo DoodleVisual (doodle-visual-language.md)")
+	}
+	if b.References.FactGrounding == "" {
+		t.Fatal("thiếu tài liệu tham khảo FactGrounding (fact-grounding.md)")
+	}
+	if b.References.TiktokSafety == "" {
+		t.Fatal("thiếu tài liệu tham khảo TiktokSafety (tiktok-content-safety.md)")
 	}
 }
 
@@ -82,6 +91,7 @@ func TestStructuredArbiterPromptsContainOnlySemantics(t *testing.T) {
 	for name, prompt := range map[string]string{
 		"plan_start": prompts.ArbiterPlanStart,
 		"failure":    prompts.ArbiterFailure,
+		"topics":     prompts.ArbiterTopics,
 	} {
 		for _, duplicate := range []string{"```json", "不要 Markdown", "输出一个 JSON 对象"} {
 			if strings.Contains(prompt, duplicate) {

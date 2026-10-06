@@ -1,35 +1,44 @@
-# Tiêu chuẩn khử văn phong AI (Anti-AI Tone)
+# Tiêu chuẩn khử văn phong AI (Anti-AI Tone) cho lời đọc ngắn
 
-Tài liệu này là kho tiêu chuẩn "mùi AI" dùng chung cho cả writer và editor: writer khi sáng tác phải tránh toàn bộ các mô thức dưới đây, editor khi thẩm định chiều aesthetic sẽ kiểm tra từng mục theo tài liệu này và **bắt buộc trích dẫn nguyên văn** để làm dẫn chứng.
+Tài liệu này là kho tiêu chuẩn "mùi AI" dùng chung cho writer và editor, áp dụng cho **lời đọc (thẻ `LỜI:`) của video doodle explainer**: ngắn, nói thành tiếng, vui, thuần Việt. Writer phải tránh các mô thức dưới đây; editor khi thẩm định chiều aesthetic kiểm tra từng mục theo tài liệu này và **bắt buộc trích dẫn nguyên văn** làm dẫn chứng. Thẻ `HÌNH:`, `CHỮ:`, `ÂM:` cũng không được viết kiểu sáo rỗng.
 
-> Phần có thể liệt kê bằng máy (dấu gạch ngang, câu rập khuôn cố định, từ ngữ sáo rỗng tần suất cao) đã được `working_memory.user_rules.structured` kiểm tra bắt buộc khi commit, tài liệu này chuyên xử lý **những phán đoán ngữ nghĩa không thể cơ học hóa**. Cả hai bổ trợ cho nhau: tầng cơ học bắt bề nổi, tài liệu này bắt chiều sâu chất lượng câu chữ.
+> Phần có thể liệt kê bằng máy (câu sáo cố định như "trong thế giới ngày nay", "hãy cùng khám phá", "có thể nói rằng", "điều đáng chú ý là", "không thể phủ nhận rằng", "trong bối cảnh hiện nay"; từ đệm hay lặp như "thực sự", "vô cùng", "tuy nhiên", "như thể") đã được `working_memory.user_rules.structured` kiểm tra khi commit. Tài liệu này chuyên xử lý **phán đoán ngữ nghĩa không cơ học hóa được**. Hai tầng bổ trợ nhau: tầng cơ học bắt bề nổi, tài liệu này bắt chất lượng câu chữ.
+
+Phép thử chung: đọc to lời đọc lên. Nếu phải lấy hơi giữa câu, nếu nghe như bài báo hay bài thuyết trình, nếu một người bạn không nói như vậy ở quán trà đá, thì sửa.
 
 ## 1. Mùi AI trong cấu trúc
 
-- **Điệp từ ba vế / Bộ ba song hành**: Dùng liên tiếp ba câu ngắn hoặc phân câu có cấu trúc đối xứng để "tạo thế" ("anh không do dự nữa, không lùi bước nữa, không ngoảnh đầu lại nữa"). Cách sửa: Giữ lại một câu đắt giá và có sức nặng nhất, các vế còn lại tách thành hành động hoặc chi tiết cụ thể.
-- **Xếp chồng câu đối xứng đều tăm tắp**: Chiều dài và cú pháp của mỗi đoạn văn giống hệt nhau, đọc lên như một bản danh sách liệt kê. Cách sửa: Đan xen câu dài và câu ngắn nhịp nhàng, để câu văn có khoảng thở.
-- **Tiêu đề con đánh số / Dấu `##` chia cắt trong chương**: Trong chính văn xuất hiện số thứ tự `1`, `2`, `3` hoặc các dấu phân đoạn kiểu Markdown `##`/`###`. Cách sửa: Chỉ giữ lại tiêu đề chương, chuyển đổi bối cảnh hãy dùng một dòng trắng để chuyển tiếp tự nhiên.
+- **Câu dài, nhiều mệnh đề**: lời đọc có câu trên khoảng 18 từ hoặc chứa hai ba dấu phẩy nối ý. Cách sửa: tách thành các câu 6–14 từ, mỗi câu một ý; ý phụ chuyển sang câu sau hoặc sang thẻ `CHỮ:`.
+- **Điệp ba vế / bộ ba song hành**: ba câu hoặc ba cụm đối xứng để "tạo thế" ("không lo lắng, không sợ hãi, không bỏ cuộc"). Cách sửa: giữ vế đắt nhất, các vế còn lại thành hình hoặc chi tiết cụ thể.
+- **Các câu đều tăm tắp**: câu nào cũng cùng độ dài và cú pháp, nghe như danh sách. Cách sửa: xen câu rất ngắn ("Mất sạch.") với câu vừa.
+- **Mở bài, thân bài, kết bài kiểu bài văn**: HOOK mà "giới thiệu chủ đề", CHỐT mà "tóm tắt lại". Cách sửa: HOOK là câu hỏi hoặc tình huống ngay; CHỐT là một hình hoặc một câu gọn.
+- **Dấu đánh dấu cấu trúc trong lời**: "Thứ nhất, thứ hai, thứ ba", "Tóm lại", "Như đã nói ở trên", hoặc Markdown (`**`, `##`, gạch đầu dòng) lọt vào chính văn. Cách sửa: đọc thành lời tự nhiên, nối bằng "rồi", "thế là", "còn", hoặc ngắt câu.
 
 ## 2. Mùi AI trong dùng từ
 
-- **Nhồi nhét từ Hán-Việt / Thành ngữ bốn chữ**: Trong một đoạn ngắn nhét quá nhiều thành ngữ hoặc từ ngữ bóng bẩy để thay cho miêu tả ("kinh tâm động phách, hiểm nguy trùng trùng, ngàn cân treo sợi tóc"). Cách sửa: Dùng một hành động hoặc hình ảnh cụ thể để thay thế chuỗi thành ngữ sáo rỗng.
-- **Mẫu câu so sánh rập khuôn**: Các câu ví von quen thuộc xuất hiện liên tục như "giống như…", "tựa như…", "dường như…", "như thể…". Cách sửa: Thay bằng động từ chuẩn xác hoặc hình ảnh so sánh mới mẻ, hoặc trực tiếp miêu tả chân thực.
-- **Nghiện lượng từ / Nghiện hư từ đệm**: "Một tia", "một nét", "một làn" đi kèm với cảm xúc; "bất giác", "thậm chí", "không khỏi", "dường như", "thoáng chốc" dùng làm từ cửa miệng. Cách sửa: Xóa bỏ các từ đệm giảm xóc, để hành động trực tiếp diễn ra ("anh mỉm cười", thay vì "khóe môi anh bất giác cong lên một nét cười").
-- **Từ ngữ trừu tượng to tát**: "Ở một mức độ nào đó", "đáng chú ý là", "không hiểu vì sao", "nói không rõ diễn tả không thông" — người kể chuyện đang đúc kết thay cho độc giả. Cách sửa: Xóa bỏ, nhường phán đoán cho dữ kiện và hành động cụ thể.
-- **Mẫu câu định nghĩa tương phản**: Các khuôn sáo dùng phủ định + chuyển ngoặt để "tạo điểm nhấn" lặp đi lặp lại như: "thứ anh muốn không phải là X, mà là Y", "đây không phải là kết thúc, mà là sự khởi đầu". Cách sửa: Dùng một hành động hoặc lựa chọn cụ thể để trực tiếp thể hiện, không dựa vào mẫu câu để tạo cảm giác triết lý gượng gạo.
+- **Hán-Việt nặng và văn "convert"**: "tiến hành", "thực hiện", "mang tính", "nhằm mục đích", "đối với việc", "sở hữu", "bản thân việc". Cách sửa: dùng từ nói hằng ngày ("làm", "có", "để", "tự nó").
+- **Nhồi thành ngữ và từ bóng bẩy thay cho hình ảnh**: "thăng trầm", "ngàn cân treo sợi tóc", "đỉnh cao của sự", "bức tranh toàn cảnh". Cách sửa: thay bằng một vật hay hành động cụ thể (nhặt vỏ ốc, ôm đống củi).
+- **Mẫu so sánh rập khuôn**: "giống như…", "tựa như…", "như thể…", "dường như…". Ở đây ẩn dụ đồ đá đã là phép so sánh; đừng thêm một lớp ví von nữa. Cách sửa: nói thẳng "Đó, lạm phát đó."
+- **Từ đệm giảm xóc**: "thực sự", "vô cùng", "đặc biệt", "một cách", "không khỏi", "bỗng nhiên", "khẽ", "chợt". Cách sửa: xóa, để động từ tự đứng.
+- **Mẫu câu tương phản gượng triết lý**: "đây không phải là X, mà là Y" dùng lặp lại. Dùng tối đa một lần mỗi tập và chỉ khi X, Y đều cụ thể. Cách sửa: nói thẳng Y.
+- **Câu dẫn sáo**: "Trong thế giới ngày nay", "Hãy cùng khám phá", "Có thể nói rằng", "Điều đáng chú ý là", "Chúng ta hãy cùng tìm hiểu". Cách sửa: vào thẳng chuyện ("Ông Gậy hết vỏ ốc rồi.").
+- **Từ trừu tượng to tát**: "tối ưu hóa", "hệ sinh thái", "giá trị cốt lõi", "xu hướng toàn cầu" xuất hiện mà không có ví dụ. Cách sửa: thay bằng một cảnh đồ đá hoặc một ví dụ đời thường.
 
 ## 3. Mùi AI trong miêu tả
 
-- **Khái quát trừu tượng thay thế cho ngũ quan cụ thể**: Các khái niệm chung chung như "bầu không khí rất ngột ngạt", "tình hình vô cùng căng thẳng". Cách sửa: Đưa ra một chi tiết cụ thể có thể cảm nhận bằng xúc giác / khứu giác / thính giác (tốt hơn là chỉ dùng thị giác thuần túy).
-- **Dán nhãn cảm xúc trực tiếp**: Trực tiếp viết "anh rất căng thẳng / tức giận / đau buồn". Cách sửa: Thể hiện qua phản ứng cơ thể và hành động ("đốt ngón tay trắng bệch", "cổ họng nghẹn đắng"), không gọi thẳng tên cảm xúc.
+- **Khái quát thay cho chi tiết cụ thể**: "bầu không khí rất căng thẳng", "tình hình vô cùng phức tạp". Cách sửa: một vật, một hành động nhìn thấy hoặc nghe thấy (cả hang im re, chỉ còn tiếng củi nổ).
+- **Dán nhãn cảm xúc trực tiếp**: "ông ấy rất lo lắng", "mọi người đều vui mừng". Cách sửa: để thẻ `HÌNH:` thể hiện bằng điệu bộ (mồ hôi chảy, tay run) và để lời đọc nói việc.
+- **Thẻ HÌNH mơ hồ**: "hình minh họa đẹp", "cảnh sinh động". Cách sửa: nêu ai làm gì, ở đâu, với vật gì.
 
-## 4. Mùi AI trong đối thoại
+## 4. Mùi AI trong đối thoại và giọng nhân vật
 
-- **Nhân vật bị đồng nhất hóa**: Bỏ nhãn tên người nói thì không phân biệt được ai đang nói — ai ai cũng có cùng độ dài câu, vốn từ và tầng lớp học vấn giống nhau. Cách sửa: Cho mỗi nhân vật độ dài câu ổn định, khẩu ngữ riêng, và tỷ lệ hàm ý ngầm khác nhau.
-- **Giải thích động cơ quá mức**: Nhân vật bộc bạch hết tâm lý của mình ra ngoài, hoặc người kể chuyện lập tức bồi thêm lời giải thích "anh nói như vậy là vì…". Cách sửa: Hãy để động cơ ẩn sau những lựa chọn và lời nói bóng gió, hãy tin tưởng độc giả.
-- **Giọng văn sách vở**: Tất cả mọi người đều nói những câu hoàn chỉnh, ngay ngắn, đầy ắp các từ nối logic. Cách sửa: Khẩu ngữ đời thường luôn có sự ngập ngừng, lược bớt và trả lời không đúng trọng tâm.
+- **Nhân vật đồng nhất**: bỏ tên người nói thì không phân biệt được ai nói. Cách sửa: mỗi nhân vật que có một câu cửa miệng và độ dài câu riêng (host hay hỏi, kẻ hoài nghi nói cộc, bà thầy thuốc dài hơi hơn).
+- **Giải thích động cơ quá mức**: nhân vật nói ra hết suy nghĩ, người kể lại bồi thêm "vì ông ấy muốn…". Cách sửa: để hành động và một câu bóng gió tự nói.
+- **Văn sách vở**: ai cũng nói câu đầy đủ chủ vị, có từ nối logic. Cách sửa: lời nói thật có lửng câu, trả lời lạc đề, tiếng đệm ("ờ", "hả", "thôi rồi").
 
 ## 5. Mùi AI trong nhịp điệu và cảm xúc
 
-- **Cái gì cũng kể cặn kẽ**: Mọi hành động, nguyên nhân hậu quả đều viết kín kẽ, không để lại chút không gian tưởng tượng nào. Cách sửa: Chỗ cần giấu hãy giấu đi, dùng khoảng trống để kích thích người đọc theo dõi tiếp.
-- **Gượng ép nâng tầm triết lý cuối chương**: Cuối mỗi chương đều nâng tầm lên chiêm nghiệm nhân sinh hoặc câu chốt triết lý vàng ngọc. Cách sửa: Dừng lại ở một hình ảnh cụ thể, một lựa chọn gay cấn hoặc dư âm cảm xúc lắng đọng, không đúc kết ý nghĩa thay cho độc giả.
+- **Nhồi số liệu và thông tin vào một câu**: ba con số trong một hơi. Cách sửa: một con số một câu và chỉ giữ số có trong nguồn.
+- **Kể cặn kẽ, không chừa chỗ nghĩ**: mọi nguyên nhân, hệ quả đều nói hết. Cách sửa: bỏ chi tiết phụ, để câu "Hóa ra..." làm điểm nhấn.
+- **Gượng ép nâng tầm triết lý ở CHỐT**: câu cuối kiểu "bài học cuộc sống" hay lời hô hào. Cách sửa: dừng ở một hình ảnh hoặc câu gọn, hoặc nối về HOOK.
+- **Hài giả tạo**: chêm "haha", cảm thán thừa, hoặc giải thích trò đùa. Cách sửa: trò đùa đứng bằng độ lệch của tình huống; không giải thích.

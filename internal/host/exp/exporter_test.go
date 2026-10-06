@@ -304,3 +304,128 @@ func TestSanitizeFileName(t *testing.T) {
 		}
 	}
 }
+
+func TestSlugify(t *testing.T) {
+	cases := map[string]string{
+		"Lạm phát: Vì sao tiền mất giá?":        "lam-phat-vi-sao-tien-mat-gia",
+		"Đồ đá & Trí tuệ nhân tạo (AI)":         "do-da-tri-tue-nhan-tao-ai",
+		"   Tiêu đề    nhiều   khoảng trắng   ": "tieu-de-nhieu-khoang-trang",
+		"!!!": "video",
+	}
+	for in, want := range cases {
+		if got := slugify(in); got != want {
+			t.Errorf("slugify(%q) = %q, want %q", in, got, want)
+		}
+	}
+}
+
+func TestRun_VideoFormat(t *testing.T) {
+	s, dir := newTestStore(t, "Series Do Da", []int{1, 2})
+	script1 := `# Vì sao củ khoai tăng giá?
+
+HOOK 0:00-0:03
+LỜI: Hôm qua một củ khoai đổi hai vỏ sò, hôm nay đổi ba. Ai làm điều này?
+HÌNH: Ông Que cầm củ khoai ngơ ngác.
+CHỮ: LẠM PHÁT LÀ GÌ?
+
+CẢNH 1 0:03-0:30
+LỜI: Chào các bạn, mình là Que Đồ Đá. Ở bộ lạc mình, vỏ sò là tiền. Ai cũng chăm chỉ nhặt vỏ sò.
+HÌNH: Cả bộ lạc cùng cúi xuống nhặt vỏ sò ven bờ biển.
+ÂM: tiếng sóng biển
+
+CHỐT 0:30-0:45
+LỜI: Lần sau thấy giá khoai tăng, đừng trách củ khoai. Hãy hỏi ai vừa nhặt được bãi vỏ sò mới!
+HÌNH: Ông Que nháy mắt chỉ tay.
+
+CAPTION: Giải thích lạm phát siêu dễ hiểu qua củ khoai thời đồ đá.
+HASHTAG: #lamphat #kinhte #doodle #hoccungtiktok
+NGUỒN: [1] https://example.com/kinhte
+CẦN KIỂM CHỨNG: không có`
+
+	script2 := `# Thuật toán TikTok hoạt động thế nào?
+
+HOOK 0:00-0:03
+LỜI: Tại sao bạn lại xem được video này ngay lúc này?
+HÌNH: Con mammoth thông thái gõ máy tính đá.
+CHỮ: THUẬT TOÁN LÀ GÌ?
+
+CẢNH 1 0:03-0:25
+LỜI: Thuật toán giống như người gác cổng bộ lạc, thấy bạn thích khoai nướng là liên tục đưa khoai nướng cho bạn.
+HÌNH: Người que gác cổng phân phát các giỏ thức ăn theo sở thích.
+
+CHỐT 0:25-0:40
+LỜI: Hãy follow kênh để hiểu thêm nhiều điều thú vị nhé!
+HÌNH: Cả bộ lạc vẫy tay chào.
+
+CAPTION: Cách thuật toán phân phối nội dung giải thích đơn giản.
+HASHTAG: #thuat_toan #congnghe #doodle
+NGUỒN: [1] https://example.com/tiktok-algo
+CẦN KIỂM CHỨNG: không có`
+
+	if err := s.Drafts.SaveFinalChapter(1, script1); err != nil {
+		t.Fatal(err)
+	}
+	if err := s.Drafts.SaveFinalChapter(2, script2); err != nil {
+		t.Fatal(err)
+	}
+
+	target := filepath.Join(dir, "video-export")
+	res, err := Run(context.Background(), Deps{Store: s}, Options{
+		Format:  FormatVideo,
+		OutPath: target,
+	})
+	if err != nil {
+		t.Fatalf("Run video export: %v", err)
+	}
+	if res.Chapters != 2 {
+		t.Errorf("Chapters = %d, want 2", res.Chapters)
+	}
+
+	// 1. Kiểm tra scripts
+	scriptFiles, err := os.ReadDir(filepath.Join(target, "scripts"))
+	if err != nil || len(scriptFiles) != 2 {
+		t.Fatalf("scripts folder must contain 2 files, got %d (err: %v)", len(scriptFiles), err)
+	}
+	s1, _ := os.ReadFile(filepath.Join(target, "scripts", scriptFiles[0].Name()))
+	if !strings.Contains(string(s1), "Hôm qua một củ khoai đổi hai vỏ sò") {
+		t.Errorf("script 1 missing voice text: %s", string(s1))
+	}
+
+	// 2. Kiểm tra voiceover
+	voiceFiles, err := os.ReadDir(filepath.Join(target, "voiceover"))
+	if err != nil || len(voiceFiles) != 2 {
+		t.Fatalf("voiceover folder must contain 2 files, got %d (err: %v)", len(voiceFiles), err)
+	}
+	v1, _ := os.ReadFile(filepath.Join(target, "voiceover", voiceFiles[0].Name()))
+	// Voiceover KHÔNG được chứa HÌNH: hoặc CHỮ:
+	if strings.Contains(string(v1), "HÌNH:") || strings.Contains(string(v1), "CHỮ:") {
+		t.Errorf("voiceover contains non-voice tags: %s", string(v1))
+	}
+	if !strings.Contains(string(v1), "Hôm qua một củ khoai đổi hai vỏ sò") {
+		t.Errorf("voiceover missing voice text: %s", string(v1))
+	}
+
+	// 3. Kiểm tra shotlist.csv
+	shotlistData, err := os.ReadFile(filepath.Join(target, "shotlist.csv"))
+	if err != nil {
+		t.Fatalf("shotlist.csv missing: %v", err)
+	}
+	if !strings.HasPrefix(string(shotlistData), "\xef\xbb\xbf") {
+		t.Errorf("shotlist.csv must start with UTF-8 BOM")
+	}
+	if !strings.Contains(string(shotlistData), "Ông Que cầm củ khoai ngơ ngác") {
+		t.Errorf("shotlist.csv missing visual text")
+	}
+
+	// 4. Kiểm tra publish.csv
+	pubData, err := os.ReadFile(filepath.Join(target, "publish.csv"))
+	if err != nil {
+		t.Fatalf("publish.csv missing: %v", err)
+	}
+	if !strings.HasPrefix(string(pubData), "\xef\xbb\xbf") {
+		t.Errorf("publish.csv must start with UTF-8 BOM")
+	}
+	if !strings.Contains(string(pubData), "#lamphat #kinhte #doodle #hoccungtiktok") {
+		t.Errorf("publish.csv missing hashtags")
+	}
+}

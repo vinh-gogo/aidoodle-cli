@@ -10,6 +10,9 @@ import (
 	"regexp"
 	"sort"
 	"strings"
+	"unicode"
+
+	"golang.org/x/text/unicode/norm"
 
 	"github.com/voocel/ainovel-cli/internal/utils"
 )
@@ -71,26 +74,26 @@ type TitleStat struct {
 	WithoutPrefix int `json:"without_prefix"`
 }
 
-// patternDefs 通用 AI 文风句式模式。计数是近似（正则不做语法分析），
-// 用途是本书自身的纵向基线对比，绝对精度不重要。
+// patternDefs Các mẫu câu sáo AI thường gặp (hỗ trợ cả tiếng Việt và tiếng Trung).
+// Dùng để đối chiếu đường cơ sở nội bộ của tác phẩm, không làm phân tích cú pháp nghiêm ngặt.
 var patternDefs = []struct {
 	name string
 	re   *regexp.Regexp
 }{
-	{"矫正句『不是…(而)是…』", regexp.MustCompile(`不是[^。！？\n]{1,24}?[，、]?(?:而)?是`)},
-	{"计时量词『X息/X瞬』", regexp.MustCompile(`[一两二三四五六七八九十几数半][息瞬]`)},
-	{"明喻『像一/仿佛/如同/宛如』", regexp.MustCompile(`像一|仿佛|如同|宛如`)},
-	{"沉默节拍『沉默了/没有说话/没有回头』", regexp.MustCompile(`沉默了|没有说话|没有回头`)},
-	{"神态模板『眼中闪过/嘴角勾起/咬了咬唇』", regexp.MustCompile(`眼[中底]闪过|目光一凝|瞳孔一缩|眼眶微红|嘴角[微轻一]?[勾扬翘]|咬了咬唇|不可置信`)},
-	{"躯体反应『心头一紧/身子一颤/倒吸凉气』", regexp.MustCompile(`心头一[紧沉颤]|身子一[颤震僵]|倒吸(?:了)?一口凉气`)},
-	{"思维标记『心想/意识到/感到/觉得』", regexp.MustCompile(`心想|意识到|感到|觉得`)},
-	{"抽象套话『一种说不出的/的意义在于』", regexp.MustCompile(`一种说不出的|说不清[的道]|的意义在于|真正的[^。！？\n]{1,10}是`)},
+	{"Câu phủ định sửa sai 『không phải… mà là…』", regexp.MustCompile(`(?i)(?:不是[^。！？\n]{1,24}?[，、]?(?:而)?是|không\s+phải[^.!?\n]{1,50}?[,;]?(?:mà)?\s*là)`)},
+	{"Lượng từ thời gian 『X giây / tích tắc』", regexp.MustCompile(`(?i)(?:[一两二三四五六七八九十几数半][息瞬]|\b\d+\s*(?:giây|phút|tích\s+tắc|chớp\s+mắt)\b)`)},
+	{"So sánh ví von 『giống như / tựa như / như thể』", regexp.MustCompile(`(?i)(?:像一|仿佛|如同|宛如|giống\s+như|tựa\s+như|chẳng\s+khác\s+nào|như\s+thể)`)},
+	{"Nhịp im lặng 『im lặng / không nói gì』", regexp.MustCompile(`(?i)(?:沉默了|没有说话|没有回头|im\s+lặng|không\s+nói\s+gì|không\s+quay\s+đầu)`)},
+	{"Khuôn mẫu thần thái 『mặt tái mét / nhếch mép / mắt sáng lên』", regexp.MustCompile(`(?i)(?:眼[中底]闪过|目光一凝|瞳孔一缩|眼眶微红|嘴角[微轻一]?[勾扬翘]|咬了咬唇|不可置信|mắt\s+sáng\s+lên|nhếch\s+mép|cắn\s+môi|không\s+thể\s+tin\s+được|mặt\s+tái\s+mét)`)},
+	{"Phản ứng cơ thể 『thót tim / rùng mình / toát mồ hôi』", regexp.MustCompile(`(?i)(?:心头一[紧沉颤]|身子一[颤震僵]|倒吸(?:了)?一口凉气|thót\s+tim|rùng\s+mình|hít\s+sâu\s+một\s+hơi|toát\s+mồ\s+hôi)`)},
+	{"Dấu vết suy nghĩ 『nghĩ rằng / nhận ra / cảm thấy』", regexp.MustCompile(`(?i)(?:心想|意识到|感到|觉得|nghĩ\s+rằng|nhận\s+ra|cảm\s+thấy|cho\s+rằng)`)},
+	{"Khẩu hiệu sáo rỗng 『hóa ra là / ý nghĩa thực sự / có thể nói rằng』", regexp.MustCompile(`(?i)(?:一种说不出的|说不清[的道]|的意义在于|真正的[^。！？\n]{1,10}是|ý\s+nghĩa\s+thực\s+sự|bài\s+học\s+rút\s+ra|hóa\s+ra\s+là|nói\s+cách\s+khác|có\s+thể\s+nói\s+rằng)`)},
 }
 
 var (
-	sentenceSplit = regexp.MustCompile(`[。！？\n]+`)
-	openingTimeRe = regexp.MustCompile(`夜|清晨|黎明|天亮|醒来|晨光|一整夜`)
-	titlePrefixRe = regexp.MustCompile(`^(?:#{0,2}\s*第[零〇一二三四五六七八九十百千万\d]+章|#{0,2}\s*[Cc]hương\s+\d+)`)
+	sentenceSplit = regexp.MustCompile(`[.!?。！？\n]+`)
+	openingTimeRe = regexp.MustCompile(`(?i)(?:夜|清晨|黎明|天亮|醒来|晨光|一整夜|hôm\s+qua|hôm\s+nay|sáng\s+nay|ngày\s+xưa|thời\s+đồ\s+đá|vừa\s+qua|mới\s+đây|ban\s+đêm)`)
+	titlePrefixRe = regexp.MustCompile(`^(?:#{0,2}\s*第[零〇一二三四五六七八九十百千万\d]+章|#{0,2}\s*[Cc]hương\s+\d+|#{0,2}\s*[Tt]ập\s+\d+)`)
 )
 
 // shortEndingRunes 末行不超过此字数计为"短结尾"。
@@ -131,18 +134,36 @@ func recentWindow(chapters []string) []string {
 	return chapters[len(chapters)-phraseWindow:]
 }
 
-// minePhrases 在窗口内挖掘 3-6 字高频短语。
-// 过滤：含标点/空白、首尾虚词、命中专有名词；去重：与已选短语互为子串的丢弃。
+// minePhrases khai phá cụm từ lặp tần suất cao trong cửa sổ gần nhất.
+// Hỗ trợ cả cụm từ tiếng Việt (2-4 từ) và n-gram chữ Hán (3-6 ký tự).
+// Lọc: bỏ dấu câu, bỏ từ đệm ở đầu/cuối, loại bỏ tên riêng/stopwords; khử trùng: cụm con của cụm đã chọn bị bỏ.
 func minePhrases(chapters []string, stopwords []string) []PhraseStat {
 	text := strings.Join(chapters, "\n")
-	runes := []rune(text)
 	threshold := max(8, len(chapters)/2)
-
 	counts := make(map[string]int)
+
+	// 1. Cụm từ tiếng Việt / Latin: tách câu rồi khai phá 2-4 từ
+	for _, sentence := range sentenceSplit.Split(text, -1) {
+		sentence = trimWrappedQuotes(sentence)
+		words := extractWords(sentence)
+		for size := 2; size <= 4; size++ {
+			for i := 0; i+size <= len(words); i++ {
+				gram := words[i : i+size]
+				if !validWordGram(gram) {
+					continue
+				}
+				phrase := strings.Join(gram, " ")
+				counts[phrase]++
+			}
+		}
+	}
+
+	// 2. Chữ Hán n-gram (3-6 ký tự) để tương thích ngược với dữ liệu tiếng Trung
+	runes := []rune(text)
 	for size := 3; size <= 6; size++ {
 		for i := 0; i+size <= len(runes); i++ {
 			gram := runes[i : i+size]
-			if !validGram(gram) {
+			if !validHanGram(gram) {
 				continue
 			}
 			counts[string(gram)]++
@@ -165,9 +186,9 @@ func minePhrases(chapters []string, stopwords []string) []PhraseStat {
 		if cands[i].count != cands[j].count {
 			return cands[i].count > cands[j].count
 		}
-		// 同频取更长的（信息量更大），再按字典序稳定排序
-		if len(cands[i].text) != len(cands[j].text) {
-			return len(cands[i].text) > len(cands[j].text)
+		// Đồng tần suất ưu tiên cụm dài hơn, sau đó sắp xếp theo từ điển
+		if len([]rune(cands[i].text)) != len([]rune(cands[j].text)) {
+			return len([]rune(cands[i].text)) > len([]rune(cands[j].text))
 		}
 		return cands[i].text < cands[j].text
 	})
@@ -178,8 +199,10 @@ func minePhrases(chapters []string, stopwords []string) []PhraseStat {
 			break
 		}
 		dup := false
+		lowerC := strings.ToLower(c.text)
 		for _, picked := range out {
-			if strings.Contains(picked.Text, c.text) || strings.Contains(c.text, picked.Text) {
+			lowerP := strings.ToLower(picked.Text)
+			if strings.Contains(lowerP, lowerC) || strings.Contains(lowerC, lowerP) {
 				dup = true
 				break
 			}
@@ -191,10 +214,61 @@ func minePhrases(chapters []string, stopwords []string) []PhraseStat {
 	return out
 }
 
+func extractWords(s string) []string {
+	var words []string
+	var cur []rune
+	for _, r := range norm.NFC.String(s) {
+		if unicode.IsLetter(r) || unicode.IsDigit(r) {
+			cur = append(cur, unicode.ToLower(r))
+		} else if len(cur) > 0 {
+			words = append(words, string(cur))
+			cur = cur[:0]
+		}
+	}
+	if len(cur) > 0 {
+		words = append(words, string(cur))
+	}
+	return words
+}
+
+var vnEdgeStops = map[string]struct{}{
+	"và": {}, "của": {}, "là": {}, "thì": {}, "mà": {}, "ở": {}, "trong": {},
+	"được": {}, "bị": {}, "cho": {}, "với": {}, "các": {}, "những": {}, "cái": {},
+	"một": {}, "này": {}, "đó": {}, "ra": {}, "vào": {}, "lại": {}, "đã": {},
+	"đang": {}, "sẽ": {}, "có": {}, "không": {}, "thế": {}, "nhưng": {}, "rồi": {},
+	"khi": {}, "từ": {}, "tui": {}, "tôi": {}, "ai": {}, "đến": {}, "về": {},
+	"đây": {}, "đấy": {}, "nào": {}, "gì": {}, "sao": {}, "như": {}, "thêm": {},
+}
+
+func validWordGram(gram []string) bool {
+	if len(gram) == 0 {
+		return false
+	}
+	allHan := true
+	for _, w := range gram {
+		for _, r := range w {
+			if r < 0x4E00 || r > 0x9FFF {
+				allHan = false
+				break
+			}
+		}
+	}
+	if allHan {
+		return false
+	}
+	if _, bad := vnEdgeStops[gram[0]]; bad {
+		return false
+	}
+	if _, bad := vnEdgeStops[gram[len(gram)-1]]; bad {
+		return false
+	}
+	return true
+}
+
 // gramEdgeStop 首尾为这些虚词/代词的 n-gram 不是文风短语，跳过。
 const gramEdgeStop = "的了着是在和与就也都还又把被他她它我你这那"
 
-func validGram(gram []rune) bool {
+func validHanGram(gram []rune) bool {
 	for _, r := range gram {
 		if r < 0x4E00 || r > 0x9FFF { // 仅纯汉字片段
 			return false
@@ -212,20 +286,25 @@ func validGram(gram []rune) bool {
 func stopwordBigrams(stopwords []string) []string {
 	var grams []string
 	for _, w := range stopwords {
-		runes := []rune(strings.TrimSpace(w))
-		if len(runes) < 2 {
+		w = strings.ToLower(strings.TrimSpace(w))
+		if w == "" {
 			continue
 		}
-		for i := 0; i+2 <= len(runes); i++ {
-			grams = append(grams, string(runes[i:i+2]))
+		grams = append(grams, w)
+		runes := []rune(w)
+		if len(runes) >= 2 {
+			for i := 0; i+2 <= len(runes); i++ {
+				grams = append(grams, string(runes[i:i+2]))
+			}
 		}
 	}
 	return grams
 }
 
 func hitStopword(gram string, stopGrams []string) bool {
+	lower := strings.ToLower(gram)
 	for _, g := range stopGrams {
-		if strings.Contains(gram, g) {
+		if strings.Contains(lower, g) {
 			return true
 		}
 	}

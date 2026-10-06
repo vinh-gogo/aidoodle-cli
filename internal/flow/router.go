@@ -118,7 +118,7 @@ func Route(s State) *Instruction {
 	//    尚未落盘任何设定（选型是语义判断），由 Engine 的 planStartFallback 补裁。
 	if p.Phase != domain.PhaseWriting {
 		if len(s.FoundationMissing) > 0 && s.PlanningTier != "" {
-			task := fmt.Sprintf("Bổ sung các thiết lập cơ bản và thông tin tác phẩm còn thiếu: %s; tác phẩm dùng save_book, các thiết lập cơ bản khác dùng save_foundation để lưu", strings.Join(s.FoundationMissing, "、"))
+			task := fmt.Sprintf("Bổ sung các thiết lập cơ bản và thông tin tác phẩm còn thiếu: %s; tác phẩm dùng save_book, các thiết lập cơ bản khác dùng save_foundation để lưu", strings.Join(s.FoundationMissing, ", "))
 			if len(s.FoundationMissing) == 1 && s.FoundationMissing[0] == "foundation_audit" {
 				task = "Thiết lập cơ bản đã đầy đủ: gọi lại novel_context để đọc toàn bộ artifact đã lưu và foundation_status.fingerprint, kiểm tra tính nhất quán ngữ nghĩa giữa các tệp sau đó gọi audit_foundation; nếu có vấn đề hãy sửa trước rồi kiểm tra lại"
 			}

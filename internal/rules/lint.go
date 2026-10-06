@@ -8,13 +8,15 @@ import (
 // Lint 内置产品底线检查：扫描正文中的机制残留，与用户规则无关，commit 时始终执行。
 // 与 Check 同契约——仅返事实（铁律一），不阻断流程，由评审/用户裁定。
 //
-// 当前三类（全部来自真实长跑产物的实证缺陷）：
+// Hiện có hai loại (đều xuất phát từ lỗi thật khi chạy dài):
 //   - markdown_residue：正文残留 ** 加粗、首行之外的 # 标题行（导出 txt 会裸露符号）
-//   - non_cjk_fragments：连续拉丁字母片段（模型语言混杂，如中文正文裸混 "pattern"）
+//   - han_residue：chữ Hán lọt vào lời đọc tiếng Việt (model Qwen/GLM hay trộn tiếng Trung).
+//     Thay thế non_cjk_fragments cũ: regex Latin cũ khớp cả từ tiếng Việt thường như
+//     "con", "tin", nên mọi kịch bản đều bị cảnh báo giả, còn chữ Hán thì không bị bắt.
 func Lint(text string) []Violation {
 	var vs []Violation
 	vs = appendMarkdownResidue(vs, text)
-	vs = appendNonCJKFragments(vs, text)
+	vs = appendHanResidue(vs, text)
 	return vs
 }
 
@@ -52,30 +54,42 @@ func appendMarkdownResidue(vs []Violation, text string) []Violation {
 	return vs
 }
 
-var latinFragmentRe = regexp.MustCompile(`[A-Za-z]{2,}`)
+// hanRe khớp một chuỗi liên tiếp các chữ Hán.
+var hanRe = regexp.MustCompile(`\p{Han}+`)
 
-// appendNonCJKFragments 报告拉丁字母片段的总次数与去重示例。
-// 现代题材的合法英文（品牌名/缩写）也会命中——warning 级事实，由评审按题材裁定。
-func appendNonCJKFragments(vs []Violation, text string) []Violation {
-	matches := latinFragmentRe.FindAllString(text, -1)
-	if len(matches) == 0 {
+// appendHanResidue báo tổng số chữ Hán và vài đoạn ví dụ không trùng lặp.
+// Lời đọc bắt buộc 100% tiếng Việt nên mọi chữ Hán đều là sự cố ngôn ngữ; mức error là
+// một sự thật để Editor/người dùng phán quyết, không chặn commit.
+func appendHanResidue(vs []Violation, text string) []Violation {
+	runs := hanRe.FindAllString(text, -1)
+	if len(runs) == 0 {
 		return vs
 	}
+	total := 0
 	seen := make(map[string]struct{})
 	var examples []string
-	for _, m := range matches {
-		if _, ok := seen[m]; ok {
+	for _, run := range runs {
+		total += len([]rune(run))
+		if _, ok := seen[run]; ok {
 			continue
 		}
-		seen[m] = struct{}{}
+		seen[run] = struct{}{}
 		if len(examples) < 3 {
-			examples = append(examples, m)
+			examples = append(examples, truncateRunes(run, 12))
 		}
 	}
 	return append(vs, Violation{
-		Rule:     "non_cjk_fragments",
-		Target:   strings.Join(examples, "、"),
-		Actual:   len(matches),
-		Severity: SeverityWarning,
+		Rule:     "han_residue",
+		Target:   strings.Join(examples, ", "),
+		Actual:   total,
+		Severity: SeverityError,
 	})
+}
+
+func truncateRunes(s string, n int) string {
+	r := []rune(s)
+	if len(r) <= n {
+		return s
+	}
+	return string(r[:n]) + "…"
 }

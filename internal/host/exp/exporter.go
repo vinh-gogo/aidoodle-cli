@@ -34,8 +34,8 @@ func Run(ctx context.Context, deps Deps, opts Options) (*Result, error) {
 		}
 		opts.Format = f
 	}
-	if opts.Format != FormatTXT && opts.Format != FormatEPUB {
-		return nil, fmt.Errorf("exp: định dạng chưa được hỗ trợ %q", opts.Format)
+	if opts.Format != FormatTXT && opts.Format != FormatEPUB && opts.Format != FormatVideo {
+		return nil, fmt.Errorf("exp: định dạng chưa được hỗ trợ %q (hỗ trợ: txt, epub, video)", opts.Format)
 	}
 
 	progress, err := deps.Store.Progress.Load()
@@ -106,14 +106,10 @@ func Run(ctx context.Context, deps Deps, opts Options) (*Result, error) {
 
 	outPath := opts.OutPath
 	if outPath == "" {
-		outPath = filepath.Join(deps.Store.Dir(), sanitizeFileName(book.Title)+"."+string(opts.Format))
-	}
-
-	if !opts.Overwrite {
-		if _, err := os.Stat(outPath); err == nil {
-			return nil, fmt.Errorf("tệp đã tồn tại: %s (thêm --overwrite để ghi đè)", outPath)
-		} else if !os.IsNotExist(err) {
-			return nil, fmt.Errorf("kiểm tra đường dẫn đầu ra thất bại: %w", err)
+		if opts.Format == FormatVideo {
+			outPath = filepath.Join(deps.Store.Dir(), sanitizeFileName(book.Title)+"-video")
+		} else {
+			outPath = filepath.Join(deps.Store.Dir(), sanitizeFileName(book.Title)+"."+string(opts.Format))
 		}
 	}
 
@@ -127,6 +123,28 @@ func Run(ctx context.Context, deps Deps, opts Options) (*Result, error) {
 			titleIdx[ch] = summary.Title
 		}
 	}
+
+	if opts.Format == FormatVideo {
+		totalBytes, err := renderVideoPackage(outPath, chapters, titleIdx, bodies, opts.Overwrite)
+		if err != nil {
+			return nil, err
+		}
+		return &Result{
+			Path:     outPath,
+			Chapters: len(chapters),
+			Bytes:    totalBytes,
+			Skipped:  skipped,
+		}, nil
+	}
+
+	if !opts.Overwrite {
+		if _, err := os.Stat(outPath); err == nil {
+			return nil, fmt.Errorf("tệp đã tồn tại: %s (thêm --overwrite để ghi đè)", outPath)
+		} else if !os.IsNotExist(err) {
+			return nil, fmt.Errorf("kiểm tra đường dẫn đầu ra thất bại: %w", err)
+		}
+	}
+
 	var locations map[int]chapterLocation
 	if len(volumes) > 0 {
 		locations = buildLocations(volumes)
@@ -161,13 +179,19 @@ func inferFormat(path string) (Format, error) {
 	if path == "" {
 		return FormatTXT, nil
 	}
+	base := strings.ToLower(filepath.Base(path))
+	if base == "video" || base == "scripts" || base == "export" || strings.HasSuffix(base, "-video") {
+		return FormatVideo, nil
+	}
 	switch strings.ToLower(filepath.Ext(path)) {
 	case "", ".txt":
 		return FormatTXT, nil
 	case ".epub":
 		return FormatEPUB, nil
+	case ".csv":
+		return FormatVideo, nil
 	default:
-		return "", fmt.Errorf("không thể suy luận định dạng từ phần mở rộng %q (hỗ trợ .txt / .epub)", filepath.Ext(path))
+		return "", fmt.Errorf("không thể suy luận định dạng từ phần mở rộng %q (hỗ trợ .txt / .epub / video)", filepath.Ext(path))
 	}
 }
 

@@ -1,29 +1,53 @@
-# Hồ sơ nhân vật
+# Hồ sơ nhân vật que
 
-## Nhân vật chính
+Mỗi nhân vật que khi lưu bằng `save_foundation(type="characters")` có kiểu trường nghiêm ngặt như sau (không đổi thành object):
 
-### [Tên nhân vật chính 1]
-- **Biệt danh/Danh hiệu**: (như "phế vật thiếu niên", "Viêm ca", "Bất Diệt Chiến Thần", v.v., các cách gọi khác nhau có thể xuất hiện trong chính văn)
-- **Tuổi / Nghề nghiệp**:
-- **Đặc điểm ngoại hình**:
-- **Cốt lõi tính cách**:
-- **Hệ giá trị cốt lõi**:
-- **Nỗi sợ lớn nhất**:
-- **Khiếm khuyết chí mạng**:
-- **Khao khát nội tâm**:
-- **Câu chuyện quá khứ**:
-- **MBTI**:
+- `name`: string
+- `aliases`: string[] (nếu không có thì bỏ qua)
+- `role`: string
+- `description`: string (mô tả tổng thể: ngoại hình nét que, dấu hiệu nhận diện, giọng nói)
+- `arc`: string (một chuỗi mô tả toàn bộ vòng chuyển biến, không phải `{start/middle/end}`; dùng cách diễn đạt "giai đoạn đầu... giai đoạn sau...")
+- `traits`: string[] (mảng chuỗi tính cách, ví dụ `["Cả tin", "Hay hoảng"]`)
 
-### [Tên nhân vật chính 2]
+Trường tùy chọn: `tier` (core / important / secondary / decorative).
 
-......
+## Mẫu Markdown để nghĩ (không phải định dạng lưu)
 
-## Nhân vật phản diện
+### Host / người dẫn chuyện: [Tên]
+- Biệt danh: (cách người xem gọi, ví dụ "Que Ú", "ông Que")
+- Ngoại hình nét que: (một dấu hiệu nhận diện, ví dụ mũ lông, râu xoắn)
+- Giọng nói: (nhịp, câu cửa miệng, mức tiếng lóng)
+- Vai trong video: (bản lề sang khái niệm hiện đại, hỏi hộ người xem...)
+- Tính cách cốt lõi: (2-4 nét)
+- Điểm yếu gây cười: (để tạo tình huống)
+- Vòng chuyển biến theo series: (giai đoạn đầu... giai đoạn sau..., chuyển biến nhỏ)
+- Running gag gắn với nhân vật:
 
-### [Tên nhân vật phản diện]
-- [Định dạng tương tự nhân vật chính]
+### Nhân vật phụ: [Tên]
+- Vai: (đối trọng, kẻ bán hàng, thủ lĩnh khoe mẽ...)
+- Ngoại hình + giọng nói (rút gọn)
+- Dùng để làm gì trong tập: (gây xung đột, punchline, minh họa phản ví dụ)
 
-## Nhân vật phụ
+### Linh vật / nhân vật nền: [Tên]
+- Chỉ xuất hiện chen punchline hoặc callback; không thoại dài.
 
-### [Tên nhân vật phụ]
-- [Định dạng rút gọn]
+## Ví dụ rút gọn
+
+```json
+[
+  {
+    "name": "Que Ú",
+    "aliases": ["Ú", "ông Que"],
+    "role": "host, người dẫn chuyện và đại diện người xem",
+    "description": "Que nhỏ đội mũ lông, râu xoắn; nói nhanh, hay hoảng, câu cửa miệng: Trời ơi đất hỡi.",
+    "arc": "Giai đoạn đầu cả tin, mất rìu vì hiểu lầm kinh tế; giai đoạn sau biết hỏi ngược: ai được lợi? nhưng vẫn mất rìu ở cuối mỗi tập.",
+    "traits": ["Cả tin", "Hay hoảng", "Tò mò"]
+  }
+]
+```
+
+## Nguyên tắc
+
+- Dàn nhân vật nhỏ: 1 host + 2-4 que phụ + 0-1 linh vật; mỗi que một chức năng rõ.
+- Mỗi que nhận ra được chỉ qua hình dáng và giọng, không cần nhãn.
+- Tránh nhân vật trùng chức năng; tránh thêm que mới chỉ để giải thích thêm.

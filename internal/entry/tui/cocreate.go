@@ -40,7 +40,7 @@ func placeholderForNewMode(mode startupMode) string {
 	case startupModeCoCreate:
 		return "Nhập ý tưởng cốt lõi của bạn, Enter để bắt đầu đồng sáng tác với AI"
 	default:
-		return "Nhập một câu yêu cầu tiểu thuyết, Enter để bắt đầu sáng tác ngay"
+		return "Nhập chủ đề hoặc yêu cầu series kịch bản doodle explainer, Enter để bắt đầu sáng tác"
 	}
 }
 
