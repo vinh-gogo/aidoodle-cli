@@ -634,7 +634,7 @@ func TestCommitChapterRefreshesSharedStyleStatsAfterRewrite(t *testing.T) {
 	}
 	found := false
 	for _, pattern := range after.Patterns {
-		if strings.HasPrefix(pattern.Name, "矫正句") && pattern.Total == 1 {
+		if (strings.HasPrefix(pattern.Name, "Câu phủ định") || strings.HasPrefix(pattern.Name, "矫正句")) && pattern.Total == 1 {
 			found = true
 			break
 		}
