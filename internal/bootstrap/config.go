@@ -230,6 +230,9 @@ type Config struct {
 	// Trends Cấu hình thu thập xu hướng (trends) tự động từ RSS cho kịch bản doodle explainer.
 	Trends TrendsConfig `json:"trends,omitzero"`
 
+	// AdvanceMode Chế độ duyệt từng tập: "auto" (mặc định cho tiểu thuyết) hoặc "review" (duyệt từng tập trước khi viết tiếp).
+	AdvanceMode string `json:"advance_mode,omitempty"`
+
 	// DisableUpdateCheck 关闭启动时的新版本检查提醒（默认开）。检查只读
 	// GitHub Releases 公开接口，结果缓存在本地配置目录，不上报任何数据。
 	DisableUpdateCheck bool `json:"disable_update_check,omitempty"`

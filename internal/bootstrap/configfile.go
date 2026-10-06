@@ -215,6 +215,9 @@ func mergeConfig(base, overlay Config) Config {
 	if overlay.Trends.Enabled || overlay.Trends.Geo != "" || len(overlay.Trends.Sources) > 0 || overlay.Trends.MaxItems > 0 || overlay.Trends.TopicsPerBatch > 0 || overlay.Trends.FetchArticleChars > 0 {
 		base.Trends = overlay.Trends
 	}
+	if overlay.AdvanceMode != "" {
+		base.AdvanceMode = overlay.AdvanceMode
+	}
 	// 更新检查是隐私偏好：任一配置层显式禁用后，较高层不应隐式重新开启。
 	if overlay.DisableUpdateCheck {
 		base.DisableUpdateCheck = true

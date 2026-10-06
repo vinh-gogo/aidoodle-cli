@@ -27,18 +27,17 @@ Branch `doodle-explainer` (tag `novel-baseline` = pre-change state; recover anyt
 - **P1 committed** (`d649d58 P1: harden engine for Vietnamese output (word count, rules, lint, premise headings, model-facing strings)`).
 - **P2 committed** (`45b228e P2: script format, validator, series bible headings, doodle-explainer style and prompts`).
 - **P3 committed** (`aae68af P3: Vietnamese stylestat, smoke eval cases, and Editor rubric integration`).
-- **P4 done** (Trend intake tự động & grounding dữ kiện):
-  - Gói mới `internal/host/trend/`: `types.go`, `fetcher.go` (Google Trends RSS VN + standard RSS parser, sanitization HTML), `article.go` (bóc tách bài báo HTML, làm sạch script/style/nav, giới hạn số từ), `store.go` (lưu snapshot và source pack nguyên tử vào `meta/trends/`), `runner.go` (`RunIntake`, `FetchAndPrepareSources`, `RecordTopicsDecision`), và bộ unit test đầy đủ (`fetcher_test.go`, `article_test.go`, `store_test.go`, `runner_test.go`) dùng httptest server fixture.
-  - Arbiter topic selection: `internal/arbiter/topics.go`, `topics_test.go` với contract `arbiter_trend_topics`, kiểm tra cơ học `trend_ref` hợp lệ, số lượng chủ đề.
-  - Prompt Arbiter: `assets/prompts/arbiter-topics.md` lọc tin xổ số/tai nạn/bôi nhọ, ưu tiên chủ đề kinh tế/công nghệ/xã hội có thể giải thích bằng ẩn dụ người que đồ đá. Nối dây qua `assets/load.go` và `assets/load_test.go`.
-  - Cấu hình: `TrendsConfig` trong `internal/bootstrap/config.go`, tích hợp `mergeConfig`/`CloneConfig`, cập nhật `config.example.jsonc` (giữ byte-identical giữa root và bootstrap).
-  - Ngữ cảnh kịch bản: `novel_context.go` và `novel_context_builders.go` tự động nạp `source_pack` cho Writer và `trend_brief` cho Architect.
-  - CLI: `cmd/ainovel-cli/main.go` hỗ trợ cờ `--trends`.
+- **P4 committed** (`d47c43c P4: automated trend intake, source pack grounding, and Arbiter topic selection`).
+- **P5 done** (An toàn nội dung & cổng duyệt người):
+  - Tài liệu chuẩn: [`assets/references/tiktok-content-safety.md`](file:///D:/ainovel-cli/assets/references/tiktok-content-safety.md) dựa trên Luật An ninh mạng 2018, Nghị định 15/2020/NĐ-CP (Điều 101) và Tiêu chuẩn cộng đồng TikTok (Vùng đỏ - Vùng vàng - Vùng xanh, cơ chế thẩm định, bám nguồn và cổng duyệt). Nối dây qua `novel_context.go`, `assets/load.go`, `assets/load_test.go`.
+  - Vùng cấm kỵ cốt lõi đưa vào `rules.SystemDefaults().Preferences`, tự động nạp vào `user_rules.preferences` của mọi phiên sáng tác.
+  - Validator kịch bản `internal/tools/script_format.go`: kiểm tra trường `CẦN KIỂM CHỨNG` trong chân kịch bản (`script_missing_unverified` warning), cập nhật `script_format_test.go` và `docs/script-format.md`.
+  - Chế độ duyệt từng tập (`advance_mode`): hỗ trợ trong `Config`, `mergeConfig`, mẫu cấu hình `config.example.jsonc`, tự động kích hoạt `review` mode cho series xu hướng mới trong `host.New`. Cung cấp cờ `--review` và `--next` (cho headless) trong `main.go`. Unit test `internal/host/advance_mode_config_test.go` và `cmd/ainovel-cli/main_test.go` đạt 100%.
   - Toàn bộ 35 package pass test suite (`go test -buildvcs=false -count=1 ./...`).
 
 **Decision: user deleted `.github/` (CI/docker/release workflows). Keep deleted; do NOT restore unless asked.**
 
-**Next: Commit P4** sau đó chuyển sang **P5** (An toàn nội dung & cổng duyệt người: rules/preferences vùng cấm, trường `CẦN KIỂM CHỨNG`, advance gate `/review on`, tài liệu an toàn nội dung TikTok).
+**Next: Commit P5** sau đó chuyển sang **P6** (Export kịch bản video TikTok, tài liệu tiếng Việt, cập nhật README và TUI polish).
 
 
 ## Recent changes (from git history)

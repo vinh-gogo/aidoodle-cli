@@ -102,6 +102,7 @@ func TestLintScript_Findings(t *testing.T) {
 			return strings.Replace(s, "HASHTAG: #lamphat #taichinh #doodle", "HASHTAG: không có thẻ", 1)
 		}, "script_missing_hashtag"},
 		{"missing source", func(s string) string { return strings.Replace(s, "NGUỒN: không có (kiến thức nền)\n", "", 1) }, "script_missing_source"},
+		{"missing unverified", func(s string) string { return strings.Replace(s, "CẦN KIỂM CHỨNG: không có", "", 1) }, "script_missing_unverified"},
 	}
 	for _, tc := range cases {
 		got := lintRuleNames(tc.mutate(validScript()))

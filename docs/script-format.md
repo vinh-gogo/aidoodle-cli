@@ -79,6 +79,7 @@ Chạy trong `commit_chapter` cùng chỗ với `rules.Lint`; kết quả nằm 
 | `script_missing_caption` | không có `CAPTION:` |
 | `script_missing_hashtag` | không có `HASHTAG:` hoặc không có thẻ `#...` nào |
 | `script_missing_source` | không có `NGUỒN:` |
+| `script_missing_unverified` | không có `CẦN KIỂM CHỨNG:` (nếu không có dữ kiện chưa chắc thì ghi 'không có') |
 
 Validator **không** đánh giá chất lượng hook, độ hài hước, độ đúng sự thật (việc của Editor/Arbiter, theo Iron Law 4).
 

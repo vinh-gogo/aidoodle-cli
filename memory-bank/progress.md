@@ -42,7 +42,13 @@ _Last updated: 2026-10-06 (initial bootstrap)_
   - Tích hợp: `novel_context.go` và `novel_context_builders.go` nạp `source_pack` cho Writer và `trend_brief` cho Architect.
   - CLI: `cmd/ainovel-cli/main.go` hỗ trợ cờ `--trends`.
   - Nghiệm thu: `go test -buildvcs=false -count=1 ./...` toàn bộ 35 package pass 100%.
-- [ ] P5 safety & human gate; P6 export & docs & TUI.
+- [x] P5 safety & human gate:
+  - Tài liệu chuẩn [`assets/references/tiktok-content-safety.md`](file:///D:/ainovel-cli/assets/references/tiktok-content-safety.md) kết nối Luật An ninh mạng 2018, Nghị định 15/2020/NĐ-CP Điều 101 và Tiêu chuẩn cộng đồng TikTok (Vùng đỏ cấm tuyệt đối, Vùng vàng thận trọng, Vùng xanh, cơ chế bám nguồn và cổng duyệt).
+  - Nạp vùng cấm kỵ mặc định vào `rules.SystemDefaults().Preferences` tự động bảo vệ mọi phiên sáng tác.
+  - Validator `internal/tools/script_format.go` bắt buộc kiểm tra thẻ chân `CẦN KIỂM CHỨNG:` (`script_missing_unverified` warning), cập nhật test và `docs/script-format.md`.
+  - Cấu hình `advance_mode` ("auto" / "review") trong `bootstrap.Config`, `config.example.jsonc` và mặc định `review` cho series xu hướng mới trong `host.New`. Cung cấp cờ `--review` và `--next` (cho headless) trong `main.go`.
+  - Nghiệm thu: `go test -buildvcs=false -count=1 ./...` toàn bộ 35 package pass 100%.
+- [ ] P6 export & docs & TUI.
 - `.github/` deleted by user's choice (recoverable from `novel-baseline`).
 
 ## Verified on this machine

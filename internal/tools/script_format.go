@@ -33,11 +33,12 @@ var (
 )
 
 const (
-	tagVoice   = "LỜI"
-	tagVisual  = "HÌNH"
-	tagCaption = "CAPTION"
-	tagHashtag = "HASHTAG"
-	tagSource  = "NGUỒN"
+	tagVoice      = "LỜI"
+	tagVisual     = "HÌNH"
+	tagCaption    = "CAPTION"
+	tagHashtag    = "HASHTAG"
+	tagSource     = "NGUỒN"
+	tagUnverified = "CẦN KIỂM CHỨNG"
 )
 
 type scriptBlock struct {
@@ -212,6 +213,9 @@ func lintScript(text string) []rules.Violation {
 	}
 	if !nonEmpty(doc.footer[tagSource]) {
 		warn("script_missing_source", tagSource, nil, 0)
+	}
+	if !nonEmpty(doc.footer[tagUnverified]) {
+		warn("script_missing_unverified", tagUnverified, nil, 0)
 	}
 	return vs
 }

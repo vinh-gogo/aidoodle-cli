@@ -155,6 +155,7 @@ func loadReferences(style string, opts LoadOptions) tools.References {
 		AntiAITone:        resolveAppendable(mustRead(referencesFS, "references/anti-ai-tone.md"), "anti-ai-tone.md", opts),
 		DoodleVisual:      mustRead(referencesFS, "references/doodle-visual-language.md"),
 		FactGrounding:     mustRead(referencesFS, "references/fact-grounding.md"),
+		TiktokSafety:      mustRead(referencesFS, "references/tiktok-content-safety.md"),
 	}
 	if style != "" && style != "default" {
 		genreDir := "references/genres/" + style + "/"

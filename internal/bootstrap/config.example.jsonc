@@ -155,6 +155,10 @@
   //   "fetch_article_chars": 6000
   // },
 
+  // Tùy chọn. Chế độ kiểm duyệt từng tập kịch bản: "auto" (mặc định cho tiểu thuyết, viết liên tục) hoặc "review" (khuyến nghị cho kịch bản tin tức TikTok, dừng chờ lệnh /next trước mỗi tập mới để duyệt kịch bản).
+  // Khi trends.enabled=true và là dự án mới, hệ thống tự động kích hoạt chế độ "review".
+  // "advance_mode": "review",
+
   // Tùy chọn. Đặt true để tắt thông báo kiểm tra phiên bản mới khi khởi động (mặc định bật). Kiểm tra chỉ đọc
   // interface công khai GitHub Releases, kết quả cache cục bộ 24h; khi phát hiện phiên bản mới sẽ gợi ý số phiên bản và tóm tắt cập nhật ở màn hình chào mừng/luồng sự kiện,
   // việc nâng cấp luôn do bạn quyết định bằng cách chạy ainovel-cli update.

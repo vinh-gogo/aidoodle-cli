@@ -37,6 +37,7 @@ type References struct {
 	// Doodle explainer
 	DoodleVisual  string // Ngôn ngữ hình ảnh doodle que (writer luôn nhận)
 	FactGrounding string // Neo dữ kiện cho chủ đề trend (writer + architect luôn nhận)
+	TiktokSafety  string // Tiêu chuẩn an toàn nội dung TikTok & pháp lý VN (writer + architect luôn nhận)
 }
 
 // ContextTool 组装当前章节所需上下文。
@@ -468,6 +469,7 @@ func (t *ContextTool) writerReferences(chapter int) map[string]string {
 	add("anti_ai_tone", t.refs.AntiAITone) // 去 AI 味判据全程注入，不随章节裁剪
 	add("doodle_visual_language", t.refs.DoodleVisual)
 	add("fact_grounding", t.refs.FactGrounding)
+	add("tiktok_content_safety", t.refs.TiktokSafety)
 	if chapter <= 3 {
 		add("chapter_guide", t.refs.ChapterGuide)
 		add("dialogue_writing", t.refs.DialogueWriting)
@@ -497,6 +499,7 @@ func (t *ContextTool) architectReferences() map[string]string {
 	add("arc_templates", t.refs.ArcTemplates)
 	add("anti_ai_tone", t.refs.AntiAITone) // architect 大纲去 AI 腔；亦兜 editor 走 Chapter=0 路径
 	add("fact_grounding", t.refs.FactGrounding)
+	add("tiktok_content_safety", t.refs.TiktokSafety)
 	return refs
 }
 

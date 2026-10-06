@@ -144,7 +144,17 @@ func runWithConfig(cfg bootstrap.Config, opts cliOptions, args []string) {
 		}
 	}
 
+	if opts.Review {
+		cfg.AdvanceMode = "review"
+	}
+
 	if opts.Headless {
+		if opts.Next {
+			if err := headless.Run(cfg, bundle, headless.Options{Next: true}); err != nil {
+				die("error: %v", err)
+			}
+			return
+		}
 		prompt, err := loadPrompt(opts)
 		if err != nil {
 			die("error: %v", err)
@@ -177,6 +187,8 @@ func availableStyles(m map[string]string) string {
 type cliOptions struct {
 	Headless      bool
 	Trends        bool
+	Review        bool
+	Next          bool
 	Prompt        string
 	PromptFile    string
 	Version       bool
@@ -242,9 +254,16 @@ func parseCLIOptions(argv []string) (cliOptions, []string, error) {
 			i++
 		case "--trends":
 			opts.Trends = true
+		case "--review":
+			opts.Review = true
+		case "--next":
+			opts.Next = true
 		default:
 			args = append(args, argv[i])
 		}
+	}
+	if opts.Next && !opts.Headless {
+		return opts, nil, fmt.Errorf("--next chỉ có thể sử dụng trong chế độ --headless (trong TUI vui lòng dùng lệnh /next)")
 	}
 	if opts.Prompt != "" && opts.PromptFile != "" {
 		return opts, nil, fmt.Errorf("--prompt và --prompt-file không thể dùng đồng thời")

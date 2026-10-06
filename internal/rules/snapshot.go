@@ -183,6 +183,10 @@ func cloneFatigue(m map[string]int) map[string]int {
 func SystemDefaults() Candidate {
 	return Candidate{
 		Source: "system_defaults",
+		Preferences: "## VÙNG CẤM KỴ & AN TOÀN NỘI DUNG (Bắt buộc cho mọi kịch bản)\n" +
+			"- Tuyệt đối KHÔNG viết về: bệnh tật/đơn thuốc/chữa bệnh, tư vấn đầu tư tài chính/tiền mã hóa/chứng khoán, bầu cử và chính trị nhạy cảm/chủ quyền quốc gia, tai nạn thảm khốc/chết người, trẻ vị thành niên/bạo lực học đường, vu khống/xúc phạm người thật hoặc thương hiệu cụ thể.\n" +
+			"- Mọi số liệu, trích dẫn, sự kiện thời sự BẮT BUỘC phải dựa trên nguồn trong source_pack; dữ kiện chưa chắc chắn PHẢI ghi rõ vào phần 'CẦN KIỂM CHỨNG'. Tuyệt đối không tự bịa đặt số liệu hay tên người.\n" +
+			"- Tuân thủ tiêu chuẩn cộng đồng TikTok và quy định pháp luật Việt Nam (Nghị định 15/2020/NĐ-CP và Luật An ninh mạng).",
 		Structured: Structured{
 			// Câu sáo cố định; checker khớp chuỗi con nguyên văn. Mẫu có biến
 			// (không phải X mà là Y) thuộc tầng ngữ nghĩa, không đưa vào đây.
