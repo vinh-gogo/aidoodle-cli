@@ -42,6 +42,7 @@ type Prompts struct {
 	ArbiterPlanStart    string
 	ArbiterIntervention string
 	ArbiterFailure      string
+	ArbiterTopics       string
 }
 
 // Bundle 表示运行所需的静态资源集合。
@@ -137,7 +138,7 @@ var styleNameRe = regexp.MustCompile(`^[a-z0-9-]+$`)
 
 func loadReferences(style string, opts LoadOptions) tools.References {
 	if style == "" {
-		style = "default"
+		style = "doodle-explainer"
 	}
 	refs := tools.References{
 		ChapterGuide:      mustRead(referencesFS, "references/chapter-guide.md"),
@@ -152,6 +153,9 @@ func loadReferences(style string, opts LoadOptions) tools.References {
 		LongformPlanning:  mustRead(referencesFS, "references/longform-planning.md"),
 		Differentiation:   mustRead(referencesFS, "references/differentiation.md"),
 		AntiAITone:        resolveAppendable(mustRead(referencesFS, "references/anti-ai-tone.md"), "anti-ai-tone.md", opts),
+		DoodleVisual:      mustRead(referencesFS, "references/doodle-visual-language.md"),
+		FactGrounding:     mustRead(referencesFS, "references/fact-grounding.md"),
+		TiktokSafety:      mustRead(referencesFS, "references/tiktok-content-safety.md"),
 	}
 	if style != "" && style != "default" {
 		genreDir := "references/genres/" + style + "/"
@@ -190,6 +194,7 @@ func loadPrompts() Prompts {
 		ArbiterPlanStart:    mustRead(promptsFS, "prompts/arbiter-plan-start.md"),
 		ArbiterIntervention: mustRead(promptsFS, "prompts/arbiter-intervention.md"),
 		ArbiterFailure:      mustRead(promptsFS, "prompts/arbiter-failure.md"),
+		ArbiterTopics:       mustRead(promptsFS, "prompts/arbiter-topics.md"),
 	}
 }
 

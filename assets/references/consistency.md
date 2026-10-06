@@ -1,40 +1,43 @@
-# Cơ chế bảo đảm tính liền mạch và nhất quán
+# Nhất quán giữa các tập
 
-Để đảm bảo tính nhất quán của câu chuyện trong suốt quá trình sáng tác trường kỳ:
+Series sống nhờ người xem nhận ra thế giới và nhân vật quen thuộc. Nhất quán không có nghĩa là lặp: giữ luật, đổi tình huống.
 
 ## Đọc trước khi viết
 
-Mỗi lần bắt đầu viết chương mới:
-1. Đọc lại tóm tắt tất cả các chương đã hoàn thành trong `00-outline.md` (hoặc `00-大纲.md`)
-2. Đọc file chương trước đó để nắm bắt nút thắt, tình thế và sự hồi hộp còn bỏ ngỏ
-3. Kiểm tra trạng thái nhân vật (vị trí địa lý, cảm xúc, mối quan hệ)
+Mỗi tập mới:
+1. Đọc series bible (giọng kể, công thức video, công thức hook, luật vũ trụ doodle, vùng cấm).
+2. Đọc hồ sơ nhân vật que và kịch bản tập trước (`previous_tail`) để nối giọng, callback.
+3. Xem các hook, ẩn dụ, running gag đã dùng ở các tập gần nhất để không lặp.
 
-## Xâu chuỗi và cài cắm (Xuyên châm dẫn tuyến)
+## Nhân vật que
 
-Trong chương mới:
-- Hưởng ứng các manh mối và phục bút đã chôn trước đó
-- Nhắc lại những sự kiện đã diễn ra một cách tự nhiên
-- Giữ vững hành vi của nhân vật ăn khớp với các chương trước
+- Mỗi que có ngoại hình cố định (một dấu hiệu nhận diện: mũ lông, râu, vết sẹo) và giọng nói cố định.
+- Tính cách không đổi đột ngột: Que Ú cả tin thì vẫn cả tin ở tập sau, trừ khi một tập có chủ ý cho cậu khôn ra (và nhắc lại).
+- Vai trò giữ nguyên: host dẫn và bản lề, Que Bự là đối trọng khoe mẽ, linh vật chỉ chen punchline.
+- Tên và biệt danh viết thống nhất (Que Ú, không lúc Ú lúc Ú Ú), kể cả trong HÌNH.
 
-## Theo dõi trạng thái nhân vật
+## Luật vũ trụ doodle
 
-Chú ý sự biến chuyển và trưởng thành của nhân vật qua từng chương:
-- Biến chuyển vị trí (đang ở đâu)
-- Trạng thái cảm xúc (tâm trạng hiện tại)
-- Biến chuyển quan hệ (thái độ với các nhân vật khác)
-- Biến chuyển năng lực (thu thập kỹ năng mới / thông tin tình báo mới)
+- Thế giới là thời đồ đá có anachronism có chủ đích: thẻ tín dụng khắc bằng đá, wifi là khói. Danh sách "được/không được" nằm trong series bible; không tự thêm luật mới giữa chừng.
+- Ẩn dụ cho cùng một khái niệm giữ cố định xuyên series (vỏ sò = tiền, mammoth = hàng hóa). Đổi nghĩa phải có lý do và nói rõ.
+- Phong cách hình: nét que, màu hạn chế, không thêm phong cách khác.
 
-## Duy trì mạch hồi hộp (Tuyến huyền niệm)
+## Running gag và callback
 
-Đảm bảo mạch kịch tính và bí ẩn cốt lõi được thúc đẩy từng bước:
-- Mỗi chương giải quyết hoặc phản hồi ít nhất một nút thắt cũ
-- Đặt ra nút thắt mới hoặc nâng cấp độ nguy cấp của nút thắt hiện hữu
-- Không bao giờ được bỏ quên bất kỳ tình tiết còn dang dở nào
+- Mỗi running gag có "luật": khi nào xuất hiện, biến thể thế nào (ví dụ Que Ú luôn mất rìu ở cuối).
+- Callback là chi tiết đã xuất hiện trước đó, gọi lại ngắn trong một câu hoặc một hình, không giải thích lại dài.
+- Ghi lại gag đã dùng ở tập nào; không dùng cùng một gag liên tiếp hơn 2 tập; có thể phát triển (nâng cấp) thay vì lặp.
 
-## Danh sách kiểm tra tính nhất quán
+## Dữ kiện giữa các tập
 
-- [ ] Hành vi của nhân vật phù hợp với thiết lập tính cách vốn có
-- [ ] Phục bút trước sau có tương hỗ, logic khép kín hoàn chỉnh
-- [ ] Cao trào và điểm lắng phân bổ hợp lý, nhịp điệu truyện mượt mà
-- [ ] Dòng thời gian liền mạch (không có lỗi nhảy cóc thời gian phi lý)
-- [ ] Chuyển đổi cảnh quay tự nhiên (không đột ngột xuất hiện vô căn cứ)
+- Số liệu/định nghĩa nhắc lại ở tập sau phải khớp tập trước (hoặc ghi rõ "số mới").
+- Trend: ghi ngày/nguồn; không mâu thuẫn với video trước. Nếu thông tin đã đổi, nhận thẳng: "Hồi trước mình nói X, giờ là Y".
+- Dữ kiện chưa chắc nằm ở CẦN KIỂM CHỨNG, không được biến thành khẳng định ở tập sau.
+
+## Checklist
+
+- [ ] Nhân vật đúng ngoại hình, giọng, vai.
+- [ ] Ẩn dụ đúng bảng quy chiếu của series; không tự tạo luật vũ trụ mới.
+- [ ] Callback/running gag có chủ đích, không lặp quá 2 tập liên tiếp.
+- [ ] Dữ kiện khớp các tập trước; trend có nguồn.
+- [ ] Hook và ẩn dụ không trùng 3 tập gần nhất.

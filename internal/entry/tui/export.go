@@ -44,6 +44,10 @@ func parseExportArgs(args []string) (exp.Options, error) {
 			opts.Overwrite = true
 			continue
 		}
+		if a == "--video" {
+			opts.Format = exp.FormatVideo
+			continue
+		}
 		if k, v, ok := strings.Cut(a, "="); ok {
 			switch strings.ToLower(k) {
 			case "from":
@@ -58,8 +62,19 @@ func parseExportArgs(args []string) (exp.Options, error) {
 					return exp.Options{}, fmt.Errorf("to phải là số nguyên không âm: %q", v)
 				}
 				opts.To = n
+			case "format", "fmt":
+				switch strings.ToLower(v) {
+				case "txt":
+					opts.Format = exp.FormatTXT
+				case "epub":
+					opts.Format = exp.FormatEPUB
+				case "video", "doodle", "scripts", "script":
+					opts.Format = exp.FormatVideo
+				default:
+					return exp.Options{}, fmt.Errorf("định dạng không hỗ trợ %q (chọn txt, epub, hoặc video)", v)
+				}
 			default:
-				return exp.Options{}, fmt.Errorf("tham số không xác định %q (hỗ trợ: from / to)", k)
+				return exp.Options{}, fmt.Errorf("tham số không xác định %q (hỗ trợ: from / to / format)", k)
 			}
 			continue
 		}

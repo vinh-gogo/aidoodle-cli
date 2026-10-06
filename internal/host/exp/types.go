@@ -16,6 +16,8 @@ const (
 	FormatTXT Format = "txt"
 	// FormatEPUB 标准 EPUB 3 容器（zip + xhtml）。
 	FormatEPUB Format = "epub"
+	// FormatVideo Gói kịch bản video TikTok: scripts/, voiceover/, shotlist.csv, publish.csv.
+	FormatVideo Format = "video"
 )
 
 // Options 控制导出行为。zero-value 等价于"导出全本到默认路径，文件存在时报错"。

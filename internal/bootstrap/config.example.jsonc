@@ -111,11 +111,14 @@
   //   "architect": { "provider": "openrouter", "model": "google/gemini-3.1-pro" }
   // },
 
-  // Phong cách sáng tác: default / suspense / fantasy / romance.
-  "style": "default"
+  // Phong cách sáng tác: doodle-explainer (mặc định, kịch bản TikTok doodle explainer tiếng Việt) / default / suspense / fantasy / romance...
+  "style": "doodle-explainer"
 
   // Cửa sổ ngữ cảnh toàn cục kiểu cũ, giữ lại làm giá trị fallback cho mọi mô hình. Ưu tiên thấp hơn models[].context_window,
   // cao hơn registry mô hình và giá trị mặc định 200k. Chỉ ảnh hưởng ngưỡng nén ngữ cảnh, không đổi độ dài request thực tế tới API.
+  // Lưu ý tiếng Việt: bộ ước lượng token cục bộ (agentcore) coi văn bản gần như ASCII là ~4 byte/token nên có thể ƯỚC LƯỢNG THẤP
+  // số token của tiếng Việt có dấu (chưa đo đạc). Với mô hình chạy cục bộ (Ollama...), nên đặt context_window nhỏ hơn thực tế
+  // (ví dụ ~60-70% num_ctx) và đối chiếu với số token prompt do provider báo cáo (Ollama: prompt_eval_count).
   // "context_window": 300000
 
   // Tùy chọn. Ngân sách chi phí cho một cuốn sách (thư mục output), cầu chì an toàn khi treo máy. Chỉ kích hoạt khi book_usd > 0.
@@ -141,6 +144,20 @@
   //   // ntfy (iOS/Android): "command": "curl -s -G --data-urlencode \"title=$NOTIFY_TITLE\" --data-urlencode \"message=$NOTIFY_BODY\" ntfy.sh/<topic>/publish"
   //   "events": ["run_end", "budget", "advance_gate", "stop_guard", "plan_start", "deadlock", "worker_failure"]
   // }
+
+  // Tùy chọn. Cấu hình lấy xu hướng (trends) tự động từ RSS cho kịch bản doodle explainer.
+  // "trends": {
+  //   "enabled": true,
+  //   "geo": "VN",
+  //   "sources": ["google_trends", "rss:vnexpress", "rss:tuoitre"],
+  //   "max_items": 30,
+  //   "topics_per_batch": 8,
+  //   "fetch_article_chars": 6000
+  // },
+
+  // Tùy chọn. Chế độ kiểm duyệt từng tập kịch bản: "auto" (mặc định cho tiểu thuyết, viết liên tục) hoặc "review" (khuyến nghị cho kịch bản tin tức TikTok, dừng chờ lệnh /next trước mỗi tập mới để duyệt kịch bản).
+  // Khi trends.enabled=true và là dự án mới, hệ thống tự động kích hoạt chế độ "review".
+  // "advance_mode": "review",
 
   // Tùy chọn. Đặt true để tắt thông báo kiểm tra phiên bản mới khi khởi động (mặc định bật). Kiểm tra chỉ đọc
   // interface công khai GitHub Releases, kết quả cache cục bộ 24h; khi phát hiện phiên bản mới sẽ gợi ý số phiên bản và tóm tắt cập nhật ở màn hình chào mừng/luồng sự kiện,

@@ -130,7 +130,7 @@ cat > "$CONFIG_FILE" <<EOF
       ]
     }
   },
-  "style": "default"
+  "style": "doodle-explainer"
 }
 EOF
 

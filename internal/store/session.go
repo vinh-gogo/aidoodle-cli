@@ -236,11 +236,11 @@ func compactText(role agentcore.Role, toolName, text string) string {
 		return fmt.Sprintf("[session_compact: novel_context %dB | %s]", len(text), summary)
 	case "read_chapter":
 		chars := utf8.RuneCountInString(text)
-		return fmt.Sprintf("[session_compact: read_chapter %d字 | 见 chapters/]", chars)
+		return fmt.Sprintf("[session_compact: read_chapter %d ký tự | xem chapters/]", chars)
 	default:
 		if len(text) > 8192 {
 			chars := utf8.RuneCountInString(text)
-			return fmt.Sprintf("[session_compact: %s %d字]", toolName, chars)
+			return fmt.Sprintf("[session_compact: %s %d ký tự]", toolName, chars)
 		}
 		return text
 	}
@@ -250,7 +250,7 @@ func compactText(role agentcore.Role, toolName, text string) string {
 func compactToolCall(tc *agentcore.ToolCall) *agentcore.ToolCall {
 	switch tc.Name {
 	case "draft_chapter":
-		return compactArgsContent(tc, "第N章正文", "drafts/")
+		return compactArgsContent(tc, "chính văn chương N", "drafts/")
 	case "save_foundation":
 		return compactFoundationArgs(tc)
 	default:
@@ -270,16 +270,16 @@ func compactArgsContent(tc *agentcore.ToolCall, label, ref string) *agentcore.To
 	var content string
 	if err := json.Unmarshal(contentRaw, &content); err != nil {
 		// content 不是字符串（可能是 JSON 对象），用字节数
-		placeholder := fmt.Sprintf("[session_compact: %s %dB | 见 %s]", label, len(contentRaw), ref)
+		placeholder := fmt.Sprintf("[session_compact: %s %dB | xem %s]", label, len(contentRaw), ref)
 		args["content"], _ = json.Marshal(placeholder)
 	} else {
 		chars := utf8.RuneCountInString(content)
 		ch := extractJSONFieldInt(tc.Args, "chapter")
 		if ch > 0 {
-			label = fmt.Sprintf("第%d章正文", ch)
+			label = fmt.Sprintf("chính văn chương %d", ch)
 			ref = fmt.Sprintf("drafts/%02d.draft.md", ch)
 		}
-		placeholder := fmt.Sprintf("[session_compact: %s %d字 | 见 %s]", label, chars, ref)
+		placeholder := fmt.Sprintf("[session_compact: %s %d ký tự | xem %s]", label, chars, ref)
 		args["content"], _ = json.Marshal(placeholder)
 	}
 	clone := *tc
@@ -301,7 +301,7 @@ func compactFoundationArgs(tc *agentcore.ToolCall) *agentcore.ToolCall {
 	if json.Unmarshal(args["type"], &t) == nil && t != "" {
 		typeName = t
 	}
-	placeholder := fmt.Sprintf("[session_compact: %s %dB | 见 store]", typeName, len(contentRaw))
+	placeholder := fmt.Sprintf("[session_compact: %s %dB | xem store]", typeName, len(contentRaw))
 	args["content"], _ = json.Marshal(placeholder)
 	clone := *tc
 	clone.Args, _ = json.Marshal(args)

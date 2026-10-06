@@ -2,8 +2,8 @@
   "id": "writer_first_chapter",
   "category": "smoke",
   "role": "writer",
-  "description": "Writer 能完成第一章 plan→draft→commit 并落盘，工具链稳定。",
-  "prompt": "写一个短篇修仙小说，主角是边城药铺的杂役少年，靠一手辨药的本事卷入一桩失踪案。",
+  "description": "Writer hoàn thành tập 1 kịch bản doodle explainer (plan→draft→commit) đúng chuẩn và lưu đĩa ổn định.",
+  "prompt": "Viết kịch bản video TikTok doodle explainer tập 1 (60-90 giây, 150-250 từ LỜI) giải thích hiện tượng lạm phát: Tại sao Người Que in thêm vỏ sò thì thịt khủng long lại đắt lên?",
   "max_chapters": 1,
   "target_prompts": ["writer.md"],
   "expect": {

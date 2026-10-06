@@ -122,7 +122,7 @@ func (m Model) toggleMouseReporting() (Model, tea.Cmd) {
 }
 
 // donePlaceholder 完成态输入框提示：会话内完结（doneMsg）与重启进完结书（bootstrap）共用。
-const donePlaceholder = "Sáng tác đã hoàn thành · Có thể nhập yêu cầu sửa lại (vd \"viết lại chương 3\"), /reopen để viết tiếp quyển mới, /export để xuất file"
+const donePlaceholder = "Series đã hoàn thành · Có thể nhập yêu cầu sửa lại (vd \"viết lại tập 3\"), /reopen để viết tiếp đợt mới, /export để xuất file"
 
 // enterRunning 进入创作工作台：开启鼠标上报（工作台需要点击切面板 / 滚轮 /
 // 拖拽侧边栏）。返回的命令需由调用方 Batch 进最终返回值。

@@ -16,32 +16,32 @@ import (
 
 var analysisContract = llmcontract.Contract{
 	Name:        "chapter_revision_analysis",
-	Description: "分析用户对已完成章节的修订并重建完整章节事实",
+	Description: "Phân tích các chỉnh sửa của người dùng đối với chương đã hoàn thành và dựng lại đầy đủ sự kiện chương",
 	Schema:      revisionAnalysisSchema(),
 }
 
 func revisionAnalysisSchema() map[string]any {
 	textList := func(description string) map[string]any { return schema.Array(description, schema.String(description)) }
 	voice := schema.Object(
-		schema.Property("name", schema.String("角色名")).Required(),
-		schema.Property("rules", textList("对白偏好")).Required(),
+		schema.Property("name", schema.String("Tên nhân vật")).Required(),
+		schema.Property("rules", textList("Sở thích đối thoại")).Required(),
 	)
 	facts := schema.Object(chapterfacts.Properties(false)...)
 	impact := schema.Object(
-		schema.Property("deviation", schema.String("已发生剧情相对现有计划的变化")).Required(),
-		schema.Property("suggestion", schema.String("对未完成大纲的调整建议")).Required(),
+		schema.Property("deviation", schema.String("Thay đổi của cốt truyện đã xảy ra so với kế hoạch hiện có")).Required(),
+		schema.Property("suggestion", schema.String("Đề xuất điều chỉnh dàn ý phần chưa hoàn thành")).Required(),
 	)
 	return schema.Object(
-		schema.Property("change_summary", schema.String("修改概述")).Required(),
-		schema.Property("story_changed", schema.Bool("是否改变剧情事实")).Required(),
+		schema.Property("change_summary", schema.String("Tóm tắt chỉnh sửa")).Required(),
+		schema.Property("story_changed", schema.Bool("Có thay đổi sự kiện cốt truyện hay không")).Required(),
 		schema.Property("facts", facts).Required(),
 		schema.Property("style_delta", schema.Object(
-			schema.Property("prose", textList("从本次修改确认的叙述偏好")).Required(),
-			schema.Property("dialogue", schema.Array("角色对白偏好", voice)).Required(),
-			schema.Property("taboos", textList("用户主动删改所体现的禁忌")).Required(),
+			schema.Property("prose", textList("Sở thích tường thuật được xác nhận từ lần chỉnh sửa này")).Required(),
+			schema.Property("dialogue", schema.Array("Sở thích đối thoại của nhân vật", voice)).Required(),
+			schema.Property("taboos", textList("Điều cấm kỵ thể hiện qua việc người dùng chủ động xóa/sửa")).Required(),
 		)).Required(),
 		schema.Property("outline_impact", llmcontract.Nullable(impact)).Required(),
-		schema.Property("downstream_issues", textList("与后续已完成章节的潜在冲突")).Required(),
+		schema.Property("downstream_issues", textList("Xung đột tiềm ẩn với các chương đã hoàn thành phía sau")).Required(),
 	)
 }
 
@@ -73,7 +73,7 @@ func Analyze(ctx context.Context, model agentcore.ChatModel, systemPrompt string
 		},
 	})
 	if err != nil {
-		return domain.RevisionAnalysis{}, fmt.Errorf("分析第 %d 章修订: %w", change.Chapter, err)
+		return domain.RevisionAnalysis{}, fmt.Errorf("phân tích chỉnh sửa chương %d: %w", change.Chapter, err)
 	}
 	analysis.Facts.Feedback = analysis.OutlineImpact
 	return analysis, nil

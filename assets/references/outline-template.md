@@ -1,135 +1,95 @@
-# Mẫu quy hoạch dàn ý (Outline Template)
+# Mẫu danh sách tập (outline)
 
-Tác dụng của mẫu này không phải là ép mọi tác phẩm vào một độ dài cố định, mà là giúp nhận định cấp độ của tác phẩm trước, rồi sau đó mới lựa chọn độ chi tiết của dàn ý.
+Mỗi phần tử outline là một tập = một video 60-180 giây. Khóa JSON không đổi, nhưng ý nghĩa như sau:
 
-## Bước 1: Nhận định cấp độ độ dài tác phẩm
+- `chapter`: số thứ tự tập.
+- `title`: tiêu đề video (sẽ là dòng `# ...` đầu kịch bản).
+- `core_event`: ý chính cần giải thích + góc nhìn của tập, một hai câu. Nếu gắn với trend, thêm cuối chuỗi: `Trend: <tên trend> | Nguồn: <url>`.
+- `hook`: câu/hình hook 3 giây đầu (8-10 từ + hình).
+- `scenes`: 3-5 chuỗi, mỗi chuỗi một dòng mô tả cảnh theo mạch: ẩn dụ đồ đá -> khái niệm hiện đại -> "hóa ra...".
 
-### Truyện ngắn / Câu chuyện một quyển
-- Áp dụng: Đơn xung đột, đơn mục tiêu, ít nhân vật, kết cục tập trung.
-- Độ dài tham khảo: 8 - 25 chương.
-- Định dạng khuyến nghị: Dàn ý phẳng `outline`.
+## Bước 1: Chọn quy mô series
 
-### Truyện vừa / Câu chuyện nhiều giai đoạn
-- Áp dụng: Có nâng cấp theo giai đoạn, vài tuyến phụ, quan hệ nhân vật có biến chuyển.
-- Độ dài tham khảo: 25 - 60 chương.
-- Định dạng khuyến nghị: Dàn ý phẳng `outline` hoặc phân tầng nhẹ.
+- Mùa ngắn: 8-25 video, một nhóm chủ đề. Dùng outline phẳng `outline`.
+- Vừa: 25-60 video, nhiều đợt chủ đề. Outline phẳng hoặc phân tầng nhẹ.
+- Dài: 80+ video, nhiều mùa/đợt. Dùng `layered_outline`: quyển = mùa/nhóm lớn, hồi = đợt chủ đề 5-10 video.
 
-### Truyện dài kỳ / Mô hình tiểu thuyết mạng
-- Áp dụng: Thể loại bẩm sinh có không gian nâng cấp liên tục, lực căng quan hệ lâu dài, mục tiêu nhiều giai đoạn, thế giới có thể mở rộng, bí ẩn dài hạn hoặc tuyến trưởng thành trường kỳ.
-- Độ dài tham khảo: 80 - 200+ chương.
-- Định dạng khuyến nghị: Dàn ý phân tầng `layered_outline`.
+## Bước 2: Khi nào dùng phân tầng
 
-## Bước 2: Phán đoán có bắt buộc dùng dàn ý phân tầng hay không
+Chọn `layered_outline` khi thỏa ít nhất 2 điều: chủ đề trải nhiều lĩnh vực (kinh tế, công nghệ, xã hội...); cần các đợt chủ đề với nhịp khác nhau; trend thay đổi nên chỉ lên kế hoạch chi tiết đợt gần; running gag và nhân vật phát triển qua nhiều đợt.
 
-Chỉ cần thỏa mãn bất kỳ 2 điều nào dưới đây thì ưu tiên dùng `layered_outline`:
+## Bước 3: Đừng lên danh sách chi tiết cả mùa dài
 
-- Thế giới quan cần được mở rộng dần dần, không phải kể hết trong một lần.
-- Sự trưởng thành của nhân vật chính không phải là một bước nhảy vọt, mà nâng cấp qua nhiều giai đoạn.
-- Mối quan hệ giữa các nhân vật liên tục biến chuyển qua nhiều giai đoạn.
-- Giai đoạn giữa và sau tồn tại các loại mâu thuẫn chính khác nhau.
-- Cần nhiều lần chuyển đổi bản đồ / thế lực / thân phận / mục tiêu.
-- Thể loại mang đậm phong cách tiểu thuyết thương mại dài tập, không phải truyện một quyển.
+Thứ tự: định vị kênh và điểm khác biệt -> câu hỏi cốt lõi của series -> đợt chủ đề -> từng tập (core_event, hook). Sai lầm: 20 tập cùng khuôn "định nghĩa -> ví dụ -> chốt"; mọi hook cùng một kiểu; dùng hết ẩn dụ hay nhất trong 5 tập đầu.
 
-## Bước 3: Đối với truyện dài, đừng lập tức làm "sổ nhật ký chương toàn sách"
-
-Trình tự quy hoạch truyện dài khuyến nghị là:
-
-1. Điểm bán tác phẩm và sự khác biệt hóa.
-2. Động cơ câu chuyện dài hạn.
-3. Chủ đề và sự thăng cấp ở cấp quyển.
-4. Mục tiêu và bước ngoặt giai đoạn ở cấp hồi.
-5. Sự kiện và móc câu ở cấp chương.
-
-Cách làm sai lầm:
-- Viết trước đại cương 20 chương rồi gượng ép kéo dài ra.
-- Mỗi quyển đều lặp lại mô thức "gặp địch - mạnh lên - đổi bản đồ".
-- Chỉ có nâng cấp tuyến chính mà không có nâng cấp quan hệ nhân vật.
-- Giai đoạn đầu tiêu xài hết toàn bộ bí mật lớn, giai đoạn giữa và sau chỉ có thể lặp lại bài cũ.
-
-## Mẫu dàn ý phẳng (Truyện ngắn / vừa)
+## Mẫu outline phẳng
 
 ```json
 [
   {
     "chapter": 1,
-    "title": "Tiêu đề chương",
-    "core_event": "Sự kiện cốt lõi chương này",
-    "hook": "Móc câu cuối chương",
-    "scenes": ["Bối cảnh 1", "Bối cảnh 2", "Bối cảnh 3"]
+    "title": "Lạm phát: vì sao rìu đá của bạn bốc hơi",
+    "core_event": "Giải thích lạm phát bằng vỏ sò và mammoth: tiền nhiều hơn hàng thì giá tăng; góc nhìn: lương đứng yên là mất tiền thầm lặng.",
+    "hook": "Rìu đá của bạn đang bốc hơi. Ai lấy mất? (hình: rìu bay thành khói)",
+    "scenes": [
+      "Bộ lạc Que đổi mammoth lấy mười rìu, thủ lĩnh phát vỏ sò cho cả bộ lạc",
+      "Vỏ sò nhiều lên, mammoth vẫn một con nên giá nhảy lên hai mươi vỏ",
+      "Que Ú vẫn lãnh mười vỏ công, giờ chỉ mua nổi nửa cái đùi",
+      "Chốt: ai rải thêm vỏ sò thì người đó lấy rìu của bạn"
+    ]
   }
 ]
 ```
 
-## Mẫu dàn ý phân tầng (Truyện dài - Cuốn chiếu hai tầng Quyển & Hồi)
+## Mẫu outline phân tầng (series dài)
 
-Quy hoạch ban đầu áp dụng cơ chế cuốn chiếu hai tầng: 2 quyển đầu có khung xương các hồi, các quyển còn lại là quyển khung xương; hồi đầu tiên có các chương chi tiết.
+Cuốn chiếu hai tầng: 2 quyển đầu có khung hồi, các quyển sau là quyển khung xương; hồi đầu tiên có các tập chi tiết.
 
 ```json
 [
   {
     "index": 1,
-    "title": "Tiêu đề Quyển 1",
-    "theme": "Mâu thuẫn cốt lõi / chủ đề mới của quyển này",
+    "title": "Mùa 1: Tiền bạc kỷ đá",
+    "theme": "Giải thích kinh tế cá nhân bằng vỏ sò, mammoth và bộ lạc",
     "arcs": [
       {
         "index": 1,
-        "title": "Hồi 1 (Đã mở rộng chi tiết)",
-        "goal": "Mục tiêu cục bộ, lực cản và bước ngoặt",
+        "title": "Đợt 1: Tiền đi đâu mất (đã chi tiết)",
+        "goal": "Người xem hiểu lạm phát, lãi suất, nợ qua 6 tập",
         "chapters": [
-          {"chapter": 1, "title": "Tiêu đề chương", "core_event": "Sự kiện cốt lõi", "hook": "Móc câu cuối chương", "scenes": ["Bối cảnh 1", "Bối cảnh 2"]}
+          {"chapter": 1, "title": "Tiêu đề tập", "core_event": "Ý chính + góc nhìn", "hook": "Hook 3 giây", "scenes": ["Cảnh 1", "Cảnh 2", "Cảnh 3"]}
         ]
       },
       {
         "index": 2,
-        "title": "Hồi 2 (Hồi khung xương)",
-        "goal": "Khái quát mục tiêu của hồi này",
-        "estimated_chapters": 12,
+        "title": "Đợt 2: Vay mượn kỷ đá (khung xương)",
+        "goal": "Tín dụng, thẻ, nợ xấu",
+        "estimated_chapters": 8,
         "chapters": []
       }
     ]
   },
   {
     "index": 2,
-    "title": "Tiêu đề Quyển 2",
-    "theme": "Chủ đề Quyển 2",
-    "arcs": [
-      {"index": 1, "title": "Tiêu đề Hồi", "goal": "Mục tiêu Hồi", "estimated_chapters": 15, "chapters": []},
-      {"index": 2, "title": "Tiêu đề Hồi", "goal": "Mục tiêu Hồi", "estimated_chapters": 10, "chapters": []}
-    ]
-  },
-  {
-    "index": 3,
-    "title": "Tiêu đề Quyển 3 (Quyển khung xương)",
-    "theme": "Phương hướng chủ đề Quyển 3",
-    "estimated_chapters": 60,
+    "title": "Mùa 2 (khung xương)",
+    "theme": "Công nghệ và AI",
+    "estimated_chapters": 30,
     "arcs": []
   }
 ]
 ```
 
-- Mở rộng cấp hồi: Khi việc viết tiến đến hồi khung xương, Architect sẽ mở rộng các chương chi tiết của hồi đó.
-- Mở rộng cấp quyển: Khi việc viết tiến đến quyển khung xương, Architect sẽ mở rộng cấu trúc hồi của quyển + các chương của hồi đầu tiên.
+Mở rộng: khi viết tới hồi khung xương, Architect mở rộng các tập chi tiết; tới quyển khung xương thì mở rộng cấu trúc hồi + tập của hồi đầu.
 
-## Danh sách kiểm tra cấp quyển truyện dài
+## Kiểm tra cấp đợt chủ đề
 
-Mỗi một quyển đều cần trả lời:
-- Quyển này bổ sung thêm thông tin thế giới mới nào?
-- Quyển này nâng cấp mâu thuẫn cốt lõi nào?
-- Quyển này giúp nhân vật chính đạt được gì, và mất đi điều gì?
-- Quyển này thay đổi mối quan hệ nhân vật chính như thế nào?
-- Sau khi quyển này kết thúc, vì sao câu chuyện bắt buộc phải bước sang quyển tiếp theo?
+- Đợt này đào sâu câu hỏi nào của series? Người xem học được gì sau cả đợt?
+- Các tập có góc nhìn khác nhau (không chỉ đổi tên khái niệm)?
+- Đợt có running gag/callback nào nối giữa các tập?
 
-## Danh sách kiểm tra cấp hồi truyện dài
+## Kiểm tra cấp tập
 
-Mỗi một hồi đều cần trả lời:
-- Mục tiêu rõ ràng của hồi này là gì?
-- Lực cản đến từ ai, quy tắc nào, cái giá phải trả là gì?
-- Điểm bước ngoặt là gì?
-- Sau khi hồi này kết thúc, những trạng thái nào đã biến đổi không thể đảo ngược?
-
-## Danh sách kiểm tra cấp chương
-
-- Mỗi chương bắt buộc phải phục vụ cho mục tiêu của hồi chứa nó.
-- Mỗi chương bắt buộc phải chứa một sự kiện thúc đẩy không thể xóa bỏ.
-- Móc câu phải đa dạng hóa, không dựa dẫm hoàn toàn vào kiểu "phát hiện bí mật".
-- Các chương giai đoạn đầu không thể chỉ "giới thiệu thế giới", mà phải đồng bộ thúc đẩy nhân vật và xung đột.
+- Một tập một ý chính; hook không trùng 3 tập gần nhất; ẩn dụ không trùng.
+- Có cảnh bản lề ẩn dụ -> khái niệm và một cú "hóa ra...".
+- Trend phải có nguồn; chủ đề thường trực ghi rõ là kiến thức nền.
+- Số cảnh (3-5) khớp độ dài mục tiêu: 60 giây ~3 cảnh, 120-180 giây ~5 cảnh.

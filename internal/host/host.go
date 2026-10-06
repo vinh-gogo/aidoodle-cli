@@ -152,6 +152,24 @@ func New(cfg bootstrap.Config, bundle assets.Bundle, options ...NewOption) (*Hos
 	if err := store.RunMeta.Init(cfg.Style, cfg.Provider, cfg.ModelName); err != nil {
 		return nil, fmt.Errorf("init run meta: %w", err)
 	}
+	targetMode := domain.ChapterAdvanceMode(cfg.AdvanceMode)
+	if targetMode == "" && cfg.Trends.Enabled {
+		targetMode = domain.ChapterAdvanceReview
+	}
+	if targetMode != "" {
+		if !targetMode.Valid() {
+			return nil, &domain.UnsupportedAdvanceModeError{Mode: targetMode}
+		}
+		rm, _ := store.RunMeta.Load()
+		prog, _ := store.Progress.Load()
+		if rm != nil && rm.AdvanceMode != targetMode {
+			if cfg.AdvanceMode != "" || (prog == nil || len(prog.CompletedChapters) == 0) {
+				if err := store.RunMeta.SetAdvanceMode(targetMode); err != nil {
+					return nil, fmt.Errorf("set advance mode: %w", err)
+				}
+			}
+		}
+	}
 	// 起后台 goroutine 从 OpenRouter 刷新模型元数据（窗口/价格），磁盘缓存 24h。
 	modelreg.StartPricingRefresh(modelreg.DefaultRegistry(), bootstrap.DefaultConfigDir())
 

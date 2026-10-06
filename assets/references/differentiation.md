@@ -1,86 +1,36 @@
-# Tài liệu tham khảo thiết kế tính dị biệt hóa (Tránh rập khuôn)
+# Khác biệt hóa kênh
 
-Tài liệu này dùng để ngăn tác phẩm tự động trượt vào "bản mẫu khuôn sáo có tần suất cao nhất" của cùng một thể loại.
+Khi người dùng chỉ đưa một chủ đề chung ("kinh tế", "AI", "tài chính"), đừng mặc định dùng cách giải thích quen thuộc nhất trên TikTok: người dẫn đứng giảng, slide số liệu, ví dụ ly trà sữa. Bắt buộc chọn ít nhất 2 điểm khác biệt trước khi viết series bible.
 
-## Khi người dùng chỉ đưa ra một từ khóa thể loại chung chung, tuyệt đối không được bê nguyên khuôn mẫu quen thuộc nhất
+## Năm chiều tạo khác biệt
 
-Ví dụ người dùng đưa ra:
+1. Góc nhìn: kênh luôn nhìn chuyện hiện đại bằng con mắt kẻ ở thời đồ đá. Chọn thêm lăng kính riêng: "người thiệt nhất", "kẻ bán hàng", "ai được lợi?".
+2. Ẩn dụ độc quyền: một bộ ẩn dụ chỉ kênh này có (vỏ sò = tiền, mammoth = hàng hóa, bộ lạc láng giềng = nước khác). Ghi bảng quy chiếu trong `Luật vũ trụ doodle`.
+3. Nhân vật: dàn que riêng với dấu hiệu nhận diện và câu cửa miệng; ít nhưng đậm.
+4. Giọng kể: mức hài, mức lóng, cách xưng hô riêng (xem `voice`); ví dụ "dạy chuyện khó bằng giọng ông anh trong xóm".
+5. Nhịp và hình thức: công thức video cố định (ví dụ hook sốc -> ẩn dụ -> bản lề -> hóa ra -> chốt loop), kiểu chữ, kiểu âm.
 
-- Đô thị
-- Kỳ ảo / Huyền huyễn
-- Tu tiên
-- Trinh thám / Ly kỳ hồi hộp
-- Ngôn tình
-- Khoa học viễn tưởng
+## Dấu hiệu rập khuôn
 
-Điều này KHÔNG đồng nghĩa với việc "mở đầu theo cách thường thấy nhất của thể loại đó". Bạn bắt buộc phải bổ sung các chiều kích dị biệt hóa trước khi triển khai.
+- Hook mở bằng "Bạn có biết rằng..." hoặc "Hôm nay mình sẽ giải thích...".
+- Ẩn dụ phổ biến: trà sữa, bánh pizza, "như một cái cây".
+- Nhân vật là người dẫn vô danh, không tính cách.
+- Mọi tập đều "định nghĩa -> ví dụ -> tóm tắt".
+- Chốt kêu gọi "like và đăng ký" giống mọi kênh.
 
-## Năm chiều kích tạo sự dị biệt
+## Khi lập kế hoạch, tự đặt giới hạn
 
-### 1. Chiều kích nhân vật chính
+- Chọn 3 thứ kênh không làm (ví dụ: không dùng ẩn dụ đồ ăn hiện đại; không bắt đầu bằng định nghĩa; không giảng đạo).
+- Chọn 1 thứ kênh luôn làm (ví dụ: luôn có que mất rìu ở cuối).
+- Ghi vào series bible: `Điểm khác biệt của kênh` ít nhất 2 điểm, và `Vùng cấm kỵ khi viết`.
 
-- Xuất thân có quá quen thuộc, đi vào lối mòn không?
-- Lợi thế / Bất lợi ban đầu có rập khuôn không?
-- Động lực thúc đẩy mạnh mẽ nhất của nhân vật chính là gì?
-- Điểm mù lớn nhất của nhân vật chính nằm ở đâu?
+## Khác biệt không phải là kỳ quặc
 
-### 2. Chiều kích xung đột
+Khác biệt là phân bổ lại trọng tâm, không đổi bản chất: người xem vẫn cần hiểu vấn đề và nhận ra trend. Một kênh lạ mà không giải thích được gì là thất bại. Thử: khác ở góc nhìn và ẩn dụ, giống ở độ rõ ràng và nhịp 3 giây.
 
-- Xung đột chủ đạo có phải chỉ là mâu thuẫn mặc định của thể loại đó không?
-- Có tầng xung đột thứ hai làm đảo lộn kỳ vọng của độc giả không?
-- Xung đột có chuyển hóa sang giai đoạn mới ở giữa truyện không?
+## Tự chất vấn trước khi chốt
 
-### 3. Chiều kích thế giới quan
-
-- Các quy tắc của thế giới có thực sự làm thay đổi hành vi của nhân vật không?
-- Cấu trúc xã hội, phân bổ tài nguyên, trật tự quyền lực có liên tục tạo ra bài toán hóc búa không?
-- Thế giới có vận hành hợp lý ngay cả khi không có sự hiện diện của góc nhìn nhân vật chính không?
-
-### 4. Chiều kích mối quan hệ
-
-- Các mối quan hệ chính có phải chỉ gói gọn trong 3 chức năng tĩnh "đồng đội / người yêu / kẻ thù" không?
-- Có tồn tại mối quan hệ giằng xé lâu dài: vừa nhào nặn lẫn nhau, vừa tổn thương nhau, vừa lợi dụng lẫn nhau nhưng lại vừa nâng đỡ nhau không?
-- Tuyến quan hệ có tác động ngược trở lại để thúc đẩy mạch chính không?
-
-### 5. Chiều kích nhịp điệu
-
-- Điểm sảng khoái (sảng điểm / catharsis) có bị đơn điệu, lặp đi lặp lại không?
-- Đã hoạch định động lực đọc khác nhau cho từng giai đoạn chưa?
-- Sức hút ở giai đoạn đầu và trung - hậu kỳ có giữ nguyên một màu, hay có sự nâng cấp tự nhiên về quy mô và chiều sâu?
-
-## Các dấu hiệu đồng hóa thường gặp (Báo động rập khuôn)
-
-Càng xuất hiện nhiều dấu hiệu này, tác phẩm càng đang trượt dốc vào khuôn mẫu công nghiệp:
-
-- Xuất thân nhân vật chính quen thuộc đến mức sáo rỗng.
-- Mở đầu bằng mô típ "bị người đời khinh thường, coi rẻ".
-- Khởi đầu quen thuộc bằng cảnh sư môn / học viện / hào môn / vụ án công thức.
-- Động cơ phản diện hời hợt, một chiều.
-- Nhịp độ nâng cấp sức mạnh theo từng nấc y hệt các truyện khác.
-- Lặp đi lặp lại loại móc câu "vô tình phát hiện một bí mật".
-
-## Khi lập kế hoạch, bắt buộc phải chủ động đặt ra giới hạn cho bản thân
-
-Trong cùng một thể loại, hãy đề ra ít nhất 2-3 ràng buộc phản khuôn mẫu. Ví dụ:
-
-- Không sử dụng thân phận mở đầu phổ biến nhất.
-- Không sử dụng bàn tay vàng / nguồn gốc năng lực rập khuôn nhất.
-- Không dùng lộ trình thăng cấp trung kỳ theo lối mòn.
-- Không để tuyến quan hệ chính giậm chân tại một chức năng duy nhất.
-- Không để hồi kết đơn thuần chỉ là "đánh bại một kẻ địch mạnh hơn".
-
-## Dị biệt hóa không phải là làm trò quái đản, mà là tái phân bổ trọng tâm
-
-Sự dị biệt hóa hiệu quả thường bắt nguồn từ việc:
-
-- Thay đổi điều mà nhân vật chính thực sự bận tâm, trăn trở.
-- Thay đổi cội nguồn của xung đột trường kỳ.
-- Thay đổi điểm gây áp lực của các quy tắc thế giới.
-- Thay đổi vai trò chức năng của tuyến quan hệ trong câu chuyện.
-- Thay đổi phương thức thúc đẩy mạch truyện từ trung kỳ trở đi.
-
-## Tự chất vấn bản thân trước khi xuất nội dung
-
-- Nếu xóa sạch tên nhân vật và địa danh, câu chuyện này có giống hệt mười cuốn tiểu thuyết cùng thể loại khác không?
-- Nếu chỉ đọc 10 chương đầu, độc giả có thể chỉ ra cuốn sách này "độc đáo ở điểm nào" không?
-- Khi viết đến chương 50, phương thức thúc đẩy câu chuyện có bị lặp lại y nguyên như 10 chương đầu không?
+1. Hook của kênh có thể đặt vào kênh khác mà không ai nhận ra không? Nếu có, làm lại.
+2. Ẩn dụ chính có độc quyền, giải thích đúng, và dùng lại được 20+ tập không?
+3. Dàn que có nhận ra khi che hết chữ không?
+4. Một người xem lẻ có đoán được đây là kênh nào sau 5 giây không?
