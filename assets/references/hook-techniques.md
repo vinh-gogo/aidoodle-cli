@@ -9,7 +9,7 @@ Người xem TikTok vuốt đi trong ~3 giây. Hook = câu đọc 8-10 từ (c�
 3. Phản trực giác: "Tiền in ra nhiều hơn thì bạn lại nghèo hơn."
 4. Cảnh phi lý bằng hình: người que đồ đá đang quẹt thẻ tín dụng trong hang. Chữ: "NỢ 5 TRIỆU Ở KỶ ĐÁ?"
 5. Gọi đích danh khán giả: "Nếu bạn dùng ChatGPT mỗi ngày, xem cái này."
-6. Mâu thuẫn mở: "Que Ú giàu nhất bộ lạc, nhưng đói nhất."
+6. Mâu thuẫn mở: "Tưởng lướt 5 phút, hóa ra hết 1 tiếng." (KHÔNG mở đầu bằng tên nhân vật lạ như "Que Ú").
 7. Đếm ngược/hậu quả: "Ba tháng nữa cái này sẽ đắt gấp đôi."
 8. Trend nóng: tên trend + câu bất ngờ về nó: "Ai cũng nói về X, nhưng không ai nói chỗ này."
 
@@ -17,7 +17,7 @@ Người xem TikTok vuốt đi trong ~3 giây. Hook = câu đọc 8-10 từ (c�
 
 - Không chào hỏi, không "Xin chào các bạn", không giới thiệu chủ đề rồi mới vào.
 - Lời hook không quá 10 từ; hình phải đọc được khi tắt tiếng; chữ lớn không quá 6 từ.
-- Từ đầu tiên phải mang tín hiệu: con số, "bạn", câu hỏi, tên nhân vật gây tò mò.
+- Từ đầu tiên phải mang tín hiệu: con số, "bạn", câu hỏi. KHÔNG bắt đầu bằng tên nhân vật người xem chưa quen.
 - Hook hứa gì, thân giao đó. Clickbait hụt = giảm giữ chân ở giây 10.
 - Không lặp một kiểu hook ba tập liên tiếp; không lặp nguyên văn hook cũ (xem `Công thức hook` trong series bible).
 
@@ -27,9 +27,10 @@ Một câu mang về nhà, 8-20 từ, nói được thành một câu trích.
 
 - Loop-ending: câu cuối nối ngược vào hook để video lặp tự nhiên. Hook "Rìu đá của bạn đang bốc hơi. Ai lấy mất?" -> chốt "Giờ bạn biết ai lấy rìu của bạn rồi chứ?" (hình cuối trùng hình đầu).
 - Callback: gọi lại một chi tiết từ giữa video hoặc running gag ("Que Ú lại khóc, như mọi khi").
-- Chốt hành động nhẹ: một việc nhỏ làm ngay ("Lần sau thấy giá tăng, hỏi: ai in thêm vỏ sò?").
+- Chốt hành động nhẹ: một việc nhỏ làm ngay ("Lần sau thấy giá tăng, hỏi: ai in thêm vỏ sò?") hoặc một teaser nhá hàng cho tập sau.
 - Chốt mở bình luận: câu hỏi có hai phe ("Bạn đứng về phe mammoth hay phe vỏ sò?"). Tối đa một lần mỗi mười tập.
 - Tránh: tóm tắt lại, "Hy vọng video hữu ích", xin like/follow cứng, giảng đạo.
+- TUYỆT ĐỐI TRÁNH: câu khẳng định tuyệt đối không cơ sở, đổ lỗi cho người xem ("Bạn không kiểm soát được mình", "Không phải bạn muốn, mà là TikTok ép bạn") làm khán giả bất lực.
 
 ## Phần cho Editor: chấm chất lượng hook
 
