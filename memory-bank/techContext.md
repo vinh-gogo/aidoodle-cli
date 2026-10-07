@@ -59,11 +59,21 @@ Release: GoReleaser (`.goreleaser.yml`), Docker image `ghcr.io/voocel/ainovel-cl
 - Startup errors persisted to `~/.ainovel/last-error.log`.
 
 ## Styles & Script Limits
-- Built-in & fork styles: `doodle-explainer` (default), `stone-age-doodle`, `stone-age-doodle-explain`, `vietnamese-history`, `psychological`, `default`, `suspense`, `fantasy`, `romance`.
+- **4 Primary AI Modes**:
+  1. `novel-manga` (Tiểu thuyết / Manga, văn xuôi 2.000 – 4.000 từ/chương)
+  2. `doodle-explainer` (Doodle Explainer video script 5+ phút, mặc định)
+  3. `behavioral-psychology` (Kịch bản video tâm lý học hành vi 5+ phút)
+  4. `vietnamese-history` (Tiểu thuyết nhân vật lịch sử Việt Nam 2.000 – 4.000 từ/chương)
+- Legacy & alias styles: `stone-age-doodle`, `stone-age-doodle-explain`, `psychological`, `default`, `suspense`, `fantasy`, `romance`.
+- **Interactive Mode Switcher**: Lệnh `/mode` (alias: `/topic`, `/topics`) trong TUI cho phép chuyển đổi chế độ tức thì và ghi nhớ vào `.ainovel/config.json`.
 - **Script validator bounds (`internal/tools/script_format.go`)**:
+  - Chỉ áp dụng cho chế độ video (`doodle-explainer`, `behavioral-psychology`). Hoàn toàn không áp dụng cho chế độ tiểu thuyết (`novel-manga`, `vietnamese-history`).
   - `scriptMinWords = 700`, `scriptMaxWords = 1500` (words of `LỜI:`).
-  - `scriptMinSeconds = 300`, `scriptMaxSeconds = 600` (5 to 10 minutes total spoken duration).
-  - Enforces: title line, HOOK first, CHỐT last, every block has at least one LỜI and HÌNH, and footers (CAPTION, HASHTAG, NGUỒN, CẦN KIỂM CHỨNG).
+  - `scriptMinSeconds = 300`, `scriptMaxSeconds = 600` (5 đến 10 phút thời lượng đọc).
+  - Yêu cầu: dòng tiêu đề, HOOK đầu tiên, CHỐT cuối cùng, mỗi block có ít nhất một cặp LỜI và HÌNH, và phần chân kịch bản (CAPTION, HASHTAG, NGUỒN, CẦN KIỂM CHỨNG).
+- **Tavily Integration & .env Support**:
+  - Tự động nạp file `.env` tại thư mục làm việc khi khởi động (`main.go` -> `godotenv.Load()`).
+  - Sử dụng biến môi trường `TAVILY_API_KEY` cho các công cụ `tavily_search` và `tavily_crawl`.
 
 ## Constraints & gotchas
 - **Windows terminal encoding**: PowerShell output of UTF-8 Vietnamese/Chinese files renders as mojibake. Don't treat garbled output as corrupted files; use `view_file` or force UTF-8 (`[Console]::OutputEncoding = [Text.Encoding]::UTF8`).
