@@ -88,7 +88,7 @@ cells = [
         "    \"--batch-size\", \"2048\",   # Logical batch size\n",
         "    \"--ubatch-size\", \"512\",   # Physical batch size\n",
         "    \"-ngl\", \"99\",             # Offload toàn bộ\n",
-        "    \"--ctx-size\", \"32768\",    # Giữ context an toàn 32K\n",
+        "    \"--ctx-size\", \"65536\",    # Tăng lên 64K để chứa đủ novel_context + các bước sinh văn\n",
         "    \n",
         "    # Server features\n",
         "    \"--parallel\", \"1\",\n",
