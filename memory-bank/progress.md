@@ -57,12 +57,20 @@ _Last updated: 2026-10-06 (initial bootstrap)_
   - Nghiệm thu: `gofmt`, `go vet ./...`, `go test -buildvcs=false -count=1 ./...` toàn bộ 35 package pass 100%.
 
 ## Post-P6 Enhancements & Fixes (2026-10-07)
-- [x] **Branch `route`: AI Working Mode Selector (`/mode`)**:
+- [x] **Branch `route`: AI Working Mode Selector (`/mode`) & Specific Style Keys**:
   - Tạo nhánh mới `route`.
   - Lệnh `/mode` (alias: `/topic`, `/topics`) mở modal overlay trực quan chọn chế độ AI làm việc:
-    1. `[1] Tiểu thuyết / Manga` (sáng tác truyện dài kỳ, manga, thế giới quan sâu sắc).
-    2. `[2] Doodle Explainer` (biên kịch video người que đồ đá giải thích kiến thức TikTok / YouTube Shorts).
-    3. `[3] Chế độ mở rộng` (sắp ra mắt / đang nghiên cứu ở bước tiếp theo).
+    1. `[1] Tiểu thuyết / Manga` (Style key: `"novel-manga"`): Sáng tác tiểu thuyết dài kỳ, manga, thế giới quan và diễn biến tâm lý sâu sắc.
+    2. `[2] Doodle Explainer` (Style key: `"doodle-explainer"`): Biên kịch video người que đồ đá giải thích kiến thức TikTok / YouTube Shorts.
+    3. `[3] Chế độ mở rộng` (Chưa có / Đang suy nghĩ ở bước tiếp theo): Placeholder cho các chế độ tiếp theo.
+  - Đặt tên cụ thể cho 2 style (`"novel-manga"` và `"doodle-explainer"`), loại bỏ phụ thuộc vào `style == "default"`.
+  - Phân tách độc lập kho prompt, voice và reference cho từng mode trong `assets/`:
+    - `assets/prompts/modes/novel-manga/` vs `assets/prompts/modes/doodle-explainer/` (Writer, Architect-Short, Architect-Long, Editor).
+    - `assets/voices/novel-manga.md` vs `assets/voices/doodle-explainer.md`.
+    - `assets/references/modes/novel-manga/` vs `assets/references/modes/doodle-explainer/`.
+    - Style: `assets/styles/novel-manga.md` vs `assets/styles/doodle-explainer.md`.
+  - Cơ chế nạp động theo style trong `assets/load.go`.
+  - Cô lập kiểm tra `lintScript` trong `internal/tools/commit_chapter.go` chỉ dành riêng cho `doodle-explainer`.
   - Tự động kích hoạt, cập nhật runtime và ghi nhận vào `.ainovel/config.json`.
   - Hỗ trợ auto-loading file `.env` cục bộ cho các khóa API (Tavily...).
   - Bộ kiểm thử unit test và toàn bộ repo 36 packages pass 100%.
