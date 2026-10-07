@@ -70,6 +70,9 @@ func TestLoad_NoOverrides(t *testing.T) {
 	if b.References.TiktokSafety == "" {
 		t.Fatal("thiếu tài liệu tham khảo TiktokSafety (tiktok-content-safety.md)")
 	}
+	if b.References.HumorRelatability == "" {
+		t.Fatal("thiếu tài liệu tham khảo HumorRelatability (humor-relatability.md)")
+	}
 }
 
 func TestInterventionPromptsKeepScopeContract(t *testing.T) {

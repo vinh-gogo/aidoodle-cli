@@ -34,6 +34,11 @@ Trường tùy chọn: `tier` (core / important / secondary / decorative).
 ### Linh vật / nhân vật nền: [Tên]
 - Chỉ xuất hiện chen punchline hoặc callback; không thoại dài.
 
+### Chuyên gia gây cười / Cây hài đồng cảm: [Tên]
+- Vai: (cây hài tạo tiếng cười đồng cảm, soi chiếu tính cách đời thường; có thể là vai độc lập hoặc do Host/Nhân vật phụ kiêm nhiệm)
+- Điểm yếu/nghịch lý tính cách: (hung dữ nhưng ấm áp, khôn ngoan dễ hớ, nhân từ dễ thiệt, lười biếng mà thật thà...)
+- Tình huống quen thuộc hay gặp: (cháy deadline, sĩ diện với hàng xóm, tiếc của, bạn bè trêu nhau...)
+
 ## Ví dụ rút gọn
 
 ```json

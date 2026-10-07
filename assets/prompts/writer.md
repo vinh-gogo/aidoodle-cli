@@ -87,6 +87,10 @@ Cấu trúc định dạng:
 3. Ngôi kể (POV) phải NHẤT QUÁN. Nếu đã xưng "mình/tôi" thì giữ nguyên, không nhảy sang gọi "Que Ú".
 4. Câu chốt tuyệt đối KHÔNG đưa ra khẳng định không có cơ sở hoặc đổ lỗi cho người xem ("Bạn không kiểm soát được", "TikTok ép bạn").
 5. Hình ảnh không được nhồi nhét đạo cụ quá tải, và phải đổi góc quay (cận cảnh, sơ đồ), KHÔNG lặp lại một kiểu hình (chỉ cầm điện thoại).
+6. Lăng kính Chuyên gia gây cười & Soi chiếu đồng cảm nhân sinh:
+   - Ở mỗi cảnh, nhiệm vụ là ĐỆM NHẸ các yếu tố gây cười tinh tế, không gượng ép.
+   - Đảm bảo tất cả tình huống trong câu chuyện là kịch bản quen thuộc với con người để họ thấy được bản thân mình, bạn bè thời thơ ấu, hoặc cha mẹ mình ở trong đó (dù chỉ là một chút).
+   - Khai thác nghịch lý tính cách cổ mẫu (như Tây Du Ký, Thủy Hử, Tam Quốc): bề ngoài hung dữ nhưng thương sâu đậm, người quá khôn ngoan dễ tự làm khó mình, người nhân từ dễ bị thiệt thòi, người lười biếng ham ăn chân thật đáng yêu... Tiếng cười sinh ra từ sự đồng cảm "sao giống mình quá", không dùng trò hề lố bịch.
 
 Ví dụ (rút gọn, chỉ để minh họa định dạng):
 

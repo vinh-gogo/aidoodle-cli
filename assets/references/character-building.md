@@ -2,12 +2,29 @@
 
 Dàn nhân vật là "diễn viên cố định" của kênh. Người xem phải nhận ra họ trong 1 giây và đoán được họ sẽ phản ứng thế nào, rồi bị bất ngờ đúng một chút.
 
-## Bốn vai cơ bản
+## Các vai cơ bản
 
 1. Host (người dẫn): đại diện người xem, hỏi những gì người xem thắc mắc, làm bản lề sang khái niệm hiện đại. Cả tin hoặc tò mò để có chỗ "được dạy"; hay vướng rắc rối để có hình hài hước.
 2. Nhân vật phụ: mỗi người gánh một chức năng: thủ lĩnh khoe mẽ, người bán hàng lạnh lùng, bà thầy bói cho lời khuyên sai, kẻ cơ hội.
 3. Linh vật: một con vật/vật nhỏ không thoại (mammoth mắt tròn, con chim đá). Dùng cho punchline hình ảnh và callback.
 4. Đối trọng: nhân vật phản ý host, đại diện cho hiểu lầm phổ biến ("Cứ in thêm tiền đi cho giàu!"). Giúp giải thích bằng tranh luận ngắn thay vì giảng.
+5. Chuyên gia gây cười (Cây hài đồng cảm): có thể do một nhân vật phụ hoặc chính Host kiêm nhiệm — nhiệm vụ đệm nhẹ các yếu tố gây cười tinh tế, soi chiếu các thói quen đời thường để người xem thấy chính mình/bạn bè/cha mẹ mình trong đó.
+
+## Soi chiếu tính cách con người: Bài học từ Tây Du Ký, Thủy Hử, Tam Quốc
+
+Tại sao các tác phẩm kinh điển như Tây Du Ký, Thủy Hử (108 anh hùng), Tam Quốc Diễn Nghĩa lại sống mãi và ai xem cũng thấy hay? Vì mỗi nhân vật là một **cổ mẫu tâm lý con người** vô cùng quen thuộc và đa chiều:
+- **Người hung dữ / cộc cằn bên ngoài -> Ẩn chứa sự yêu thương rất sâu đậm:**
+  (Như Trương Phi, Lý Quỳ thô ráp nhưng chí tình chí nghĩa; Tôn Ngộ Không ngang tàng nhưng xả thân che chở sư phụ; giống như người cha nghiêm khắc hay càu nhàu nhưng âm thầm thức đêm lo lắng cho con). Khi đưa vào que đồ đá: càu nhàu mắng mỏ bạn nhưng tay kia vẫn chia củ mài nướng to nhất cho bạn, hoặc đứng chắn trước mặt bạn khi nghe thú dữ gầm.
+- **Người quá thông minh / toan tính khôn khéo -> Dễ tự làm khổ mình, dễ "ngã ngựa":**
+  (Như Dương Tu, Chu Du, Bàng Thống mưu mô sắc sảo nhưng hay chủ quan, toan tính quá đà thành tự hại mình; giống như đứa bạn hay nghĩ mẹo tắt lách luật để rồi tự vấp té cay đắng). Khi đưa vào que đồ đá: tính kế chia vỏ sò ăn lời nhất, kết cục vỏ sò rơi xuống suối hoặc bị cả làng đổi thành vỏ sò vô giá trị.
+- **Người quá nhân từ / cả nể -> Dễ bị hãm hại, dễ rơi vào thế khó:**
+  (Như Đường Tăng từ bi cả tin yêu quái, Lưu Bị cả nể; giống như người hiền lành ai nhờ gì cũng nhận, sợ người khác buồn để rồi một mình gánh hết việc đến kiệt sức). Khi đưa vào que đồ đá: hiền khô ai mượn củi sưởi cũng cho, cuối cùng cả hang ấm cúng còn mình ngồi run cầm cập ôm hai que củi ẩm.
+- **Người lười biếng / ham ăn ham ngủ -> Chân thật, phản chiếu phần "con" rất đỗi con người:**
+  (Như Trư Bát Giới tham ăn, ngại khó, hễ gặp chuyện là đòi chia hành lý, nhưng thật thà, vô tư; đại diện cho những thói quen đời thường ai cũng có). Khi đưa vào que đồ đá: luôn tìm cớ "nghỉ 5 phút", mắt sáng rực khi thấy thịt nướng, lười vận động nhưng khi cần bảo vệ bạn bè thì lao vào bất chấp.
+- **Người trung hậu / chịu thương chịu khó -> Điểm tựa thầm lặng:**
+  (Như Sa Tăng cần mẫn gánh hành lý, ít khi tranh cãi; là hình ảnh những con người bình dị, kiên trì, không ồn ào nhưng là xương sống của mọi tập thể). Khi đưa vào que đồ đá: que luôn đi sau cùng gom nhặt đồ rơi rớt, không nói câu triết lý nào nhưng luôn là người giữ đống lửa không bị tắt.
+
+Mỗi kịch bản phải là một **tấm gương soi chiếu đời thường**: người xem phải thấy được một mẩu của mình ("mình cũng từng lười/từng sĩ diện/từng sợ như vậy"), của bạn bè ("thằng này y hệt thằng bạn chí cốt mình"), hoặc của cha mẹ trong từng hành động của các que.
 
 ## Sáng tạo tên và hình tượng theo chủ đề
 

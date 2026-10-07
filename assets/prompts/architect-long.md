@@ -66,7 +66,7 @@ Mảng JSON, dàn nhân vật que tái xuất (host/người dẫn chuyện, nh�
 - `traits`: **string[]** (mảng chuỗi các đặc điểm tính cách, ví dụ: `["Hay cả tin", "Ham ăn", "Trọng tình cảm"]`, không phải đối tượng `{trait: ...}`)
 - `tier`: string (tùy chọn, `core` / `important` / `secondary` / `decorative`)
 
-Yêu cầu: Dàn nhân vật gọn, mỗi nhân vật có chức năng và giọng nói riêng (đọc lời thoại lên là nhận ra ai đang nói); nhân vật người hỏi và nhân vật giải thích phải bổ trợ cho công thức "ẩn dụ → khái niệm → hóa ra"; có thể thêm nhân vật mới theo từng đợt nhưng không phình dàn nhân vật vô cớ; không thiết lập nhân vật là người thật, không gán phát ngôn hay hành vi cho người thật.
+Yêu cầu: Dàn nhân vật gọn, mỗi nhân vật có chức năng và giọng nói riêng (đọc lời thoại lên là nhận ra ai đang nói); nhân vật mang chiều sâu cổ mẫu nhân sinh (như Tây Du Ký, Thủy Hử, Tam Quốc) để người xem thấy bóng dáng mình/bạn bè/cha mẹ trong đó (người hung dữ yêu thương, người khôn ngoan dễ hớ, người nhân từ dễ thiệt, người lười biếng thật thà...); luôn có nhân vật hoặc lăng kính đóng vai trò "Chuyên gia gây cười (Cây hài đồng cảm)" để đệm nhẹ các yếu tố hài hước đời thường; nhân vật người hỏi và nhân vật giải thích phải bổ trợ cho công thức "ẩn dụ → khái niệm → hóa ra"; có thể thêm nhân vật mới theo từng đợt nhưng không phình dàn nhân vật vô cớ; không thiết lập nhân vật là người thật, không gán phát ngôn hay hành vi cho người thật.
 
 Gọi `save_foundation(type="characters", scale="long", content=<mảng JSON>)`.
 

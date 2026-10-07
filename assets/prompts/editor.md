@@ -84,6 +84,7 @@ Kiểm tra từng chiều, mỗi chiều chỉ cần đưa ra **điểm số (0-
 - Lời thoại và hành vi nhân vật có phù hợp với thiết lập giọng nói, tính cách, câu cửa miệng trong `characters` không.
 - Đọc lời lên có phân biệt được ai đang nói không (người hỏi ngây ngô vs người giải thích vs kẻ hoài nghi).
 - Vai trò của từng nhân vật trong tập có hợp lý; nhân vật không bị "đổi giọng" vô cớ giữa các tập.
+- Tính cách nhân vật có chiều sâu cổ mẫu nhân sinh (như Tây Du Ký, Thủy Hử, Tam Quốc) và phản chiếu đời thực không (người hung dữ thương sâu, người khôn ngoan dễ hớ, người nhân từ dễ thiệt, người lười biếng thật thà...); người xem có thấy được bóng dáng mình, bạn bè, bố mẹ mình trong đó không.
 
 #### Chiều 3: Nhịp 3 giây và thời lượng (pacing)
 - Hook 0:00 - 0:03 vào thẳng chủ đề; không có phần dạo đầu dài; mỗi khối (CẢNH) chỉ gánh một ý, nhịp chuyển cảnh đều và đủ nhanh cho video ngắn.
@@ -114,7 +115,7 @@ Thẩm định phẩm chất của nguyên văn kịch bản. Mỗi tiêu chí p
 - **Lời đọc nói được**: Câu ngắn, rõ, đọc to không vấp; không câu quá dài hay lắt léo; không thuật ngữ khó mà không giải thích; không văn viết khô khan hoặc giọng AI (điệp ba vế, khái quát trừu tượng, câu rập khuôn); tiêu chuẩn khử văn phong AI lấy `reference_pack.references.anti_ai_tone` làm chuẩn, trích dẫn đoạn vi phạm và chỉ ra cách sửa. Tần suất từ sáo rỗng đã được `working_memory.user_rules.structured` kiểm tra cơ học, issue trực tiếp trích dẫn `rule_violations.target`, không liệt kê từ ngữ riêng lẻ.
 - **Hình vẽ được**: Mỗi `HÌNH:` mô tả được bằng nét vẽ que/hoạt ảnh đơn giản, cụ thể (ai, làm gì, vật gì, chuyển động gì), khớp với `LỜI:` cùng khối; không mô tả hình quá phức tạp hay mơ hồ ("cảnh đẹp").
 - **Ẩn dụ đúng**: Ẩn dụ đồ đá có tương ứng thật với khái niệm hiện đại (không làm sai bản chất), dễ hiểu ngay với người xem, được dùng nhất quán trong tập và đúng luật vũ trụ doodle.
-- **Hài**: Có điểm cười/tình huống bất ngờ thực sự không; hài đến từ sự tương phản giữa người đá và thế giới hiện đại chứ không từ chế giễu cá nhân thật hay nhóm người; không giải thích câu đùa quá lố.
+- **Hài & Đồng cảm nhân sinh (Chuyên gia gây cười)**: Có đệm nhẹ các yếu tố gây cười tinh tế không (xem `reference_pack.references.humor_relatability`); tình huống có quen thuộc với đời sống con người để người xem giật mình thấy bản thân hoặc người quen trong đó không; tiếng cười đến từ sự tương phản giữa người đá và hiện đại cùng các thói quen đời thường (cháy deadline, so bì, lười biếng thật thà...), tuyệt đối không dùng trò đùa thô bỉ, công kích cá nhân hay giải thích câu đùa quá lố.
 - **Thống kê hóa toàn series (style_stats)**: `episodic_memory.style_stats` (nếu có) là thống kê xác định bằng mã lệnh đối với các tập đã viết: mô thức câu (patterns), đoản ngữ tần suất cao (top_phrases), câu lặp từng chữ xuyên tập (repeated_sentences), hình thức kết (ending), v.v. Khi một mô thức nào đó bất thường rõ rệt hoặc cùng một câu lặp lại xuyên nhiều tập, bắt buộc phải tạo issue trong aesthetic (vấn đề tiêu đề quy về consistency) và trích dẫn trực tiếp số liệu. Thống kê chỉ cung cấp dữ kiện, việc có cấu thành lỗi hay không do bạn phán quyết.
 
 ### 3b. Quy tắc người dùng (user_rules)
