@@ -29,7 +29,7 @@ Kiến trúc lõi là một **Engine xác định (Deterministic Engine)** đi�
 ## Điểm nổi bật
 
 - **Chuyên biệt hóa Doodle Explainer Tiếng Việt**: Nhân vật que thời đồ đá (Gù, Tộc trưởng, Sói Đá...) dùng góc nhìn tiền sử để ẩn dụ hài hước và mổ xẻ những vấn đề thời sự hiện đại (AI, lạm phát, chứng khoán, thuật toán, áp lực đồng trang lứa...).
-- **Quy cách kịch bản chuẩn nhịp 3 giây**: Mỗi tập là 1 video thời lượng 60–180s (~150–450 từ LỜI đọc), phân tách rõ ràng các trường: `LỜI:`, `HÌNH:`, `ÂM:` (bỏ hẳn phần `CHỮ:`, mọi thông điệp thể hiện qua lời đọc và hình vẽ), kết thúc bằng hook loop và chân kịch bản metadata.
+- **Quy cách kịch bản chuẩn Doodle Explainer từ 5 phút**: Mỗi tập là 1 video thời lượng từ 5 phút trở lên (khoảng 5-8 phút / 300–480s, ~750–1200 từ LỜI đọc), phân chia 5 giai đoạn mạch lạc (Hook 3s, Đặt vấn đề & kết nối đời thực, Thân bài 3 chặng có Tái Hook mỗi 60-90s, Reframe & hành động nhỏ, Chốt loop đúc kết), phân tách rõ ràng các trường: `LỜI:`, `HÌNH:`, `ÂM:` (bỏ hẳn phần `CHỮ:`, mọi thông điệp thể hiện qua lời đọc và hình vẽ), kết thúc bằng hook loop và chân kịch bản metadata.
 - **Tự động thu nạp xu hướng (Trend Intake)**: Tích hợp sẵn bộ thu nạp RSS từ Google Trends Việt Nam và VnExpress. Cơ chế khử trùng lặp và Arbiter tự động lọc các chủ đề rác, nhạy cảm, chỉ giữ lại những chủ đề có tính thảo luận cao và phù hợp với góc nhìn đồ đá viral.
 - **Bám nguồn dữ kiện (Fact-grounding) & An toàn nội dung**: Tuân thủ nghiêm ngặt Luật An ninh mạng 2018, Nghị định 15/2020/NĐ-CP (Điều 101) và Tiêu chuẩn cộng đồng TikTok. Dữ liệu chưa đủ căn cứ bắt buộc phải liệt kê trong thẻ `CẦN KIỂM CHỨNG:`.
 - **Cổng duyệt người (Human Gate)**: Mặc định series theo xu hướng khởi chạy ở chế độ `review`. Chỉ khi người sáng tạo duyệt qua `/next` (hoặc `--next` ở headless), kịch bản tiếp theo mới được tiến hành sản xuất.
@@ -46,22 +46,35 @@ Mỗi tập video (`chapter`) được viết theo chuẩn định dạng nghiê
 ```markdown
 # Tiêu đề video hấp dẫn (Không clickbait lừa dối)
 
-HOOK (0-3s)
+HOOK 0:00-0:03
 LỜI: [Lời đọc mở đầu giật hook giữ chân người xem]
 HÌNH: [Mô tả nét vẽ que đơn giản, biểu cảm phóng đại]
-ÂM: [Hiệu ứng âm thanh hoặc nhạc nền]
 
-CẢNH 1 (3-15s)
-LỜI: [Lời giải thích súc tích, tự nhiên, văn phong nói]
+CẢNH 1 0:03-0:45
+LỜI: [Phần đầu: Đặt vấn đề đời thực quen thuộc, tạo lời hứa hẹn/tiền đề ẩn dụ]
+HÌNH: [Nhân vật que trong tình huống đời thường dở khóc dở cười]
+ÂM: [Nhạc nền hoặc tiếng động nhẹ]
+
+CẢNH 2 0:45-1:45
+LỜI: [Phần thân Chặng 1: Thiết lập ẩn dụ cốt lõi, mâu thuẫn ban đầu]
 HÌNH: [Hành động hài hước của nhân vật đồ đá]
-ÂM: [Tiếng gõ đá, tiếng gió...]
 
-...
+CẢNH 3 1:45-2:45
+LỜI: [Phần thân Chặng 2: Tái Hook 1, đào sâu cơ chế, phản trực giác]
+HÌNH: [Sơ đồ que hoặc cú lật tình huống]
+ÂM: [Hiệu ứng âm thanh kịch tính]
 
-CHỐT (Cuối video)
-LỜI: [Câu đúc kết bất ngờ, kêu gọi thảo luận hoặc loop lại câu đầu]
-HÌNH: [Cảnh kết tương tác với người xem]
-ÂM: [Nhạc ngắt nhịp]
+CẢNH 4 2:45-3:45
+LỜI: [Phần thân Chặng 3: Tái Hook 2, cao trào, liên hệ thực tế hiện đại]
+HÌNH: [Tương phản giữa người đá và công sở/điện thoại]
+
+CẢNH 5 3:45-4:30
+LỜI: [Phần Reframe & Hành động: Đổi góc nhìn nhận thức + việc nhỏ làm được ngay]
+HÌNH: [Nhân vật ngộ ra, hành động tự tin nhẹ nhõm]
+
+CHỐT 4:30-5:15
+LỜI: [Đúc kết bất ngờ, Loop Hook về đầu video hoặc câu hỏi mở kêu gọi bình luận]
+HÌNH: [Cảnh kết tương tác với người xem, nút theo dõi và hộp bình luận]
 
 CAPTION: [Mô tả ngắn gọn thu hút người xem đọc thêm]
 HASHTAG: #doodle #explainer #trend #xuhuong #kienthuc
