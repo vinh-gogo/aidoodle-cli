@@ -1,20 +1,7 @@
-{
-  "nbformat": 4,
-  "nbformat_minor": 4,
-  "metadata": {
-    "colab": {
-      "provenance": []
-    },
-    "kernelspec": {
-      "name": "python3",
-      "display_name": "Python 3",
-      "language": "python"
-    },
-    "language_info": {
-      "name": "python"
-    }
-  },
-  "cells": [
+import json
+import os
+
+cells = [
     {
       "cell_type": "markdown",
       "metadata": {},
@@ -26,7 +13,7 @@
     {
       "cell_type": "code",
       "metadata": {},
-      "execution_count": null,
+      "execution_count": None,
       "outputs": [],
       "source": [
         "!pip install pyngrok huggingface_hub --quiet\n",
@@ -60,7 +47,7 @@
     {
       "cell_type": "code",
       "metadata": {},
-      "execution_count": null,
+      "execution_count": None,
       "outputs": [],
       "source": [
         "import os\n",
@@ -131,7 +118,7 @@
     {
       "cell_type": "code",
       "metadata": {},
-      "execution_count": null,
+      "execution_count": None,
       "outputs": [],
       "source": [
         "from pyngrok import ngrok\n",
@@ -155,5 +142,26 @@
         "    sys.stdout.flush()\n"
       ]
     }
-  ]
+]
+
+notebook = {
+    "nbformat": 4,
+    "nbformat_minor": 4,
+    "metadata": {
+        "colab": {
+            "provenance": []
+        },
+        "kernelspec": {
+            "name": "python3",
+            "display_name": "Python 3",
+            "language": "python"
+        },
+        "language_info": {
+            "name": "python"
+        }
+    },
+    "cells": cells
 }
+
+with open('kaggle/colab-llama-cpp-ngrok.ipynb', 'w', encoding='utf-8') as f:
+    json.dump(notebook, f, ensure_ascii=False, indent=2)
