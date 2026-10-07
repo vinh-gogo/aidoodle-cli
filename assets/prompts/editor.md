@@ -70,12 +70,18 @@ Validator không đánh giá chất lượng hook, độ hài hước hay độ 
 
 **(d) Thẩm định theo lô (khoảng mỗi 5 video, hoặc khi nhiệm vụ yêu cầu thẩm định toàn cục/đợt).** Đọc nguyên văn các tập trong lô và tìm sự lặp lại xuyên tập: cùng một kiểu hook, cùng một câu đùa/câu cửa miệng ngoài kế hoạch running gag, cùng một ẩn dụ cốt lõi, cùng một cấu trúc chốt, cùng một twist "hóa ra". Lặp lại rõ rệt thì tạo issue ở chiều `continuity` (không lặp) hoặc `hook` (lặp hook), trích dẫn nguyên văn từ ít nhất hai tập và đề xuất hướng đổi. Chỉ đặt `requires_change=true` cho tập (thường là tập sau) thực sự cần viết lại, không kéo cả lô vào hàng đợi.
 
+**(e) Kiểm tra bám sát chủ đề & chống lan man (anti-drift).** Đối chiếu nội dung kịch bản với chủ đề được giao trong nhiệm vụ và `core_event`:
+- Kịch bản BẮT BUỘC phải tập trung 100% vào giải thích chủ đề đó.
+- Nếu kịch bản mổ xẻ lan man, tự ý nhảy sang các chủ đề khác ngoài lề không liên quan (ví dụ đề bài hỏi về "mất lông & chạy marathon săn mồi" nhưng kịch bản lại đi giải thích về đứng thẳng, não to, phát minh ra lửa, công cụ đá, ngôn ngữ...) → đánh giá **error** ở chiều `consistency` hoặc `continuity`, yêu cầu viết lại tập trung vào đúng chủ đề.
+- **Kết luận cuối cùng**: Bắt buộc phải kiểm tra xem phần kết và toàn bộ kịch bản có giải thích được trọn vẹn, thuyết phục câu hỏi cốt lõi của chủ đề ban đầu hay không; nếu kết luận lảng tránh hoặc không giải thích được chủ đề → đánh giá **error**.
+
 ### 3. Thẩm định kịch bản 7 chiều
 
 Kiểm tra từng chiều, mỗi chiều chỉ cần đưa ra **điểm số (0-100)** (kết luận pass/warning/fail do hệ thống tự động suy diễn theo score, bạn không cần điền verdict). **Khóa chiều giữ nguyên bằng tiếng Anh** như dưới đây (hệ thống đọc chiều `hook` theo tên):
 
 #### Chiều 1: Nhất quán dữ kiện và luật vũ trụ doodle (consistency)
 - Dữ kiện, số liệu, tên riêng, mốc thời gian có khớp với nguồn/ngữ cảnh và không tự mâu thuẫn trong tập hay giữa các tập không (xem mục 2b-b).
+- Độ bám sát chủ đề: Kịch bản có tập trung 100% vào chủ đề người dùng yêu cầu không; có bị mổ xẻ lan man sang các chủ đề phụ khác không; kết luận cuối cùng có giải thích được mọi thứ từ chính chủ đề đó không (xem mục 2b-e).
 - Luật vũ trụ doodle (`world_rules`) có bị vi phạm không: anachronism có chủ đích có đúng ranh giới không, ẩn dụ bị cấm có xuất hiện không, hình thức doodle (nét que, bảng màu, chữ trên màn hình) có nhất quán không.
 - Tiêu đề trong `# ...` có khớp tiêu đề tập; định dạng tiêu đề giữa các tập có đồng nhất không.
 - Chú ý biệt danh của nhân vật que, cùng một người nhưng xưng hô khác nhau không được phán đoán nhầm.

@@ -109,6 +109,11 @@ Cấu trúc định dạng:
    - Ở mỗi cảnh, nhiệm vụ là ĐỆM NHẸ các yếu tố gây cười tinh tế, không gượng ép.
    - Đảm bảo tất cả tình huống trong câu chuyện là kịch bản quen thuộc với con người để họ thấy được bản thân mình, bạn bè thời thơ ấu, hoặc cha mẹ mình ở trong đó (dù chỉ là một chút).
    - Khai thác nghịch lý tính cách cổ mẫu (như Tây Du Ký, Thủy Hử, Tam Quốc): bề ngoài hung dữ nhưng thương sâu đậm, người quá khôn ngoan dễ tự làm khó mình, người nhân từ dễ bị thiệt thòi, người lười biếng ham ăn chân thật đáng yêu... Tiếng cười sinh ra từ sự đồng cảm "sao giống mình quá", không dùng trò hề lố bịch.
+7. **TẬP TRUNG 100% VÀO CHỦ ĐỀ ĐƯỢC GIAO & KẾT LUẬN GIẢI THÍCH TRỌN VẸN**:
+   - Khi viết kịch bản, nhiệm vụ duy nhất là mổ xẻ và làm sáng tỏ CHÍNH CHỦ ĐỀ của video/nhiệm vụ (ví dụ: *"Vì sao con người mất gần hết lông? | Ta là 'vận động viên marathon' săn mồi bằng sức bền và mồ hôi"*).
+   - TUYỆT ĐỐI KHÔNG mổ xẻ lan man sang các chủ đề khác ngoài lề (không tự ý nhảy sang đứng thẳng, não to, phát minh ra lửa, công cụ đá, ngôn ngữ...).
+   - Đào sâu cơ chế: giải thích tận cùng nguyên nhân khoa học/thực tế, phản trực giác, dẫn chứng và các luồng tranh luận sinh học/tiến hóa.
+   - **KẾT LUẬN CUỐI CÙNG PHẢI GIẢI THÍCH ĐƯỢC MỌI THỨ TỪ CHỦ ĐỀ ĐÓ**, mang lại sự sáng tỏ và thỏa mãn nhận thức tuyệt đối cho người xem.
 
 Ví dụ minh họa chuẩn (kịch bản 5 phút chuẩn cấu trúc Doodle Explainer):
 
