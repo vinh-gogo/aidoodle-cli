@@ -175,9 +175,12 @@ func (p *WriterRestorePack) Clear() {
 // The hook performs no I/O — it only reads the in-memory pack under a read lock.
 func (p *WriterRestorePack) Hook() corecontext.PostSummaryHook {
 	return func(_ context.Context, _ corecontext.SummaryInfo, _ []agentcore.AgentMessage, room int) ([]agentcore.AgentMessage, error) {
+		if room <= 0 {
+			return nil, nil
+		}
 		msg, ok, err := p.buildMessage(min(restoreBudgetTokens, room))
 		if err != nil {
-			return nil, err
+			return nil, nil
 		}
 		if !ok {
 			return nil, nil

@@ -268,6 +268,10 @@ func BuildWorkers(
 		ContextManagerFactory: func(model agentcore.ChatModel) agentcore.ContextManager {
 			// 每章按当前 writer 模型重建上下文管理器。
 			window, _ := models.ResolveContextWindow(bootstrap.ModelProvider(model), bootstrap.ModelName(model))
+			keepRecent := 20000
+			if window > 0 && window/3 < keepRecent {
+				keepRecent = max(4000, window/3)
+			}
 			return newContextManager(contextManagerConfig{
 				Model:         model,
 				ContextWindow: window,
@@ -281,7 +285,7 @@ func BuildWorkers(
 				ExtraStrategies: []corecontext.Strategy{
 					ctxpack.NewStoreSummaryCompact(ctxpack.StoreSummaryCompactConfig{
 						Store:            store,
-						KeepRecentTokens: 20000,
+						KeepRecentTokens: keepRecent,
 					}),
 				},
 				Summary: &corecontext.FullSummaryConfig{
