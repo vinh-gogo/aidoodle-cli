@@ -32,24 +32,39 @@ func (t *SaveFoundationTool) Label() string { return "Lưu thiết lập" }
 func (t *SaveFoundationTool) ReadOnly(_ json.RawMessage) bool        { return false }
 func (t *SaveFoundationTool) ConcurrencySafe(_ json.RawMessage) bool { return false }
 
+type foundationArgs struct {
+	Type           string          `json:"type"`
+	Kind           string          `json:"kind"`
+	Category       string          `json:"category"`
+	FoundationType string          `json:"foundation_type"`
+	Target         string          `json:"target"`
+	Name           string          `json:"name"`
+	Content        json.RawMessage `json:"content"`
+	Scale          string          `json:"scale"`
+	Reason         string          `json:"reason"`
+	Premise        json.RawMessage `json:"premise"`
+	Outline        json.RawMessage `json:"outline"`
+	LayeredOutline json.RawMessage `json:"layered_outline"`
+	Characters     json.RawMessage `json:"characters"`
+	WorldRules     json.RawMessage `json:"world_rules"`
+}
+
 func (t *SaveFoundationTool) Schema() map[string]any {
 	return schema.Object(
-		schema.Property("type", schema.Enum("Loại thiết lập", "premise", "outline", "layered_outline", "characters", "world_rules", "append_volume", "update_compass", "complete_book")).Required(),
-		schema.Property("content", schema.String("Nội dung. Với premise truyền chuỗi Markdown; các type khác truyền chuỗi JSON hoặc đối tượng JSON.")).Required(),
+		schema.Property("type", schema.Enum("Loại thiết lập: 'premise' (series bible), 'outline' (dàn ý các tập), 'characters' (dàn nhân vật que), 'world_rules' (luật vũ trụ doodle), 'layered_outline', 'append_volume', 'update_compass', 'complete_book'", "premise", "outline", "layered_outline", "characters", "world_rules", "append_volume", "update_compass", "complete_book")),
+		schema.Property("content", schema.String("Nội dung cần lưu. Với premise truyền chuỗi Markdown; các type khác truyền chuỗi JSON hoặc đối tượng/mảng JSON.")),
 		schema.Property("scale", schema.Enum("Cấp độ kế hoạch", "short", "mid", "long")),
 		schema.Property("reason", schema.String("Lý do phán định cuối quyển (bắt buộc khi append_volume / complete_book): đối chiếu danh sách kiểm tra hoàn tất, nêu một câu vì sao tiếp tục quyển mới, tuyên bố quyển kết thúc hay hoàn tất")),
 	)
 }
 
 func (t *SaveFoundationTool) Execute(_ context.Context, args json.RawMessage) (json.RawMessage, error) {
-	var a struct {
-		Type    string          `json:"type"`
-		Content json.RawMessage `json:"content"`
-		Scale   string          `json:"scale"`
-		Reason  string          `json:"reason"`
-	}
+	var a foundationArgs
 	if err := json.Unmarshal(args, &a); err != nil {
 		return nil, fmt.Errorf("invalid args: %w: %w", errs.ErrToolArgs, err)
+	}
+	if err := t.resolveFoundationTypeAndContent(&a); err != nil {
+		return nil, err
 	}
 	content, err := normalizeFoundationContent(a.Content)
 	if err != nil {
@@ -404,7 +419,7 @@ func offsetToLineCol(s string, offset int) (int, int) {
 
 func normalizeFoundationContent(raw json.RawMessage) (string, error) {
 	if len(raw) == 0 {
-		return "", fmt.Errorf("content is required: %w", errs.ErrToolArgs)
+		return "", fmt.Errorf("save_foundation: thiếu tham số 'content' (nội dung cần lưu): %w", errs.ErrToolArgs)
 	}
 
 	var text string
@@ -416,6 +431,160 @@ func normalizeFoundationContent(raw json.RawMessage) (string, error) {
 		return "", fmt.Errorf("invalid content: expected Markdown string or valid JSON value: %w", errs.ErrToolArgs)
 	}
 	return string(raw), nil
+}
+
+func normalizeFoundationType(raw string) string {
+	s := strings.ToLower(strings.TrimSpace(raw))
+	switch s {
+	case "premise", "series_bible", "bible", "tiền đề", "tổng quan":
+		return "premise"
+	case "outline", "dàn ý", "episodes", "danh sách tập", "flat_outline":
+		return "outline"
+	case "layered_outline", "dàn ý phân tầng":
+		return "layered_outline"
+	case "characters", "nhân vật", "dàn nhân vật", "character", "chars":
+		return "characters"
+	case "world_rules", "quy tắc thế giới", "luật vũ trụ", "rules", "rule":
+		return "world_rules"
+	case "append_volume", "thêm quyển":
+		return "append_volume"
+	case "update_compass", "cập nhật la bàn":
+		return "update_compass"
+	case "complete_book", "hoàn tất sách":
+		return "complete_book"
+	default:
+		return raw
+	}
+}
+
+func (t *SaveFoundationTool) resolveFoundationTypeAndContent(a *foundationArgs) error {
+	// 1. Nếu LLM truyền trường trực tiếp tương ứng (ví dụ: save_foundation(premise="...")):
+	if a.Type == "" {
+		switch {
+		case len(a.Premise) > 0:
+			a.Type = "premise"
+			a.Content = a.Premise
+		case len(a.Outline) > 0:
+			a.Type = "outline"
+			a.Content = a.Outline
+		case len(a.LayeredOutline) > 0:
+			a.Type = "layered_outline"
+			a.Content = a.LayeredOutline
+		case len(a.Characters) > 0:
+			a.Type = "characters"
+			a.Content = a.Characters
+		case len(a.WorldRules) > 0:
+			a.Type = "world_rules"
+			a.Content = a.WorldRules
+		}
+	}
+
+	// 2. Nếu LLM dùng tên khóa khác như kind, category, foundation_type, target, name:
+	if a.Type == "" {
+		for _, alt := range []string{a.Kind, a.Category, a.FoundationType, a.Target, a.Name} {
+			if alt != "" {
+				a.Type = alt
+				break
+			}
+		}
+	}
+
+	// 3. Nếu content là đối tượng JSON chứa type hoặc lồng content bên trong:
+	if len(a.Content) > 0 {
+		var innerObj map[string]json.RawMessage
+		if json.Unmarshal(a.Content, &innerObj) == nil {
+			if a.Type == "" {
+				for _, k := range []string{"type", "kind", "category", "foundation_type"} {
+					if raw, ok := innerObj[k]; ok {
+						var it string
+						if json.Unmarshal(raw, &it) == nil && it != "" {
+							a.Type = it
+							break
+						}
+					}
+				}
+			}
+			if innerContent, ok := innerObj["content"]; ok && len(innerContent) > 0 {
+				a.Content = innerContent
+			}
+		}
+	}
+
+	a.Type = normalizeFoundationType(a.Type)
+
+	// 4. Nếu vẫn chưa có type, suy luận từ cấu trúc nội dung content:
+	if a.Type == "" && len(a.Content) > 0 {
+		a.Type = t.inferTypeFromRawContent(a.Content)
+		if a.Type != "" {
+			slog.Info("save_foundation: tự động phục hồi type bị thiếu từ nội dung", "inferred_type", a.Type)
+		}
+	}
+
+	// 5. Nếu vẫn chưa có type, kiểm tra hạng mục còn thiếu trong store:
+	if a.Type == "" {
+		if missing, err := t.store.FoundationMissing(); err == nil && len(missing) > 0 {
+			a.Type = missing[0]
+			slog.Info("save_foundation: tự động phục hồi type từ thiết lập còn thiếu trong store", "inferred_type", a.Type)
+		}
+	}
+
+	if a.Type == "" {
+		return fmt.Errorf("save_foundation: thiếu tham số 'type' (loại thiết lập). BẮT BUỘC phải truyền type là một trong các giá trị: 'premise', 'outline', 'characters', 'world_rules'. Ví dụ: save_foundation(type=\"premise\", content=\"...\"): %w", errs.ErrToolArgs)
+	}
+
+	a.Type = normalizeFoundationType(a.Type)
+	return nil
+}
+
+func (t *SaveFoundationTool) inferTypeFromRawContent(raw json.RawMessage) string {
+	var text string
+	if json.Unmarshal(raw, &text) == nil {
+		trimmed := strings.TrimSpace(text)
+		if strings.HasPrefix(trimmed, "#") || strings.Contains(trimmed, "## Kênh và khán giả") ||
+			strings.Contains(trimmed, "## Giọng kể") || strings.Contains(trimmed, "## Công thức video") ||
+			strings.Contains(trimmed, "## Luật vũ trụ") || strings.Contains(trimmed, "## Series bible") {
+			return "premise"
+		}
+		if strings.HasPrefix(trimmed, "[") || strings.HasPrefix(trimmed, "{") {
+			if inferred := inferTypeFromJSONBytes([]byte(trimmed)); inferred != "" {
+				return inferred
+			}
+		}
+		return ""
+	}
+	return inferTypeFromJSONBytes(raw)
+}
+
+func inferTypeFromJSONBytes(raw []byte) string {
+	var arr []map[string]any
+	if json.Unmarshal(raw, &arr) == nil && len(arr) > 0 {
+		first := arr[0]
+		if _, ok := first["chapter"]; ok {
+			return "outline"
+		}
+		if _, ok := first["role"]; ok || first["traits"] != nil || first["arc"] != nil {
+			return "characters"
+		}
+		if _, ok := first["category"]; ok && (first["rule"] != nil || first["boundary"] != nil) {
+			return "world_rules"
+		}
+	}
+	var obj map[string]any
+	if json.Unmarshal(raw, &obj) == nil {
+		if _, ok := obj["volumes"]; ok {
+			return "layered_outline"
+		}
+		if _, ok := obj["arc_outlines"]; ok {
+			return "append_volume"
+		}
+		if _, ok := obj["direction"]; ok {
+			return "update_compass"
+		}
+		if _, ok := obj["chapter"]; ok {
+			return "outline"
+		}
+	}
+	return ""
 }
 
 // recordVolumeEndDecision 把卷末三选一（续卷/收官/完结）的判定理由落进裁定审计。
