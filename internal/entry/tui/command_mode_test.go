@@ -41,8 +41,8 @@ func TestModeCommand_ExecutionOpensModal(t *testing.T) {
 	if updated.modeSelect == nil {
 		t.Fatal("Chạy /mode phải khởi tạo modeSelect state")
 	}
-	if len(updated.modeSelect.options) != 3 {
-		t.Fatalf("modeSelect phải có đúng 3 tùy chọn chế độ, nhận được %d", len(updated.modeSelect.options))
+	if len(updated.modeSelect.options) != 4 {
+		t.Fatalf("modeSelect phải có đúng 4 tùy chọn chế độ, nhận được %d", len(updated.modeSelect.options))
 	}
 	if updated.modeSelect.options[0].Title != "Tiểu thuyết / Manga" {
 		t.Errorf("Tùy chọn 1 phải là Tiểu thuyết / Manga, nhận: %s", updated.modeSelect.options[0].Title)
@@ -55,6 +55,12 @@ func TestModeCommand_ExecutionOpensModal(t *testing.T) {
 	}
 	if !updated.modeSelect.options[2].Available {
 		t.Error("Tùy chọn 3 (Tâm lý học hành vi) phải có Available = true")
+	}
+	if updated.modeSelect.options[3].Title != "Tiểu thuyết Lịch sử Việt Nam" {
+		t.Errorf("Tùy chọn 4 phải là Tiểu thuyết Lịch sử Việt Nam, nhận: %s", updated.modeSelect.options[3].Title)
+	}
+	if !updated.modeSelect.options[3].Available {
+		t.Error("Tùy chọn 4 (Tiểu thuyết Lịch sử Việt Nam) phải có Available = true")
 	}
 	if updated.textarea.Focused() {
 		t.Fatal("Textarea phải bị blur khi mở modal lựa chọn chế độ")
@@ -174,6 +180,26 @@ func TestModeSelect_SelectBehavioralPsychology(t *testing.T) {
 	}
 }
 
+func TestModeSelect_SelectVietnameseHistory(t *testing.T) {
+	m := Model{
+		textarea:   textarea.New(),
+		width:      100,
+		height:     30,
+		modeSelect: newModeSelectState(nil, 100, 30),
+	}
+
+	// Chọn phím 4 (Tiểu thuyết Lịch sử Việt Nam)
+	res, _ := m.handleModeSelectKey(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'4'}})
+	m = res.(Model)
+
+	if m.modeSelect != nil {
+		t.Fatal("Sau khi ấn '4', modal phải đóng")
+	}
+	if !m.textarea.Focused() {
+		t.Fatal("Textarea phải được focus sau khi chọn")
+	}
+}
+
 func TestModeSelect_DismissEscAndQ(t *testing.T) {
 	t.Run("Dismiss with Esc", func(t *testing.T) {
 		m := Model{
@@ -223,6 +249,9 @@ func TestModeSelect_RenderModal(t *testing.T) {
 	}
 	if !strings.Contains(view, "Doodle Explainer") {
 		t.Fatal("View phải chứa lựa chọn Doodle Explainer")
+	}
+	if !strings.Contains(view, "Tiểu thuyết Lịch sử Việt Nam") {
+		t.Fatal("View phải chứa lựa chọn Tiểu thuyết Lịch sử Việt Nam")
 	}
 
 	nilView := renderModeSelectModal(100, 30, nil)

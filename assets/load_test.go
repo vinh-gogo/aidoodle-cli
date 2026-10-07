@@ -99,6 +99,14 @@ func TestLoad_DistinctModesNovelAndDoodle(t *testing.T) {
 	if !strings.Contains(bPsych.Voice, "người bạn thông thái, đồng cảm và hóm hỉnh") {
 		t.Fatalf("Chế độ behavioral-psychology phải nạp voice tâm lý học hành vi, nhận được: %s", bPsych.Voice[:100])
 	}
+
+	bHistory := Load("vietnamese-history", LoadOptions{})
+	if !strings.Contains(bHistory.Prompts.Writer, "Bạn là tác giả tiểu thuyết lịch sử Việt Nam") {
+		t.Fatalf("Chế độ vietnamese-history phải nạp prompt tác giả lịch sử, nhận được: %s", bHistory.Prompts.Writer[:100])
+	}
+	if !strings.Contains(bHistory.Voice, "nhà chép sử đầy tâm huyết") {
+		t.Fatalf("Chế độ vietnamese-history phải nạp voice tiểu thuyết lịch sử, nhận được: %s", bHistory.Voice[:100])
+	}
 }
 
 func TestInterventionPromptsKeepScopeContract(t *testing.T) {
