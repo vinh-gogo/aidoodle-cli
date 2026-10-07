@@ -78,6 +78,14 @@ _Last updated: 2026-10-06 (initial bootstrap)_
   - Giải quyết triệt để vấn đề "1 đoạn văn dài 40-60s nhưng chỉ có 1 hình ảnh gây chết hình": Bắt buộc phân tách cảnh thành các cặp `LỜI:` - `HÌNH:` xen kẽ liên tục (mỗi câu thoại 10-20 từ / 3-6s đi liền ngay một thẻ HÌNH tương ứng). Cập nhật `docs/script-format.md`, `writer.md`, `editor.md`, `chapter-guide.md`, `chapter-template.md`, `doodle-visual-language.md`, `writer-golden.md`.
 - [x] **Khắc phục lỗi LLM Repetition Loop (Degeneration Trap)**:
   - Phân tích hiện tượng model lặp vô tận (ví dụ `- true\n- true...`). Hướng dẫn cấu hình `extra_body` với `frequency_penalty: 0.3`, `presence_penalty: 0.2`, `temperature: 0.7`, `repetition_penalty: 1.1`.
+- [x] **Tích hợp Tavily Search & Crawl cho cơ sở khoa học & kiểm chứng** (commit `942b895`):
+  - Tạo gói `internal/tavily/` (`Client`, `Search`, `Crawl`, `Extract`, `SearchAndBuildSourcePack`).
+  - Tạo 2 LLM tools: `tavily_search` và `tavily_crawl` trong `internal/tools/` cho Architect và Writer.
+  - Tự động tra cứu Tavily Search khi khởi tạo chủ đề mới (`StartPrepared`), tự động lưu `SourcePack` vào `outputDir/meta/trends/sources/`.
+  - Nạp `source_pack` tự động vào `novel_context` của cả Architect và Writer.
+  - Cập nhật prompt: bắt buộc trích dẫn bài báo/tạp chí uy tín và URL vào thẻ `NGUỒN:`, nêu các điểm khoa học tranh luận/giả thuyết đối trọng vào `CẦN KIỂM CHỨNG:`.
+  - Tái tạo `assets/testdata/writer-golden.md` chính xác từng byte.
+  - Toàn bộ test của 36 package pass 100%.
 
 ## Verified on this machine
 - [x] `go build ./...` / `go vet ./...` / `go test -buildvcs=false -count=1 ./assets/... ./internal/tools/...` green.

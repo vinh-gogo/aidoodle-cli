@@ -15,7 +15,14 @@ Repo đã hoàn tất chuyển đổi toàn diện từ novel-writing engine san
 
 ## Recent Milestones & Commits (2026-10-07)
 
-1. **`93d868a` — Enforce 1:1 Alternating Voice-Visual Pairs Per Scene**:
+1. **`942b895` — Integrate Tavily Search & Crawl for Scientific Grounding and Fact Verification**:
+   - Tích hợp Tavily Search & Crawl API làm nền tảng kiểm chứng khoa học.
+   - Tạo package `internal/tavily/` với client đầy đủ (Search, Crawl, Extract, SearchAndBuildSourcePack).
+   - Bổ sung 2 công cụ LLM: `tavily_search` và `tavily_crawl` cho Architect và Writer.
+   - Tự động tìm kiếm tài liệu từ nguồn uy tín (VietnamPlus, Dân trí, KhoaHoc.tv, Nature...) và nạp `source_pack` khi khởi tạo chủ đề mới.
+   - Bắt buộc trích dẫn bài báo/URL vào thẻ `NGUỒN:` và các giả thuyết/luận điểm tranh luận vào thẻ `CẦN KIỂM CHỨNG:`.
+
+2. **`93d868a` — Enforce 1:1 Alternating Voice-Visual Pairs Per Scene**:
    - Khắc phục lỗi đoạn thoại dài 40–60 giây nhưng chỉ có 1 mô tả hình ảnh.
    - Bắt buộc chia nhỏ thành các beat 3–6 giây: mỗi câu thoại `LỜI:` có ngay một thẻ `HÌNH:` tương ứng mô tả hành động, biểu cảm que, đạo cụ.
    - Cập nhật đồng bộ: `docs/script-format.md`, `assets/prompts/writer.md`, `assets/prompts/editor.md`, `assets/references/chapter-guide.md`, `assets/references/chapter-template.md`, `assets/references/doodle-visual-language.md`, `assets/testdata/writer-golden.md`.
