@@ -89,9 +89,17 @@ func isPsychologyMode(style string) bool {
 	return style == "behavioral-psychology" || style == "psychology"
 }
 
+// isVietnameseHistoryMode kiểm tra xem một style có thuộc về chế độ Tiểu thuyết Lịch sử Việt Nam hay không.
+func isVietnameseHistoryMode(style string) bool {
+	style = strings.ToLower(strings.TrimSpace(style))
+	return style == "vietnamese-history" || style == "history" || style == "lich-su"
+}
+
 func loadVoice(style string, opts LoadOptions) string {
 	voiceFile := "voice.md"
-	if isNovelMode(style) {
+	if isVietnameseHistoryMode(style) {
+		voiceFile = "voices/vietnamese-history.md"
+	} else if isNovelMode(style) {
 		voiceFile = "voices/novel-manga.md"
 	} else if isPsychologyMode(style) {
 		voiceFile = "voices/behavioral-psychology.md"
@@ -168,7 +176,9 @@ func loadReferences(style string, opts LoadOptions) tools.References {
 		style = "doodle-explainer"
 	}
 	refPrefix := "references/modes/doodle-explainer/"
-	if isNovelMode(style) {
+	if isVietnameseHistoryMode(style) {
+		refPrefix = "references/modes/vietnamese-history/"
+	} else if isNovelMode(style) {
 		refPrefix = "references/modes/novel-manga/"
 	} else if isPsychologyMode(style) {
 		refPrefix = "references/modes/behavioral-psychology/"
@@ -226,7 +236,9 @@ func loadPrompts(styles ...string) Prompts {
 	}
 
 	modeSubdir := "modes/doodle-explainer"
-	if isNovelMode(style) {
+	if isVietnameseHistoryMode(style) {
+		modeSubdir = "modes/vietnamese-history"
+	} else if isNovelMode(style) {
 		modeSubdir = "modes/novel-manga"
 	} else if isPsychologyMode(style) {
 		modeSubdir = "modes/behavioral-psychology"

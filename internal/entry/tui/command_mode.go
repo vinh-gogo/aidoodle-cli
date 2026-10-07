@@ -77,6 +77,21 @@ func defaultAIModeOptions() []aiModeOption {
 				"Thí nghiệm khoa học có nguồn & Cú hích thực chiến (Nudge)",
 			},
 		},
+		{
+			ID:          "vietnamese-history",
+			Number:      4,
+			Title:       "Tiểu thuyết Lịch sử Việt Nam",
+			Badge:       "⚔️ Nhân vật Lịch sử",
+			StyleKey:    "vietnamese-history",
+			Available:   true,
+			Description: "Sáng tác tiểu thuyết tái hiện hào khí nhân vật lịch sử Việt Nam, tra cứu chính sử qua Tavily Search, khai phá toàn diện chân dung nhân vật, bối cảnh trong nước & quốc tế, và những nghịch cảnh sinh tử.",
+			Features: []string{
+				"Khai phá toàn diện chân dung & nội tâm nhân vật",
+				"Tái hiện bối cảnh trong nước & quốc tế đa tầng",
+				"Đối diện hiểm nguy & quyết định sinh tử bi tráng",
+				"Tra cứu & kiểm chứng dữ liệu sử học qua Tavily Search",
+			},
+		},
 	}
 }
 
@@ -98,7 +113,8 @@ func newModeSelectState(rt *host.Host, width, height int) *modeSelectState {
 		if opt.Available {
 			if opt.StyleKey == curStyle || 
 			   (opt.StyleKey == "novel-manga" && isNovelMode(curStyle)) ||
-			   (opt.StyleKey == "behavioral-psychology" && isPsychologyMode(curStyle)) {
+			   (opt.StyleKey == "behavioral-psychology" && isPsychologyMode(curStyle)) ||
+			   (opt.StyleKey == "vietnamese-history" && isVietnameseHistoryMode(curStyle)) {
 				initialCursor = i
 				break
 			}
@@ -117,12 +133,17 @@ func newModeSelectState(rt *host.Host, width, height int) *modeSelectState {
 
 func isNovelMode(style string) bool {
 	style = strings.ToLower(strings.TrimSpace(style))
-	return style == "novel-manga" || style == "novel" || style == "manga" || style == "fantasy" || style == "romance" || style == "suspense" || style == "vietnamese-history" || style == "default"
+	return style == "novel-manga" || style == "novel" || style == "manga" || style == "fantasy" || style == "romance" || style == "suspense" || style == "default"
 }
 
 func isPsychologyMode(style string) bool {
 	style = strings.ToLower(strings.TrimSpace(style))
 	return style == "behavioral-psychology" || style == "psychology" || style == "psychological"
+}
+
+func isVietnameseHistoryMode(style string) bool {
+	style = strings.ToLower(strings.TrimSpace(style))
+	return style == "vietnamese-history" || style == "history" || style == "lich-su"
 }
 
 func (s *modeSelectState) isOptionActive(opt aiModeOption) bool {
@@ -134,6 +155,9 @@ func (s *modeSelectState) isOptionActive(opt aiModeOption) bool {
 	}
 	if opt.StyleKey == "behavioral-psychology" {
 		return isPsychologyMode(s.currentStyle)
+	}
+	if opt.StyleKey == "vietnamese-history" {
+		return isVietnameseHistoryMode(s.currentStyle)
 	}
 	return s.currentStyle == opt.StyleKey
 }
@@ -302,8 +326,8 @@ func (m Model) handleModeSelectKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 			m.modeSelect = nil
 			return m, m.textarea.Focus()
 		default:
-			// Phím số 1-3 để chọn nhanh
-			if r >= '1' && r <= '3' {
+			// Phím số 1-4 để chọn nhanh
+			if r >= '1' && r <= '4' {
 				idx := int(r - '1')
 				if idx < numOpts {
 					chosen := state.options[idx]
