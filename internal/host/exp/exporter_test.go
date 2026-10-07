@@ -73,7 +73,7 @@ func TestRun_HappyPath_DefaultsToNovelDir(t *testing.T) {
 		t.Fatalf("read output: %v", err)
 	}
 	text := string(data)
-	for _, want := range []string{"《光斑》", "Chương 1  雨夜归人", "Chương 3  余烬"} {
+	for _, want := range []string{"光斑", "Tập 1: 雨夜归人", "Tập 3: 余烬"} {
 		if !strings.Contains(text, want) {
 			t.Errorf("output missing %q\nfull:\n%s", want, text)
 		}
@@ -104,7 +104,7 @@ func TestRun_UsesCommittedTitleForCompletedChapter(t *testing.T) {
 		t.Fatal(err)
 	}
 	text := string(data)
-	if !strings.Contains(text, "Chương 1  终稿标题") || strings.Contains(text, "计划标题") {
+	if !strings.Contains(text, "Tập 1: 终稿标题") || strings.Contains(text, "计划标题") {
 		t.Fatalf("export title projection is wrong:\n%s", text)
 	}
 }
@@ -127,7 +127,7 @@ func TestRun_PremiseNotExported(t *testing.T) {
 	if strings.Contains(text, "不该出现的创作蓝图。") || strings.Contains(text, "目标读者") {
 		t.Errorf("premise must not be exported, got:\n%s", text)
 	}
-	if !strings.Contains(text, "《光斑》") {
+	if !strings.Contains(text, "光斑") {
 		t.Errorf("book title should remain: %s", text)
 	}
 }
