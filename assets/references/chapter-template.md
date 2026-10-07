@@ -12,29 +12,59 @@ LỜI: {8-12 từ, câu hook giật mình thấy bản thân hoặc nghịch lý
 HÌNH: {hình vẽ que mở màn, biểu cảm phóng đại}
 
 CẢNH 1 0:03-0:45
-LỜI: {khoảng 90-110 từ: đặt vấn đề đời thực quen thuộc, tạo lời hứa hẹn/tiền đề ẩn dụ}
-HÌNH: {nhân vật que trong bối cảnh đời thường, biểu cảm dở khóc dở cười}
+LỜI: {câu 1, 10-15 từ: mở đầu tình huống đời thực quen thuộc}
+HÌNH: {mô tả hình vẽ que câu 1}
+LỜI: {câu 2, 10-15 từ: chi tiết đời sống khiến người xem giật mình thấy bản thân}
+HÌNH: {mô tả hình vẽ que câu 2}
+LỜI: {câu 3, 10-15 từ: tiền đề ẩn dụ ngộ nghĩnh dẫn dắt vào chủ đề}
+HÌNH: {mô tả hình vẽ que câu 3}
+LỜI: {câu 4, 10-15 từ: lời hứa hẹn giải mã điều bí ẩn phía sau}
+HÌNH: {mô tả hình vẽ que câu 4}
 ÂM: {nhạc nền hoặc tiếng động nhẹ}
 
 CẢNH 2 0:45-1:45
-LỜI: {khoảng 140-160 từ: chặng 1 thân bài - thiết lập ẩn dụ cốt lõi, tình huống ban đầu nảy sinh mâu thuẫn}
-HÌNH: {thế giới đồ đá với các hoạt động trao đổi, săn bắn ngộ nghĩnh}
+LỜI: {câu 1: chặng 1 thân bài - thiết lập ẩn dụ đồ đá ban đầu}
+HÌNH: {mô tả hình vẽ que câu 1}
+LỜI: {câu 2: mô tả chi tiết hoạt động đồ đá ngộ nghĩnh}
+HÌNH: {mô tả hình vẽ que câu 2}
+LỜI: {câu 3: nảy sinh mâu thuẫn hoặc điểm vô lý}
+HÌNH: {mô tả hình vẽ que câu 3}
+LỜI: {câu 4: đẩy mâu thuẫn lên một nấc}
+HÌNH: {mô tả hình vẽ que câu 4}
 
 CẢNH 3 1:45-2:45
-LỜI: {khoảng 140-160 từ: chặng 2 thân bài - Tái Hook 1, đào sâu cơ chế, chỉ ra phản trực giác}
-HÌNH: {sơ đồ que hoặc cú lật tình huống bất ngờ}
+LỜI: {câu 1: chặng 2 thân bài - Tái Hook 1, giật lại sự chú ý}
+HÌNH: {mô tả hình vẽ que câu 1}
+LỜI: {câu 2: chỉ ra phản trực giác, tại sao cách nghĩ cũ sai}
+HÌNH: {mô tả hình vẽ que câu 2}
+LỜI: {câu 3: đào sâu cơ chế khoa học/thực tế đằng sau}
+HÌNH: {mô tả sơ đồ que hoặc hình minh họa cơ chế câu 3}
+LỜI: {câu 4: kết nối cơ chế với câu hỏi cốt lõi}
+HÌNH: {mô tả hình vẽ que câu 4}
 ÂM: {tiếng chuông hoặc hiệu ứng kịch tính}
 
 CẢNH 4 2:45-3:45
-LỜI: {khoảng 140-160 từ: chặng 3 thân bài - Tái Hook 2, cao trào bùng nổ, liên hệ trực tiếp thế giới hiện đại}
-HÌNH: {so sánh tương phản giữa người đá và công sở/điện thoại ngày nay}
+LỜI: {câu 1: chặng 3 thân bài - Tái Hook 2, cao trào bùng nổ}
+HÌNH: {mô tả hình vẽ que câu 1}
+LỜI: {câu 2: liên hệ trực tiếp thế giới hiện đại/công sở/deadline}
+HÌNH: {mô tả so sánh tương phản giữa người đá và hiện đại}
+LỜI: {câu 3: phân tích hiện tượng tương tự mà người xem đang gặp}
+HÌNH: {mô tả hình vẽ que câu 3}
+LỜI: {câu 4: kết luận chặng phân tích}
+HÌNH: {mô tả hình vẽ que câu 4}
 
 CẢNH 5 3:45-4:30
-LỜI: {khoảng 100-120 từ: Reframe đổi góc nhìn nhận thức + gợi mở hành động nhỏ làm được ngay}
-HÌNH: {nhân vật ngộ ra, thực hiện hành động cụ thể với phong thái nhẹ nhõm}
+LỜI: {câu 1: Reframe đổi góc nhìn nhận thức mới}
+HÌNH: {mô tả hình que ngộ ra chân lý}
+LỜI: {câu 2: giải thích ý nghĩa tích cực đằng sau vấn đề}
+HÌNH: {mô tả hình vẽ que câu 2}
+LỜI: {câu 3: gợi mở hành động nhỏ cụ thể làm được ngay}
+HÌNH: {mô tả hành động thực tế với phong thái nhẹ nhõm}
 
 CHỐT 4:30-5:15
-LỜI: {khoảng 70-90 từ: đúc kết bất ngờ, Loop Hook về đầu video hoặc câu hỏi mở kêu gọi tương tác}
+LỜI: {câu 1: đúc kết bất ngờ, Loop Hook quay về câu mở đầu video}
+HÌNH: {mô tả hình que kết nối với hình ảnh đầu video}
+LỜI: {câu 2: câu hỏi mở kêu gọi tương tác bình luận và bấm follow}
 HÌNH: {cảnh kết chào khán giả, tương tác với biểu tượng follow và comment}
 
 CAPTION: {1-2 câu tóm tắt giá trị cốt lõi, có từ khóa hấp dẫn}
@@ -43,7 +73,7 @@ NGUỒN: không có (kiến thức nền)
 CẦN KIỂM CHỨNG: không có
 ```
 
-Quy ước nhanh: mỗi khối cách nhau một dòng trống; `CẢNH n` đánh số tăng từ 1; mốc giờ dạng m:ss nối tiếp nhau; mỗi khối đều có LỜI và HÌNH; tuyệt đối KHÔNG dùng thẻ `CHỮ:` (mọi thông điệp thể hiện qua lời đọc và hình vẽ); chủ đề kiến thức nền ghi `NGUỒN: không có (kiến thức nền)`.
+Quy ước nhanh: mỗi khối cách nhau một dòng trống; `CẢNH n` đánh số tăng từ 1; mốc giờ dạng m:ss nối tiếp nhau; trong mỗi khối, LỜI và HÌNH xen kẽ nhau 1:1 theo từng câu thoại (mỗi 3-6 giây đổi hình một lần, tuyệt đối không để hình tĩnh kéo dài); tuyệt đối KHÔNG dùng thẻ `CHỮ:` (mọi thông điệp thể hiện qua lời đọc và hình vẽ); chủ đề kiến thức nền ghi `NGUỒN: không có (kiến thức nền)`.
 
 ## Ví dụ hoàn chỉnh (~5 phút 15 giây, tâm lý học tiến hóa)
 

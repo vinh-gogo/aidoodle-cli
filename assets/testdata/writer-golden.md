@@ -93,9 +93,15 @@ Cấu trúc định dạng:
 - Dòng đầu: `# {Tiêu đề video}`.
 - Các khối cách nhau một dòng trống: đúng một `HOOK m:ss-m:ss` (đầu tiên, 0:00-0:03), các `CẢNH n m:ss-m:ss` (n tăng từ 1), đúng một `CHỐT m:ss-m:ss` (cuối cùng).
 - Thẻ trong khối, mỗi thẻ mở đầu một dòng:
-  + `LỜI:` lời đọc (câu ngắn <20 từ, một ý một câu, nói được ra miệng).
-  + `HÌNH:` mô tả hình vẽ que cụ thể (một cảnh = một ý = một hình chính, lời và hình bổ sung cho nhau, không lặp).
-  + `ÂM:` nhạc/hiệu ứng (tùy chọn).
+  + **Quy tắc BẮT BUỘC về cặp LỜI - HÌNH (Khớp nhịp 1:1 theo từng câu thoại - Tuyệt đối không để hình chết/tĩnh)**:
+    * Video hoạt hình doodle explainer phải đổi nét vẽ/chuyển cảnh liên tục mỗi 3 - 6 giây để giữ mắt người xem.
+    * **TUYỆT ĐỐI NGHIÊM CẤM** viết một đoạn văn LỜI dài 50-150 từ (40-60 giây) mà chỉ có đúng 1 thẻ HÌNH chung chung ở cuối!
+    * Trong mỗi khối cảnh (HOOK, CẢNH 1..5, CHỐT), phân chia thành **các cặp thẻ `LỜI:` và `HÌNH:` xen kẽ nhịp nhàng**:
+      - Mỗi câu thoại hoặc 1-2 câu ngắn (khoảng 10-20 từ, tương đương 3-6 giây) là một dòng `LỜI:`.
+      - NGAY DƯỚI dòng `LỜI:` đó BẮT BUỘC PHẢI LÀ một dòng `HÌNH:` mô tả trực tiếp hành động que, góc máy, biểu cảm hoặc sơ đồ minh họa cho câu thoại đó!
+      - Khi giọng đọc chuyển sang ý mới hoặc câu mới, lập tức có một cặp `LỜI:` và `HÌNH:` mới tiếp theo.
+      - Một CẢNH dài 40-60 giây (100-150 từ LỜI) BẮT BUỘC PHẢI CÓ TỪ 4 ĐẾN 8 CẶP `LỜI:` VÀ `HÌNH:` xen kẽ liên tục!
+  + `ÂM:` nhạc/hiệu ứng (tùy chọn, đặt cuối cảnh hoặc sau cặp LỜI-HÌNH có hiệu ứng).
   + TUYỆT ĐỐI KHÔNG dùng thẻ `CHỮ:` trong các cảnh (bỏ hẳn phần CHỮ, mọi nội dung truyền tải qua LỜI và HÌNH).
 - Chân kịch bản: `CAPTION:` (bắt buộc), `HASHTAG:` (bắt buộc, các thẻ `#...` cách nhau bằng khoảng trắng), `NGUỒN:` (bắt buộc; chủ đề kiến thức nền ghi `NGUỒN: không có (kiến thức nền)`), `CẦN KIỂM CHỨNG:` (dữ kiện khoa học/tâm lý/phân tích chưa chắc chắn, hoặc `không có`).
 
@@ -115,7 +121,7 @@ Cấu trúc định dạng:
    - Đào sâu cơ chế: giải thích tận cùng nguyên nhân khoa học/thực tế, phản trực giác, dẫn chứng và các luồng tranh luận sinh học/tiến hóa.
    - **KẾT LUẬN CUỐI CÙNG PHẢI GIẢI THÍCH ĐƯỢC MỌI THỨ TỪ CHỦ ĐỀ ĐÓ**, mang lại sự sáng tỏ và thỏa mãn nhận thức tuyệt đối cho người xem.
 
-Ví dụ minh họa chuẩn (kịch bản 5 phút chuẩn cấu trúc Doodle Explainer):
+Ví dụ minh họa chuẩn (kịch bản 5 phút chuẩn cấu trúc Doodle Explainer với các cặp LỜI - HÌNH xen kẽ):
 
 ```
 # Vì sao tiền cứ mất giá: bí mật củ khoai đồ đá
@@ -125,30 +131,80 @@ LỜI: Hôm qua củ khoai hai vỏ sò, hôm nay thành năm. Ai lấy mất ti
 HÌNH: Ugg người que giơ củ khoai nướng bốc khói, hai mắt tròn xoe nhìn bảng khắc đá giá tăng vọt.
 
 CẢNH 1 0:03-0:45
-LỜI: Chào mấy bạn, tui là Ugg, dân đồ đá chính hiệu. Mấy bạn có từng đi làm quần quật cả tháng, nhận lương thấy vui vui, nhưng bước chân vào tiệm tạp hóa mua gói mì, đổ bình xăng hay trả tiền cốc trà sữa thì giật mình nhận ra: ủa sao lương mình đứng yên mà giá mọi thứ cứ tự động leo thang? Có phải người bán hàng đang cố tình bắt chẹt bạn? Hay đồng tiền trong ví bạn tự nhiên bốc hơi? Ở thời đồ đá của tụi tui, câu chuyện này cũng diễn ra y hệt, nhưng hung thủ thật sự không nằm ở người bán, mà nằm ở một thứ tinh vi hơn rất nhiều.
-HÌNH: Ugg cầm giỏ đi chợ tiền sử, trước mặt là các sạp thịt mammoth, nấm rừng với bảng giá đá dựng đứng, biểu cảm dở khóc dở cười.
+LỜI: Chào mấy bạn, tui là Ugg, dân đồ đá chính hiệu.
+HÌNH: Ugg người que đứng vẫy tay chào vui vẻ trước cửa hang đá, miệng cười toe toét.
+LỜI: Mấy bạn có từng đi làm quần quật cả tháng, nhận lương thấy vui, nhưng bước vào tiệm tạp hóa mua đồ thì giật mình không?
+HÌNH: Cắt sang cảnh que văn phòng hiện đại cầm xấp tiền lương, bước vào cửa hàng tạp hóa mắt tròn xoe nhìn hóa đơn.
+LỜI: Ủa sao lương mình đứng yên mà giá gói mì, cốc trà sữa hay bình xăng cứ tự động leo thang vùn vụt?
+HÌNH: Bảng giá hàng hóa mọc cánh bay lên trời; que văn phòng vò đầu bứt tai, mặt méo xệch.
+LỜI: Có phải người bán hàng đang bắt chẹt bạn, hay đồng tiền trong ví bạn tự nhiên bốc hơi?
+HÌNH: Phóng to chiếc ví da: tiền bên trong biến thành làn khói bay mất, que ngơ ngác lục lọi.
+LỜI: Ở thời đồ đá tụi tui cũng y hệt, nhưng hung thủ thật sự lại nằm ở một thứ tinh vi hơn rất nhiều!
+HÌNH: Ugg người que nháy mắt bí hiểm, giơ ngón trỏ chỉ vào một bóng đen bí ẩn phía sau vách đá.
 ÂM: Tiếng thở dài nhẹ, nhạc bộ gõ rộn ràng.
 
 CẢNH 2 0:45-1:45
-LỜI: Để hiểu rõ, quay lại hang đá của bộ lạc tụi tui một chút. Thời đó chưa có giấy bạc hay thẻ ngân hàng, tụi tui dùng vỏ sò biển làm tiền để đổi chác. Muốn có vỏ sò, bạn phải lặn lội ra tận bãi đá ngầm xa xôi, vượt sóng lớn, trèo đèo lội suối cả ngày trời mới nhặt được một vài chiếc vỏ sò óng ánh. Nhặt vỏ sò mệt đứt hơi, nên trong bộ lạc, vỏ sò cực kỳ quý giá. Ai có mười vỏ sò là coi như có một khoản tích lũy mồ hôi nước mắt. Lúc này, cả thung lũng chỉ có một bác nông dân que chuyên trồng khoai mài. Cứ một ngày công nhặt được hai vỏ sò, bạn đổi được một củ khoai nướng thơm phức ăn no bụng. Bác nông dân vui vì có vỏ sò để đi đổi rìu đá của thợ rèn, bạn vui vì có củ khoai ăn. Mọi thứ cân bằng êm đềm suốt bao mùa săn bắn.
-HÌNH: Cảnh bãi biển sóng vỗ, Ugg cặm cụi mò từng vỏ sò; góc sau là bác nông dân que đang nướng khoai mài trên bếp lửa hồng, trao đổi vui vẻ.
+LỜI: Để hiểu rõ, quay lại hang đá của bộ lạc tụi tui một chút.
+HÌNH: Toàn cảnh thung lũng đồ đá nguyên sơ, khói bếp bốc lên từ các cửa hang.
+LỜI: Thời đó chưa có giấy bạc hay ngân hàng, tụi tui dùng vỏ sò biển làm tiền để trao đổi.
+HÌNH: Ugg xòe bàn tay cầm vài chiếc vỏ sò óng ánh khoe với người xem.
+LỜI: Muốn có vỏ sò, bạn phải lặn lội ra tận bãi đá ngầm xa xôi, vượt sóng lớn trèo đèo lội suối cả ngày trời.
+HÌNH: Ugg cặm cụi lặn ngụp dưới sóng biển cuồn cuộn, mồ hôi nhễ nhại mò từng vỏ sò kẹt trong khe đá.
+LỜI: Nhặt vỏ sò mệt đứt hơi, nên ai có mười chiếc là cả một gia tài mồ hôi nước mắt!
+HÌNH: Ugg ôm túi da đựng mười vỏ sò, thở phào nhẹ nhõm, lau mồ hôi trên trán cười mãn nguyện.
+LỜI: Lúc này cả thung lũng chỉ có bác nông dân que chuyên trồng khoai mài thơm phức.
+HÌNH: Bác nông dân que đang nướng những củ khoai mài béo ngậy trên bếp than hồng rực.
+LỜI: Cứ một ngày công nhặt được hai vỏ sò, bạn đổi được một củ khoai nướng ăn no căng bụng.
+HÌNH: Ugg trao hai vỏ sò cho bác nông dân, nhận củ khoai thơm lừng, hai bên bắt tay vui vẻ.
+LỜI: Bác nông dân vui vì có vỏ sò đổi rìu đá, bạn vui vì ấm bụng, mọi thứ cân bằng êm đềm suốt bao mùa săn bắn.
+HÌNH: Cân bằng hoàn hảo: một bên cân là hai vỏ sò, bên kia là một củ khoai nướng nằm ngang bằng.
 
 CẢNH 3 1:45-2:45
-LỜI: Nhưng chuyện quái gở bắt đầu khi một nhân vật tên là Grok xuất hiện. Ông Grok này lười đi săn nhưng lại cực kỳ ma mãnh. Một hôm, ông ta tình cờ phát hiện ra một cái hang bí mật ven biển, nơi bão đánh dạt hàng ngàn vỏ sò trôi dạt vào chất cao như núi. Thế là chẳng cần tốn một giọt mồ hôi, Grok vác về cả chục bao tải vỏ sò đầy ắp. Bỗng nhiên, Grok trở thành tỷ phú đô-la thời tiền sử chỉ sau một đêm. Có nhiều tiền quá thì làm gì? Grok chạy ngay ra sạp của bác nông dân, hét lớn: Bán cho tui hết sạch chỗ khoai này, tui trả gấp đôi, gấp ba! Bác nông dân tròn mắt sướng rơn, gom hết khoai bán cho Grok. Nhưng rồi ngày hôm sau, khi Ugg và những người dân lao động thật thà khác cầm hai vỏ sò mồ hôi nước mắt đến mua khoai, bác nông dân lắc đầu: Xin lỗi nghen, giờ khoai giá năm vỏ sò rồi!
-HÌNH: Grok người que mắt híp cười toe toét, đẩy chiếc xe cút kít đá chất đầy bao tải vỏ sò ập vào sạp khoai; Ugg đứng bên cạnh cầm hai vỏ sò lẻ loi ngơ ngác.
+LỜI: Nhưng chuyện quái gở bắt đầu khi một nhân vật tên là Grok xuất hiện.
+HÌNH: Grok người que lười biếng nằm khểnh dưới gốc cây, miệng ngậm cọng cỏ, mắt đảo quanh láu cá.
+LỜI: Một hôm, Grok tình cờ phát hiện ra một cái hang bí mật ven biển chứa hàng ngàn vỏ sò do bão dạt vào chất cao như núi!
+HÌNH: Grok đứng sững sờ trước một ngọn núi vỏ sò khổng lồ lấp lánh trong hang tối, mắt sáng rực hình vỏ sò.
+LỜI: Chẳng cần tốn một giọt mồ hôi, Grok vác về cả chục bao tải vỏ sò đầy ắp, thành tỷ phú tiền sử sau một đêm!
+HÌNH: Grok đẩy chiếc xe cút kít đá chất đầy bao tải vỏ sò cao ngất ngưởng chạy tung tăng khắp làng.
+LỜI: Có quá nhiều tiền, Grok chạy ngay ra sạp khoai hét lớn: Bán cho tui hết sạch khoai, tui trả giá gấp đôi, gấp ba!
+HÌNH: Grok ném tung tóe cả vốc vỏ sò vào sạp; bác nông dân que tròn mắt kinh ngạc gom hết khoai trao cho Grok.
+LỜI: Nhưng ngày hôm sau, khi Ugg cầm hai vỏ sò mồ hôi nước mắt đến mua khoai, bác nông dân lắc đầu: Khoai giờ giá năm vỏ sò rồi nghen!
+HÌNH: Bác nông dân que giơ năm ngón tay xua xua; Ugg cầm hai vỏ sò lẻ loi đứng chết lặng giữa gió thảo nguyên.
 ÂM: Tiếng chuông leng keng dồn dập, tiếng xôn xao hốt hoảng.
 
 CẢNH 4 2:45-3:45
-LỜI: Mấy bạn thấy điều gì vừa xảy ra không? Củ khoai mài trên bếp lửa đâu có to hơn, đâu có thơm ngon hơn hôm qua. Nó vẫn chỉ là một củ khoai bình thường. Cái thay đổi duy nhất là số lượng vỏ sò trong hang đá đã tăng gấp mười lần, trong khi số củ khoai vẫn y như cũ. Khi quá nhiều tiền cùng đuổi theo một lượng hàng hóa không đổi, thì từng đồng tiền buộc phải rẻ rúng đi. Đến thời hiện đại, vỏ sò được thay bằng những tờ giấy bạc in hình hoa văn đẹp đẽ và những con số nhảy múa trên màn hình ứng dụng điện thoại. Khi các cỗ máy ngân hàng trung ương in thêm tiền tràn ngập thị trường để kích thích kinh tế, thì chiếc bánh mì, ly cà phê hay căn nhà bạn mơ ước cũng y như củ khoai của Ugg. Lương của bạn tăng năm phần trăm, nhưng lượng tiền trong nền kinh tế tăng hai mươi phần trăm, thì thực chất bạn đang nghèo đi từng ngày mà không hề hay biết.
-HÌNH: Cán cân đá khổng lồ: một bên đĩa cân là núi vỏ sò nặng trĩu đè bẹp xuống, bên kia đĩa cân là củ khoai bay bổng lên cao; chuyển cảnh sang que hiện đại cầm điện thoại nhìn số dư tài khoản.
+LỜI: Mấy bạn thấy điều gì vừa xảy ra không?
+HÌNH: Ugg cầm củ khoai soi kính lúp phóng to xem xét kỹ lưỡng.
+LỜI: Củ khoai trên bếp đâu có to hơn hay thơm ngon hơn hôm qua, nó vẫn chỉ là củ khoai bình thường!
+HÌNH: Củ khoai nướng vẫn y nguyên kích thước cũ, không hề biến hình hay to thêm chút nào.
+LỜI: Cái thay đổi duy nhất là số lượng vỏ sò trong làng đã tăng gấp mười lần, trong khi số củ khoai vẫn y như cũ!
+HÌNH: Cán cân đá khổng lồ: đĩa cân bên vỏ sò chất nặng trĩu đè bẹp dí xuống đất, làm đĩa cân củ khoai bay vút lên trời.
+LỜI: Khi quá nhiều tiền cùng đuổi theo một lượng hàng hóa không đổi, thì từng đồng tiền buộc phải rẻ rúng đi.
+HÌNH: Những chiếc vỏ sò bị vẽ thêm mặt buồn thiu, rơi lả tả như lá rụng mùa thu.
+LỜI: Đến thời hiện đại, vỏ sò biến thành tiền giấy và những con số nhảy múa trên màn hình ứng dụng điện thoại.
+HÌNH: Chuyển cảnh nhanh: Vỏ sò biến hình thành xấp tiền polyme rồi biến thành các con số tài khoản ngân hàng trên smartphone.
+LỜI: Khi máy in tiền bơm ào ạt ra thị trường, ly cà phê hay căn nhà bạn mơ ước cũng y hệt củ khoai của Ugg.
+HÌNH: Ngôi nhà và ly cà phê hiện đại mọc cánh bay vút lên mây, que hiện đại nhảy với theo trong bất lực.
+LỜI: Lương bạn tăng năm phần trăm, nhưng lượng tiền nền kinh tế tăng hai mươi phần trăm, bạn thực chất đang nghèo đi từng ngày!
+HÌNH: Que hiện đại đứng trước gương: bên ngoài mặc vest chỉn chu nhưng chiếc ví sau túi xẹp lép bốc khói.
 
 CẢNH 5 3:45-4:30
-LỜI: Vậy nên, lần sau khi nghe tin giá bát phở tăng năm nghìn hay tiền thuê nhà tăng thêm một triệu, đừng vội bực tức trút giận lên cô bán phở hay chú chủ nhà. Họ cũng chỉ là những người que đang cố gắng giữ cho củ khoai của mình không bị vỏ sò nhấn chìm mà thôi. Thay vì ngồi than vãn hay giữ khư khư đống vỏ sò dưới gầm giường để nhìn nó bốc hơi từng ngày, người khôn ngoan thời nay học cách đổi vỏ sò lấy những tài sản thật sự có giá trị bền vững: học thêm kỹ năng để nâng cao giá trị bản thân, hoặc đầu tư vào những thứ không thể dễ dàng in thêm được.
-HÌNH: Ugg gật gù ngộ ra, bắt tay cô bán phở que; sau đó Ugg chuyển sang cầm búa đá mài giũa dụng cụ sắc bén, khuôn mặt tự tin, kiên định.
+LỜI: Vậy nên, lần sau thấy bát phở tăng giá hay tiền nhà tăng thêm, đừng vội trút giận lên cô bán hàng hay chú chủ nhà.
+HÌNH: Que hiện đại bắt tay hòa nhã với cô bán phở que; cô bán phở cũng thở dài chỉ vào hóa đơn nguyên liệu tăng.
+LỜI: Họ cũng chỉ là những người que đang gồng mình giữ cho củ khoai của họ không bị cơn lũ vỏ sò nhấn chìm mà thôi.
+HÌNH: Cả cô bán phở và người que cùng chèo chung một chiếc thuyền nhỏ giữa dòng nước lũ ngập tràn vỏ sò trôi dạt.
+LỜI: Thay vì giữ khư khư tiền dưới gầm giường nhìn nó bốc hơi, người khôn ngoan học cách đổi tiền lấy giá trị bền vững.
+HÌNH: Người que kéo chiếc rương tiền dưới gầm giường ra, thấy tiền đang tan chảy thành giọt nước.
+LỜI: Đầu tư nâng cao kỹ năng bản thân hoặc sở hữu những tài sản không thể in thêm, đó mới là chiếc khiên vững chắc nhất!
+HÌNH: Ugg cầm búa đá mài giũa dụng cụ săn bắt sắc bén; ánh mắt tự tin, kiên định nhìn về phía tương lai.
 
 CHỐT 4:30-5:15
-LỜI: Tiền không tự nhiên sinh ra và cũng không tự nhiên mất đi, nó chỉ chuyển từ túi người giữ tiền mặt sang túi người nắm giữ tài sản thật mà thôi. Bạn đang để vỏ sò của mình dưới gối hay đã đem đi đổi lấy công cụ lao động tốt hơn? Bình luận cho Ugg biết góc nhìn của bạn bên dưới nghen. Đừng quên bấm theo dõi kênh để cùng người que tụi tui giải mã những bí mật kinh tế thú vị tiếp theo.
-HÌNH: Ugg người que nháy mắt cười tươi, vẫy tay chào người xem cạnh đống lửa ấm áp; góc màn hình hiện biểu tượng nút theo dõi và hộp bình luận nhấp nháy.
+LỜI: Tiền không tự nhiên mất đi, nó chỉ chuyển từ túi người giữ tiền mặt sang túi người nắm giữ tài sản thật!
+HÌNH: Bàn tay que di chuyển thỏi vàng và công cụ lao động sang bên an toàn, đối lập với xấp tiền mặt đang bốc hơi.
+LỜI: Bạn đang để vỏ sò của mình nằm yên dưới gối hay đã đem đi đổi lấy công cụ giá trị hơn?
+HÌNH: Ugg chống cằm nghiêng đầu cười tò mò, chỉ tay về phía màn hình hỏi người xem.
+LỜI: Bình luận cho Ugg biết nghen, và đừng quên bấm theo dõi để cùng tụi tui giải mã thêm nhiều bí mật kinh tế nhé!
+HÌNH: Ugg và cả bộ lạc cùng vẫy tay chào thân thiện; nút Follow và hộp bình luận nhấp nháy rực rỡ bên cạnh.
 
 CAPTION: Củ khoai không đắt lên, vỏ sò mới rẻ đi. Bản chất lạm phát hiểu trong 5 phút cùng dân đồ đá.
 HASHTAG: #lamphat #kinhte #taichinh #doodle #kienthuc #giaithich #xuhuong

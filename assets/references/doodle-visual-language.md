@@ -10,9 +10,10 @@ Tài liệu này giúp viết thẻ `HÌNH:` sao cho một họa sĩ hoặc côn
 - Biểu đồ đơn giản: cột bằng đống đá chồng, đường xu hướng bằng vệt than. Chỉ dùng cột hoặc đường với con số có trong nguồn; không vẽ số liệu bịa.
 - Phóng đại hài hước: nhân vật phình to khi giận, co nhỏ khi sợ, nổ tung khi ngạc nhiên.
 
-## 2. Bố cục theo nhịp 3–5 giây
+## 2. Bố cục theo nhịp 3–5 giây (Khớp nhịp 1:1 giữa LỜI và HÌNH)
 
-- Mỗi nhịp 3–5 giây chỉ một ý hình. Nếu một câu LỜI dài hơn 5 giây, tách thành hai hình nối tiếp trong cùng khối.
+- Mỗi nhịp 3–5 giây chỉ một ý hình. Trong kịch bản, cứ mỗi câu thoại hoặc 1-2 câu ngắn trong `LỜI:` (10-20 từ) BẮT BUỘC có NGAY một thẻ `HÌNH:` tương ứng nối tiếp phía dưới.
+- TUYỆT ĐỐI KHÔNG viết một đoạn văn LỜI dài 30-60 giây mà chỉ có 1 thẻ HÌNH chung chung. Mỗi cảnh phải gồm 3-6 cặp `LỜI:` và `HÌNH:` xen kẽ liên tục để đảm bảo hình chuyển động theo từng câu nói của nhân vật.
 - Một khung chỉ 1–3 nhân vật chính; nền tối giản (một vạch đất, một hang, một cây).
 - Đặt điểm nhìn chính ở giữa hoặc một phần ba; chừa vùng trên cùng và dưới cùng cho chữ và nút giao diện của ứng dụng.
 - Giữ nhất quán: cùng nhân vật cùng phụ kiện qua mọi cảnh; mỗi tập chỉ một màu nhấn ngoài đen trắng.
