@@ -1,6 +1,6 @@
 {
   "provider": "kaggle-llama",
-  "model": "qwen-27b",
+  "model": "gemma-4-26b",
   "reasoning_effort": "off",
   "providers": {
     "kaggle-llama": {
@@ -9,7 +9,7 @@
       "base_url": "https://snowcapped-denice-unprudent.ngrok-free.dev/v1",
       "models": [
         {
-          "name": "qwen-27b",
+          "name": "gemma-4-26b",
           "context_window": 32768
         }
       ],
