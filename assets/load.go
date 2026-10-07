@@ -156,6 +156,7 @@ func loadReferences(style string, opts LoadOptions) tools.References {
 		DoodleVisual:      mustRead(referencesFS, "references/doodle-visual-language.md"),
 		FactGrounding:     mustRead(referencesFS, "references/fact-grounding.md"),
 		TiktokSafety:      mustRead(referencesFS, "references/tiktok-content-safety.md"),
+		HumorRelatability: mustRead(referencesFS, "references/humor-relatability.md"),
 	}
 	if style != "" && style != "default" {
 		genreDir := "references/genres/" + style + "/"
