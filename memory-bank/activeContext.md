@@ -15,20 +15,26 @@ Repo đã hoàn tất chuyển đổi toàn diện từ novel-writing engine san
 
 ## Recent Milestones & Commits (2026-10-07)
 
-0. **Branch `route` — 3 AI Working Modes (`/mode`)**:
-   - Xây dựng lệnh `/mode` (alias: `/topic`, `/topics`) trong TUI hiển thị bảng chọn modal overlay:
-     1. `[1] Tiểu thuyết / Manga` (Style key: `"novel-manga"`): Sáng tác tiểu thuyết dài tập, manga, phân chia hồi/quyển/chương, phát triển nhân vật và quy tắc thế giới chuyên sâu.
+0. **Branch `route` — 4 AI Working Modes (`/mode`)**:
+   - Xây dựng lệnh `/mode` (alias: `/topic`, `/topics`) trong TUI hiển thị bảng chọn modal overlay trực quan:
+     1. `[1] Tiểu thuyết / Manga` (Style key: `"novel-manga"`): Sáng tác tiểu thuyết dài tập, manga, thế giới quan đa tầng, chiều sâu tâm lý nhân vật và quy tắc thế giới chuyên sâu (tiểu thuyết văn xuôi 2.000 - 4.000 từ/chương).
      2. `[2] Doodle Explainer` (Style key: `"doodle-explainer"`): Biên kịch video người que đồ đá 5+ phút, nhịp 1:1 Thoại - Hình, phong cách dí dỏm viral TikTok / YouTube Shorts.
      3. `[3] Tâm lý học hành vi` (Style key: `"behavioral-psychology"`): Biên kịch video giải mã bẫy nhận thức, cơ chế não bộ (Não Bò Sát vs Não Lý Trí), thí nghiệm khoa học chuẩn xác và Cú hích hành vi (Nudge) thực chiến.
-   - Toàn bộ 3 style đều có tên định danh rõ ràng, không phụ thuộc vào `style == "default"`.
-   - Phân tách và nạp tài nguyên độc lập 100% cho cả 3 chế độ trong `assets/load.go`:
-     - Prompts: `assets/prompts/modes/{novel-manga, doodle-explainer, behavioral-psychology}/` (Writer, Architect-Short, Architect-Long, Editor).
-     - Voices: `assets/voices/{novel-manga, doodle-explainer, behavioral-psychology}.md`.
-     - References: `assets/references/modes/{novel-manga, doodle-explainer, behavioral-psychology}/` (17 file tài liệu tham khảo chuyên biệt cho từng mode).
+     4. `[4] Tiểu thuyết Lịch sử Việt Nam` (Style key: `"vietnamese-history"`): Sáng tác tiểu thuyết và dã sử hào sảng về các nhân vật lịch sử Việt Nam (2.000 - 4.000 từ/chương), đáp ứng 4 yêu cầu cốt lõi:
+        - **Tra cứu Tavily Search**: Tích hợp tra cứu internet/sử liệu để thu thập thông tin về nhân vật, trận đánh, triều đại và niên biểu.
+        - **Khai phá chân dung nhân vật toàn diện**: Tài năng, phẩm cách, lý tưởng, chiều sâu tâm can, góc khuất nội tâm và trăn trở của một con người thật trước vận mệnh dân tộc.
+        - **Khai phá bối cảnh lịch sử đa tầng**: Bối cảnh triều chính, phong tục, bá tánh trong nước và bàn cờ địa chính trị bang giao quốc tế phương Bắc & Đông Nam Á.
+        - **Khai phá nghịch cảnh sinh tử bi tráng**: Tương quan lực lượng chênh lệch, thù trong giặc ngoài, hiểm nguy ngàn cân treo sợi tóc và các quyết định chiến lược cân não.
+        - **Chuẩn mực giọng văn Đại Việt**: Giọng sử thi hào sảng, xưng hô chuẩn mực điển chế, tuyệt đối cấm từ ngữ convert kiếm hiệp Trung Quốc, 100% tiếng Việt sạch chữ Hán.
+   - Toàn bộ 4 style đều có tên định danh rõ ràng, không phụ thuộc vào `style == "default"`.
+   - Phân tách và nạp tài nguyên độc lập 100% cho cả 4 chế độ trong `assets/load.go`:
+     - Prompts: `assets/prompts/modes/{novel-manga, doodle-explainer, behavioral-psychology, vietnamese-history}/` (Writer, Architect-Short, Architect-Long, Editor).
+     - Voices: `assets/voices/{novel-manga, doodle-explainer, behavioral-psychology, vietnamese-history}.md`.
+     - References: `assets/references/modes/{novel-manga, doodle-explainer, behavioral-psychology, vietnamese-history}/` (đầy đủ các tài liệu tham khảo chuyên biệt cho từng mode).
      - Styles & Genres: `assets/styles/` và `assets/references/genres/` riêng biệt.
-   - Gated validation: `lintScript` trong `internal/tools/commit_chapter.go` áp dụng cho cả 2 mode video (`doodle-explainer` và `behavioral-psychology`), cô lập hoàn toàn khỏi `novel-manga`.
-   - Điều hướng mượt mà: phím mũi tên `↑`/`↓` hoặc `j`/`k`, phím số `1`-`3` để chọn nhanh, `Enter` để kích hoạt và ghi nhớ vào cấu hình dự án (`h.SetStyle(...)` -> `.ainovel/config.json`), `Esc`/`q` để đóng modal.
-   - Toàn bộ unit tests và full repo tests 36 packages pass 100%.
+   - Gated validation: `lintScript` trong `internal/tools/commit_chapter.go` chỉ áp dụng cho 2 mode video (`doodle-explainer` và `behavioral-psychology`), giải phóng hoàn toàn các mode tiểu thuyết văn xuôi (`novel-manga` và `vietnamese-history`).
+   - Điều hướng mượt mà: phím mũi tên `↑`/`↓` hoặc `j`/`k`, phím số `1`-`4` để chọn nhanh, `Enter` để kích hoạt và ghi nhớ vào cấu hình dự án (`h.SetStyle(...)` -> `.ainovel/config.json`), `Esc`/`q` để đóng modal.
+   - Toàn bộ unit tests và full repo tests 36 packages pass 100%. Đã tạo PR #8 trên GitHub.
 
 1. **`942b895` — Integrate Tavily Search & Crawl for Scientific Grounding and Fact Verification**:
    - Tích hợp Tavily Search & Crawl API làm nền tảng kiểm chứng khoa học.

@@ -57,23 +57,29 @@ _Last updated: 2026-10-06 (initial bootstrap)_
   - Nghiệm thu: `gofmt`, `go vet ./...`, `go test -buildvcs=false -count=1 ./...` toàn bộ 35 package pass 100%.
 
 ## Post-P6 Enhancements & Fixes (2026-10-07)
-- [x] **Branch `route`: 3 AI Working Modes (`/mode`)**:
+- [x] **Branch `route`: 4 AI Working Modes (`/mode`)**:
   - Tạo nhánh mới `route`.
   - Lệnh `/mode` (alias: `/topic`, `/topics`) mở modal overlay trực quan chọn chế độ AI làm việc:
-    1. `[1] Tiểu thuyết / Manga` (Style key: `"novel-manga"`): Sáng tác tiểu thuyết dài kỳ, manga, thế giới quan và diễn biến tâm lý sâu sắc.
+    1. `[1] Tiểu thuyết / Manga` (Style key: `"novel-manga"`): Sáng tác tiểu thuyết dài kỳ, manga, thế giới quan và diễn biến tâm lý sâu sắc (tiểu thuyết văn xuôi 2.000 - 4.000 từ/chương).
     2. `[2] Doodle Explainer` (Style key: `"doodle-explainer"`): Biên kịch video người que đồ đá giải thích kiến thức TikTok / YouTube Shorts (5+ phút, nhịp 1:1).
     3. `[3] Tâm lý học hành vi` (Style key: `"behavioral-psychology"`): Biên kịch video giải mã bẫy nhận thức, cơ chế Não Bò Sát vs Não Lý Trí, thí nghiệm khoa học chuẩn xác và Cú hích hành vi (Nudge) thực chiến.
-  - Đặt tên cụ thể cho cả 3 style, loại bỏ phụ thuộc vào `style == "default"`.
+    4. `[4] Tiểu thuyết Lịch sử Việt Nam` (Style key: `"vietnamese-history"`): Sáng tác tiểu thuyết văn xuôi và dã sử hào sảng về các nhân vật lịch sử Việt Nam (2.000 - 4.000 từ/chương), tích hợp 4 yêu cầu cốt lõi:
+       - **Tra cứu Tavily Search**: Tích hợp tra cứu internet/sử liệu để thu thập thông tin về nhân vật, trận đánh, triều đại và niên biểu.
+       - **Khai phá chân dung nhân vật toàn diện**: Tài năng, phẩm cách, lý tưởng, chiều sâu tâm can, góc khuất nội tâm và trăn trở của một con người thật trước vận mệnh dân tộc.
+       - **Khai phá bối cảnh lịch sử đa tầng**: Bối cảnh triều chính, phong tục, bá tánh trong nước và bàn cờ địa chính trị bang giao quốc tế phương Bắc & Đông Nam Á.
+       - **Khai phá nghịch cảnh sinh tử bi tráng**: Tương quan lực lượng chênh lệch, thù trong giặc ngoài, hiểm nguy ngàn cân treo sợi tóc và các quyết định chiến lược cân não.
+       - **Chuẩn mực giọng văn Đại Việt**: Giọng sử thi hào sảng, xưng hô chuẩn mực điển chế, tuyệt đối cấm từ ngữ convert kiếm hiệp Trung Quốc, 100% tiếng Việt sạch chữ Hán.
+  - Đặt tên cụ thể cho cả 4 style, loại bỏ phụ thuộc vào `style == "default"`.
   - Phân tách độc lập kho prompt, voice và reference cho từng mode trong `assets/`:
-    - `assets/prompts/modes/{novel-manga, doodle-explainer, behavioral-psychology}/` (Writer, Architect-Short, Architect-Long, Editor).
-    - `assets/voices/{novel-manga, doodle-explainer, behavioral-psychology}.md`.
-    - `assets/references/modes/{novel-manga, doodle-explainer, behavioral-psychology}/` (17 file tham khảo chuyên sâu cho mỗi mode).
+    - `assets/prompts/modes/{novel-manga, doodle-explainer, behavioral-psychology, vietnamese-history}/` (Writer, Architect-Short, Architect-Long, Editor).
+    - `assets/voices/{novel-manga, doodle-explainer, behavioral-psychology, vietnamese-history}.md`.
+    - `assets/references/modes/{novel-manga, doodle-explainer, behavioral-psychology, vietnamese-history}/` (đầy đủ các file tham khảo chuyên sâu cho mỗi mode).
     - Styles: `assets/styles/` và `assets/references/genres/` riêng biệt.
   - Cơ chế nạp động theo style trong `assets/load.go`.
-  - Kiểm tra `lintScript` trong `internal/tools/commit_chapter.go` áp dụng cho cả 2 chế độ video (`doodle-explainer` và `behavioral-psychology`).
+  - Kiểm tra `lintScript` trong `internal/tools/commit_chapter.go` chỉ áp dụng cho 2 chế độ video (`doodle-explainer` và `behavioral-psychology`), giải phóng hoàn toàn các chế độ tiểu thuyết văn xuôi (`novel-manga` và `vietnamese-history`).
   - Tự động kích hoạt, cập nhật runtime và ghi nhận vào `.ainovel/config.json`.
   - Hỗ trợ auto-loading file `.env` cục bộ cho các khóa API (Tavily...).
-  - Bộ kiểm thử unit test và toàn bộ repo 36 packages pass 100%.
+  - Bộ kiểm thử unit test và toàn bộ repo 36 packages pass 100%. PR #8 đã được mở trên GitHub.
 - [x] **Timestamped Output Directory Isolation** (commit `e81b404`):
   - Khi người dùng gõ `/new`, hệ thống tự động sinh thư mục output có timestamp `output/novel-YYYYMMDD-HHMM` thay vì đè `output/novel`.
 - [x] **5-Minute+ Doodle Explainer Standard** (commit `e21740a`):
