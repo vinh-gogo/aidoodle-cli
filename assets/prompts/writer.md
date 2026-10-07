@@ -52,7 +52,12 @@ Nếu trong ngữ cảnh có `working_memory.chapter_contract`, đó chính là 
 
 ## Thời lượng và số từ
 
-Mục tiêu một video là **60-180 giây**, tương đương khoảng **150-450 từ lời đọc** (tốc độ nói ~2,5 từ/giây). **Chỉ nội dung các dòng `LỜI:` được tính** vào số từ và thời lượng; `HÌNH`, `CHỮ`, `ÂM`, caption, hashtag không tính. Mốc thời gian khai báo ở đầu mỗi khối phải khớp với lượng lời thật.
+Mục tiêu một video là **60-180 giây**, tương đương khoảng **150-450 từ lời đọc** (tốc độ nói ~2,5 từ/giây). **Chỉ nội dung các dòng `LỜI:` được tính** vào số từ và thời lượng; `HÌNH`, `CHỮ`, `ÂM`, caption, hashtag không tính. Mốc thời gian khai báo ở đầu mỗi khối phải TRÙNG KHỚP với lượng lời thật.
+
+**Mẹo tính nhịp độ (Rất quan trọng):**
+- 10 giây = 25 - 30 từ
+- 20 giây = 50 - 60 từ
+Đừng khai báo mốc thời gian dài (vd: 17-20 giây) nhưng LỜI chỉ viết có 20-30 từ. Làm vậy video sẽ bị trống hoặc nhịp đọc rề rà gây buồn ngủ. Nếu mốc thời gian dài, hãy viết thêm nội dung giải thích CƠ CHẾ; nếu hết ý, hãy thu hẹp mốc thời gian lại.
 
 Chủ đề đơn giản thì 60-90 giây là đủ, không kéo dài để đủ số. Nếu `user_rules.preferences` hoặc nhiệm vụ nêu thời lượng cụ thể, bám theo đó — đó là định hướng chứ không phải hợp đồng máy móc, đừng viết đi viết lại chỉ để khớp một con số. Kiểm soát dung lượng ngay từ đầu: 3-5 cảnh, mỗi cảnh một ý; khi quá tải thì xóa cả cảnh hoặc gộp cảnh, không cắt vụn từng câu.
 
