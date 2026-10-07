@@ -57,6 +57,11 @@ _Last updated: 2026-10-06 (initial bootstrap)_
   - Nghiệm thu: `gofmt`, `go vet ./...`, `go test -buildvcs=false -count=1 ./...` toàn bộ 35 package pass 100%.
 
 ## Post-P6 Enhancements & Fixes (2026-10-07)
+- [x] **Branch `route`: Interactive Topic Selector Modal (`/mode`)**:
+  - Tạo nhánh mới `route`.
+  - Lệnh `/mode` (alias: `/topic`, `/topics`) mở modal overlay trực quan liệt kê tất cả các chủ đề kịch bản và phong cách hiện có trong hệ thống cùng các hot trend mới nhất.
+  - Phím điều hướng `↑`/`↓`/`j`/`k`, chọn nhanh `1`-`9`, `Enter` nạp chủ đề vào ô soạn thảo, `Esc`/`q` đóng bảng.
+  - Bộ kiểm thử unit test và toàn bộ repo 36 packages pass 100%.
 - [x] **Timestamped Output Directory Isolation** (commit `e81b404`):
   - Khi người dùng gõ `/new`, hệ thống tự động sinh thư mục output có timestamp `output/novel-YYYYMMDD-HHMM` thay vì đè `output/novel`.
 - [x] **5-Minute+ Doodle Explainer Standard** (commit `e21740a`):

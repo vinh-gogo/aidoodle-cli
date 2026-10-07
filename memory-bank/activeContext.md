@@ -15,6 +15,12 @@ Repo đã hoàn tất chuyển đổi toàn diện từ novel-writing engine san
 
 ## Recent Milestones & Commits (2026-10-07)
 
+0. **Branch `route` — Interactive Topic Selector Modal (`/mode`)**:
+   - Tạo nhánh mới `route` và xây dựng lệnh `/mode` (alias: `/topic`, `/topics`) trong TUI.
+   - Khi gõ `/mode` -> Enter, hiển thị bảng chọn modal (overlay) các chủ đề/phong cách có sẵn trong hệ thống (Tiến hóa, Lạm phát đồ đá, AI Hallucination, Thuật toán MXH, Nỗi sợ kỷ đá, Giấc ngủ, Ngọn lửa & não bộ, Doodle Explainer, Lịch sử VN, cùng các xu hướng nóng từ `trend snapshot`).
+   - Điều hướng mượt mà: phím mũi tên `↑`/`↓` hoặc `j`/`k`, phím số `1`-`9` để chọn nhanh, `Enter` để nạp chủ đề vào ô soạn thảo, `Esc`/`q` để đóng modal. Tự động cuộn viewport theo cursor.
+   - Toàn bộ unit tests và full repo tests 36 packages pass 100%.
+
 1. **`942b895` — Integrate Tavily Search & Crawl for Scientific Grounding and Fact Verification**:
    - Tích hợp Tavily Search & Crawl API làm nền tảng kiểm chứng khoa học.
    - Tạo package `internal/tavily/` với client đầy đủ (Search, Crawl, Extract, SearchAndBuildSourcePack).
