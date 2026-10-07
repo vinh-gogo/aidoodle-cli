@@ -57,10 +57,14 @@ _Last updated: 2026-10-06 (initial bootstrap)_
   - Nghiệm thu: `gofmt`, `go vet ./...`, `go test -buildvcs=false -count=1 ./...` toàn bộ 35 package pass 100%.
 
 ## Post-P6 Enhancements & Fixes (2026-10-07)
-- [x] **Branch `route`: Interactive Topic Selector Modal (`/mode`)**:
+- [x] **Branch `route`: AI Working Mode Selector (`/mode`)**:
   - Tạo nhánh mới `route`.
-  - Lệnh `/mode` (alias: `/topic`, `/topics`) mở modal overlay trực quan liệt kê tất cả các chủ đề kịch bản và phong cách hiện có trong hệ thống cùng các hot trend mới nhất.
-  - Phím điều hướng `↑`/`↓`/`j`/`k`, chọn nhanh `1`-`9`, `Enter` nạp chủ đề vào ô soạn thảo, `Esc`/`q` đóng bảng.
+  - Lệnh `/mode` (alias: `/topic`, `/topics`) mở modal overlay trực quan chọn chế độ AI làm việc:
+    1. `[1] Tiểu thuyết / Manga` (sáng tác truyện dài kỳ, manga, thế giới quan sâu sắc).
+    2. `[2] Doodle Explainer` (biên kịch video người que đồ đá giải thích kiến thức TikTok / YouTube Shorts).
+    3. `[3] Chế độ mở rộng` (sắp ra mắt / đang nghiên cứu ở bước tiếp theo).
+  - Tự động kích hoạt, cập nhật runtime và ghi nhận vào `.ainovel/config.json`.
+  - Hỗ trợ auto-loading file `.env` cục bộ cho các khóa API (Tavily...).
   - Bộ kiểm thử unit test và toàn bộ repo 36 packages pass 100%.
 - [x] **Timestamped Output Directory Isolation** (commit `e81b404`):
   - Khi người dùng gõ `/new`, hệ thống tự động sinh thư mục output có timestamp `output/novel-YYYYMMDD-HHMM` thay vì đè `output/novel`.

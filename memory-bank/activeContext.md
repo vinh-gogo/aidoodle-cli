@@ -15,10 +15,14 @@ Repo đã hoàn tất chuyển đổi toàn diện từ novel-writing engine san
 
 ## Recent Milestones & Commits (2026-10-07)
 
-0. **Branch `route` — Interactive Topic Selector Modal (`/mode`)**:
+0. **Branch `route` — AI Working Mode Selector (`/mode`)**:
    - Tạo nhánh mới `route` và xây dựng lệnh `/mode` (alias: `/topic`, `/topics`) trong TUI.
-   - Khi gõ `/mode` -> Enter, hiển thị bảng chọn modal (overlay) các chủ đề/phong cách có sẵn trong hệ thống (Tiến hóa, Lạm phát đồ đá, AI Hallucination, Thuật toán MXH, Nỗi sợ kỷ đá, Giấc ngủ, Ngọn lửa & não bộ, Doodle Explainer, Lịch sử VN, cùng các xu hướng nóng từ `trend snapshot`).
-   - Điều hướng mượt mà: phím mũi tên `↑`/`↓` hoặc `j`/`k`, phím số `1`-`9` để chọn nhanh, `Enter` để nạp chủ đề vào ô soạn thảo, `Esc`/`q` để đóng modal. Tự động cuộn viewport theo cursor.
+   - Khi gõ `/mode` -> Enter, hiển thị bảng chọn modal (overlay) để chọn chế độ AI làm việc:
+     1. `[1] Tiểu thuyết / Manga`: Sáng tác tiểu thuyết dài tập, manga, phân chia hồi/quyển/chương, phát triển nhân vật và quy tắc thế giới.
+     2. `[2] Doodle Explainer`: Biên kịch video người que đồ đá 5+ phút, nhịp 1:1 Thoại - Hình, phong cách dí dỏm viral TikTok / YouTube Shorts.
+     3. `[3] Chế độ mở rộng`: Đang nghiên cứu & phát triển ở bước tiếp theo (Podcast, Phóng sự, Video tài liệu...).
+   - Điều hướng mượt mà: phím mũi tên `↑`/`↓` hoặc `j`/`k`, phím số `1`-`3` để chọn nhanh, `Enter` để kích hoạt và ghi nhớ vào cấu hình dự án (`h.SetStyle(...)` -> `.ainovel/config.json`), `Esc`/`q` để đóng modal.
+   - Hỗ trợ auto-loading file `.env` cục bộ cho các khóa API (Tavily...).
    - Toàn bộ unit tests và full repo tests 36 packages pass 100%.
 
 1. **`942b895` — Integrate Tavily Search & Crawl for Scientific Grounding and Fact Verification**:
