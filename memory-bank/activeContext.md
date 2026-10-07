@@ -15,21 +15,19 @@ Repo đã hoàn tất chuyển đổi toàn diện từ novel-writing engine san
 
 ## Recent Milestones & Commits (2026-10-07)
 
-0. **Branch `route` — AI Working Mode Selector (`/mode`) & Specific Style Keys**:
-   - Tạo nhánh mới `route` và xây dựng lệnh `/mode` (alias: `/topic`, `/topics`) trong TUI.
-   - Khi gõ `/mode` -> Enter, hiển thị bảng chọn modal (overlay) để chọn chế độ AI làm việc:
+0. **Branch `route` — 3 AI Working Modes (`/mode`)**:
+   - Xây dựng lệnh `/mode` (alias: `/topic`, `/topics`) trong TUI hiển thị bảng chọn modal overlay:
      1. `[1] Tiểu thuyết / Manga` (Style key: `"novel-manga"`): Sáng tác tiểu thuyết dài tập, manga, phân chia hồi/quyển/chương, phát triển nhân vật và quy tắc thế giới chuyên sâu.
      2. `[2] Doodle Explainer` (Style key: `"doodle-explainer"`): Biên kịch video người que đồ đá 5+ phút, nhịp 1:1 Thoại - Hình, phong cách dí dỏm viral TikTok / YouTube Shorts.
-     3. `[3] Chế độ mở rộng` (Chưa có / Đang suy nghĩ ở bước tiếp theo): Placeholder cho các chế độ tiếp theo.
-   - Đặt tên cụ thể cho 2 style (`"novel-manga"` và `"doodle-explainer"`), tuyệt đối không dùng `style == "default"`.
-   - Phân tách và nạp tài nguyên độc lập 100% cho 2 chế độ trong `assets/load.go`:
-     - Prompts: `assets/prompts/modes/novel-manga/` vs `assets/prompts/modes/doodle-explainer/`.
-     - Voices: `assets/voices/novel-manga.md` vs `assets/voices/doodle-explainer.md`.
-     - References: `assets/references/modes/novel-manga/` vs `assets/references/modes/doodle-explainer/`.
-     - Style file: `assets/styles/novel-manga.md` vs `assets/styles/doodle-explainer.md`.
-   - Cô lập kiểm tra định dạng kịch bản: `lintScript` trong `internal/tools/commit_chapter.go` chỉ kích hoạt khi `snap.Style == "doodle-explainer"`, không gây cảnh báo sai cho chương tiểu thuyết.
+     3. `[3] Tâm lý học hành vi` (Style key: `"behavioral-psychology"`): Biên kịch video giải mã bẫy nhận thức, cơ chế não bộ (Não Bò Sát vs Não Lý Trí), thí nghiệm khoa học chuẩn xác và Cú hích hành vi (Nudge) thực chiến.
+   - Toàn bộ 3 style đều có tên định danh rõ ràng, không phụ thuộc vào `style == "default"`.
+   - Phân tách và nạp tài nguyên độc lập 100% cho cả 3 chế độ trong `assets/load.go`:
+     - Prompts: `assets/prompts/modes/{novel-manga, doodle-explainer, behavioral-psychology}/` (Writer, Architect-Short, Architect-Long, Editor).
+     - Voices: `assets/voices/{novel-manga, doodle-explainer, behavioral-psychology}.md`.
+     - References: `assets/references/modes/{novel-manga, doodle-explainer, behavioral-psychology}/` (17 file tài liệu tham khảo chuyên biệt cho từng mode).
+     - Styles & Genres: `assets/styles/` và `assets/references/genres/` riêng biệt.
+   - Gated validation: `lintScript` trong `internal/tools/commit_chapter.go` áp dụng cho cả 2 mode video (`doodle-explainer` và `behavioral-psychology`), cô lập hoàn toàn khỏi `novel-manga`.
    - Điều hướng mượt mà: phím mũi tên `↑`/`↓` hoặc `j`/`k`, phím số `1`-`3` để chọn nhanh, `Enter` để kích hoạt và ghi nhớ vào cấu hình dự án (`h.SetStyle(...)` -> `.ainovel/config.json`), `Esc`/`q` để đóng modal.
-   - Hỗ trợ auto-loading file `.env` cục bộ cho các khóa API (Tavily...).
    - Toàn bộ unit tests và full repo tests 36 packages pass 100%.
 
 1. **`942b895` — Integrate Tavily Search & Crawl for Scientific Grounding and Fact Verification**:
