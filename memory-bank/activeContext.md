@@ -1,82 +1,79 @@
 # Active Context
 
-_Last updated: 2026-10-06 (initial bootstrap + direction decision)_
+_Last updated: 2026-10-07 (Doodle Explainer 5-minute standard, 1:1 visual beats & system stabilization)_
 
-## DIRECTION DECISION (2026-10-06) — repo is being converted
-User wants this repo to become a **Vietnamese doodle-explainer script engine for TikTok on trending topics**. Confirmed choices:
-- Topics: **auto-fetched trends (VN)**. Sources verified: Google Trends RSS `https://trends.google.com/trending/rss?geo=VN` (works; snippets empty, contains junk like lottery `xsmb`), VnExpress RSS works. **TikTok Creative Center has no public API; scraping violates ToS → manual import only.**
-- Unit: **1 video = 1 "chapter"**, 1 "book" = 1 series/season. Reuse the whole Engine/Route/Store/checkpoint pipeline.
-- Style: **stone-age stick figures explaining modern topics** (successor to `stone-age-doodle-explain`).
-- Length: **60–180s (~150–450 spoken words)**.
-- Full plan (P0–P6, risks, open questions): artifact `doodle_explainer_plan.md` in `C:\Users\lea26\.gemini\antigravity-cli\brain\ddc11f54-f02e-4ccc-9426-12497c9b6842\`. Plan is NOT yet approved/started.
-- Before starting: `git tag novel-baseline`, branch `doodle-explainer`.
+## Current Status & Direction
+Repo đã hoàn tất chuyển đổi toàn diện từ novel-writing engine sang **TikTok Doodle Explainer Video Scriptwriting Engine (`aidoodle-cli`)** trên branch `doodle-explainer`:
+- **Định dạng sản phẩm**: Kịch bản video giải thích người que đồ đá cho TikTok / YouTube Shorts, thời lượng chuẩn **5+ phút (300–600 giây, 700–1500 từ LỜI)**.
+- **Cấu trúc 5 giai đoạn**: Hook 3s -> Mở đầu (0:03-0:45) -> Thân bài 3 chặng có Tái Hook mỗi 60-90s (0:45-3:45) -> Reframe & Hành động nhỏ (3:45-4:30) -> Chốt loop (4:30-5:15+).
+- **Nhịp thị giác 1:1 (Voice-Visual Pairs)**: Mỗi cảnh chia thành các cặp `LỜI:` đi liền ngay `HÌNH:` tương ứng (10–20 từ thoại / 3–6 giây đổi hình một lần), giải quyết triệt để vấn đề "chết hình" (static visuals).
+- **Thẻ kịch bản tối giản**: Chỉ dùng `LỜI:` (voiceover), `HÌNH:` (mô tả doodle que + text lồng trong hình nếu có), `ÂM:` (sfx/nhạc) và chân kịch bản (`CAPTION:`, `HASHTAG:`, `NGUỒN:`, `CẦN KIỂM CHỨNG:`). Thẻ `CHỮ:` đã được loại bỏ hoàn toàn.
+- **Series chuyên sâu (Deep Dive Series)**: Mặc định lập kế hoạch **3 tập chuyên sâu** cho một chủ đề đơn lẻ mà người dùng đưa vào (hoặc theo số tập người dùng chỉ định), tuyệt đối không phân nhánh lan man làm loãng chủ đề cốt lõi (Anti-Topic Drift).
+- **Môi trường LLM**: Kết nối mô hình lớn (vd: Qwen-27B) qua OpenAI-compatible API (Kaggle/ngrok/Ollama), áp dụng các tham số phạt lặp (`frequency_penalty: 0.3`, `presence_penalty: 0.2`, `repetition_penalty: 1.1`, `temperature: 0.7`) để triệt tiêu lỗi lặp vô tận (Degeneration trap).
 
-### Code-verified findings that block Vietnamese output (fix first = P1)
-1. `internal/rules/snapshot.go` `SystemDefaults()` blacklist/fatigue words are **Chinese only** → mechanical check useless for Vietnamese.
-2. `internal/rules/lint.go` `non_cjk_fragments` regex `[A-Za-z]{2,}` matches ordinary Vietnamese words (false warnings) and does NOT catch Han leakage → replace with `han_residue`.
-3. `internal/domain/chapter.go:31` `WordCount` = rune count → wrong for Vietnamese; switch to whitespace tokens + speech-seconds.
-4. `internal/tools/premise_structure.go` heading aliases are Chinese; Vietnamese architect prompt emits Vietnamese headings → `template_ready` always false (informational only, used in `novel_context`).
-5. `lint.go` `markdown_residue` warns on `**` and any `#` line after the first → script format must use plain tag lines (`HOOK/CẢNH/LỜI:/HÌNH:/CHỮ:`), not Markdown bold/headings.
-6. Many Chinese runtime strings still reach the model from Go (`novel_context.go`, `commit_chapter.go`, `save_review.go`, `save_foundation.go`, `chapterfacts/facts.go`, `llmcontract/validate.go`, `ctxpack/builder.go`, `domain/writing.go`). `assets/prompts/*.md` are ALREADY Vietnamese (correction to earlier note).
-7. `assets/styles/stone-age*.md` are 3 same-size copies; fantasy/vietnamese-history genre refs forbid "xuyên không ngôn ngữ" (anachronism) — new style must explicitly allow it.
-8. Not yet read: `save_review.go`/`domain/review.go` (are the 7 review dimension keys hard-coded?), `stylestat` Chinese bias, `agentcore.EstimateTokens` on Vietnamese.
+---
 
-## Current focus (updated 2026-10-06, later session)
-Branch `doodle-explainer` (tag `novel-baseline` = pre-change state; recover anything with `git checkout novel-baseline -- <path>`).
-- **P0 done.**
-- **P1 committed** (`d649d58 P1: harden engine for Vietnamese output (word count, rules, lint, premise headings, model-facing strings)`).
-- **P2 committed** (`45b228e P2: script format, validator, series bible headings, doodle-explainer style and prompts`).
-- **P3 committed** (`aae68af P3: Vietnamese stylestat, smoke eval cases, and Editor rubric integration`).
-- **P4 committed** (`d47c43c P4: automated trend intake, source pack grounding, and Arbiter topic selection`).
-- **P5 committed** (`6ce9300 P5: content safety reference, SystemDefaults safety preferences, script unverified fact validation, and review advance mode`).
-- **P6 done** (TikTok video export formats, TUI polish & Vietnamese README):
-  - Gói xuất video TikTok `internal/host/exp/video.go`: `slugify` tiếng Việt chuẩn (bỏ dấu NFD, chuyển đ/Đ thành d, sinh slug URL an toàn), `renderVideoPackage` xuất `scripts/NN-slug.md`, `voiceover/NN-slug.txt`, `shotlist.csv` (UTF-8 BOM), `publish.csv` (UTF-8 BOM).
-  - Tích hợp `FormatVideo` ("video") trong `internal/host/exp/types.go` và `exporter.go`. Unit test `TestSlugify` và `TestRun_VideoFormat` pass 100%.
-  - TUI & CLI: `/export --video` hoặc `format=video` trong `internal/entry/tui/export.go`, `commands.go`.
-  - Cập nhật TUI polish: màn hình chào mừng (`panels.go`), gợi ý chủ đề doodle đồ đá, placeholder cocreate và model update (`cocreate.go`, `model_update.go`).
-  - Viết lại toàn bộ `README.md` sang tiếng Việt, định vị đúng sản phẩm công cụ tạo kịch bản video TikTok Doodle Explainer.
-  - Nghiệm thu: `gofmt`, `go vet ./...`, `go test -buildvcs=false -count=1 ./...` toàn bộ 35 package pass 100%.
+## Recent Milestones & Commits (2026-10-07)
 
-**Decision: user deleted `.github/` (CI/docker/release workflows). Keep deleted; do NOT restore unless asked.**
+1. **`93d868a` — Enforce 1:1 Alternating Voice-Visual Pairs Per Scene**:
+   - Khắc phục lỗi đoạn thoại dài 40–60 giây nhưng chỉ có 1 mô tả hình ảnh.
+   - Bắt buộc chia nhỏ thành các beat 3–6 giây: mỗi câu thoại `LỜI:` có ngay một thẻ `HÌNH:` tương ứng mô tả hành động, biểu cảm que, đạo cụ.
+   - Cập nhật đồng bộ: `docs/script-format.md`, `assets/prompts/writer.md`, `assets/prompts/editor.md`, `assets/references/chapter-guide.md`, `assets/references/chapter-template.md`, `assets/references/doodle-visual-language.md`, `assets/testdata/writer-golden.md`.
 
-**Next: Commit P6** hoàn tất toàn bộ kế hoạch chuyển đổi.
+2. **`bc2230c` — Default 3-Episode Deep Dive Series Per Topic**:
+   - Khi nhận một chủ đề từ người dùng, hệ thống mặc định tạo series 3 tập (>5 phút/tập) đào sâu 3 góc nhìn khác nhau của cùng chủ đề (Nghịch lý ban đầu -> So sánh & Thực chiến -> Tranh luận khoa học & Bài học hiện đại).
+   - Ngăn chặn Architect tự ý chuyển chủ đề sang các khía cạnh tiến hóa khác không liên quan.
 
+3. **`dd1b500` — Fix `save_foundation` InputValidationError**:
+   - Sửa lỗi LLM gọi tool `save_foundation` thiếu trường `type` hoặc truyền dưới dạng alias tiếng Việt/cú pháp Markdown.
+   - Nới lỏng schema bắt buộc, bổ sung bộ suy luận tham số (infer type/content), hỗ trợ các alias "dàn ý", "nhân vật", "tiền đề", "quy tắc".
+   - Bổ sung 7 unit test bao phủ toàn diện các trường hợp lỗi (`29/29` tests pass).
 
-## Recent changes (from git history)
-- **2026-10-03 `b67734c` "init vietnamese from ainovel-cli"** — fork baseline; Vietnamese localization of user-facing/runtime strings.
-- **2026-10-04 `13f98eb` "add style"** (31 files, +446/−68):
-  - New styles: `psychological` / `psychology`, `stone-age-doodle` / `stone-age-doodle-explain` / `stone-age`, `vietnamese-history` / `viet-history`, plus matching `assets/references/genres/*/{arc-templates,style-references}.md`.
-  - `assets/prompts/{architect-long,architect-short,editor}.md`, `assets/voice.md`, `assets/testdata/writer-golden.md` edited (a few lines each) — likely Vietnamese-output enforcement.
-  - `assets/load_test.go` +12 lines (style loading test).
-  - `internal/agents/{architect,editor}_context.go`: summary system/user prompts rewritten Chinese → Vietnamese ("BẮT BUỘC: … 100% tiếng Việt").
-  - `internal/host/book_lock.go`: `isAccessDenied()`, friendlier errors, lock perms `0o666`.
-  - Test strings adjusted in `guard_test.go`, `diag/export_test.go`, `diag/rules_quality_test.go`, `host/{budget,cocreate_stage,engine}_test.go`.
-  - `cmd/ainovel-cli/main.go`: messages now Vietnamese.
-- Git working tree was clean when inspected (before creating `memory-bank/`).
+4. **`9e1c1d6` — Enforce Core Topic Fidelity & Anti-Drift**:
+   - Thắt chặt prompt Architect và Writer: 100% bám sát chủ đề yêu cầu, kết luận cuối cùng của kịch bản phải giải thích trọn vẹn chủ đề đã đặt ra.
 
-## Local environment state observed
-- `~/.ainovel` config targets **Ollama**, model `qwen3.5-4b-16k` (from `output/novel/meta/run.json`; `Modelfile` in repo says num_ctx 32768 while `run.sh` default is 16384 — inconsistent).
-- Two books under `output/`:
-  - `output/novel/` — phase `outline`, 0 chapters, `layered: true`, planner `architect_long`, start prompt was literally `"hi"` (run started 2026-10-03T22:04); `book.json` has a Vietnamese title ("Minh Va Loi Logic Cuu Vu Tu") — a cyberpunk/ma-pháp concept the model invented.
-  - `output/stone-age/` — phase `outline`, `total_chapters: 94`, volume 1 / arc 1, 0 chapters written; has `.ainovel.lock`; Vietnamese title/synopsis present in `meta/book.json` (exact text not decoded — PowerShell mojibake). Style used is unknown (likely a stone-age one).
-- Neither book has written a chapter yet.
+5. **`e21740a` — 5-Minute+ Doodle Explainer Standard**:
+   - Nâng chuẩn thời lượng kịch bản từ 1–3 phút lên 5+ phút (300–600s, 700–1500 từ LỜI).
+   - Bổ sung kỹ thuật Tái Hook (Re-hooking) mỗi 60–90 giây.
+   - Điều chỉnh validator `internal/tools/script_format.go` (`scriptMinWords=700`, `scriptMaxWords=1500`, `scriptMinSeconds=300`, `scriptMaxSeconds=600`).
 
-## Active decisions / patterns to follow
-- Keep upstream architecture untouched; fork changes are **language + styles + Windows robustness**. Prefer minimal diffs against upstream so merges stay possible.
-- Any new Vietnamese-output prompt text must forbid Chinese output explicitly (existing convention).
-- When adding a style: add `assets/styles/<name>.md` (filename = style name) **and** `assets/references/genres/<name>/{arc-templates,style-references}.md`; check `assets/load.go` and `load_test.go`.
-- When adding any reference file: remember the 3 wire-ups (see systemPatterns.md).
-- Decision-table (`flow.Route`) changes: update the exhaustive spec **before** the implementation.
+6. **`e81b404` — Dynamic Timestamped Output Folders on `/new`**:
+   - Lệnh `/new` tự động tạo thư mục cách ly `output/novel-YYYYMMDD-HHMM` thay vì ghi đè lên thư mục cũ `output/novel`.
 
-## Next steps (suggested, pending user direction)
-1. Ask user what to work on (candidates below).
-2. Run `go build ./...`, `go vet ./...`, `go test ./...` to establish baseline on this machine (Windows, Go 1.27) — not yet done.
-3. Candidates the repo state hints at:
-   - Make a full run succeed with the local 4B model (planning stalled at `outline` for both books).
-   - Finish Vietnamese localization (remaining Chinese in prompts `assets/prompts/*.md`, `docs/`, README, TUI strings; check `rg "[\u4e00-\u9fff]"` in `internal/`).
-   - Reconcile alias styles (`psychology`, `stone-age`, `viet-history`) — duplicates of the canonical files; verify genre reference loading for aliases.
-   - Reconcile `Modelfile` (32768) vs `run.sh` (16384).
+7. **`f022efa` — Humor Specialist & Relatability Archetypes**:
+   - Bổ sung `assets/references/humor-relatability.md`, nối dây qua `novel_context.go`, `load.go`.
+   - Thiết lập các hình mẫu nhân vật que linh hoạt (Que Lanh, Que Bự, Cục Đá Im Lặng...) gắn với tâm lý con người hiện đại.
 
-## Learnings / insights
-- Memory bank was created by reading: README, go.mod, main.go, config.example.jsonc, run.sh, ci.yml, docs/architecture.md §1–4 (rest of docs unread), assets/README.md, last commit diff. **Source code of host/tools/store/flow/arbiter has not been read** — descriptions of them come from docs, not code. Verify before relying on specifics.
-- The repo root contains stray binaries (`OllamaSetup.exe`, `ainovel-cli.exe`) — ignored by git.
+8. **`5eb93fc` — Loại bỏ hoàn toàn thẻ `CHỮ:`**:
+   - Dọn sạch thẻ `CHỮ:` khỏi prompt, validator và tài liệu. Text hiển thị trên video được mô tả trực tiếp trong thẻ `HÌNH:`.
+
+---
+
+## Active Architecture & Key Patterns
+
+- **Series Bible**: Lưu trong `premise.md`, `outline.json`, `characters.json`, `world_rules.json` tại thư mục output của phiên.
+- **Workflow Pipeline**:
+  - `Architect`: Lập dàn ý 3 tập chuyên sâu dựa trên chủ đề người dùng đưa vào.
+  - `Writer`: Viết kịch bản chi tiết từng tập theo format 1:1 `LỜI:` - `HÌNH:`, đảm bảo độ dài 5+ phút.
+  - `Editor`: Thẩm định chất lượng theo rubric (nhất quán, nhịp điệu, visual beats, an toàn nội dung, không lặp lại).
+  - `Exporter`: Xuất trọn bộ package video TikTok (`scripts/`, `voiceover/`, `shotlist.csv`, `publish.csv`).
+- **Prompt Testing Invariant**:
+  - Khi chỉnh sửa `assets/prompts/writer.md` hoặc `assets/voice.md`, bắt buộc tái tạo `assets/testdata/writer-golden.md` chính xác từng byte để vượt qua `TestBuildWriterPrompt_ByteIdenticalToPreSplit`.
+- **Git Commit on Windows**:
+  - Chạy `git commit` / `git push` ngoài sandbox (`BypassSandbox: true`) để tránh lỗi khóa index `.git/index.lock`.
+
+---
+
+## Current Workspace State
+
+- **Branch**: `doodle-explainer` trên repo `https://github.com/vinh-gogo/aidoodle-cli.git`.
+- **Binary**: `ainovel-cli.exe` đã được build và sẵn sàng sử dụng.
+- **Tests**: Toàn bộ unit tests và integration tests đều pass green.
+- **Memory Bank**: Tất cả 6 tài liệu trong `memory-bank/` đã được đồng bộ đầy đủ và nhất quán với kiến trúc mới nhất.
+
+---
+
+## Next Steps
+
+1. Commit các thay đổi cập nhật Memory Bank vào git branch `doodle-explainer`.
+2. Sẵn sàng nhận lệnh từ người dùng: chạy `/new` để tạo kịch bản mới, tinh chỉnh prompt nếu có phản hồi thêm, hoặc xuất bản video kịch bản.
