@@ -106,10 +106,12 @@ type Model struct {
 	quitPending        bool // 双次 Ctrl+C 退出确认
 	abortPending       bool // 等待 Done 回来的手动暂停
 	mouseOff           bool // true 时已禁用鼠标上报，让用户原生拖拽选中复制；再次切换恢复
+	restartRequested   bool
+	restartPrompt      string
 }
 
 // NewModel 创建 TUI Model。
-func NewModel(rt *host.Host, version string) Model {
+func NewModel(rt *host.Host, version string, initialPrompt string) Model {
 	ta := textarea.New()
 	ta.Placeholder = placeholderForNewMode(startupModeQuick)
 	ta.CharLimit = 5000
@@ -117,6 +119,9 @@ func NewModel(rt *host.Host, version string) Model {
 	// MaxHeight=6 让超长输入按宽度自动 wrap 显示成多行（视觉上限 6 行）。
 	ta.MaxHeight = 6
 	ta.ShowLineNumbers = false
+	if initialPrompt != "" {
+		ta.SetValue(initialPrompt)
+	}
 	ta.Focus()
 
 	// 默认 Enter 不换行（由 handleEnterKey 提交）；
@@ -158,6 +163,7 @@ func NewModel(rt *host.Host, version string) Model {
 		stateVP:      stvp,
 		streamBuf:    &strings.Builder{},
 		eventIndex:   make(map[string]int),
+		restartPrompt: initialPrompt,
 	}
 }
 
@@ -170,6 +176,10 @@ func (m Model) Init() tea.Cmd {
 		tickSnapshot(m.runtime),
 		bootstrapRuntime(m.runtime),
 		tickSpinner(),
+	}
+	if m.restartPrompt != "" {
+		cmd := m.enterStarting(m.restartPrompt)
+		cmds = append(cmds, tea.Batch(startRuntime(m.runtime, m.restartPrompt), cmd))
 	}
 	// 启动版本检查：后台一次；错误仅写日志，命中新版本才浮出提醒。
 	if !m.disableUpdateCheck {

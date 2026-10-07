@@ -21,7 +21,7 @@ func TestStartCommandLoadsPromptFile(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	m := NewModel(nil, "")
+	m := NewModel(nil, "", "")
 	cmd, ok := parseSlashCommand("/start " + path)
 	if !ok {
 		t.Fatal("/start should parse as slash command")
@@ -41,7 +41,7 @@ func TestStartCommandLoadsPromptFile(t *testing.T) {
 }
 
 func TestEnterStartingSwitchesToWorkbenchImmediately(t *testing.T) {
-	m := NewModel(nil, "")
+	m := NewModel(nil, "", "")
 	m.width = 120
 	m.height = 40
 	m.resizeTextarea()
@@ -70,7 +70,7 @@ func TestEnterStartingSwitchesToWorkbenchImmediately(t *testing.T) {
 }
 
 func TestStartupFailureStaysInWorkbench(t *testing.T) {
-	m := NewModel(nil, "")
+	m := NewModel(nil, "", "")
 	m.width = 120
 	m.height = 40
 	m.resizeTextarea()
@@ -100,7 +100,7 @@ func TestStartupFailureStaysInWorkbench(t *testing.T) {
 // issue #125 回归：启动期 Host 尚未进入 running（规则归一化/启动裁定都在其之前），
 // 真实快照回包不得把工作台显示成"空闲"，否则正在进行的启动看起来像卡死。
 func TestStartingSnapshotShowsStartingNotIdle(t *testing.T) {
-	m := NewModel(nil, "")
+	m := NewModel(nil, "", "")
 	m.width = 120
 	m.height = 40
 	m.resizeTextarea()
@@ -126,7 +126,7 @@ func TestStartingSnapshotShowsStartingNotIdle(t *testing.T) {
 
 // 启动结束（成功或失败）后 starting 复位，快照恢复如实反映 Host。
 func TestSnapshotResumesTruthAfterStartingCleared(t *testing.T) {
-	m := NewModel(nil, "")
+	m := NewModel(nil, "", "")
 	m.width = 120
 	m.height = 40
 	m.resizeTextarea()
@@ -144,7 +144,7 @@ func TestSnapshotResumesTruthAfterStartingCleared(t *testing.T) {
 }
 
 func TestApplyStartupPromptEventTruncatesSummaryButKeepsDetail(t *testing.T) {
-	m := NewModel(nil, "")
+	m := NewModel(nil, "", "")
 	prompt := strings.Repeat("设", maxPromptEventCols+50)
 
 	m.applyStartupPromptEvent(prompt)
@@ -166,7 +166,7 @@ func TestApplyStartupPromptEventTruncatesSummaryButKeepsDetail(t *testing.T) {
 }
 
 func TestStreamFlushTimerRunsOnlyForPendingData(t *testing.T) {
-	m := NewModel(nil, "")
+	m := NewModel(nil, "", "")
 	next, cmd, handled := m.handleRuntimeMsg(streamDeltaMsg("正文"))
 	if !handled || cmd == nil {
 		t.Fatal("流式增量应启动一次刷新")

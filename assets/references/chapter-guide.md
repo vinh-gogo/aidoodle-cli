@@ -5,7 +5,8 @@ Một chương = một video doodle explainer 60-180 giây, ~150-450 từ lời 
 ## Thời lượng và từ
 
 - Tốc độ đọc chuẩn ~2,5 đến 3 từ/giây (~150-180 từ/phút). KHÔNG viết nhịp quá chậm (dưới 2 từ/giây). Khoảng trống nên dùng để nhét phần cơ chế cốt lõi.
-- Bảng quy đổi: 60 giây ~150-180 từ; 90 giây ~225-270 từ; 120 giây ~300-360 từ; 180 giây ~450 từ.
+- Bảng quy đổi: 60 giây ~150-180 từ; 90 giây ~225-270 từ; 120 giây ~300-360 từ; 180 giây ~450 từ. (Ví dụ nhanh: 10 giây = 25-30 từ, 20 giây = 50-60 từ).
+- **Tuyệt đối KHÔNG khai báo mốc thời gian dài (vd 17-20 giây) nhưng LỜI chỉ viết có 20-30 từ.** Video sẽ bị chết hình hoặc nhịp nói quá rề rà. Nếu viết ngắn, phải thu hẹp mốc thời gian (vd: 10 giây).
 - Chỉ thẻ `LỜI:` được tính từ. Ngoài ra khoảng lặng, hiệu ứng và cảnh câm cần tính thêm giây: mỗi cảnh câm 1-2 giây.
 - Mặc định nhắm 60-90 giây. Chủ đề phức tạp mới lên 120-180 giây, và phải có đủ ý để nuôi từng ấy giây.
 
