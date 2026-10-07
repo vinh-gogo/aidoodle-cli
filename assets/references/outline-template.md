@@ -24,18 +24,23 @@ Thứ tự: định vị kênh và điểm khác biệt -> câu hỏi cốt lõi
 
 ## Mẫu outline phẳng
 
+Mỗi tập được điền nhanh theo khung 6 nhịp, ánh xạ vào JSON như sau:
+- `core_event`: Câu hỏi của tập + Các khẳng định cần nguồn.
+- `hook`: Hook (khoảnh khắc người xem).
+- `scenes`: Mảng chứa các bước: Cơ chế 1, Cơ chế 2, Hành động nhỏ, và Teaser/Chốt.
+
 ```json
 [
   {
     "chapter": 1,
     "title": "Lạm phát: vì sao rìu đá của bạn bốc hơi",
-    "core_event": "Giải thích lạm phát bằng vỏ sò và mammoth: tiền nhiều hơn hàng thì giá tăng; góc nhìn: lương đứng yên là mất tiền thầm lặng.",
-    "hook": "Rìu đá của bạn đang bốc hơi. Ai lấy mất? (hình: rìu bay thành khói)",
+    "core_event": "Câu hỏi: Vì sao lương tăng mà vẫn nghèo? Nguồn: kiến thức kinh tế nền tảng.",
+    "hook": "Tưởng lương tăng là giàu, hóa ra bạn nghèo đi mỗi ngày (Hình: cầm cục đá to nhưng cắn không vỡ).",
     "scenes": [
-      "Bộ lạc Que đổi mammoth lấy mười rìu, thủ lĩnh phát vỏ sò cho cả bộ lạc",
-      "Vỏ sò nhiều lên, mammoth vẫn một con nên giá nhảy lên hai mươi vỏ",
-      "Que Ú vẫn lãnh mười vỏ công, giờ chỉ mua nổi nửa cái đùi",
-      "Chốt: ai rải thêm vỏ sò thì người đó lấy rìu của bạn"
+      "Cơ chế 1 / ẩn dụ: Bộ lạc phát thêm vỏ sò cho mọi người, ai cũng ôm vỏ sò đi mua khoai",
+      "Cơ chế 2 / bước ngoặt: Khoai không tăng, bà bán khoai thấy ai cũng nhiều vỏ sò nên tăng giá",
+      "Hành động nhỏ: Nhìn lại giỏ vỏ sò của bạn xem có đang mất giá không",
+      "Chốt / teaser: Lần tới thấy khoai đắt, đừng trách bà bán khoai. Tập sau: ai là người rải vỏ sò?"
     ]
   }
 ]

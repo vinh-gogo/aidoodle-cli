@@ -4,17 +4,24 @@ Mọi video doodle explainer chạy trên một xương sống: người xem có
 
 Nhớ: HOOK 0:00-0:03 và CHỐT cuối luôn có; khung chỉ quyết định các CẢNH ở giữa.
 
-## Khung chính: Vấn đề -> Giải thích -> Twist -> Chốt
+## Khung 6 nhịp (video ngắn 60-90s)
 
 | Khối | Tỷ lệ thời lượng | Việc làm |
 |---|---|---|
-| HOOK | 0:00-0:03 | Gây tò mò/sốc, hứa điều sẽ giải |
-| Vấn đề | ~15% | Dựng tình huống bằng ẩn dụ đồ đá, ai gặp rắc rối gì |
-| Giải thích | ~40% | Chuỗi nguyên nhân -> hệ quả, bản lề sang khái niệm hiện đại |
-| Twist | ~25% | "Hóa ra...", hệ quả bất ngờ hoặc góc nhìn ngược |
-| CHỐT | ~10-15% | Câu mang về nhà, loop/callback |
+| HOOK | 0-3s | Khoảnh khắc người xem nhận ra mình hoặc nghịch lý. Không mở bằng giới thiệu tên nhân vật. |
+| Vấn đề | 3-10s | Nói rõ video sẽ trả lời điều gì (tạo điều cần giải sớm). |
+| Cơ chế 1 | 10-30s | Giải thích lý do thứ nhất bằng một ẩn dụ hình ảnh duy nhất. |
+| Cơ chế 2 | 30-50s | Thêm một lớp nữa hoặc đảo lại điều người xem đang nghĩ (bước ngoặt). |
+| Reframe | 50-65s | Nhìn lại vấn đề dưới góc nhìn mới + một hành động nhỏ cụ thể làm ngay. |
+| CHỐT | 5-10s | Câu mang về nhà, loop/callback, hoặc mồi sang tập sau. |
 
-Ví dụ AI: Vấn đề: Que Ú nhờ con vẹt đá trả lời mọi câu hỏi. Giải thích: vẹt chỉ nhắc lại cái nó nghe được, đoán từ tiếp theo. Twist: nó nói rất tự tin cả khi bịa. Chốt: "Tin vẹt đá, nhưng kiểm lại bằng chính mắt mình."
+Ví dụ: Hook: "Mở 5 phút, thành 1 tiếng." Vấn đề: "Vì sao não bạn bị kẹt?" Cơ chế 1: "Thuật toán thả mồi (ong mật) mỗi khi bạn vuốt." Cơ chế 2: "Hóa ra ong mật không thích mật, nó thích sự chờ đợi." Reframe: "Tắt tự động cuộn (hành động nhỏ)." Chốt: "Lần tới vuốt, hãy nhớ ai đang thả mồi."
+
+## Khung video dài (3-8 phút)
+
+Giữ nguyên khung 6 nhịp trên, nhưng phần thân lặp lại theo vòng: **câu hỏi nhỏ -> ẩn dụ -> ví dụ -> tóm một câu**.
+- Cứ mỗi 60-90 giây phải có một "tái hook" (câu hỏi mới hoặc bất ngờ mới) vì người xem dễ rời đi.
+- Mỗi nhịp cơ chế có thể sâu hơn, phân tích thành 2-3 lớp, nhưng cốt lõi vẫn là vòng lặp.
 
 ## Các khung biến thể
 
