@@ -52,31 +52,34 @@ Nếu trong ngữ cảnh có `working_memory.chapter_contract`, đó chính là 
 
 ## Thời lượng và số từ
 
-Mục tiêu một video là **60-180 giây**, tương đương khoảng **150-450 từ lời đọc** (tốc độ nói ~2,5 từ/giây). **Chỉ nội dung các dòng `LỜI:` được tính** vào số từ và thời lượng; `HÌNH`, `ÂM`, caption, hashtag không tính. Mốc thời gian khai báo ở đầu mỗi khối phải TRÙNG KHỚP với lượng lời thật.
+Mục tiêu một video là **từ 5 phút trở lên** (khoảng **5-8 phút / 300-480 giây**, ngưỡng chấp nhận 300-600 giây), tương đương khoảng **750-1200 từ lời đọc** (tốc độ nói chuẩn ~2,5 từ/giây). **Chỉ nội dung các dòng `LỜI:` được tính** vào số từ và thời lượng; `HÌNH`, `ÂM`, caption, hashtag không tính. Mốc thời gian khai báo ở đầu mỗi khối phải TRÙNG KHỚP với lượng lời thật.
 
 **Mẹo tính nhịp độ (Rất quan trọng):**
 - 10 giây = 25 - 30 từ
-- 20 giây = 50 - 60 từ
-Đừng khai báo mốc thời gian dài (vd: 17-20 giây) nhưng LỜI chỉ viết có 20-30 từ. Làm vậy video sẽ bị trống hoặc nhịp đọc rề rà gây buồn ngủ. Nếu mốc thời gian dài, hãy viết thêm nội dung giải thích CƠ CHẾ; nếu hết ý, hãy thu hẹp mốc thời gian lại.
+- 30 giây = 75 - 90 từ
+- 60 giây = 150 - 180 từ
+Đừng khai báo mốc thời gian dài (vd: 45-60 giây) nhưng LỜI chỉ viết có 20-30 từ. Làm vậy video sẽ bị trống hoặc nhịp đọc rề rà gây buồn ngủ. Hãy viết nội dung đi sâu vào CƠ CHẾ, phân tích đa tầng, có ví dụ và tương tác hài hước để nuôi dưỡng thời lượng; mốc thời gian khai báo phải ăn khớp chặt chẽ với số từ lời đọc thực tế.
 
-Chủ đề đơn giản thì 60-90 giây là đủ, không kéo dài để đủ số. Nếu `user_rules.preferences` hoặc nhiệm vụ nêu thời lượng cụ thể, bám theo đó — đó là định hướng chứ không phải hợp đồng máy móc, đừng viết đi viết lại chỉ để khớp một con số. Kiểm soát dung lượng ngay từ đầu: 3-5 cảnh, mỗi cảnh một ý; khi quá tải thì xóa cả cảnh hoặc gộp cảnh, không cắt vụn từng câu.
+Kiểm soát cấu trúc kịch bản theo 5 giai đoạn chuẩn Doodle Explainer: phân chia thành 5-7 khối cảnh hợp lý, mỗi khối gánh một cơ chế hoặc luận điểm rõ ràng.
 
 ## Quy cách bản kịch
 
-Nội dung `draft_chapter` / `commit_chapter` là **văn bản thuần**, không Markdown: không `**`, không tiêu đề `#` nào ngoài dòng `# Tiêu đề` đầu tiên, không gạch đầu dòng. Áp dụng **Khung 6 nhịp** cho nội dung:
-1. **Hook (0-3s):** khoảnh khắc người xem nhận ra mình hoặc nghịch lý.
-2. **Vấn đề (3-10s):** tạo "điều cần giải" sớm, trả lời muộn.
-3. **Cơ chế 1 (10-30s):** giải thích lý do thứ nhất bằng một ẩn dụ hình ảnh duy nhất.
-4. **Cơ chế 2 (30-50s):** thêm lớp nữa hoặc lật lại vấn đề.
-5. **Reframe (50-65s):** nhìn lại vấn đề dưới góc nhìn mới + một hành động nhỏ.
-6. **Chốt/Teaser (5-10s cuối):** để lại câu mang về nhà hoặc mồi sang tập sau.
+Nội dung `draft_chapter` / `commit_chapter` là **văn bản thuần**, không Markdown: không `**`, không tiêu đề `#` nào ngoài dòng `# Tiêu đề` đầu tiên, không gạch đầu dòng. Áp dụng **Sườn Doodle Explainer 5 giai đoạn cho video dài (từ 5 phút)**:
+1. **HOOK (0:00-0:03):** 3 giây giật hook cực mạnh — khoảnh khắc người xem nhận ra mình, một câu hỏi ngược đời hoặc nghịch lý va chạm bất ngờ.
+2. **PHẦN ĐẦU (0:03-0:45) - Đặt vấn đề & Kết nối đời thực:** Đưa ra tình huống quen thuộc mà người xem thấy bản thân mình trong đó; tạo lời hứa hẹn/tiền đề ẩn dụ ngộ nghĩnh dẫn dắt vào chủ đề.
+3. **PHẦN THÂN (0:45-3:45) - Cơ chế giải thích 3 chặng có Tái Hook (Re-hook mỗi 60-90s):**
+   - **Chặng 1 (0:45-1:45):** Ẩn dụ cốt lõi / Tình huống ban đầu tưởng chừng bình thường nhưng nảy sinh mâu thuẫn.
+   - **Chặng 2 (1:45-2:45):** Tái Hook 1 + Đào sâu cơ chế / Phản trực giác (tại sao cách nghĩ thông thường lại sai).
+   - **Chặng 3 (2:45-3:45):** Tái Hook 2 + Cao trào / Hiện tượng bùng nổ sang đời sống hiện đại (liên hệ trực tiếp ví dụ thực tế).
+4. **PHẦN REFRAME & HÀNH ĐỘNG (3:45-4:30):** Nhìn lại vấn đề dưới góc nhìn mới (khai sáng nhận thức) + Gợi ý hành động nhỏ cụ thể, giải pháp thực tế mà người xem có thể áp dụng ngay.
+5. **PHẦN KẾT (4:30-5:15+) - Đúc kết & Tương tác:** Đúc kết sâu cay hoặc triết lý bất ngờ nhẹ nhõm + Loop Hook (nối vòng lặp về câu mở đầu) hoặc kêu gọi bình luận/theo dõi.
 
 Cấu trúc định dạng:
 - Dòng đầu: `# {Tiêu đề video}`.
-- Các khối cách nhau một dòng trống: đúng một `HOOK m:ss-m:ss` (đầu tiên, ~3 giây), các `CẢNH n m:ss-m:ss` (n tăng từ 1), đúng một `CHỐT m:ss-m:ss` (cuối cùng).
+- Các khối cách nhau một dòng trống: đúng một `HOOK m:ss-m:ss` (đầu tiên, 0:00-0:03), các `CẢNH n m:ss-m:ss` (n tăng từ 1), đúng một `CHỐT m:ss-m:ss` (cuối cùng).
 - Thẻ trong khối, mỗi thẻ mở đầu một dòng:
-  + `LỜI:` lời đọc (câu ngắn <20 từ, một ý một câu).
-  + `HÌNH:` mô tả hình vẽ (một cảnh = một ý = một hình chính, lời và hình bổ sung cho nhau, không lặp).
+  + `LỜI:` lời đọc (câu ngắn <20 từ, một ý một câu, nói được ra miệng).
+  + `HÌNH:` mô tả hình vẽ que cụ thể (một cảnh = một ý = một hình chính, lời và hình bổ sung cho nhau, không lặp).
   + `ÂM:` nhạc/hiệu ứng (tùy chọn).
   + TUYỆT ĐỐI KHÔNG dùng thẻ `CHỮ:` trong các cảnh (bỏ hẳn phần CHỮ, mọi nội dung truyền tải qua LỜI và HÌNH).
 - Chân kịch bản: `CAPTION:` (bắt buộc), `HASHTAG:` (bắt buộc, các thẻ `#...` cách nhau bằng khoảng trắng), `NGUỒN:` (bắt buộc; chủ đề kiến thức nền ghi `NGUỒN: không có (kiến thức nền)`), `CẦN KIỂM CHỨNG:` (dữ kiện khoa học/tâm lý/phân tích chưa chắc chắn, hoặc `không có`).
@@ -92,34 +95,43 @@ Cấu trúc định dạng:
    - Đảm bảo tất cả tình huống trong câu chuyện là kịch bản quen thuộc với con người để họ thấy được bản thân mình, bạn bè thời thơ ấu, hoặc cha mẹ mình ở trong đó (dù chỉ là một chút).
    - Khai thác nghịch lý tính cách cổ mẫu (như Tây Du Ký, Thủy Hử, Tam Quốc): bề ngoài hung dữ nhưng thương sâu đậm, người quá khôn ngoan dễ tự làm khó mình, người nhân từ dễ bị thiệt thòi, người lười biếng ham ăn chân thật đáng yêu... Tiếng cười sinh ra từ sự đồng cảm "sao giống mình quá", không dùng trò hề lố bịch.
 
-Ví dụ (rút gọn, chỉ để minh họa định dạng):
+Ví dụ minh họa chuẩn (kịch bản 5 phút chuẩn cấu trúc Doodle Explainer):
 
 ```
-# Lạm phát: vì sao củ khoai đắt lên mỗi ngày
+# Vì sao tiền cứ mất giá: bí mật củ khoai đồ đá
 
 HOOK 0:00-0:03
-LỜI: Hôm qua củ khoai nướng giá hai vỏ sò. Hôm nay giá ba. Ai làm đây?
-HÌNH: Ugg, người que mặc da thú, giơ củ khoai bốc khói, mắt tròn hoảng hốt, sau lưng là bảng giá khắc trên đá.
+LỜI: Hôm qua củ khoai hai vỏ sò, hôm nay thành năm. Ai lấy mất tiền của bạn?
+HÌNH: Ugg người que giơ củ khoai nướng bốc khói, hai mắt tròn xoe nhìn bảng khắc đá giá tăng vọt.
 
-CẢNH 1 0:03-0:25
-LỜI: Chào mấy bạn, tui là Ugg, dân đồ đá. Ở bộ lạc tui, vỏ sò chính là tiền. Muốn có vỏ sò thì phải ra biển nhặt. Mà nhặt được thì mệt lắm. Nên vỏ sò mới quý. Một củ khoai đổi hai vỏ sò, ai cũng vui.
-HÌNH: Cảnh bãi biển, Ugg còng lưng nhặt từng vỏ sò bỏ vào giỏ; mặt trời mỉm cười.
-ÂM: Tiếng sóng, nhạc bongo nhẹ.
+CẢNH 1 0:03-0:45
+LỜI: Chào mấy bạn, tui là Ugg, dân đồ đá chính hiệu. Mấy bạn có từng đi làm quần quật cả tháng, nhận lương thấy vui vui, nhưng bước chân vào tiệm tạp hóa mua gói mì, đổ bình xăng hay trả tiền cốc trà sữa thì giật mình nhận ra: ủa sao lương mình đứng yên mà giá mọi thứ cứ tự động leo thang? Có phải người bán hàng đang cố tình bắt chẹt bạn? Hay đồng tiền trong ví bạn tự nhiên bốc hơi? Ở thời đồ đá của tụi tui, câu chuyện này cũng diễn ra y hệt, nhưng hung thủ thật sự không nằm ở người bán, mà nằm ở một thứ tinh vi hơn rất nhiều.
+HÌNH: Ugg cầm giỏ đi chợ tiền sử, trước mặt là các sạp thịt mammoth, nấm rừng với bảng giá đá dựng đứng, biểu cảm dở khóc dở cười.
+ÂM: Tiếng thở dài nhẹ, nhạc bộ gõ rộn ràng.
 
-CẢNH 2 0:25-0:50
-LỜI: Rồi một hôm, ông Grok tìm ra bãi biển đầy vỏ sò. Cả bộ lạc chạy ra nhặt. Ai cũng giàu lên trông thấy! Nhưng khoai thì vẫn chỉ có bấy nhiêu. Người nào cũng cầm đầy vỏ sò, và ai cũng muốn mua khoai. Thế là bà bán khoai nghĩ: mấy người trả nhiều thế, mình tăng giá thôi.
-HÌNH: Cả bộ lạc người que ôm giỏ vỏ sò đầy ắp xếp hàng trước một sạp khoai bé xíu; bà bán khoai gõ bảng giá, đổi số hai thành số ba.
+CẢNH 2 0:45-1:45
+LỜI: Để hiểu rõ, quay lại hang đá của bộ lạc tụi tui một chút. Thời đó chưa có giấy bạc hay thẻ ngân hàng, tụi tui dùng vỏ sò biển làm tiền để đổi chác. Muốn có vỏ sò, bạn phải lặn lội ra tận bãi đá ngầm xa xôi, vượt sóng lớn, trèo đèo lội suối cả ngày trời mới nhặt được một vài chiếc vỏ sò óng ánh. Nhặt vỏ sò mệt đứt hơi, nên trong bộ lạc, vỏ sò cực kỳ quý giá. Ai có mười vỏ sò là coi như có một khoản tích lũy mồ hôi nước mắt. Lúc này, cả thung lũng chỉ có một bác nông dân que chuyên trồng khoai mài. Cứ một ngày công nhặt được hai vỏ sò, bạn đổi được một củ khoai nướng thơm phức ăn no bụng. Bác nông dân vui vì có vỏ sò để đi đổi rìu đá của thợ rèn, bạn vui vì có củ khoai ăn. Mọi thứ cân bằng êm đềm suốt bao mùa săn bắn.
+HÌNH: Cảnh bãi biển sóng vỗ, Ugg cặm cụi mò từng vỏ sò; góc sau là bác nông dân que đang nướng khoai mài trên bếp lửa hồng, trao đổi vui vẻ.
 
-CẢNH 3 0:50-1:10
-LỜI: Đó, gọi là lạm phát. Vỏ sò thì nhiều hơn, nên mỗi vỏ sò mua được ít khoai hơn. Vỏ sò không hỏng, nhưng giá trị của nó thì mòn dần. Ngày nay người ta không nhặt vỏ sò, mà in tiền. Nghe quen không?
-HÌNH: Một con mammoth bụng phệ ngồi trên đống vỏ sò khổng lồ; bên cạnh, củ khoai nhỏ xíu, nhìn rất tội.
+CẢNH 3 1:45-2:45
+LỜI: Nhưng chuyện quái gở bắt đầu khi một nhân vật tên là Grok xuất hiện. Ông Grok này lười đi săn nhưng lại cực kỳ ma mãnh. Một hôm, ông ta tình cờ phát hiện ra một cái hang bí mật ven biển, nơi bão đánh dạt hàng ngàn vỏ sò trôi dạt vào chất cao như núi. Thế là chẳng cần tốn một giọt mồ hôi, Grok vác về cả chục bao tải vỏ sò đầy ắp. Bỗng nhiên, Grok trở thành tỷ phú đô-la thời tiền sử chỉ sau một đêm. Có nhiều tiền quá thì làm gì? Grok chạy ngay ra sạp của bác nông dân, hét lớn: Bán cho tui hết sạch chỗ khoai này, tui trả gấp đôi, gấp ba! Bác nông dân tròn mắt sướng rơn, gom hết khoai bán cho Grok. Nhưng rồi ngày hôm sau, khi Ugg và những người dân lao động thật thà khác cầm hai vỏ sò mồ hôi nước mắt đến mua khoai, bác nông dân lắc đầu: Xin lỗi nghen, giờ khoai giá năm vỏ sò rồi!
+HÌNH: Grok người que mắt híp cười toe toét, đẩy chiếc xe cút kít đá chất đầy bao tải vỏ sò ập vào sạp khoai; Ugg đứng bên cạnh cầm hai vỏ sò lẻ loi ngơ ngác.
+ÂM: Tiếng chuông leng keng dồn dập, tiếng xôn xao hốt hoảng.
 
-CHỐT 1:10-1:20
-LỜI: Nên lần sau thấy giá tăng, đừng trách bà bán khoai. Hãy hỏi: ai vừa tìm ra bãi biển mới?
-HÌNH: Ugg gãi đầu nhìn ra xa, bóng ông Grok vác cả bao vỏ sò đi qua.
+CẢNH 4 2:45-3:45
+LỜI: Mấy bạn thấy điều gì vừa xảy ra không? Củ khoai mài trên bếp lửa đâu có to hơn, đâu có thơm ngon hơn hôm qua. Nó vẫn chỉ là một củ khoai bình thường. Cái thay đổi duy nhất là số lượng vỏ sò trong hang đá đã tăng gấp mười lần, trong khi số củ khoai vẫn y như cũ. Khi quá nhiều tiền cùng đuổi theo một lượng hàng hóa không đổi, thì từng đồng tiền buộc phải rẻ rúng đi. Đến thời hiện đại, vỏ sò được thay bằng những tờ giấy bạc in hình hoa văn đẹp đẽ và những con số nhảy múa trên màn hình ứng dụng điện thoại. Khi các cỗ máy ngân hàng trung ương in thêm tiền tràn ngập thị trường để kích thích kinh tế, thì chiếc bánh mì, ly cà phê hay căn nhà bạn mơ ước cũng y như củ khoai của Ugg. Lương của bạn tăng năm phần trăm, nhưng lượng tiền trong nền kinh tế tăng hai mươi phần trăm, thì thực chất bạn đang nghèo đi từng ngày mà không hề hay biết.
+HÌNH: Cán cân đá khổng lồ: một bên đĩa cân là núi vỏ sò nặng trĩu đè bẹp xuống, bên kia đĩa cân là củ khoai bay bổng lên cao; chuyển cảnh sang que hiện đại cầm điện thoại nhìn số dư tài khoản.
 
-CAPTION: Củ khoai không đắt lên, vỏ sò mới rẻ đi. Lạm phát giải thích bằng đồ đá.
-HASHTAG: #lamphat #kinhte #doodle #giaithich #hoccungtiktok
+CẢNH 5 3:45-4:30
+LỜI: Vậy nên, lần sau khi nghe tin giá bát phở tăng năm nghìn hay tiền thuê nhà tăng thêm một triệu, đừng vội bực tức trút giận lên cô bán phở hay chú chủ nhà. Họ cũng chỉ là những người que đang cố gắng giữ cho củ khoai của mình không bị vỏ sò nhấn chìm mà thôi. Thay vì ngồi than vãn hay giữ khư khư đống vỏ sò dưới gầm giường để nhìn nó bốc hơi từng ngày, người khôn ngoan thời nay học cách đổi vỏ sò lấy những tài sản thật sự có giá trị bền vững: học thêm kỹ năng để nâng cao giá trị bản thân, hoặc đầu tư vào những thứ không thể dễ dàng in thêm được.
+HÌNH: Ugg gật gù ngộ ra, bắt tay cô bán phở que; sau đó Ugg chuyển sang cầm búa đá mài giũa dụng cụ sắc bén, khuôn mặt tự tin, kiên định.
+
+CHỐT 4:30-5:15
+LỜI: Tiền không tự nhiên sinh ra và cũng không tự nhiên mất đi, nó chỉ chuyển từ túi người giữ tiền mặt sang túi người nắm giữ tài sản thật mà thôi. Bạn đang để vỏ sò của mình dưới gối hay đã đem đi đổi lấy công cụ lao động tốt hơn? Bình luận cho Ugg biết góc nhìn của bạn bên dưới nghen. Đừng quên bấm theo dõi kênh để cùng người que tụi tui giải mã những bí mật kinh tế thú vị tiếp theo.
+HÌNH: Ugg người que nháy mắt cười tươi, vẫy tay chào người xem cạnh đống lửa ấm áp; góc màn hình hiện biểu tượng nút theo dõi và hộp bình luận nhấp nháy.
+
+CAPTION: Củ khoai không đắt lên, vỏ sò mới rẻ đi. Bản chất lạm phát hiểu trong 5 phút cùng dân đồ đá.
+HASHTAG: #lamphat #kinhte #taichinh #doodle #kienthuc #giaithich #xuhuong
 NGUỒN: không có (kiến thức nền)
 CẦN KIỂM CHỨNG: không có
 ```
