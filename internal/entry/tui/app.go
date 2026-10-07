@@ -5,6 +5,7 @@ import (
 	"log/slog"
 	"os"
 	"path/filepath"
+	"regexp"
 	"time"
 
 	tea "github.com/charmbracelet/bubbletea"
@@ -13,6 +14,37 @@ import (
 	"github.com/voocel/ainovel-cli/internal/host"
 	buildversion "github.com/voocel/ainovel-cli/internal/version"
 )
+
+var timestampSuffixRe = regexp.MustCompile(`^(.+)-\d{8}-\d{4}(?:-\d+)?$`)
+
+// nextOutputDir tạo đường dẫn thư mục mới theo kiểu output/novel-YYYYMMDD-HHMM
+// dựa trên thư mục output hiện tại mà không xóa bỏ dữ liệu dự án cũ.
+func nextOutputDir(currentDir string, now time.Time) string {
+	if currentDir == "" {
+		currentDir = filepath.Join("output", "novel")
+	}
+	parent := filepath.Dir(currentDir)
+	base := filepath.Base(currentDir)
+
+	prefix := base
+	if m := timestampSuffixRe.FindStringSubmatch(base); len(m) > 1 {
+		prefix = m[1]
+	}
+
+	ts := now.Format("20060102-1504")
+	candidate := filepath.Join(parent, fmt.Sprintf("%s-%s", prefix, ts))
+	if _, err := os.Stat(candidate); os.IsNotExist(err) {
+		return candidate
+	}
+
+	for i := 1; i <= 99; i++ {
+		alt := filepath.Join(parent, fmt.Sprintf("%s-%s-%02d", prefix, ts, i))
+		if _, err := os.Stat(alt); os.IsNotExist(err) {
+			return alt
+		}
+	}
+	return filepath.Join(parent, fmt.Sprintf("%s-%s-%s", prefix, ts, now.Format("05")))
+}
 
 func wipeDir(dir string) error {
 	entries, err := os.ReadDir(dir)
@@ -41,6 +73,7 @@ func wipeDir(dir string) error {
 // 3. 未来若新增“续写已有小说”等共享模式，统一落到 internal/entry/startup。
 func Run(cfg bootstrap.Config, bundle assets.Bundle, build buildversion.Info) error {
 	var initialPrompt string
+	var newProjectDirHint string
 	for {
 		rt, err := host.New(cfg, bundle, host.WithFileLog("tui.log", false,
 			slog.String("version", build.Version),
@@ -53,6 +86,15 @@ func Run(cfg bootstrap.Config, bundle assets.Bundle, build buildversion.Info) er
 
 		m := NewModel(rt, build.Version, initialPrompt)
 		m.disableUpdateCheck = cfg.DisableUpdateCheck
+		if newProjectDirHint != "" {
+			m.applyEvent(host.Event{
+				Time:     time.Now(),
+				Category: "SYSTEM",
+				Level:    "info",
+				Summary:  fmt.Sprintf("Đã khởi tạo dự án mới tại: %s", newProjectDirHint),
+			})
+			newProjectDirHint = ""
+		}
 		if logErr := rt.FileLogError(); logErr != nil {
 			logWarning := fmt.Errorf("nhật ký tệp không khả dụng, tiếp tục dùng nhật ký terminal: %w", logErr)
 			m.err = logWarning
@@ -73,10 +115,10 @@ func Run(cfg bootstrap.Config, bundle assets.Bundle, build buildversion.Info) er
 		}
 
 		if m, ok := finalModel.(Model); ok && m.restartRequested {
-			if wipeErr := wipeDir(cfg.OutputDir); wipeErr != nil {
-				return fmt.Errorf("không thể xóa dữ liệu dự án cũ: %w", wipeErr)
-			}
+			cfg.OutputDir = nextOutputDir(cfg.OutputDir, time.Now())
+			bundle = assets.Load(cfg.Style, assets.DefaultLoadOptions(cfg.OutputDir))
 			initialPrompt = m.restartPrompt
+			newProjectDirHint = cfg.OutputDir
 			continue
 		}
 		break
