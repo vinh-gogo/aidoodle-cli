@@ -4,18 +4,19 @@ Một chương = một video doodle explainer 60-180 giây, ~150-450 từ lời 
 
 ## Thời lượng và từ
 
-- Tốc độ đọc chuẩn ~2,5 từ/giây (~150 từ/phút). Đọc nhanh kiểu TikTok tối đa ~3 từ/giây.
-- Bảng quy đổi: 60 giây ~150 từ; 90 giây ~225 từ; 120 giây ~300 từ; 180 giây ~450 từ.
+- Tốc độ đọc chuẩn ~2,5 đến 3 từ/giây (~150-180 từ/phút). KHÔNG viết nhịp quá chậm (dưới 2 từ/giây). Khoảng trống nên dùng để nhét phần cơ chế cốt lõi.
+- Bảng quy đổi: 60 giây ~150-180 từ; 90 giây ~225-270 từ; 120 giây ~300-360 từ; 180 giây ~450 từ.
 - Chỉ thẻ `LỜI:` được tính từ. Ngoài ra khoảng lặng, hiệu ứng và cảnh câm cần tính thêm giây: mỗi cảnh câm 1-2 giây.
 - Mặc định nhắm 60-90 giây. Chủ đề phức tạp mới lên 120-180 giây, và phải có đủ ý để nuôi từng ấy giây.
 
-## Nhịp 3 giây
+## Nhịp 3 giây và Cơ chế
 
-Cứ ~3 giây (7-9 từ) phải có một thay đổi: hình mới, ý mới, câu hỏi mới, hoặc cú đảo. Một cảnh dài 15-25 giây gồm 5-8 nhịp như vậy. Nếu hai nhịp liền kề giống hệt nhau về hình và ý, gộp hoặc cắt một nhịp.
+Cứ ~3 giây (7-9 từ) phải có một thay đổi: hình mới, ý mới, câu hỏi mới, hoặc cú đảo. Một cảnh dài 15-25 giây gồm 5-8 nhịp như vậy.
+Nếu hai nhịp liền kề giống hệt nhau về hình và ý, gộp hoặc cắt một nhịp. Tuyệt đối không lặp lại một ý nhiều lần ở nhiều cảnh mà KHÔNG đi sâu vào cơ chế (tại sao hiện tượng đó xảy ra).
 
 ## Cấu trúc HOOK / CẢNH / CHỐT
 
-Hook (0:00-0:03): 8-10 từ, gây tò mò hoặc sốc hình ảnh. Không chào hỏi, không giới thiệu kênh. Xem `hook_techniques`.
+Hook (0:00-0:03): 8-10 từ, gây tò mò hoặc sốc hình ảnh. Mở bằng khoảnh khắc của chính khán giả (ví dụ: "mở 5 phút thành 1 tiếng"), KHÔNG gọi tên nhân vật lạ (như Que Ú) ngay từ đầu vì người xem chưa biết đó là ai. Không chào hỏi, không giới thiệu kênh. Xem `hook_techniques`.
 
 Cảnh 1 (3-5 cảnh tùy độ dài): dựng vấn đề bằng ẩn dụ thời đồ đá. Đưa bối cảnh bằng hành động, không giảng.
 

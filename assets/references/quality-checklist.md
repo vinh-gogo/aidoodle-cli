@@ -5,15 +5,16 @@ Tự kiểm tra trước khi `commit_chapter`; Editor dùng chính danh sách n�
 ## 1. Hook (khối HOOK)
 
 - [ ] Lời ≤10 từ, vào thẳng, không chào hỏi.
+- [ ] Mở bằng khoảnh khắc của người xem (ví dụ: "mở 5 phút thành 1 tiếng"), KHÔNG dùng tên nhân vật lạ (như Que Ú) ở Hook.
 - [ ] Gây tò mò với người chưa biết chủ đề; hình hook đọc được khi tắt tiếng.
 - [ ] Không lặp kiểu hook của 3 tập gần nhất.
 - [ ] Thân video giao đúng điều hook hứa.
 
-## 2. Nhịp
+## 2. Nhịp và cơ chế (Tại sao?)
 
 - [ ] Cứ ~3 giây có một thay đổi (hình, ý, câu hỏi, đảo).
-- [ ] Từ LỜI nằm trong 150-450; thời lượng khai báo khớp ~2,5 từ/giây (60-180 giây).
-- [ ] Mỗi cảnh làm đúng một việc; không cảnh nào lặp ý cảnh trước.
+- [ ] Tốc độ đọc khoảng ~2,5 đến 3 từ/giây (không chậm dưới 2 từ/giây).
+- [ ] Không lặp một ý nhiều lần mà không giải thích CƠ CHẾ cốt lõi (phải trả lời được "tại sao").
 - [ ] Có ít nhất một cú đảo/"hóa ra..." trước chốt.
 
 ## 3. Ẩn dụ đúng
@@ -26,12 +27,13 @@ Tự kiểm tra trước khi `commit_chapter`; Editor dùng chính danh sách n�
 ## 4. Dữ kiện và nguồn
 
 - [ ] Mọi con số, tên, ngày tháng có trong `NGUỒN:` hoặc kiến thức nền chắc chắn.
-- [ ] Dữ kiện chưa chắc nằm ở `CẦN KIỂM CHỨNG:` và lời đọc dùng giọng dè dặt ("khoảng", "theo...").
+- [ ] Các mệnh đề khoa học, phân tích tâm lý, dữ kiện chưa chắc chắn PHẢI nằm ở `CẦN KIỂM CHỨNG:` và lời đọc dùng giọng dè dặt.
 - [ ] Không bịa số liệu, không gán lời cho người thật; tập về trend ghi `Trend:` và nguồn.
-- [ ] Chủ đề nhạy cảm (chính trị, sức khỏe, tài chính cá nhân) không khuyên đầu tư/chữa bệnh cụ thể.
+- [ ] Chủ đề nhạy cảm không khuyên đầu tư/chữa bệnh cụ thể.
 
-## 5. Lời đọc nói được
+## 5. Lời đọc nói được và Ngôi kể
 
+- [ ] Ngôi kể (POV) nhất quán, không lẫn lộn (ví dụ: đang xưng "mình" thì không chốt bằng "Que Ú bị dính").
 - [ ] Đọc to không líu lưỡi, không câu dài hơn ~20 từ, ngắt hơi tự nhiên.
 - [ ] Ngôn ngữ nói, không văn viết, không từ Hán-Việt nặng khi có từ thuần.
 - [ ] Không liệt kê 3 vế đều đều, không câu sáo AI (xem `anti_ai_tone`).
@@ -39,14 +41,18 @@ Tự kiểm tra trước khi `commit_chapter`; Editor dùng chính danh sách n�
 
 ## 6. Hình vẽ được
 
+- [ ] Hình ảnh không đơn điệu (không phải cảnh nào cũng chỉ cầm điện thoại). Mỗi cảnh một hình chính, xen kẽ cận cảnh, sơ đồ.
+- [ ] HÌNH không nhồi nhét quá tải đạo cụ (ví dụ: vừa keo dính, vừa ong mật phát sáng khó vẽ).
 - [ ] Mỗi HÌNH: ≤3 nhân vật, ≤2 đạo cụ, một hành động chính, mô tả đủ để họa sĩ vẽ.
 - [ ] HÌNH không lặp lại nguyên lời đọc; cho thấy cái lời không nói.
 - [ ] CHỮ ≤8 từ, chỉ từ khóa/con số.
 
-## 7. Chốt
+## 7. Chốt và Teaser
 
 - [ ] Có câu mang về nhà; gọi lại hook hoặc callback.
-- [ ] Không tóm tắt lại, không giảng đạo, không xin tương tác cứng.
+- [ ] Không chốt bằng câu khẳng định tuyệt đối vô căn cứ, KHÔNG đổ lỗi làm người xem thấy bất lực ("bạn không kiểm soát được mình").
+- [ ] Cảnh setup (ví dụ đi săn) phải có hậu quả/kết quả ở cuối để tạo kịch tính/gag.
+- [ ] Phải có teaser dẫn sang tập sau, hành động nhỏ không xin tương tác cứng.
 
 ## 8. Chân kịch bản và ngôn ngữ
 

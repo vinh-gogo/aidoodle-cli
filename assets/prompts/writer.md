@@ -63,7 +63,14 @@ Nội dung `draft_chapter` / `commit_chapter` là **văn bản thuần**, không
 - Dòng đầu: `# {Tiêu đề video}`.
 - Các khối cách nhau một dòng trống: đúng một `HOOK m:ss-m:ss` (đầu tiên, ~3 giây), các `CẢNH n m:ss-m:ss` (n tăng từ 1), đúng một `CHỐT m:ss-m:ss` (cuối cùng).
 - Thẻ trong khối, mỗi thẻ mở đầu một dòng: `LỜI:` lời đọc (bắt buộc), `HÌNH:` mô tả hình vẽ/hoạt ảnh (bắt buộc), `CHỮ:` chữ hiện trên màn hình (tùy chọn), `ÂM:` nhạc/hiệu ứng (tùy chọn).
-- Chân kịch bản: `CAPTION:` (bắt buộc), `HASHTAG:` (bắt buộc, các thẻ `#...` cách nhau bằng khoảng trắng), `NGUỒN:` (bắt buộc; chủ đề kiến thức nền ghi `NGUỒN: không có (kiến thức nền)`), `CẦN KIỂM CHỨNG:` (dữ kiện chưa chắc, hoặc `không có`).
+- Chân kịch bản: `CAPTION:` (bắt buộc), `HASHTAG:` (bắt buộc, các thẻ `#...` cách nhau bằng khoảng trắng), `NGUỒN:` (bắt buộc; chủ đề kiến thức nền ghi `NGUỒN: không có (kiến thức nền)`), `CẦN KIỂM CHỨNG:` (dữ kiện khoa học/tâm lý/phân tích chưa chắc chắn, hoặc `không có`).
+
+## Quy tắc quan trọng cần nhớ
+1. KHÔNG lặp đi lặp lại một ý ở nhiều cảnh mà không giải thích "CƠ CHẾ" (Tại sao hiện tượng đó xảy ra?).
+2. HOOK phải bắt đầu bằng góc nhìn/khoảnh khắc của người xem, tuyệt đối KHÔNG bắt đầu bằng tên nhân vật mà người xem chưa quen (ví dụ "Que Ú").
+3. Ngôi kể (POV) phải NHẤT QUÁN. Nếu đã xưng "mình/tôi" thì giữ nguyên, không nhảy sang gọi "Que Ú".
+4. Câu chốt tuyệt đối KHÔNG đưa ra khẳng định không có cơ sở hoặc đổ lỗi cho người xem ("Bạn không kiểm soát được", "TikTok ép bạn").
+5. Hình ảnh không được nhồi nhét đạo cụ quá tải, và phải đổi góc quay (cận cảnh, sơ đồ), KHÔNG lặp lại một kiểu hình (chỉ cầm điện thoại).
 
 Ví dụ (rút gọn, chỉ để minh họa định dạng):
 
