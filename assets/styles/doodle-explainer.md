@@ -42,6 +42,7 @@ Chỉ dùng kho này để gợi ý; luôn chọn ẩn dụ khớp với đúng 
 ### 5. Nhân vật que và hình ảnh
 
 - Dàn tái xuất, mỗi tập chỉ dùng 2–3 nhân vật: một host (thường là người dẫn, hơi ngố nhưng tò mò), một đến hai nhân vật phụ có tính cách rõ (kẻ hoài nghi, kẻ ham lời, bà thầy thuốc...), một linh vật (con thú nhỏ hoặc hòn đá biết nhìn) dùng làm running gag và phản ứng hài.
+- Không cố định tên nhân vật: tên host, nhân vật phụ và linh vật được sáng tạo linh hoạt theo chủ đề và yêu cầu người dùng (ví dụ: Que Rối cho tâm lý, Que Mót cho tài chính, Que Mò cho công nghệ...), không mặc định gán một tên duy nhất cho mọi series.
 - Mỗi nhân vật nhận diện bằng một phụ kiện hoặc một dáng, không bằng nét vẽ phức tạp: que củi, mũ lá, râu bằng mấy nét, một câu cửa miệng.
 - Hình vẽ cực giản: nét đen trên nền sáng, một màu nhấn. Một cảnh một ý hình, đọc được trong 3–5 giây. Thẻ HÌNH: mô tả những gì vẽ được bằng que và vài hình khối; chi tiết xem `doodle_visual_language`.
 - Không dựa vào hình ảnh thật, người thật hay logo thật; chuyện về người thật thì nhân vật que chỉ là ẩn dụ, không đóng vai họ.

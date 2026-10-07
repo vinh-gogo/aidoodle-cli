@@ -11,6 +11,9 @@ Mỗi nhân vật que khi lưu bằng `save_foundation(type="characters")` có k
 
 Trường tùy chọn: `tier` (core / important / secondary / decorative).
 
+> [!IMPORTANT]
+> Tên "Que Ú" trong các ví dụ dưới đây chỉ là **VÍ DỤ MINH HỌA**. Khi thiết kế nhân vật cho một series, bạn PHẢI tự do sáng tạo tên gọi, ngoại hình và nét tính cách phù hợp nhất với chủ đề của tác phẩm (ví dụ: Que Rối / Que Lo cho chủ đề tâm lý, Que Mót / Que Sộp cho chủ đề tài chính, Que Mò cho chủ đề công nghệ...). TUYỆT ĐỐI KHÔNG mặc định gán tên "Que Ú" cho mọi kịch bản.
+
 ## Mẫu Markdown để nghĩ (không phải định dạng lưu)
 
 ### Host / người dẫn chuyện: [Tên]

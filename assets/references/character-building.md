@@ -9,6 +9,14 @@ Dàn nhân vật là "diễn viên cố định" của kênh. Người xem phả
 3. Linh vật: một con vật/vật nhỏ không thoại (mammoth mắt tròn, con chim đá). Dùng cho punchline hình ảnh và callback.
 4. Đối trọng: nhân vật phản ý host, đại diện cho hiểu lầm phổ biến ("Cứ in thêm tiền đi cho giàu!"). Giúp giải thích bằng tranh luận ngắn thay vì giảng.
 
+## Sáng tạo tên và hình tượng theo chủ đề
+
+Tuyệt đối không dùng một nhân vật cố định (như Que Ú) cho mọi series. Đánh giá chủ đề và yêu cầu người dùng để chọn nhân vật phù hợp:
+- **Tên nhân vật que**: thường gồm chữ "Que" kết hợp một tính từ hoặc nét đặc trưng ngắn gọn (Que Rối, Que Lo, Que Mót, Que Sộp, Que Mò, Que Còi, Que Xù, Que Ngố, Que Lanh, Que Bự, Que Lười...).
+- **Linh vật**: con vật nhỏ hoặc đồ vật biết phản ứng hài hước, gắn liền với chủ đề (Chó Lửa, Chim Gõ, Rùa Đá, Đom Đóm, Cua Cắp, Hòn Đá Cảm Xúc...).
+- **Phù hợp chủ đề**: series tài chính cần que hám lợi vs que bủn xỉn; series tâm lý cần que lo âu (overthinking) vs que vô tư (chill); series công nghệ cần que tò mò vs cụ que bảo thủ.
+- Luôn ưu tiên ý tưởng nhân vật do người dùng yêu cầu trong đề bài nếu có.
+
 ## Thiết kế một nhân vật que (5 câu)
 
 1. Nhận diện hình: một dấu hiệu đơn giản vẽ được trong 3 nét (mũ lông, râu xoắn, đeo xương).

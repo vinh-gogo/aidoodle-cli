@@ -106,7 +106,13 @@ Dựa trên series bible và outline để tạo dàn nhân vật que tái xuấ
 
 Yêu cầu:
 
-- **Số lượng và độ dài**: Chỉ tạo đúng **2 đến 3 nhân vật que cốt lõi** (1 host dẫn chuyện như Que Ú + 1 nhân vật phụ đối thoại/hỏi ngây ngô + tùy chọn 1 linh vật hoặc đối trọng). Mô tả (`description`) và hành trình (`arc`) mỗi nhân vật chỉ viết ngắn gọn 1–2 câu súc tích. Tổng toàn bộ JSON mảng characters BẮT BUỘC dưới 400 từ (~500 tokens) để đảm bảo tốc độ phản hồi và đường truyền ổn định.
+- **Tự do sáng tạo nhân vật theo chủ đề (KHÔNG cố định tên "Que Ú")**: Tên "Que Ú", "Que Trầm", "Chim Gõ" trong tài liệu chỉ là VÍ DỤ MINH HỌA, TUYỆT ĐỐI KHÔNG mặc định dùng "Que Ú" cho mọi series. Bạn PHẢI đánh giá chủ đề kịch bản và yêu cầu cụ thể của người dùng để sáng tạo dàn nhân vật mới mẻ, sinh động và ăn khớp nhất:
+  - Chủ đề Tâm lý / Áp lực / Cảm xúc: Host có thể là *Que Rối* (hay overthinking), *Que Lo*, bạn đồng hành là *Que Chill*, linh vật là *Cục Đá Im Lặng*...
+  - Chủ đề Công nghệ / AI / Mạng xã hội: Host có thể là *Que Mò* (tò mò táy máy), đối trọng là *Cụ Que Râu Dài* (bảo thủ), linh vật là *Đom Đóm Kỷ Đá*...
+  - Chủ đề Tiền bạc / Tài chính / Kinh doanh: Host có thể là *Que Mót* (thích tích trữ sò), đối trọng là *Que Sộp* (thích tiêu hoang)...
+  - Tên nhân vật que nên ngắn gọn (Que + tính từ/đặc điểm: Que Còi, Que Xù, Que Ngố, Que Lanh, Que Bự, Que Mập, Que Lười...), dễ nhớ và phản ánh tính cách.
+  - Nếu người dùng có yêu cầu hoặc gợi ý nhân vật cụ thể trong đề bài, BẮT BUỘC ưu tiên áp dụng.
+- **Số lượng và độ dài**: Chỉ tạo đúng **2 đến 3 nhân vật que cốt lõi** (1 host dẫn chuyện/hỏi hộ khán giả + 1 nhân vật phụ đối thoại/đối trọng + tùy chọn 1 linh vật làm điểm nhấn hài hước). Mô tả (`description`) và hành trình (`arc`) mỗi nhân vật chỉ viết ngắn gọn 1–2 câu súc tích. Tổng toàn bộ JSON mảng characters BẮT BUỘC dưới 400 từ (~500 tokens) để đảm bảo tốc độ phản hồi và đường truyền ổn định.
 - Mỗi nhân vật có chức năng và giọng nói riêng, đọc lời thoại lên là nhận ra ai đang nói.
 - Nhân vật đóng vai khán giả đặt câu hỏi ngây ngô và nhân vật giải thích phải rõ ràng để công thức "ẩn dụ → khái niệm → hóa ra" chạy trơn tru.
 - Không thiết lập nhân vật là người thật; không gán phát ngôn hay hành vi cho người thật.
