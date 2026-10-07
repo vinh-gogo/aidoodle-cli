@@ -33,7 +33,10 @@ cells = [
         "print('Tải xong llama.cpp!')\n",
         "\n",
         "# Tải model GGUF trực tiếp từ Hugging Face vào thư mục /content/\n",
-        "!huggingface-cli download {HF_REPO} {MODEL_FILE} --local-dir /content --local-dir-use-symlinks False\n"
+        "print(f'Đang tải model {MODEL_FILE} từ Hugging Face...')\n",
+        "from huggingface_hub import hf_hub_download\n",
+        "hf_hub_download(repo_id=HF_REPO, filename=MODEL_FILE, local_dir='/content', local_dir_use_symlinks=False)\n",
+        "print('Tải model thành công!')\n"
       ]
     },
     {
