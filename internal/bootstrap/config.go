@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log/slog"
+	"os"
 	"path/filepath"
 	"strings"
 	"time"
@@ -230,12 +231,40 @@ type Config struct {
 	// Trends Cấu hình thu thập xu hướng (trends) tự động từ RSS cho kịch bản doodle explainer.
 	Trends TrendsConfig `json:"trends,omitzero"`
 
+	// Tavily Cấu hình tra cứu web và kiểm chứng nguồn khoa học qua Tavily API.
+	Tavily TavilyConfig `json:"tavily,omitzero"`
+
 	// AdvanceMode Chế độ duyệt từng tập: "auto" (mặc định cho tiểu thuyết) hoặc "review" (duyệt từng tập trước khi viết tiếp).
 	AdvanceMode string `json:"advance_mode,omitempty"`
 
 	// DisableUpdateCheck 关闭启动时的新版本检查提醒（默认开）。检查只读
 	// GitHub Releases 公开接口，结果缓存在本地配置目录，不上报任何数据。
 	DisableUpdateCheck bool `json:"disable_update_check,omitempty"`
+}
+
+// TavilyConfig cấu hình tra cứu web và kiểm chứng nguồn khoa học qua Tavily API.
+type TavilyConfig struct {
+	Enabled     bool   `json:"enabled,omitempty"`
+	APIKey      string `json:"api_key,omitempty"`
+	BaseURL     string `json:"base_url,omitempty"`     // Mặc định https://api.tavily.com
+	SearchDepth string `json:"search_depth,omitempty"` // "basic" hoặc "advanced" (mặc định)
+	MaxResults  int    `json:"max_results,omitempty"`  // Mặc định 5
+}
+
+// ResolveAPIKey trả về API key có hiệu lực từ config, biến môi trường TAVILY_API_KEY hoặc khóa mặc định.
+func (c TavilyConfig) ResolveAPIKey() string {
+	if c.APIKey != "" {
+		return c.APIKey
+	}
+	if env := os.Getenv("TAVILY_API_KEY"); env != "" {
+		return env
+	}
+	return "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"
+}
+
+// IsEnabled trả về true nếu chức năng Tavily được bật hoặc có API key khả dụng.
+func (c TavilyConfig) IsEnabled() bool {
+	return c.Enabled || c.ResolveAPIKey() != ""
 }
 
 // TrendsConfig cấu hình thu thập xu hướng (trends) tự động từ RSS cho kịch bản doodle explainer.

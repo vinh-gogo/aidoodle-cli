@@ -24,12 +24,14 @@ import (
 	"github.com/voocel/ainovel-cli/internal/host/exp"
 	"github.com/voocel/ainovel-cli/internal/host/imp"
 	"github.com/voocel/ainovel-cli/internal/host/sim"
+	"github.com/voocel/ainovel-cli/internal/host/trend"
 	runtimelog "github.com/voocel/ainovel-cli/internal/logger"
 	modelreg "github.com/voocel/ainovel-cli/internal/models"
 	"github.com/voocel/ainovel-cli/internal/notify"
 	"github.com/voocel/ainovel-cli/internal/revision"
 	"github.com/voocel/ainovel-cli/internal/rules"
 	storepkg "github.com/voocel/ainovel-cli/internal/store"
+	"github.com/voocel/ainovel-cli/internal/tavily"
 	"github.com/voocel/ainovel-cli/internal/tools"
 	"github.com/voocel/ainovel-cli/internal/userrules"
 	"github.com/voocel/ainovel-cli/internal/utils"
@@ -423,6 +425,34 @@ func (h *Host) StartPrepared(rawRequirement string) error {
 	// 恢复/继续时引擎据此补裁(planStartFallback),启动失败不再是死局。
 	if err := h.store.RunMeta.SetStartPrompt(rawRequirement); err != nil {
 		return fmt.Errorf("Ghi nhận yêu cầu sáng tác: %w", err)
+	}
+
+	// Tự động tra cứu cơ sở khoa học từ Tavily cho chủ đề mới nếu có cấu hình Tavily
+	if h.cfg.Tavily.IsEnabled() {
+		h.emitEvent(Event{
+			Time:     time.Now(),
+			Category: "SYSTEM",
+			Level:    "info",
+			Summary:  "Đang tra cứu cơ sở khoa học và nguồn tin cậy từ Tavily cho chủ đề...",
+		})
+		tavilyClient := tavily.NewClient(h.cfg.Tavily.ResolveAPIKey(), h.cfg.Tavily.BaseURL)
+		sp, err := tavilyClient.SearchAndBuildSourcePack(h.runCtx, rawRequirement, h.cfg.Tavily.MaxResults)
+		if err == nil && sp != nil && len(sp.Articles) > 0 {
+			_ = trend.SaveSourcePack(h.store.Dir(), sp)
+			// Lưu dự phòng cả cho key "default" để Writer/Architect mọi tập đều nạp được
+			spDefault := *sp
+			spDefault.Topic = "default"
+			_ = trend.SaveSourcePack(h.store.Dir(), &spDefault)
+
+			h.emitEvent(Event{
+				Time:     time.Now(),
+				Category: "SYSTEM",
+				Level:    "info",
+				Summary:  fmt.Sprintf("Đã nạp cơ sở khoa học từ Tavily (%d tài liệu nguồn)", len(sp.Articles)),
+			})
+		} else if err != nil {
+			slog.Warn("Tự động tra cứu Tavily cho chủ đề thất bại (tiếp tục bằng kiến thức sẵn có)", "err", err)
+		}
 	}
 
 	// 启动裁定:失败显式报错中止(启动期用户在场,报错优于猜测)。

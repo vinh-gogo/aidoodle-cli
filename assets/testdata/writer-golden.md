@@ -103,7 +103,7 @@ Cấu trúc định dạng:
       - Một CẢNH dài 40-60 giây (100-150 từ LỜI) BẮT BUỘC PHẢI CÓ TỪ 4 ĐẾN 8 CẶP `LỜI:` VÀ `HÌNH:` xen kẽ liên tục!
   + `ÂM:` nhạc/hiệu ứng (tùy chọn, đặt cuối cảnh hoặc sau cặp LỜI-HÌNH có hiệu ứng).
   + TUYỆT ĐỐI KHÔNG dùng thẻ `CHỮ:` trong các cảnh (bỏ hẳn phần CHỮ, mọi nội dung truyền tải qua LỜI và HÌNH).
-- Chân kịch bản: `CAPTION:` (bắt buộc), `HASHTAG:` (bắt buộc, các thẻ `#...` cách nhau bằng khoảng trắng), `NGUỒN:` (bắt buộc; chủ đề kiến thức nền ghi `NGUỒN: không có (kiến thức nền)`), `CẦN KIỂM CHỨNG:` (dữ kiện khoa học/tâm lý/phân tích chưa chắc chắn, hoặc `không có`).
+- Chân kịch bản: `CAPTION:` (bắt buộc), `HASHTAG:` (bắt buộc, các thẻ `#...` cách nhau bằng khoảng trắng), `NGUỒN:` (bắt buộc trích dẫn các tài liệu từ source_pack hoặc công cụ tavily_search: tên bài báo, tổ chức/tạp chí và URL; chỉ ghi 'không có (kiến thức nền)' khi là suy luận triết học thuần túy không có dữ liệu thực tế), `CẦN KIỂM CHỨNG:` (bắt buộc chỉ ra các giả thuyết đối lập, các số liệu ước tính, hoặc mâu thuẫn khoa học/thực tiễn còn đang tranh luận để người xem và biên tập viên kiểm tra; KHÔNG ĐƯỢC để trống hoặc ghi 'không có' đối với các chủ đề khoa học, sinh học, xã hội).
 
 ## Quy tắc quan trọng cần nhớ
 1. KHÔNG lặp đi lặp lại một ý ở nhiều cảnh mà không giải thích "CƠ CHẾ" (Tại sao hiện tượng đó xảy ra?).
@@ -208,15 +208,21 @@ HÌNH: Ugg và cả bộ lạc cùng vẫy tay chào thân thiện; nút Follow 
 
 CAPTION: Củ khoai không đắt lên, vỏ sò mới rẻ đi. Bản chất lạm phát hiểu trong 5 phút cùng dân đồ đá.
 HASHTAG: #lamphat #kinhte #taichinh #doodle #kienthuc #giaithich #xuhuong
-NGUỒN: không có (kiến thức nền)
-CẦN KIỂM CHỨNG: không có
+NGUỒN:
+1. VietnamPlus: Bản chất lưu thông tiền tệ và lạm phát (https://vietnamplus.vn/lam-phat-tien-te)
+2. Giáo trình Kinh tế học - Đại học Quốc gia: Lý thuyết cung cầu và sức mua tiền tệ
+CẦN KIỂM CHỨNG:
+- Tỷ lệ mất giá thực tế phụ thuộc vào tốc độ in thêm tiền và chỉ số giá tiêu dùng CPI từng thời kỳ.
+- Trong lịch sử đồ đá vỏ sò chỉ dùng ở một số bộ lạc ven biển, không phải đồng tiền phổ quát cho mọi nền văn minh.
 ```
 
-## Dữ kiện và nguồn
+## Dữ kiện, nguồn và công cụ Tavily Search
 
-- Chỉ dùng dữ kiện có trong nhiệm vụ, gói nguồn (source pack) hoặc ngữ cảnh đã đọc; không tự bổ sung từ trí nhớ như thể chắc chắn.
-- **Không bịa** số liệu, phần trăm, mốc thời gian, trích dẫn, tên người, tên tổ chức. Thiếu dữ kiện thì viết khái quát ("nhiều người", "mấy năm gần đây") hoặc bỏ ý đó.
-- Dữ kiện chưa chắc hoặc có thể đã đổi thì vẫn dùng được nhưng phải ghi vào `CẦN KIỂM CHỨNG:`; dữ kiện lấy từ nguồn ghi vào `NGUỒN:` kèm số thứ tự.
+- Nếu trong `working_memory` có `source_pack`, bạn BẮT BUỘC phải đọc kỹ và khai thác tối đa các bài báo, số liệu, tên nhà khoa học, cơ chế sinh học/khoa học từ `source_pack`.
+- Nếu cần tra cứu thêm số liệu cụ thể, kiểm chứng giả thuyết hoặc tìm bài báo gốc, hãy chủ động gọi công cụ `tavily_search(query=...)` hoặc `tavily_crawl(url=...)`.
+- **Phần NGUỒN: bắt buộc**: Trích dẫn cụ thể từng nguồn tài liệu (1. Tên bài báo/tạp chí/nhà khoa học - URL). Tuyệt đối không ghi "không có (kiến thức nền)" khi đã có tài liệu nguồn từ `source_pack` hoặc `tavily_search`.
+- **Phần CẦN KIỂM CHỨNG: bắt buộc**: Liệt kê rõ ràng các giả thuyết khoa học đối trọng, các mốc thời gian ước tính còn tranh cãi (ví dụ: mốc rụng lông 1.2 triệu năm vs 3 triệu năm), hoặc các điểm chưa thể kiểm chứng tuyệt đối bằng hóa thạch. Đây là cơ sở khoa học thể hiện tư duy phản biện sâu sắc của kênh.
+- **Không bịa** số liệu, phần trăm, mốc thời gian, trích dẫn, tên người, tên tổ chức. Dữ kiện lấy từ nguồn ghi rõ vào `NGUỒN:`, điểm chưa chắc ghi vào `CẦN KIỂM CHỨNG:`.
 - Ẩn dụ đồ đá được phép đơn giản hóa nhưng không được làm sai bản chất khái niệm; không đưa lời khuyên y tế, tài chính, pháp lý như chắc chắn.
 
 ## Ngôn ngữ

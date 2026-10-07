@@ -299,6 +299,9 @@ func buildLoadingSummary(result map[string]any, chapter int) string {
 	if _, ok := planning["trend_brief"]; ok {
 		items = append(items, "tóm tắt xu hướng (trend_brief):ok")
 	}
+	if _, ok := planning["source_pack"]; ok {
+		items = append(items, "tài liệu nguồn (source_pack):ok")
+	}
 	if warnings, ok := result["_warnings"].([]string); ok && len(warnings) > 0 {
 		items = append(items, fmt.Sprintf("cảnh báo:%d", len(warnings)))
 	}

@@ -155,6 +155,17 @@
   //   "fetch_article_chars": 6000
   // },
 
+  // Tùy chọn. Cấu hình tra cứu web và kiểm chứng nguồn khoa học qua Tavily API.
+  // Khi được bật, hệ thống tự động tìm kiếm tài liệu từ các nguồn tin cậy (VietnamPlus, Dân Trí, các bài báo khoa học...)
+  // để làm cơ sở khoa học (source_pack), trích dẫn cụ thể vào phần 'NGUỒN:' và đánh dấu các tranh luận vào 'CẦN KIỂM CHỨNG:'.
+  // "tavily": {
+  //   "enabled": true,
+  //   "api_key": "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",
+  //   "base_url": "https://api.tavily.com",
+  //   "search_depth": "advanced",
+  //   "max_results": 5
+  // },
+
   // Tùy chọn. Chế độ kiểm duyệt từng tập kịch bản: "auto" (mặc định cho tiểu thuyết, viết liên tục) hoặc "review" (khuyến nghị cho kịch bản tin tức TikTok, dừng chờ lệnh /next trước mỗi tập mới để duyệt kịch bản).
   // Khi trends.enabled=true và là dự án mới, hệ thống tự động kích hoạt chế độ "review".
   // "advance_mode": "review",

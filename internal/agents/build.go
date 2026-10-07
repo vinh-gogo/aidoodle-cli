@@ -17,6 +17,7 @@ import (
 	"github.com/voocel/ainovel-cli/internal/agents/guard"
 	"github.com/voocel/ainovel-cli/internal/bootstrap"
 	"github.com/voocel/ainovel-cli/internal/store"
+	"github.com/voocel/ainovel-cli/internal/tavily"
 	"github.com/voocel/ainovel-cli/internal/tools"
 )
 
@@ -119,8 +120,14 @@ func BuildWorkers(
 	contextTool := tools.NewContextTool(store, bundle.References, cfg.Style, styleStats)
 	readChapter := tools.NewReadChapterTool(store)
 
+	// Công cụ tra cứu internet Tavily phục vụ cơ sở khoa học & kiểm chứng
+	tavilyClient := tavily.NewClient(cfg.Tavily.ResolveAPIKey(), cfg.Tavily.BaseURL)
+	tavilySearch := tools.NewTavilySearchTool(tavilyClient)
+	tavilyCrawl := tools.NewTavilyCrawlTool(tavilyClient)
+
 	architectTools := []agentcore.Tool{
 		contextTool,
+		tavilySearch,
 		tools.NewSaveBookTool(store),
 		tools.NewSaveFoundationTool(store),
 		tools.NewReviseOutlineTool(store),
@@ -132,6 +139,8 @@ func BuildWorkers(
 	writerTools := []agentcore.Tool{
 		contextTool,
 		readChapter,
+		tavilySearch,
+		tavilyCrawl,
 		tools.NewPlanChapterTool(store),
 		tools.NewDraftChapterTool(store),
 		tools.NewEditChapterTool(store),
