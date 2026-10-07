@@ -120,6 +120,19 @@ func commandRegistryInstance() commandRegistry {
 			},
 		},
 		{
+			Name:        "mode",
+			Aliases:     []string{"topic", "topics"},
+			Group:       "writing",
+			Usage:       "/mode",
+			Description: "Chọn chế độ làm việc của AI (Tiểu thuyết / Manga, Doodle Explainer...)",
+			AutoExecute: true,
+			Run: func(m Model, _ []string) (tea.Model, tea.Cmd) {
+				m.modeSelect = newModeSelectState(m.runtime, m.width, m.height)
+				m.textarea.Blur()
+				return m, nil
+			},
+		},
+		{
 			Name:        "review",
 			Group:       "writing",
 			Usage:       "/review on|off",

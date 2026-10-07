@@ -57,6 +57,23 @@ _Last updated: 2026-10-06 (initial bootstrap)_
   - Nghiệm thu: `gofmt`, `go vet ./...`, `go test -buildvcs=false -count=1 ./...` toàn bộ 35 package pass 100%.
 
 ## Post-P6 Enhancements & Fixes (2026-10-07)
+- [x] **Branch `route`: 3 AI Working Modes (`/mode`)**:
+  - Tạo nhánh mới `route`.
+  - Lệnh `/mode` (alias: `/topic`, `/topics`) mở modal overlay trực quan chọn chế độ AI làm việc:
+    1. `[1] Tiểu thuyết / Manga` (Style key: `"novel-manga"`): Sáng tác tiểu thuyết dài kỳ, manga, thế giới quan và diễn biến tâm lý sâu sắc.
+    2. `[2] Doodle Explainer` (Style key: `"doodle-explainer"`): Biên kịch video người que đồ đá giải thích kiến thức TikTok / YouTube Shorts (5+ phút, nhịp 1:1).
+    3. `[3] Tâm lý học hành vi` (Style key: `"behavioral-psychology"`): Biên kịch video giải mã bẫy nhận thức, cơ chế Não Bò Sát vs Não Lý Trí, thí nghiệm khoa học chuẩn xác và Cú hích hành vi (Nudge) thực chiến.
+  - Đặt tên cụ thể cho cả 3 style, loại bỏ phụ thuộc vào `style == "default"`.
+  - Phân tách độc lập kho prompt, voice và reference cho từng mode trong `assets/`:
+    - `assets/prompts/modes/{novel-manga, doodle-explainer, behavioral-psychology}/` (Writer, Architect-Short, Architect-Long, Editor).
+    - `assets/voices/{novel-manga, doodle-explainer, behavioral-psychology}.md`.
+    - `assets/references/modes/{novel-manga, doodle-explainer, behavioral-psychology}/` (17 file tham khảo chuyên sâu cho mỗi mode).
+    - Styles: `assets/styles/` và `assets/references/genres/` riêng biệt.
+  - Cơ chế nạp động theo style trong `assets/load.go`.
+  - Kiểm tra `lintScript` trong `internal/tools/commit_chapter.go` áp dụng cho cả 2 chế độ video (`doodle-explainer` và `behavioral-psychology`).
+  - Tự động kích hoạt, cập nhật runtime và ghi nhận vào `.ainovel/config.json`.
+  - Hỗ trợ auto-loading file `.env` cục bộ cho các khóa API (Tavily...).
+  - Bộ kiểm thử unit test và toàn bộ repo 36 packages pass 100%.
 - [x] **Timestamped Output Directory Isolation** (commit `e81b404`):
   - Khi người dùng gõ `/new`, hệ thống tự động sinh thư mục output có timestamp `output/novel-YYYYMMDD-HHMM` thay vì đè `output/novel`.
 - [x] **5-Minute+ Doodle Explainer Standard** (commit `e21740a`):
