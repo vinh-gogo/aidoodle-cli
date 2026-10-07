@@ -10,8 +10,8 @@ Mỗi phần tử outline là một tập = một video 60-180 giây. Khóa JSON
 
 ## Bước 1: Chọn quy mô dự án / series
 
-- Chủ đề đơn lẻ (mặc định khi người dùng đưa ra 1 chủ đề cụ thể): Đúng 1 tập (`chapter: 1`), thời lượng từ 5 phút trở lên, tập trung toàn lực giải thích trọn vẹn mọi cơ chế từ chủ đề đó.
-- Series ngắn: 2-12 video, cùng đào sâu các góc độ khác nhau của CHÍNH CHỦ ĐỀ ĐÓ. Dùng outline phẳng `outline`.
+- Mặc định khi người dùng đưa ra một chủ đề: Quy hoạch series 3 tập chuyên sâu (`chapter: 1, 2, 3`), mỗi tập từ 5 phút trở lên (750-1200 từ LỜI), cùng đào sâu các góc độ khác nhau của CHÍNH CHỦ ĐỀ ĐÓ.
+- Tùy chỉnh theo yêu cầu: 1 tập duy nhất (nếu người dùng yêu cầu rõ 1 tập) hoặc series 2-12 video theo yêu cầu cụ thể. Dùng outline phẳng `outline`.
 - Vừa / Dài: 12+ video, nhiều đợt chủ đề. Dùng `layered_outline`.
 
 > [!IMPORTANT]
