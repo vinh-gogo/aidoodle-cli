@@ -31,12 +31,10 @@ Văn bản thuần, **không Markdown**: không `**`, không tiêu đề `#` nà
 HOOK 0:00-0:03
 LỜI: ...
 HÌNH: ...
-CHỮ: ...
 
 CẢNH 1 0:03-0:20
 LỜI: ...
 HÌNH: ...
-CHỮ: ...
 ÂM: ...
 
 CẢNH 2 0:20-0:45
@@ -57,10 +55,10 @@ Quy ước:
 
 1. Dòng đầu tiên khác rỗng là `# {Tiêu đề}` và **trùng khớp** với `title` khi `commit_chapter`.
 2. Các khối cách nhau bằng một dòng trống. Dòng mở khối: `HOOK m:ss-m:ss`, `CẢNH n m:ss-m:ss` (n tăng dần từ 1), `CHỐT m:ss-m:ss`. Đúng một `HOOK` (khối đầu tiên) và đúng một `CHỐT` (khối cuối).
-3. Thẻ trong khối (mỗi thẻ mở đầu một dòng, kết thúc bằng dấu hai chấm): `LỜI:` lời đọc (bắt buộc), `HÌNH:` mô tả hình vẽ/hoạt ảnh (bắt buộc), `CHỮ:` chữ hiện trên màn hình (tùy chọn), `ÂM:` nhạc/hiệu ứng âm thanh (tùy chọn). Nội dung một thẻ có thể kéo dài sang các dòng kế tiếp (không bắt đầu bằng thẻ) cho đến dòng trống hoặc thẻ kế.
+3. Thẻ trong khối (mỗi thẻ mở đầu một dòng, kết thúc bằng dấu hai chấm): `LỜI:` lời đọc (bắt buộc), `HÌNH:` mô tả hình vẽ/hoạt ảnh (bắt buộc), `ÂM:` nhạc/hiệu ứng âm thanh (tùy chọn). Tuyệt đối không dùng thẻ `CHỮ:` trong các khối cảnh (mọi nội dung truyền tải qua lời đọc và hình vẽ). Nội dung một thẻ có thể kéo dài sang các dòng kế tiếp (không bắt đầu bằng thẻ) cho đến dòng trống hoặc thẻ kế.
 4. Chân kịch bản (sau khối cuối, mỗi thẻ một dòng): `CAPTION:` (bắt buộc), `HASHTAG:` (bắt buộc, các thẻ bắt đầu bằng `#` phân tách bằng khoảng trắng), `NGUỒN:` (bắt buộc; có thể nhiều dòng `NGUỒN:`; với chủ đề thường trực không dựa tin tức ghi `NGUỒN: không có (kiến thức nền)`), `CẦN KIỂM CHỨNG:` (tùy chọn; liệt kê dữ kiện chưa chắc, hoặc `không có`).
 5. **Chỉ nội dung các thẻ `LỜI:` được tính vào số từ và thời lượng đọc.** Mọi thẻ khác không tính.
-6. Toàn bộ chữ hiển thị (`LỜI`, `CHỮ`, `CAPTION`, `HASHTAG`...) phải 100% tiếng Việt, không chữ Hán. Tên riêng/thuật ngữ quốc tế quen thuộc (AI, iPhone, ETF...) được giữ.
+6. Toàn bộ chữ hiển thị (`LỜI`, `CAPTION`, `HASHTAG`...) phải 100% tiếng Việt, không chữ Hán. Tên riêng/thuật ngữ quốc tế quen thuộc (AI, iPhone, ETF...) được giữ.
 7. Mốc thời gian dạng `m:ss` hoặc `mm:ss`. Các khối nối tiếp nhau theo thứ tự thời gian; tổng thời lượng mục tiêu 60–180 giây.
 
 ## 3. Validator `script_format.go` (chỉ trả sự thật, không chặn commit)

@@ -45,7 +45,7 @@ Tự kiểm tra trước khi `commit_chapter`; Editor dùng chính danh sách n�
 - [ ] HÌNH không nhồi nhét quá tải đạo cụ (ví dụ: vừa keo dính, vừa ong mật phát sáng khó vẽ).
 - [ ] Mỗi HÌNH: ≤3 nhân vật, ≤2 đạo cụ, một hành động chính, mô tả đủ để họa sĩ vẽ.
 - [ ] HÌNH không lặp lại nguyên lời đọc; cho thấy cái lời không nói.
-- [ ] CHỮ ≤8 từ, chỉ từ khóa/con số.
+- [ ] Không dùng thẻ CHỮ:; nhãn từ khóa/con số (nếu có) được lồng trực tiếp trong HÌNH:.
 
 ## 7. Chốt và Teaser
 

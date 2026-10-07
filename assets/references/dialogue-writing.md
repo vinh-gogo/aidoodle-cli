@@ -47,4 +47,4 @@ Lời nói: "AI không hiểu bạn. Nó chỉ đoán chữ tiếp theo, nhanh �
 - Thoại hai que nói giọng giống hệt nhau; nhãn thoại thiếu.
 - Chêm tiếng Anh/tiếng lóng dày đặc làm khó nghe.
 - Câu đệm rỗng: "Điều đáng nói là", "Có thể thấy rằng".
-- Chữ Hán, từ Hán-Việt lên gân, hoặc lời đọc trùng nguyên văn thẻ CHỮ.
+- Chữ Hán, từ Hán-Việt lên gân, hoặc câu văn rập khuôn máy móc.

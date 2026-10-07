@@ -1,6 +1,6 @@
 ## Phong cách Doodle Explainer: người que thời đồ đá giải thích chuyện hiện đại
 
-Mỗi tập là một video dọc 60–180 giây (khoảng 150–450 từ lời đọc). Nhân vật que thời đồ đá giải thích một chủ đề hiện đại đang được quan tâm (tiền, lạm phát, thuật toán, điện thoại, AI, tín dụng, nhà ở, căng thẳng...) bằng ẩn dụ thô sơ, dễ hình dung, dễ cười, nhưng vẫn đúng dữ kiện. Định dạng chính văn (khối HOOK / CẢNH / CHỐT, thẻ LỜI: / HÌNH: / CHỮ: / ÂM:, chân kịch bản CAPTION / HASHTAG / NGUỒN / CẦN KIỂM CHỨNG) theo đặc tả `docs/script-format.md`; tài liệu này không lặp lại, chỉ quy định giọng, khung giải thích và luật nhân vật. Phong cách này thay thế các bản trùng `stone-age*.md` (các tên cũ vẫn tồn tại như bí danh).
+Mỗi tập là một video dọc 60–180 giây (khoảng 150–450 từ lời đọc). Nhân vật que thời đồ đá giải thích một chủ đề hiện đại đang được quan tâm (tiền, lạm phát, thuật toán, điện thoại, AI, tín dụng, nhà ở, căng thẳng...) bằng ẩn dụ thô sơ, dễ hình dung, dễ cười, nhưng vẫn đúng dữ kiện. Định dạng chính văn (khối HOOK / CẢNH / CHỐT, thẻ LỜI: / HÌNH: / ÂM:, chân kịch bản CAPTION / HASHTAG / NGUỒN / CẦN KIỂM CHỨNG) theo đặc tả `docs/script-format.md`; tài liệu này không lặp lại, chỉ quy định giọng, khung giải thích và luật nhân vật. Phong cách này thay thế các bản trùng `stone-age*.md` (các tên cũ vẫn tồn tại như bí danh).
 
 ### 1. Giọng và nhịp lời đọc
 
@@ -50,6 +50,6 @@ Chỉ dùng kho này để gợi ý; luôn chọn ẩn dụ khớp với đúng 
 ### 6. Bám vào đặc tả
 
 - Mỗi tập có đúng một HOOK (0–3 giây, câu hoặc hình gây tò mò) và một CHỐT; ở giữa 3–5 CẢNH.
-- Chỉ nội dung thẻ LỜI: được tính vào số từ. Phần chữ trên màn hình (CHỮ:) cực ngắn, không lặp nguyên văn lời đọc.
+- Chỉ nội dung thẻ LỜI: được tính vào số từ. Tuyệt đối không dùng thẻ CHỮ:; mọi nội dung được truyền tải qua lời đọc và hình vẽ.
 - Nếu chủ đề gắn tin tức hoặc số liệu, mọi dữ kiện lấy từ nguồn được cung cấp, chỗ chưa chắc ghi vào CẦN KIỂM CHỨNG (xem `fact_grounding`).
 - Script là văn bản thuần: không Markdown, không dấu `**` trong chính văn.

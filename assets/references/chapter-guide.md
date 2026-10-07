@@ -35,7 +35,7 @@ Giữ nguyên khung 6 nhịp trên, nhưng phần thân (cơ chế) lặp lại 
 - **Chọn ẩn dụ cố định.** Mỗi biểu tượng (keo, ong, mammoth) mang một nghĩa duy nhất, xuyên suốt series không đổi nghĩa.
 - **Gag và nhân vật phải phục vụ ý.** Hài hước giúp nhớ, nhưng cảnh chỉ để chọc cười không mang thông tin thì cắt ngắn.
 - **Câu ngắn, nói được ra miệng.** Tối đa khoảng 15-20 từ một câu, một ý một câu. Đọc to không vấp.
-- **Chữ trên màn hình (CHỮ):** Chỉ đặt chữ cho từ khóa hoặc điểm chốt của cảnh (2-5 từ), KHÔNG chép lại lời. Chữ hiện ra đúng lúc lời nhắc tới nó.
+- **Không dùng thẻ CHỮ:** Mọi thông điệp và từ khóa truyền tải qua lời đọc và hình vẽ, không tạo thẻ CHỮ riêng lẻ.
 
 ## Lỗi thường gặp (Nghiêm cấm)
 
