@@ -29,7 +29,7 @@ Kiến trúc lõi là một **Engine xác định (Deterministic Engine)** đi�
 ## Điểm nổi bật
 
 - **Chuyên biệt hóa Doodle Explainer Tiếng Việt**: Nhân vật que thời đồ đá (Gù, Tộc trưởng, Sói Đá...) dùng góc nhìn tiền sử để ẩn dụ hài hước và mổ xẻ những vấn đề thời sự hiện đại (AI, lạm phát, chứng khoán, thuật toán, áp lực đồng trang lứa...).
-- **Quy cách kịch bản chuẩn nhịp 3 giây**: Mỗi tập là 1 video thời lượng 60–180s (~150–450 từ LỜI đọc), phân tách rõ ràng 4 trường: `LỜI:`, `HÌNH:`, `CHỮ:`, `ÂM:`, kết thúc bằng hook loop và chân kịch bản metadata.
+- **Quy cách kịch bản chuẩn nhịp 3 giây**: Mỗi tập là 1 video thời lượng 60–180s (~150–450 từ LỜI đọc), phân tách rõ ràng các trường: `LỜI:`, `HÌNH:`, `ÂM:` (bỏ hẳn phần `CHỮ:`, mọi thông điệp thể hiện qua lời đọc và hình vẽ), kết thúc bằng hook loop và chân kịch bản metadata.
 - **Tự động thu nạp xu hướng (Trend Intake)**: Tích hợp sẵn bộ thu nạp RSS từ Google Trends Việt Nam và VnExpress. Cơ chế khử trùng lặp và Arbiter tự động lọc các chủ đề rác, nhạy cảm, chỉ giữ lại những chủ đề có tính thảo luận cao và phù hợp với góc nhìn đồ đá viral.
 - **Bám nguồn dữ kiện (Fact-grounding) & An toàn nội dung**: Tuân thủ nghiêm ngặt Luật An ninh mạng 2018, Nghị định 15/2020/NĐ-CP (Điều 101) và Tiêu chuẩn cộng đồng TikTok. Dữ liệu chưa đủ căn cứ bắt buộc phải liệt kê trong thẻ `CẦN KIỂM CHỨNG:`.
 - **Cổng duyệt người (Human Gate)**: Mặc định series theo xu hướng khởi chạy ở chế độ `review`. Chỉ khi người sáng tạo duyệt qua `/next` (hoặc `--next` ở headless), kịch bản tiếp theo mới được tiến hành sản xuất.
@@ -49,13 +49,11 @@ Mỗi tập video (`chapter`) được viết theo chuẩn định dạng nghiê
 HOOK (0-3s)
 LỜI: [Lời đọc mở đầu giật hook giữ chân người xem]
 HÌNH: [Mô tả nét vẽ que đơn giản, biểu cảm phóng đại]
-CHỮ: [Text ngắn gọn hiển thị giữa màn hình]
 ÂM: [Hiệu ứng âm thanh hoặc nhạc nền]
 
 CẢNH 1 (3-15s)
 LỜI: [Lời giải thích súc tích, tự nhiên, văn phong nói]
 HÌNH: [Hành động hài hước của nhân vật đồ đá]
-CHỮ: [Từ khóa chính]
 ÂM: [Tiếng gõ đá, tiếng gió...]
 
 ...
@@ -63,7 +61,6 @@ CHỮ: [Từ khóa chính]
 CHỐT (Cuối video)
 LỜI: [Câu đúc kết bất ngờ, kêu gọi thảo luận hoặc loop lại câu đầu]
 HÌNH: [Cảnh kết tương tác với người xem]
-CHỮ: [Câu kêu gọi hành động]
 ÂM: [Nhạc ngắt nhịp]
 
 CAPTION: [Mô tả ngắn gọn thu hút người xem đọc thêm]

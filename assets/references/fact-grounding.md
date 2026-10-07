@@ -43,7 +43,7 @@
 
 ## 6. Danh sách kiểm nhanh trước khi chốt
 
-- Mỗi con số, tên, mốc thời gian trong LỜI và CHỮ có trong nguồn?
+- Mỗi con số, tên, mốc thời gian trong LỜI có trong nguồn?
 - Mỗi lời trích đúng nguyên văn và có người nói?
 - Ẩn dụ có làm sai cơ chế thật?
 - Đã đưa chỗ chưa chắc vào CẦN KIỂM CHỨNG?

@@ -1,6 +1,6 @@
 # Ngôn ngữ hình ảnh doodle (người que)
 
-Tài liệu này giúp viết thẻ `HÌNH:` và `CHỮ:` sao cho một họa sĩ hoặc công cụ hoạt ảnh vẽ được ngay bằng nét đơn giản. Định dạng khối và thẻ theo `docs/script-format.md`; ở đây chỉ nói về nội dung hình.
+Tài liệu này giúp viết thẻ `HÌNH:` sao cho một họa sĩ hoặc công cụ hoạt ảnh vẽ được ngay bằng nét đơn giản. Định dạng khối và thẻ theo `docs/script-format.md`; ở đây chỉ nói về nội dung hình.
 
 ## 1. Cái gì vẽ được bằng người que
 
@@ -18,13 +18,11 @@ Tài liệu này giúp viết thẻ `HÌNH:` và `CHỮ:` sao cho một họa s�
 - Giữ nhất quán: cùng nhân vật cùng phụ kiện qua mọi cảnh; mỗi tập chỉ một màu nhấn ngoài đen trắng.
 - Khối HOOK cần hình bắt mắt ngay khung đầu (chuyển động, tương phản, chữ ngắn); không mở bằng khung tĩnh trống.
 
-## 3. Chữ hiện trên màn hình (thẻ CHỮ:)
+## 3. Không dùng thẻ CHỮ riêng biệt
 
-- Cực ngắn: tối đa 6–8 từ mỗi lần hiện, thường 2–4 từ; không chép nguyên lời đọc.
-- Chỉ dùng cho từ khóa, con số có trong nguồn, nhãn dán lên hình (ví dụ "LẠM PHÁT"), hoặc cú hài.
-- Tiếng Việt có dấu đầy đủ, không chữ Hán, không viết tắt khó hiểu. Thuật ngữ quốc tế quen thuộc được giữ (AI, ETF...).
-- Mỗi con số hiện lên phải trùng nguồn trong chân kịch bản; chưa chắc thì không để lên màn hình.
-- Chữ hiện không che nhân vật, không dài hơn thời gian đọc được (khoảng 1 giây cho 2–3 từ).
+- Kịch bản loại bỏ hoàn toàn thẻ `CHỮ:`. Mọi thông tin truyền tải tập trung vào lời đọc (`LỜI:`) và hình ảnh (`HÌNH:`).
+- Nếu cần minh họa từ khóa, nhãn dán hoặc con số (ví dụ: chữ "LẠM PHÁT" trên tảng đá, con số 10%), hãy lồng trực tiếp mô tả đó vào trong thẻ `HÌNH:`.
+- Tuyệt đối không tạo thẻ `CHỮ:` riêng lẻ trong bất kỳ khối cảnh nào.
 
 ## 4. Từ vựng cảnh quay đơn giản
 

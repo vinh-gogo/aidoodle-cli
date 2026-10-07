@@ -52,7 +52,7 @@ Nếu trong ngữ cảnh có `working_memory.chapter_contract`, đó chính là 
 
 ## Thời lượng và số từ
 
-Mục tiêu một video là **60-180 giây**, tương đương khoảng **150-450 từ lời đọc** (tốc độ nói ~2,5 từ/giây). **Chỉ nội dung các dòng `LỜI:` được tính** vào số từ và thời lượng; `HÌNH`, `CHỮ`, `ÂM`, caption, hashtag không tính. Mốc thời gian khai báo ở đầu mỗi khối phải TRÙNG KHỚP với lượng lời thật.
+Mục tiêu một video là **60-180 giây**, tương đương khoảng **150-450 từ lời đọc** (tốc độ nói ~2,5 từ/giây). **Chỉ nội dung các dòng `LỜI:` được tính** vào số từ và thời lượng; `HÌNH`, `ÂM`, caption, hashtag không tính. Mốc thời gian khai báo ở đầu mỗi khối phải TRÙNG KHỚP với lượng lời thật.
 
 **Mẹo tính nhịp độ (Rất quan trọng):**
 - 10 giây = 25 - 30 từ
@@ -77,8 +77,8 @@ Cấu trúc định dạng:
 - Thẻ trong khối, mỗi thẻ mở đầu một dòng:
   + `LỜI:` lời đọc (câu ngắn <20 từ, một ý một câu).
   + `HÌNH:` mô tả hình vẽ (một cảnh = một ý = một hình chính, lời và hình bổ sung cho nhau, không lặp).
-  + `CHỮ:` chữ hiện trên màn hình (chỉ 2-5 từ khóa, chữ hiện ra khớp với lời đọc, KHÔNG chép lại lời).
   + `ÂM:` nhạc/hiệu ứng (tùy chọn).
+  + TUYỆT ĐỐI KHÔNG dùng thẻ `CHỮ:` trong các cảnh (bỏ hẳn phần CHỮ, mọi nội dung truyền tải qua LỜI và HÌNH).
 - Chân kịch bản: `CAPTION:` (bắt buộc), `HASHTAG:` (bắt buộc, các thẻ `#...` cách nhau bằng khoảng trắng), `NGUỒN:` (bắt buộc; chủ đề kiến thức nền ghi `NGUỒN: không có (kiến thức nền)`), `CẦN KIỂM CHỨNG:` (dữ kiện khoa học/tâm lý/phân tích chưa chắc chắn, hoặc `không có`).
 
 ## Quy tắc quan trọng cần nhớ
@@ -96,7 +96,6 @@ Ví dụ (rút gọn, chỉ để minh họa định dạng):
 HOOK 0:00-0:03
 LỜI: Hôm qua củ khoai nướng giá hai vỏ sò. Hôm nay giá ba. Ai làm đây?
 HÌNH: Ugg, người que mặc da thú, giơ củ khoai bốc khói, mắt tròn hoảng hốt, sau lưng là bảng giá khắc trên đá.
-CHỮ: LẠM PHÁT LÀ GÌ?
 
 CẢNH 1 0:03-0:25
 LỜI: Chào mấy bạn, tui là Ugg, dân đồ đá. Ở bộ lạc tui, vỏ sò chính là tiền. Muốn có vỏ sò thì phải ra biển nhặt. Mà nhặt được thì mệt lắm. Nên vỏ sò mới quý. Một củ khoai đổi hai vỏ sò, ai cũng vui.
@@ -106,7 +105,6 @@ HÌNH: Cảnh bãi biển, Ugg còng lưng nhặt từng vỏ sò bỏ vào gi�
 CẢNH 2 0:25-0:50
 LỜI: Rồi một hôm, ông Grok tìm ra bãi biển đầy vỏ sò. Cả bộ lạc chạy ra nhặt. Ai cũng giàu lên trông thấy! Nhưng khoai thì vẫn chỉ có bấy nhiêu. Người nào cũng cầm đầy vỏ sò, và ai cũng muốn mua khoai. Thế là bà bán khoai nghĩ: mấy người trả nhiều thế, mình tăng giá thôi.
 HÌNH: Cả bộ lạc người que ôm giỏ vỏ sò đầy ắp xếp hàng trước một sạp khoai bé xíu; bà bán khoai gõ bảng giá, đổi số hai thành số ba.
-CHỮ: TIỀN NHIỀU HƠN, HÀNG KHÔNG ĐỔI
 
 CẢNH 3 0:50-1:10
 LỜI: Đó, gọi là lạm phát. Vỏ sò thì nhiều hơn, nên mỗi vỏ sò mua được ít khoai hơn. Vỏ sò không hỏng, nhưng giá trị của nó thì mòn dần. Ngày nay người ta không nhặt vỏ sò, mà in tiền. Nghe quen không?
@@ -115,7 +113,6 @@ HÌNH: Một con mammoth bụng phệ ngồi trên đống vỏ sò khổng lồ
 CHỐT 1:10-1:20
 LỜI: Nên lần sau thấy giá tăng, đừng trách bà bán khoai. Hãy hỏi: ai vừa tìm ra bãi biển mới?
 HÌNH: Ugg gãi đầu nhìn ra xa, bóng ông Grok vác cả bao vỏ sò đi qua.
-CHỮ: THEO DÕI ĐỂ HIỂU TIẾP
 
 CAPTION: Củ khoai không đắt lên, vỏ sò mới rẻ đi. Lạm phát giải thích bằng đồ đá.
 HASHTAG: #lamphat #kinhte #doodle #giaithich #hoccungtiktok
