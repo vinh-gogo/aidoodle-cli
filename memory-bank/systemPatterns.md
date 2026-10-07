@@ -69,3 +69,19 @@ Summaries: Volume → Arc → Chapter (sliding window of last 3 chapter summarie
 
 ## Voice / rules customization
 Two override dirs: `<outputDir>/style/` (per book) > `~/.ainovel/style/` (global). **Guidance text (voice.md, anti-ai-tone.md) is appended; style presets (styles/, genres/) are replaced whole-file.** Execution-protocol prompts are not overridable. Mechanical constraints belong in `rules/`.
+
+## Doodle Explainer Architecture Patterns (Fork-specific)
+1. **Doodle Concept Mapping**:
+   - 1 Book = 1 Series/Season (default 3 deep-dive episodes for a single topic).
+   - 1 Chapter = 1 Video Script (> 5 minutes, 300–600s, ~750–1200 spoken words).
+   - Premise = Series Bible (11 standardized Vietnamese H2 headings, `docs/script-format.md`).
+   - Characters = Recurring stick figures (Host + Companion/Skeptic + Mascot).
+   - World Rules = Stick-figure universe rules + purposeful anachronism.
+2. **5-Stage Script Architecture**:
+   - `HOOK 0:00-0:03` -> `CẢNH 1 0:03-0:45` (đặt vấn đề đời thực) -> `CẢNH 2-4 0:45-3:45` (thân bài 3 chặng, Tái Hook mỗi 60-90s) -> `CẢNH 5 3:45-4:30` (Reframe & hành động nhỏ) -> `CHỐT 4:30-5:15+` (Loop hook & tương tác).
+3. **1:1 Alternating Voice-Visual Beats Pattern**:
+   - Within each scene, strictly avoid monolithic paragraphs.
+   - Alternate pairs of `LỜI:` (1-2 sentences, 10-20 words / 3-6s) and immediate `HÌNH:` (matching stick-figure action/diagram).
+   - Eliminate `CHỮ:` tag completely; visuals change dynamically every 3-6 seconds.
+4. **Dynamic Output Isolation**:
+   - Every `/new` command automatically spins up a timestamped folder: `output/novel-YYYYMMDD-HHMM`.

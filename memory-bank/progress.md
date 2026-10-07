@@ -55,30 +55,37 @@ _Last updated: 2026-10-06 (initial bootstrap)_
   - Cập nhật TUI polish: màn hình chào mừng (`panels.go`), gợi ý chủ đề doodle đồ đá, placeholder cocreate và model update (`cocreate.go`, `model_update.go`).
   - Viết lại toàn bộ `README.md` sang tiếng Việt, định vị đúng sản phẩm công cụ tạo kịch bản video TikTok Doodle Explainer.
   - Nghiệm thu: `gofmt`, `go vet ./...`, `go test -buildvcs=false -count=1 ./...` toàn bộ 35 package pass 100%.
-- `.github/` deleted by user's choice (recoverable from `novel-baseline`).
+
+## Post-P6 Enhancements & Fixes (2026-10-07)
+- [x] **Timestamped Output Directory Isolation** (commit `e81b404`):
+  - Khi người dùng gõ `/new`, hệ thống tự động sinh thư mục output có timestamp `output/novel-YYYYMMDD-HHMM` thay vì đè `output/novel`.
+- [x] **5-Minute+ Doodle Explainer Standard** (commit `e21740a`):
+  - Chuẩn hóa thời lượng video: từ 5 phút trở lên (300–600 giây, 700–1500 từ LỜI).
+  - Cấu trúc 5 giai đoạn: Hook 3s -> Phần đầu (0:03-0:45) -> Thân 3 chặng có Tái Hook mỗi 60-90s (0:45-3:45) -> Reframe & Hành động nhỏ (3:45-4:30) -> Chốt loop (4:30-5:15+).
+  - Cập nhật validator `internal/tools/script_format.go` (`scriptMinWords=700`, `scriptMaxWords=1500`, `scriptMinSeconds=300`, `scriptMaxSeconds=600`).
+- [x] **Loại bỏ hoàn toàn thẻ `CHỮ:`**:
+  - Script format chỉ giữ lại các thẻ `LỜI:` (voiceover), `HÌNH:` (mô tả hình vẽ que), `ÂM:` (sfx/nhạc) và chân kịch bản. Mọi thông tin chữ được lồng vào HÌNH.
+- [x] **Humor Specialist & Archetypes** (commit `f022efa`):
+  - Tạo `assets/references/humor-relatability.md`, nối dây qua `novel_context.go`, `load.go`.
+  - Hướng dẫn sáng tạo nhân vật que theo chủ đề (Que Lanh, Que Bự, Cục Đá Im Lặng, Que Mồ, Que Chạy...), đệm nhẹ tiếng cười đồng cảm từ nghịch lý đời thường (Tây Du Ký, Thủy Hử).
+- [x] **Anti-Drift & Topic Fidelity** (commit `9e1c1d6`):
+  - Ràng buộc 100% bám sát chủ đề được giao, nghiêm cấm phân nhánh lan man (ví dụ hỏi mất lông thì không tự ý nhảy sang não to, đứng thẳng, phát minh lửa). Kết luận phải giải thích trọn vẹn chủ đề.
+- [x] **Sửa lỗi `save_foundation` InputValidationError** (commit `dd1b500`):
+  - Lỗi `The required parameter 'type' is missing`: nới lỏng schema bắt buộc, bổ sung suy luận tham số từ cú pháp Markdown/JSON, nhận diện trường chuyên dụng, chuẩn hóa alias tiếng Việt ("dàn ý", "nhân vật"...). Bổ sung 7 unit tests (29/29 tests pass).
+- [x] **Mặc định Series 3 tập chuyên sâu** (commit `bc2230c`):
+  - Khi người dùng đưa vào một chủ đề đơn lẻ, hệ thống mặc định lập dàn ý gồm **đúng 3 tập chuyên sâu** (mỗi tập > 5 phút) mổ xẻ các góc cạnh khác nhau của cùng một chủ đề (Tập 1: Nghịch lý; Tập 2: So sánh & Tình huống thực chiến; Tập 3: Tranh luận khoa học & Dấu ấn hiện đại). Cho phép tùy biến số tập nếu người dùng chỉ định.
+- [x] **1:1 Alternating Voice-Visual Beats (Khớp nhịp LỜI - HÌNH)** (commit `93d868a`):
+  - Giải quyết triệt để vấn đề "1 đoạn văn dài 40-60s nhưng chỉ có 1 hình ảnh gây chết hình": Bắt buộc phân tách cảnh thành các cặp `LỜI:` - `HÌNH:` xen kẽ liên tục (mỗi câu thoại 10-20 từ / 3-6s đi liền ngay một thẻ HÌNH tương ứng). Cập nhật `docs/script-format.md`, `writer.md`, `editor.md`, `chapter-guide.md`, `chapter-template.md`, `doodle-visual-language.md`, `writer-golden.md`.
+- [x] **Khắc phục lỗi LLM Repetition Loop (Degeneration Trap)**:
+  - Phân tích hiện tượng model lặp vô tận (ví dụ `- true\n- true...`). Hướng dẫn cấu hình `extra_body` với `frequency_penalty: 0.3`, `presence_penalty: 0.2`, `temperature: 0.7`, `repetition_penalty: 1.1`.
 
 ## Verified on this machine
-- [x] `go build ./...` / `go vet ./...` / `go test -buildvcs=false -count=1 ./...` green at baseline (needs `-buildvcs=false` in sandbox).
-- [ ] Whether `ainovel-cli.exe` in repo root corresponds to current source.
-- [ ] Whether alias styles load genre references.
-
-
-## What's left / candidate work
-- [ ] Get an end-to-end novel run past `outline` phase with the local Ollama model (both `output/novel` and `output/stone-age` have 0 chapters).
-- [ ] Complete Vietnamese localization (README, docs, remaining Chinese prompts in `assets/prompts/*.md`, writer/arbiter/import prompts, TUI text) — scope unknown until grepped.
-- [ ] Clean up duplicate style aliases or document them.
-- [ ] Align `Modelfile` num_ctx (32768) with `run.sh` default (16384).
-- [ ] Decide whether `memory-bank/` gets committed.
-
-## Known issues / risks
-- 4B local model (`qwen3.5-4b-16k`) likely too weak/slow for structured tool-calling long-form planning; first book (`output/novel`) was started with prompt `"hi"` and stalled at `outline` with 0 total chapters.
-- `run.json` for `output/novel` shows plan_start text possibly in a different language than requested — model drift on weak models.
-- Mojibake when reading UTF-8 files through PowerShell (display only).
-- Lock file perms `0o666` is more permissive than upstream `0o600` (intentional Windows workaround; revisit for security on multi-user hosts).
-- `.gitignore` contains a garbled comment line (encoding damage in a Chinese comment about `.ainovel/`); harmless.
+- [x] `go build ./...` / `go vet ./...` / `go test -buildvcs=false -count=1 ./assets/... ./internal/tools/...` green.
+- [x] `ainovel-cli.exe` biên dịch thành công từ commit mới nhất.
+- [x] Tạo kịch bản hoàn chỉnh thực tế trên Kaggle ngrok (`qwen-27b`) ra kết quả 5 phút 15 giây, đúng format, đầy đủ 3 tập.
 
 ## Evolution of project decisions
-- 2026-07-12 (upstream): Coordinator LLM long loop retired → deterministic Engine + Arbiter functions (see `docs/engine-arbiter.md`, `docs/engine-rfc.md`).
-- Upstream moved built-in rules from `assets/rules/` (deprecated) to code `rules.SystemDefaults()` + natural-language user rules normalized into a snapshot.
-- Upstream added Voice Layer (`docs/voice-layer.md`): append-only guidance, whole-file replace for style presets.
+- 2026-07-12 (upstream): Coordinator LLM long loop retired → deterministic Engine + Arbiter functions.
 - 2026-10-03/04 (fork): forked for Vietnamese output + local Ollama usage + extra genre styles.
+- 2026-10-06 (fork): Chuyển hướng toàn diện sang TikTok Doodle Explainer Video Scriptwriting Engine.
+- 2026-10-07 (fork): Chuẩn hóa video 5 phút, 5 giai đoạn, cặp LỜI-HÌNH 1:1, series 3 tập chuyên sâu, thư mục timestamp, sửa lỗi save_foundation.
