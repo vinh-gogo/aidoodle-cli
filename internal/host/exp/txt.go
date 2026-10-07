@@ -103,9 +103,8 @@ func renderTXT(
 	var b strings.Builder
 
 	if name := strings.TrimSpace(novelName); name != "" {
-		b.WriteString("《")
 		b.WriteString(name)
-		b.WriteString("》\n\n")
+		b.WriteString("\n\n")
 	}
 
 	useLayered := len(locations) > 0
@@ -114,16 +113,16 @@ func renderTXT(
 		if useLayered {
 			if loc, ok := locations[ch]; ok && loc.IsFirstOfVolume {
 				b.WriteString("\n═══════════════════════════════════════════\n")
-				fmt.Fprintf(&b, "           Quyển %d  %s\n", loc.VolumeIdx, strings.TrimSpace(loc.VolumeTitle))
+				fmt.Fprintf(&b, "           Mùa %d: %s\n", loc.VolumeIdx, strings.TrimSpace(loc.VolumeTitle))
 				b.WriteString("═══════════════════════════════════════════\n\n")
 			}
 		}
 
 		title := strings.TrimSpace(titleIdx[ch])
 		if title != "" {
-			fmt.Fprintf(&b, "Chương %d  %s\n\n", ch, title)
+			fmt.Fprintf(&b, "Tập %d: %s\n\n", ch, title)
 		} else {
-			fmt.Fprintf(&b, "Chương %d\n\n", ch)
+			fmt.Fprintf(&b, "Tập %d\n\n", ch)
 		}
 
 		body := stripChapterTitleHeader(strings.TrimSpace(bodies[ch]), title)
