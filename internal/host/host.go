@@ -868,6 +868,33 @@ func (h *Host) SetAdvanceMode(mode domain.ChapterAdvanceMode) error {
 	return nil
 }
 
+// Style trả về phong cách / chế độ làm việc hiện tại của Host.
+func (h *Host) Style() string {
+	h.mu.Lock()
+	defer h.mu.Unlock()
+	return h.cfg.Style
+}
+
+// SetStyle chuyển đổi chế độ làm việc / phong cách của AI (vd: "default", "doodle-explainer").
+func (h *Host) SetStyle(style string) error {
+	h.mu.Lock()
+	defer h.mu.Unlock()
+	style = strings.TrimSpace(style)
+	if style == "" {
+		return fmt.Errorf("phong cách không được để trống")
+	}
+	h.cfg.Style = style
+	if h.engine != nil {
+		h.engine.style = style
+	}
+	if h.configPath != "" {
+		if err := bootstrap.SaveConfig(h.configPath, h.cfg); err != nil {
+			slog.Warn("Lưu cấu hình style thất bại", "path", h.configPath, "err", err)
+		}
+	}
+	return nil
+}
+
 // AdvanceOneChapter 在逐章验收模式下授权一个精确章节并启动 Engine。
 func (h *Host) AdvanceOneChapter() error {
 	h.interMu.Lock()
