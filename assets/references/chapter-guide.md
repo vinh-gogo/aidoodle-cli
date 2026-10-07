@@ -14,47 +14,40 @@ Một chương = một video doodle explainer 60-180 giây, ~150-450 từ lời 
 Cứ ~3 giây (7-9 từ) phải có một thay đổi: hình mới, ý mới, câu hỏi mới, hoặc cú đảo. Một cảnh dài 15-25 giây gồm 5-8 nhịp như vậy.
 Nếu hai nhịp liền kề giống hệt nhau về hình và ý, gộp hoặc cắt một nhịp. Tuyệt đối không lặp lại một ý nhiều lần ở nhiều cảnh mà KHÔNG đi sâu vào cơ chế (tại sao hiện tượng đó xảy ra).
 
-## Cấu trúc HOOK / CẢNH / CHỐT
+## Khung 6 nhịp (Video ngắn 60-90s)
 
-Hook (0:00-0:03): 8-10 từ, gây tò mò hoặc sốc hình ảnh. Mở bằng khoảnh khắc của chính khán giả (ví dụ: "mở 5 phút thành 1 tiếng"), KHÔNG gọi tên nhân vật lạ (như Que Ú) ngay từ đầu vì người xem chưa biết đó là ai. Không chào hỏi, không giới thiệu kênh. Xem `hook_techniques`.
+1. **Hook (0-3 giây):** nêu một khoảnh khắc người xem nhận ra mình ("mở 5 phút, thành 1 tiếng") hoặc một nghịch lý. Không mở bằng giới thiệu hay tên nhân vật.
+2. **Vấn đề / câu hỏi (3-10 giây):** nói rõ video sẽ trả lời điều gì, để người xem biết chờ gì ở cuối. Tạo "điều cần giải" sớm, trả lời muộn.
+3. **Cơ chế 1 (10-30 giây):** giải thích lý do thứ nhất bằng một ẩn dụ hình ảnh duy nhất.
+4. **Cơ chế 2 hoặc bước ngoặt (30-50 giây):** thêm một lớp nữa, hoặc đảo lại điều người xem đang nghĩ. Đây là chỗ giữ họ khỏi chán.
+5. **Reframe + hành động nhỏ (50-65 giây):** nói lại vấn đề dưới góc nhìn mới, kèm một việc cụ thể làm được ngay.
+6. **Chốt / teaser (5-10 giây cuối):** một câu gợi nhớ, hoặc mồi sang tập sau.
 
-Cảnh 1 (3-5 cảnh tùy độ dài): dựng vấn đề bằng ẩn dụ thời đồ đá. Đưa bối cảnh bằng hành động, không giảng.
+## Cấu trúc video dài (3-8 phút)
 
-Cảnh giữa: nối ẩn dụ sang khái niệm hiện đại (câu bản lề: "Giờ thay vỏ sò bằng tiền, thay mammoth bằng nhà."). Mỗi cảnh chỉ một ý.
+Giữ nguyên khung 6 nhịp trên, nhưng phần thân (cơ chế) lặp lại theo vòng: **câu hỏi nhỏ → ẩn dụ → ví dụ → tóm một câu**. Cứ 60-90 giây nên có một "tái hook" (câu hỏi mới hoặc bất ngờ mới) để giữ chân người xem.
 
-Cảnh cuối trước chốt: cú twist, "hóa ra...", hoặc hệ quả bất ngờ.
+## Lời đọc và hình: Nguyên tắc cốt lõi
 
-Chốt (cuối): một câu mang được về nhà, gọi lại hook (loop) hoặc đẩy người xem vào bình luận/theo dõi. Chốt 5-12 giây, không kết bằng "Hy vọng các bạn hiểu".
+- **Một cảnh = một ý = một hình chính.** Cảnh nào cần hai hình để hiểu thì nên tách đôi. Nhịp cảnh từ 8-25 giây (dưới 5s không nhìn kịp, trên 25s phải đổi khung hình).
+- **Lời và hình bổ sung cho nhau, không lặp.** Lời nói "keo dính", hình vẽ keo thì thừa. Lời nói ý, hình cho ví dụ hoặc gag.
+- **Chọn ẩn dụ cố định.** Mỗi biểu tượng (keo, ong, mammoth) mang một nghĩa duy nhất, xuyên suốt series không đổi nghĩa.
+- **Gag và nhân vật phải phục vụ ý.** Hài hước giúp nhớ, nhưng cảnh chỉ để chọc cười không mang thông tin thì cắt ngắn.
+- **Câu ngắn, nói được ra miệng.** Tối đa khoảng 15-20 từ một câu, một ý một câu. Đọc to không vấp.
+- **Chữ trên màn hình (CHỮ):** Chỉ đặt chữ cho từ khóa hoặc điểm chốt của cảnh (2-5 từ), KHÔNG chép lại lời. Chữ hiện ra đúng lúc lời nhắc tới nó.
 
-## Lời đọc và hình: chia việc
+## Lỗi thường gặp (Nghiêm cấm)
 
-- LỜI nói cái hình không cho thấy: lý do, con số, nhận xét. HÌNH cho thấy cái lời khỏi phải tả: ai đứng đâu, làm gì, biểu cảm.
-- Không để LỜI mô tả hình ("Ở đây có một que đang chạy"). Để hình diễn, lời bình.
-- HÌNH phải vẽ được bằng nét que: tối đa 2-3 nhân vật, 1-2 đạo cụ mỗi cảnh, một hành động chính. Tránh "đám đông chi tiết", "bản đồ phức tạp".
-- CHỮ: tối đa 6-8 từ, chỉ cho con số hoặc từ khóa. Không lặp nguyên văn lời đọc.
-- ÂM: chỉ ghi khi hiệu ứng làm nổi punchline.
-
-## Mỗi cảnh làm đúng một việc
-
-Mỗi cảnh trả lời một câu hỏi người xem đang có trong đầu. Liệt kê: cảnh này trả lời gì? Nếu không nói được trong một câu, cảnh đang nhồi.
-
-## Cân độ phức tạp
-
-- Một video chỉ giải thích một ý chính (core_event). Ý phụ, ngoại lệ, dữ liệu thừa dồn sang tập khác hoặc bỏ.
-- Tối đa 1 con số mạnh mỗi 20 giây, làm tròn cho dễ nghe ("gần gấp đôi", không phải "1,87 lần").
-- Thuật ngữ lạ phải được dịch ngay bằng ẩn dụ ở lần đầu xuất hiện.
-
-## Lỗi thường gặp
-
-- Mở bằng định nghĩa sách giáo khoa: "Lạm phát là hiện tượng...". Phải mở bằng hình/câu hỏi.
-- Ba ẩn dụ khác nhau trong một video: chỉ giữ một ẩn dụ xuyên suốt.
-- Hook hứa một đằng, thân video nói một nẻo.
-- Chốt giảng đạo hoặc tóm tắt lại cả video.
-- Nói dữ kiện không nguồn: ghi vào `NGUỒN:` hoặc `CẦN KIỂM CHỨNG:`.
+- Lặp một ý qua nhiều cảnh mà không leo thang.
+- Mở bằng bối cảnh dài trước khi vào chuyện (vào thẳng nghịch lý/vấn đề).
+- Quá nhiều hình/đạo cụ trong một cảnh, người xem không biết nhìn đâu.
+- Kết bằng câu hỏi "bạn thì sao?" mà không đưa ra gì, khiến video không có giá trị mang về.
+- Giải thích bằng thuật ngữ trước khi có hình ảnh để gắn nó vào.
+- Thiếu xác thực: Số liệu, khẳng định khoa học không có nguồn (`NGUỒN` / `CẦN KIỂM CHỨNG`). Dễ làm điều phức tạp trông đơn giản, nhưng đừng đơn giản hóa thành sai.
 
 ## Tự kiểm tra trước khi commit
 
-1. Đếm từ LỜI nằm trong 150-450; thời lượng khai báo khớp với từ/2,5.
-2. Khối đầu là HOOK, khối cuối là CHỐT, đủ LỜI và HÌNH ở mọi khối.
+1. Khối đầu là HOOK, khối cuối là CHỐT. Các CẢNH đáp ứng khung 6 nhịp.
+2. Thời lượng khớp với từ/2,5.
 3. Có CAPTION, HASHTAG, NGUỒN. Tiêu đề dòng đầu trùng title.
-4. Đọc to thử: chỗ nào hụt hơi hoặc líu lưỡi thì cắt.
+4. Đọc to thử: chỗ nào hụt hơi hoặc líu lưỡi thì cắt, câu <20 từ.

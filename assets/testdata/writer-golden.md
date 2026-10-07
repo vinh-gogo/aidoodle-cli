@@ -73,11 +73,22 @@ Chủ đề đơn giản thì 60-90 giây là đủ, không kéo dài để đ�
 
 ## Quy cách bản kịch
 
-Nội dung `draft_chapter` / `commit_chapter` là **văn bản thuần**, không Markdown: không `**`, không tiêu đề `#` nào ngoài dòng `# Tiêu đề` đầu tiên, không gạch đầu dòng. Cấu trúc:
+Nội dung `draft_chapter` / `commit_chapter` là **văn bản thuần**, không Markdown: không `**`, không tiêu đề `#` nào ngoài dòng `# Tiêu đề` đầu tiên, không gạch đầu dòng. Áp dụng **Khung 6 nhịp** cho nội dung:
+1. **Hook (0-3s):** khoảnh khắc người xem nhận ra mình hoặc nghịch lý.
+2. **Vấn đề (3-10s):** tạo "điều cần giải" sớm, trả lời muộn.
+3. **Cơ chế 1 (10-30s):** giải thích lý do thứ nhất bằng một ẩn dụ hình ảnh duy nhất.
+4. **Cơ chế 2 (30-50s):** thêm lớp nữa hoặc lật lại vấn đề.
+5. **Reframe (50-65s):** nhìn lại vấn đề dưới góc nhìn mới + một hành động nhỏ.
+6. **Chốt/Teaser (5-10s cuối):** để lại câu mang về nhà hoặc mồi sang tập sau.
 
+Cấu trúc định dạng:
 - Dòng đầu: `# {Tiêu đề video}`.
 - Các khối cách nhau một dòng trống: đúng một `HOOK m:ss-m:ss` (đầu tiên, ~3 giây), các `CẢNH n m:ss-m:ss` (n tăng từ 1), đúng một `CHỐT m:ss-m:ss` (cuối cùng).
-- Thẻ trong khối, mỗi thẻ mở đầu một dòng: `LỜI:` lời đọc (bắt buộc), `HÌNH:` mô tả hình vẽ/hoạt ảnh (bắt buộc), `CHỮ:` chữ hiện trên màn hình (tùy chọn), `ÂM:` nhạc/hiệu ứng (tùy chọn).
+- Thẻ trong khối, mỗi thẻ mở đầu một dòng:
+  + `LỜI:` lời đọc (câu ngắn <20 từ, một ý một câu).
+  + `HÌNH:` mô tả hình vẽ (một cảnh = một ý = một hình chính, lời và hình bổ sung cho nhau, không lặp).
+  + `CHỮ:` chữ hiện trên màn hình (chỉ 2-5 từ khóa, chữ hiện ra khớp với lời đọc, KHÔNG chép lại lời).
+  + `ÂM:` nhạc/hiệu ứng (tùy chọn).
 - Chân kịch bản: `CAPTION:` (bắt buộc), `HASHTAG:` (bắt buộc, các thẻ `#...` cách nhau bằng khoảng trắng), `NGUỒN:` (bắt buộc; chủ đề kiến thức nền ghi `NGUỒN: không có (kiến thức nền)`), `CẦN KIỂM CHỨNG:` (dữ kiện khoa học/tâm lý/phân tích chưa chắc chắn, hoặc `không có`).
 
 ## Quy tắc quan trọng cần nhớ
