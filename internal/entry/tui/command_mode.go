@@ -9,159 +9,167 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 	"github.com/voocel/ainovel-cli/internal/host"
-	"github.com/voocel/ainovel-cli/internal/host/trend"
 )
 
-// modeTopicOption đại diện cho một chủ đề hoặc thể loại kịch bản có sẵn trong hệ thống.
-type modeTopicOption struct {
-	ID          string
-	Title       string
-	Category    string
-	Description string
-	Prompt      string
+// aiModeOption định nghĩa một chế độ làm việc của AI.
+type aiModeOption struct {
+	ID          string   // "novel-manga", "doodle-explainer", "coming-soon"
+	Number      int      // 1, 2, 3
+	Title       string   // "Tiểu thuyết / Manga", "Doodle Explainer", ...
+	Badge       string   // "📖 Tiểu thuyết & Manga", "🦴 Video TikTok", "⏳ Dự phòng"
+	StyleKey    string   // "default", "doodle-explainer", ""
+	Available   bool     // true, true, false
+	Description string   // Chi tiết nhiệm vụ AI thực hiện trong chế độ này
+	Features    []string // Các tính năng nổi bật
 }
 
-// modeSelectState lưu trữ trạng thái hiển thị bảng chọn chủ đề kịch bản (/mode).
+// modeSelectState lưu trữ trạng thái hiển thị bảng chọn chế độ AI làm việc (/mode).
 type modeSelectState struct {
-	cursor   int
-	options  []modeTopicOption
-	viewport viewport.Model
+	cursor       int
+	options      []aiModeOption
+	currentStyle string
+	viewport     viewport.Model
+	message      string
 }
 
-// defaultModeOptions trả về danh sách các chủ đề kịch bản cốt lõi và xu hướng sẵn có.
-func defaultModeOptions(bookDir string) []modeTopicOption {
-	opts := []modeTopicOption{
+// defaultAIModeOptions trả về 3 chế độ làm việc của AI theo yêu cầu hệ thống.
+func defaultAIModeOptions() []aiModeOption {
+	return []aiModeOption{
 		{
-			ID:          "hairless-marathon",
-			Title:       "Vì sao con người mất gần hết lông?",
-			Category:    "Tiến hóa & Sinh học",
-			Description: "Siêu năng lực tản nhiệt: Ta là 'vận động viên marathon' săn mồi bằng sức bền và mồ hôi",
-			Prompt:      "Vì sao con người mất gần hết lông? | Ta là \"vận động viên marathon\" săn mồi bằng sức bền và mồ hôi (giả thuyết, còn tranh luận)",
+			ID:          "novel-manga",
+			Number:      1,
+			Title:       "Tiểu thuyết / Manga",
+			Badge:       "📖 Tiểu thuyết & Truyện tranh",
+			StyleKey:    "default",
+			Available:   true,
+			Description: "Sáng tác tiểu thuyết dài kỳ, truyện tranh (Manga/Webtoon) với phân chia hồi/chương chặt chẽ, phát triển tâm lý nhân vật và quy tắc thế giới chuyên sâu.",
+			Features: []string{
+				"Dàn ý phân hồi & quyển",
+				"Quy tắc thế giới đa tầng & nhất quán dài hạn",
+				"Chiều sâu tâm lý nhân vật",
+			},
 		},
 		{
-			ID:          "inflation-stones",
-			Title:       "Bản chất lạm phát và tiền tệ mất giá",
-			Category:    "Kinh tế & Xã hội",
-			Description: "Củ khoai không đắt lên, vỏ sò mới rẻ đi: Giải mã bí mật tiền tệ qua góc nhìn đồ đá",
-			Prompt:      "Giải thích lạm phát và tiền mất giá qua củ khoai và vỏ sò thời đồ đá (series 3 tập)",
+			ID:          "doodle-explainer",
+			Number:      2,
+			Title:       "Doodle Explainer",
+			Badge:       "🦴 Video ngắn TikTok / Shorts",
+			StyleKey:    "doodle-explainer",
+			Available:   true,
+			Description: "Biên kịch video người que đồ đá giải thích kiến thức, thời lượng 5+ phút, nhịp hình ảnh 1:1, giọng kể dí dỏm, phản trực giác, tối ưu cho nền tảng video ngắn.",
+			Features: []string{
+				"Hook 3s giữ chân & Tái Hook 60-90s",
+				"Nhịp 1:1 Thoại (LỜI:) và Hình (HÌNH:)",
+				"Cơ sở khoa học kiểm chứng (Tavily/NGUỒN:)",
+			},
 		},
 		{
-			ID:          "ai-hallucination",
-			Title:       "Trí tuệ nhân tạo (AI): Tại sao hay bịa chuyện?",
-			Category:    "Công nghệ & AI",
-			Description: "Hiện tượng ảo giác AI: Vì sao mô hình siêu thông minh nhưng đôi khi nói hươu nói vượn?",
-			Prompt:      "Xu hướng trí tuệ nhân tạo (AI): tại sao AI thông minh nhưng hay bịa chuyện? (series 3 tập)",
-		},
-		{
-			ID:          "social-algorithm",
-			Title:       "Thuật toán mạng xã hội giữ chân người xem",
-			Category:    "Tâm lý học hành vi",
-			Description: "Bộ lạc săn bắt hái lượm trong điện thoại: Dopamine, phần thưởng ngẫu nhiên và nỗi sợ bỏ lỡ",
-			Prompt:      "Thuật toán mạng xã hội giữ chân người xem như thế nào: giải thích bằng bộ lạc săn bắt hái lượm (series 3 tập)",
-		},
-		{
-			ID:          "stone-age-fear",
-			Title:       "Nỗi sợ kỷ đá: Vì sao bạn luôn lo âu vô cớ?",
-			Category:    "Tâm lý học tiến hóa",
-			Description: "Hạch hạnh nhân và cỗ máy sinh tồn: Người gác cổng đồ đá thức giấc giữa thế giới văn phòng",
-			Prompt:      "Nỗi sợ kỷ đá: vì sao bạn luôn lo âu vô cớ và cỗ máy sinh tồn cổ xưa trong não bộ (series 3 tập)",
-		},
-		{
-			ID:          "sleep-stress",
-			Title:       "Bí mật giấc ngủ và áp lực sinh tồn",
-			Category:    "Sức khỏe & Sinh học",
-			Description: "Vì sao tổ tiên ngủ chập chờn canh thú dữ nhưng không bị stress kiệt quệ như con người hiện đại?",
-			Prompt:      "Bí mật giấc ngủ: tại sao tổ tiên ngủ chập chờn nhưng không bị stress như người hiện đại? (series 3 tập)",
-		},
-		{
-			ID:          "fire-brain",
-			Title:       "Ngọn lửa và sự bùng nổ của não bộ",
-			Category:    "Lịch sử tiến hóa",
-			Description: "Bữa ăn nấu chín đã giải phóng năng lượng khổng lồ biến vượn trần trụi thành bá chủ Trái Đất",
-			Prompt:      "Lửa và não bộ: bữa ăn chín đã biến vượn người thành bá chủ Trái Đất ra sao? (series 3 tập)",
-		},
-		{
-			ID:          "style-doodle",
-			Title:       "Doodle Explainer (Phong cách chuẩn TikTok Viral)",
-			Category:    "Thể loại phong cách",
-			Description: "Người que đồ đá giải thích thế giới hiện đại: Nhịp 3s, đệm hài hước đồng cảm, tối ưu giữ chân",
-			Prompt:      "Doodle Explainer: Người que đồ đá giải thích các hiện tượng xã hội và khoa học hiện đại",
-		},
-		{
-			ID:          "style-viet-history",
-			Title:       "Lịch sử & Danh nhân Việt Nam qua góc nhìn đồ đá",
-			Category:    "Văn hóa & Lịch sử",
-			Description: "Kể chuyện lịch sử dân tộc gần gũi, súc tích, đúc kết bài học giá trị cho người trẻ hôm nay",
-			Prompt:      "Lịch sử Việt Nam: những bài học thời đại qua lăng kính người que đồ đá dí dỏm",
+			ID:          "coming-soon",
+			Number:      3,
+			Title:       "Chế độ mở rộng (Đang nghiên cứu & suy nghĩ tiếp)",
+			Badge:       "⏳ Sắp ra mắt",
+			StyleKey:    "",
+			Available:   false,
+			Description: "Dành cho các chế độ AI tiếp theo (như Podcast đối thoại, Kịch bản phóng sự, Video tài liệu chuyên sâu...). Hiện để ngỏ để cấu hình ở bước tiếp theo.",
+			Features: []string{
+				"Khung cấu hình mở rộng trong tương lai",
+				"Đang chờ ý tưởng và kịch bản thiết kế tiếp",
+			},
 		},
 	}
-
-	// Tự động bổ sung các xu hướng mới nhất nếu hệ thống đã nạp snapshot xu hướng
-	if bookDir != "" {
-		if snap, err := trend.LoadLatestSnapshot(bookDir); err == nil && snap != nil && len(snap.Items) > 0 {
-			for i, item := range snap.Items {
-				if i >= 3 {
-					break
-				}
-				opts = append(opts, modeTopicOption{
-					ID:          fmt.Sprintf("trend-%d", i+1),
-					Title:       item.Title,
-					Category:    "Xu hướng thịnh hành (Trend VN)",
-					Description: fmt.Sprintf("Xu hướng nóng từ %s: Giải thích bằng góc nhìn người que đồ đá", item.Source),
-					Prompt:      fmt.Sprintf("Giải thích xu hướng nóng: %s bằng ẩn dụ người que thời đồ đá (series 3 tập)", item.Title),
-				})
-			}
-		}
-	}
-
-	return opts
 }
 
 func newModeSelectState(rt *host.Host, width, height int) *modeSelectState {
-	bookDir := ""
+	curStyle := "doodle-explainer"
 	if rt != nil {
-		bookDir = rt.Dir()
+		if s := rt.Style(); s != "" {
+			curStyle = s
+		}
 	}
-	opts := defaultModeOptions(bookDir)
+	opts := defaultAIModeOptions()
 	boxW, boxH := reportModalSize(width, height)
 	contentW := paddedModalContentWidth(boxW)
 	vp := viewport.New(contentW, boxH-4)
 
+	// Đặt cursor mặc định vào chế độ hiện tại
+	initialCursor := 0
+	for i, opt := range opts {
+		if opt.Available {
+			if opt.StyleKey == curStyle || (opt.StyleKey == "default" && curStyle != "doodle-explainer") {
+				initialCursor = i
+				break
+			}
+		}
+	}
+
 	state := &modeSelectState{
-		cursor:   0,
-		options:  opts,
-		viewport: vp,
+		cursor:       initialCursor,
+		options:      opts,
+		currentStyle: curStyle,
+		viewport:     vp,
 	}
 	state.refreshViewport(contentW)
 	return state
 }
 
+func (s *modeSelectState) isOptionActive(opt aiModeOption) bool {
+	if !opt.Available {
+		return false
+	}
+	if opt.StyleKey == "doodle-explainer" {
+		return s.currentStyle == "doodle-explainer"
+	}
+	// "default" hoặc các phong cách tiểu thuyết khác
+	return s.currentStyle != "doodle-explainer"
+}
+
 func (s *modeSelectState) refreshViewport(contentW int) {
 	titleStyle := lipgloss.NewStyle().Foreground(colorAccent).Bold(true)
 	numStyle := lipgloss.NewStyle().Foreground(colorAccent2).Bold(true)
-	catStyle := lipgloss.NewStyle().Foreground(colorMuted)
+	badgeStyle := lipgloss.NewStyle().Foreground(colorAccent)
 	descStyle := lipgloss.NewStyle().Foreground(bodyTextColor)
+	featStyle := lipgloss.NewStyle().Foreground(colorDim)
 	selTitleStyle := lipgloss.NewStyle().Foreground(colorAccent2).Bold(true)
 	selArrowStyle := lipgloss.NewStyle().Foreground(colorAccent).Bold(true)
+	activeBadgeStyle := lipgloss.NewStyle().Foreground(colorSuccess).Bold(true)
+	disabledBadgeStyle := lipgloss.NewStyle().Foreground(colorDim).Italic(true)
+	warnStyle := lipgloss.NewStyle().Foreground(colorReview).Bold(true)
 
 	var b strings.Builder
-	b.WriteString(titleStyle.Render("DANH SÁCH CHỦ ĐỀ & PHONG CÁCH KỊCH BẢN HIỆN CÓ"))
+	b.WriteString(titleStyle.Render("CHỌN CHẾ ĐỘ LÀM VIỆC CỦA AI (/mode)"))
 	b.WriteString("\n")
-	b.WriteString(lipgloss.NewStyle().Foreground(colorDim).Render("Dùng ↑/↓ hoặc j/k để chọn · Phím 1-9 để chọn nhanh · Enter để nạp chủ đề · Esc để đóng"))
+	b.WriteString(lipgloss.NewStyle().Foreground(colorDim).Render("Dùng ↑/↓ hoặc j/k để chọn · Phím 1-3 chọn nhanh · Enter để kích hoạt · Esc để đóng"))
 	b.WriteString("\n\n")
 
 	for i, opt := range s.options {
 		isSelected := i == s.cursor
+		isActive := s.isOptionActive(opt)
+
+		statusText := ""
+		if isActive {
+			statusText = activeBadgeStyle.Render("  ✓ [ĐANG KÍCH HOẠT]")
+		} else if !opt.Available {
+			statusText = disabledBadgeStyle.Render("  (Chưa kích hoạt)")
+		}
+
 		if isSelected {
-			b.WriteString(selArrowStyle.Render("▶ ") + numStyle.Render(fmt.Sprintf("[%d] ", i+1)) + selTitleStyle.Render(opt.Title))
+			b.WriteString(selArrowStyle.Render("▶ ") + numStyle.Render(fmt.Sprintf("[%d] ", opt.Number)) + selTitleStyle.Render(opt.Title) + statusText)
 			b.WriteString("\n")
-			b.WriteString(lipgloss.NewStyle().Foreground(colorAccent).Render("    🏷️  " + opt.Category + "  ·  💡 " + opt.Description))
+			b.WriteString("    " + badgeStyle.Render(opt.Badge) + "  ·  " + descStyle.Render(opt.Description))
+			b.WriteString("\n")
+			b.WriteString("    " + featStyle.Render("Tính năng: "+strings.Join(opt.Features, "  •  ")))
 		} else {
-			b.WriteString(lipgloss.NewStyle().Foreground(colorDim).Render("  ") + catStyle.Render(fmt.Sprintf("[%d] ", i+1)) + descStyle.Render(opt.Title))
+			dimTitleStyle := lipgloss.NewStyle().Foreground(colorMuted).Bold(true)
+			b.WriteString(lipgloss.NewStyle().Foreground(colorDim).Render("  ") + featStyle.Render(fmt.Sprintf("[%d] ", opt.Number)) + dimTitleStyle.Render(opt.Title) + statusText)
 			b.WriteString("\n")
-			b.WriteString(lipgloss.NewStyle().Foreground(colorDim).Render("    " + opt.Category + " · " + opt.Description))
+			b.WriteString("    " + featStyle.Render(opt.Badge+" · "+opt.Description))
 		}
 		b.WriteString("\n\n")
+	}
+
+	if s.message != "" {
+		b.WriteString(warnStyle.Render("⚠️  " + s.message))
+		b.WriteString("\n")
 	}
 
 	s.viewport.SetContent(b.String())
@@ -200,8 +208,8 @@ func renderModeSelectModal(width, height int, state *modeSelectState) string {
 	modal := renderPaddedModalFrame(
 		boxW,
 		boxH,
-		"Lựa chọn chủ đề kịch bản (/mode)",
-		"  ↑↓/jk Chọn · 1-9 Chọn nhanh · Enter Nạp chủ đề · Esc Đóng",
+		"Chế độ làm việc AI (/mode)",
+		"  ↑↓/jk Chọn · 1-3 Chọn nhanh · Enter Kích hoạt · Esc Đóng",
 		strings.Split(state.viewport.View(), "\n"),
 	)
 	return lipgloss.Place(width, height, lipgloss.Center, lipgloss.Center, modal)
@@ -221,12 +229,14 @@ func (m Model) handleModeSelectKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 		return m, m.textarea.Focus()
 
 	case tea.KeyUp:
+		state.message = ""
 		state.cursor = (state.cursor - 1 + numOpts) % numOpts
 		boxW, _ := reportModalSize(m.width, m.height)
 		state.refreshViewport(paddedModalContentWidth(boxW))
 		return m, nil
 
 	case tea.KeyDown:
+		state.message = ""
 		state.cursor = (state.cursor + 1) % numOpts
 		boxW, _ := reportModalSize(m.width, m.height)
 		state.refreshViewport(paddedModalContentWidth(boxW))
@@ -235,16 +245,25 @@ func (m Model) handleModeSelectKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 	case tea.KeyEnter:
 		if state.cursor >= 0 && state.cursor < numOpts {
 			chosen := state.options[state.cursor]
+			if !chosen.Available {
+				state.message = fmt.Sprintf("Chế độ [%d] %s đang được nghiên cứu ở bước tiếp theo, vui lòng chọn chế độ 1 hoặc 2!", chosen.Number, chosen.Title)
+				boxW, _ := reportModalSize(m.width, m.height)
+				state.refreshViewport(paddedModalContentWidth(boxW))
+				return m, nil
+			}
+
 			m.modeSelect = nil
-			m.textarea.SetValue(chosen.Prompt)
+			if m.runtime != nil {
+				_ = m.runtime.SetStyle(chosen.StyleKey)
+			}
 			m.applyEvent(host.Event{
 				Time:     time.Now(),
 				Category: "SYSTEM",
 				Level:    "info",
-				Summary:  fmt.Sprintf("Đã nạp chủ đề: %s", chosen.Title),
+				Summary:  fmt.Sprintf("Đã chuyển sang chế độ làm việc: %s", chosen.Title),
 			})
 			m.refreshEventViewport()
-			return m, m.textarea.Focus()
+			return m, tea.Batch(fetchSnapshot(m.runtime), m.textarea.Focus())
 		}
 		m.modeSelect = nil
 		return m, m.textarea.Focus()
@@ -253,11 +272,13 @@ func (m Model) handleModeSelectKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 		r := msg.Runes[0]
 		switch r {
 		case 'k', 'K':
+			state.message = ""
 			state.cursor = (state.cursor - 1 + numOpts) % numOpts
 			boxW, _ := reportModalSize(m.width, m.height)
 			state.refreshViewport(paddedModalContentWidth(boxW))
 			return m, nil
 		case 'j', 'J':
+			state.message = ""
 			state.cursor = (state.cursor + 1) % numOpts
 			boxW, _ := reportModalSize(m.width, m.height)
 			state.refreshViewport(paddedModalContentWidth(boxW))
@@ -266,22 +287,31 @@ func (m Model) handleModeSelectKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 			m.modeSelect = nil
 			return m, m.textarea.Focus()
 		default:
-			// Phím số 1-9 để chọn nhanh
-			if r >= '1' && r <= '9' {
+			// Phím số 1-3 để chọn nhanh
+			if r >= '1' && r <= '3' {
 				idx := int(r - '1')
 				if idx < numOpts {
-					state.cursor = idx
 					chosen := state.options[idx]
+					if !chosen.Available {
+						state.cursor = idx
+						state.message = fmt.Sprintf("Chế độ [%d] %s đang được nghiên cứu ở bước tiếp theo, vui lòng chọn chế độ 1 hoặc 2!", chosen.Number, chosen.Title)
+						boxW, _ := reportModalSize(m.width, m.height)
+						state.refreshViewport(paddedModalContentWidth(boxW))
+						return m, nil
+					}
+
 					m.modeSelect = nil
-					m.textarea.SetValue(chosen.Prompt)
+					if m.runtime != nil {
+						_ = m.runtime.SetStyle(chosen.StyleKey)
+					}
 					m.applyEvent(host.Event{
 						Time:     time.Now(),
 						Category: "SYSTEM",
 						Level:    "info",
-						Summary:  fmt.Sprintf("Đã nạp chủ đề: %s", chosen.Title),
+						Summary:  fmt.Sprintf("Đã chuyển sang chế độ làm việc: %s", chosen.Title),
 					})
 					m.refreshEventViewport()
-					return m, m.textarea.Focus()
+					return m, tea.Batch(fetchSnapshot(m.runtime), m.textarea.Focus())
 				}
 			}
 		}

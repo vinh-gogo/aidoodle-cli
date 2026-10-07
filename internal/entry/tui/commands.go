@@ -124,7 +124,7 @@ func commandRegistryInstance() commandRegistry {
 			Aliases:     []string{"topic", "topics"},
 			Group:       "writing",
 			Usage:       "/mode",
-			Description: "Xem và lựa chọn các chủ đề kịch bản hiện có trong hệ thống",
+			Description: "Chọn chế độ làm việc của AI (Tiểu thuyết / Manga, Doodle Explainer...)",
 			AutoExecute: true,
 			Run: func(m Model, _ []string) (tea.Model, tea.Cmd) {
 				m.modeSelect = newModeSelectState(m.runtime, m.width, m.height)
