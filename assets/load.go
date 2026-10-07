@@ -83,10 +83,18 @@ func isNovelMode(style string) bool {
 	return style == "novel-manga" || style == "novel" || style == "manga"
 }
 
+// isPsychologyMode kiểm tra xem một style có thuộc về chế độ Tâm lý học hành vi hay không.
+func isPsychologyMode(style string) bool {
+	style = strings.ToLower(strings.TrimSpace(style))
+	return style == "behavioral-psychology" || style == "psychology"
+}
+
 func loadVoice(style string, opts LoadOptions) string {
 	voiceFile := "voice.md"
 	if isNovelMode(style) {
 		voiceFile = "voices/novel-manga.md"
+	} else if isPsychologyMode(style) {
+		voiceFile = "voices/behavioral-psychology.md"
 	} else if style == "doodle-explainer" {
 		voiceFile = "voices/doodle-explainer.md"
 	}
@@ -162,6 +170,8 @@ func loadReferences(style string, opts LoadOptions) tools.References {
 	refPrefix := "references/modes/doodle-explainer/"
 	if isNovelMode(style) {
 		refPrefix = "references/modes/novel-manga/"
+	} else if isPsychologyMode(style) {
+		refPrefix = "references/modes/behavioral-psychology/"
 	}
 
 	readModeRef := func(name string) string {
@@ -184,10 +194,10 @@ func loadReferences(style string, opts LoadOptions) tools.References {
 		LongformPlanning:  readModeRef("longform-planning.md"),
 		Differentiation:   readModeRef("differentiation.md"),
 		AntiAITone:        resolveAppendable(mustRead(referencesFS, "references/anti-ai-tone.md"), "anti-ai-tone.md", opts),
-		DoodleVisual:      mustRead(referencesFS, "references/doodle-visual-language.md"),
-		FactGrounding:     mustRead(referencesFS, "references/fact-grounding.md"),
-		TiktokSafety:      mustRead(referencesFS, "references/tiktok-content-safety.md"),
-		HumorRelatability: mustRead(referencesFS, "references/humor-relatability.md"),
+		DoodleVisual:      readModeRef("doodle-visual-language.md"),
+		FactGrounding:     readModeRef("fact-grounding.md"),
+		TiktokSafety:      readModeRef("tiktok-content-safety.md"),
+		HumorRelatability: readModeRef("humor-relatability.md"),
 	}
 	if style != "" && style != "default" {
 		genreDir := "references/genres/" + style + "/"
@@ -218,6 +228,8 @@ func loadPrompts(styles ...string) Prompts {
 	modeSubdir := "modes/doodle-explainer"
 	if isNovelMode(style) {
 		modeSubdir = "modes/novel-manga"
+	} else if isPsychologyMode(style) {
+		modeSubdir = "modes/behavioral-psychology"
 	}
 
 	readPrompt := func(name string) string {
