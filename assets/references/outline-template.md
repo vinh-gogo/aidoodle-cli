@@ -8,11 +8,14 @@ Mỗi phần tử outline là một tập = một video 60-180 giây. Khóa JSON
 - `hook`: câu/hình hook 3 giây đầu (8-10 từ + hình).
 - `scenes`: 3-5 chuỗi, mỗi chuỗi một dòng mô tả cảnh theo mạch: ẩn dụ đồ đá -> khái niệm hiện đại -> "hóa ra...".
 
-## Bước 1: Chọn quy mô series
+## Bước 1: Chọn quy mô dự án / series
 
-- Mùa ngắn: 8-25 video, một nhóm chủ đề. Dùng outline phẳng `outline`.
-- Vừa: 25-60 video, nhiều đợt chủ đề. Outline phẳng hoặc phân tầng nhẹ.
-- Dài: 80+ video, nhiều mùa/đợt. Dùng `layered_outline`: quyển = mùa/nhóm lớn, hồi = đợt chủ đề 5-10 video.
+- Chủ đề đơn lẻ (mặc định khi người dùng đưa ra 1 chủ đề cụ thể): Đúng 1 tập (`chapter: 1`), thời lượng từ 5 phút trở lên, tập trung toàn lực giải thích trọn vẹn mọi cơ chế từ chủ đề đó.
+- Series ngắn: 2-12 video, cùng đào sâu các góc độ khác nhau của CHÍNH CHỦ ĐỀ ĐÓ. Dùng outline phẳng `outline`.
+- Vừa / Dài: 12+ video, nhiều đợt chủ đề. Dùng `layered_outline`.
+
+> [!IMPORTANT]
+> **Nguyên tắc chống lan man (Anti-drift)**: Khi người dùng đưa ra một chủ đề cụ thể, mọi tập trong dàn ý BẮT BUỘC phải tập trung giải thích chính chủ đề đó. Tuyệt đối không mổ xẻ lan man sang các chủ đề khác ngoài lề. Kết luận cuối cùng phải giải thích được trọn vẹn mọi thứ từ chính chủ đề đó.
 
 ## Bước 2: Khi nào dùng phân tầng
 
