@@ -14,9 +14,15 @@ Writing a 300–500 chapter web novel by hand takes months; naive "one big LLM l
 | Loss of user control | Live steer input, optional per-chapter gate, budget fuse, notifications |
 
 ## How it should work (user flow)
-1. First run → bootstrap wizard writes `~/.ainovel/config.json` (provider → API key → base URL → model).
-2. Start in a directory; novel artifacts go to `{cwd}/output/novel/` (override with `--dir`). One directory = one book; re-running there auto-resumes.
-3. TUI start modes: **quick start** (one sentence) or **co-create** (multi-turn clarification; right pane shows live draft of the creative brief, `Ctrl+S` to start); `/start ./outline.md` to seed from a file.
+1. First run → bootstrap wizard writes `~/.ainovel/config.json` (provider → API key → base URL → model). Tự động nạp các khóa API từ file `.env` cục bộ (ví dụ: `TAVILY_API_KEY`).
+2. Start in a directory; novel artifacts go to `{cwd}/output/novel/` (override with `--dir`). Khi gõ `/new`, tự động phân lập theo thư mục thời gian `output/novel-YYYYMMDD-HHMM`.
+3. TUI start modes:
+   - Lệnh `/mode` (hoặc `/topic`, `/topics`) để mở bảng chọn modal trực quan giữa 4 chế độ làm việc:
+     - `[1]` Tiểu thuyết / Manga (`novel-manga`)
+     - `[2]` Doodle Explainer (`doodle-explainer`)
+     - `[3]` Tâm lý học hành vi (`behavioral-psychology`)
+     - `[4]` Tiểu thuyết Lịch sử Việt Nam (`vietnamese-history`)
+   - **Quick start** (nhập trực tiếp nhu cầu sáng tác/chủ đề) hoặc **co-create** (hội thoại đa lượt, `Ctrl+S` để bắt đầu); `/start ./outline.md` để nạp từ file.
 4. Engine loops: Arbiter picks planner → Architect plans → Writer writes chapter by chapter (novel_context → read_chapter → plan_chapter → draft_chapter → check_consistency → commit_chapter) → Editor reviews at arc/volume ends → rewrite/polish or expand next arc.
 5. User may inject steer text anytime; Arbiter triages (settings change → Architect; rewrite → Editor queue; rules → immediate).
 6. `--headless --prompt "…"` / `--prompt-file` for servers, NAS, CI, Docker.
@@ -25,15 +31,14 @@ Writing a 300–500 chapter web novel by hand takes months; naive "one big LLM l
 - Zero-intervention default; precise control available when wanted.
 - Every semantic decision audit-logged (`meta/decisions.jsonl`) and replayable.
 - TUI shows context health gradient (green <70%, yellow 70–85%, red >85%).
-- Errors should not vanish: fatal startup errors are written to `~/.ainovel/last-error.log` and the console pauses for Enter (non-headless).
+- Errors should not vanish: fatal startup errors are written to `~/.ainovel/last-error.log` và console dừng chờ Enter (non-headless).
 
-## Fork-specific product intent (TikTok Doodle Explainer Video Scriptwriter)
-- Output language must be **100% Vietnamese** (tất cả các prompt và tài liệu đều chỉ đạo: tuyệt đối KHÔNG dùng tiếng Trung).
-- **Quy cách kịch bản Doodle Explainer chuẩn**:
-  - Thời lượng: **Từ 5 phút trở lên (300–600s, ~750–1200 từ lời đọc)** theo cấu trúc 5 giai đoạn: Hook 3s -> Phần đầu -> Thân 3 chặng có Tái Hook (mỗi 60-90s) -> Reframe & Hành động nhỏ -> Chốt loop.
-  - Hình ảnh: Bắt buộc phân chia **cặp `LỜI:` và `HÌNH:` xen kẽ 1:1 theo từng câu thoại** (mỗi 3–6s đổi hình một lần, tuyệt đối không để hình tĩnh kéo dài suốt 40-60s). Loại bỏ hoàn toàn thẻ `CHỮ:`.
-  - Quy mô tập: Mặc định chia thành **series 3 tập chuyên sâu** cùng đào sâu một chủ đề mà không bị lan man (Tập 1: Nghịch lý; Tập 2: Tình huống thực chiến & Ưu thế; Tập 3: Tranh luận khoa học & Dấu ấn hiện đại). Cho phép tùy biến số tập (1 đến 12 tập).
-  - Tự động tạo thư mục output theo thời gian thực: `output/novel-YYYYMMDD-HHMM` khi gõ lệnh `/new`.
-  - Chuyên gia gây cười & Soi chiếu đồng cảm nhân sinh: Nhân vật que mang tính cách cổ mẫu (Que Lanh, Que Bự, Cục Đá Im Lặng...), hài hước gần gũi từ nghịch lý đời thường.
-  - An toàn nội dung: Tuân thủ Luật An ninh mạng VN 2018, Nghị định 15/2020/NĐ-CP và Tiêu chuẩn cộng đồng TikTok. Dữ kiện chưa chắc chắn bắt buộc đưa vào `CẦN KIỂM CHỨNG:`.
+## Fork-specific product intent (4 Dedicated AI Modes)
+- Output language must be **100% Vietnamese** (tất cả các prompt và tài liệu đều chỉ đạo: tuyệt đối KHÔNG dùng tiếng Trung, cấm từ ngữ convert kiếm hiệp Trung Quốc).
+- **Phân tách 4 chế độ AI chuyên biệt (Không dùng style == "default")**:
+  1. **Tiểu thuyết / Manga (`novel-manga`)**: Sáng tác tiểu thuyết chương hồi dài tập (2.000 – 4.000 từ/chương), thế giới quan đa tầng, chiều sâu nội tâm nhân vật.
+  2. **Doodle Explainer (`doodle-explainer`)**: Biên kịch video người que đồ đá 5+ phút (300–600s, 700–1500 từ LỜI), nhịp 1:1 Thoại - Hình (đổi hình mỗi 3–6s), cấu trúc 5 giai đoạn có Tái Hook, hài hước viral TikTok / YouTube Shorts.
+  3. **Tâm lý học hành vi (`behavioral-psychology`)**: Kịch bản video giải mã bẫy nhận thức, cơ chế Não Bò Sát vs Não Lý Trí, thí nghiệm khoa học chuẩn xác có trích dẫn nguồn và Cú hích hành vi (Nudge) thực chiến.
+  4. **Tiểu thuyết Lịch sử Việt Nam (`vietnamese-history`)**: Tiểu thuyết văn xuôi (2.000 – 4.000 từ/chương) hào sảng về nhân vật lịch sử nước nhà. Tích hợp tra cứu Tavily Search, khai phá con người thật đa chiều (tài năng, trăn trở nội tâm), bối cảnh lịch sử trong nước & quốc tế, cùng các nghịch cảnh sinh tử bi tráng.
+- **Tích hợp Tavily Search & Crawl**: Nạp nguồn tài liệu thời gian thực cho Architect và Writer, trích dẫn bài báo vào `NGUỒN:` và điểm tranh luận vào `CẦN KIỂM CHỨNG:`.
 - Target hardware: Hỗ trợ linh hoạt từ local inference (Ollama, vLLM, llama.cpp server) đến hosted/cloud proxy (Kaggle ngrok, OpenRouter, Anthropic, Gemini, OpenAI). Khuyến nghị cấu hình `extra_body` (`frequency_penalty: 0.3`, `presence_penalty: 0.2`, `temperature: 0.7`) để tránh bẫy lặp token của LLM open-source.

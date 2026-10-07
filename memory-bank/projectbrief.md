@@ -3,19 +3,22 @@
 > Source of truth for scope. Updated 2026-10-07 (Doodle Explainer conversion completed).
 
 ## What it is
-`ainovel-cli` (aidoodle-cli) is an **autonomous, deterministic engine for generating Vietnamese TikTok Doodle Explainer scripts** (nhân vật que đồ đá giải thích các chủ đề xu hướng & kiến thức hiện đại). From a single topic prompt or auto-fetched trends, it designs the series bible, creates characters, outlines deep-dive episodes, drafts scripts, conducts editorial reviews, and exports production packages with zero or minimal human intervention.
+`ainovel-cli` (aidoodle-cli) is an **autonomous, deterministic engine for generating Vietnamese content across 4 specialized AI working modes** (selectable via the interactive `/mode` command):
+1. **Tiểu thuyết / Manga (`novel-manga`)**: Sáng tác tiểu thuyết dài kỳ, manga, thế giới quan đa tầng, chiều sâu tâm lý nhân vật (2.000 – 4.000 từ/chương).
+2. **Doodle Explainer (`doodle-explainer`)**: Biên kịch video người que đồ đá giải thích các chủ đề xu hướng & kiến thức hiện đại cho TikTok / YouTube Shorts (5+ phút, nhịp 1:1 Thoại - Hình).
+3. **Tâm lý học hành vi (`behavioral-psychology`)**: Biên kịch video giải mã bẫy nhận thức, cơ chế Não Bò Sát vs Não Lý Trí, thí nghiệm khoa học chuẩn xác và Cú hích hành vi (Nudge) thực chiến.
+4. **Tiểu thuyết Lịch sử Việt Nam (`vietnamese-history`)**: Sáng tác tiểu thuyết và dã sử hào sảng về các nhân vật lịch sử Việt Nam (2.000 – 4.000 từ/chương), tích hợp tra cứu Tavily Search, khắc họa chân dung con người thật đa chiều, bối cảnh lịch sử đa tầng và những nghịch cảnh sinh tử bi tráng.
 
-- Module: `github.com/voocel/ainovel-cli` (Fork repo: `aidoodle-cli`, branch `doodle-explainer`)
+- Module: `github.com/voocel/ainovel-cli` (Fork repo: `aidoodle-cli`, branch `route` / `doodle-explainer`)
 - Go `1.25.5` in `go.mod` (local toolchain: go 1.27.0 windows/amd64)
 - Entrypoint: `cmd/ainovel-cli/main.go`
 
 ## Evolution of the Fork
 - Originally forked from `ainovel-cli` (novel writing engine).
-- Successfully converted into a specialized **TikTok Doodle Explainer Video Scriptwriter**:
-  - **1 video = 1 "chapter"** (thời lượng từ 5 phút trở lên: 300–600s, ~750–1200 từ lời đọc).
-  - **1 series = 1 "book"** (mặc định quy hoạch series 3 tập chuyên sâu đào sâu các góc độ của cùng một chủ đề mà không bị phân tán hay lan man).
-  - **Doodle Visuals**: Phân chia cặp `LỜI:` và `HÌNH:` xen kẽ 1:1 theo từng câu thoại (mỗi 3–6s đổi hình một lần, loại bỏ hoàn toàn thẻ `CHỮ:`).
-  - **Tone & Voice**: Nhân vật que thời đồ đá (host + phụ + linh vật), ẩn dụ đồ đá giải thích thế giới hiện đại, đệm nhẹ tiếng cười đồng cảm nhân sinh.
+- Successfully expanded into an extensible multi-mode engine with 4 dedicated modes:
+  - **Video Script modes** (`doodle-explainer`, `behavioral-psychology`): 1 video = 1 "chapter" (thời lượng 5+ phút: 300–600s, ~700–1500 từ lời đọc, nhịp LỜI-HÌNH xen kẽ 1:1, chạy bộ kiểm tra kịch bản `lintScript`).
+  - **Novel modes** (`novel-manga`, `vietnamese-history`): 1 chapter = 2.000 – 4.000 từ văn xuôi tiểu thuyết, kết cấu chương hồi, không áp dụng ràng buộc kịch bản video.
+  - **Tích hợp Tavily Search & Crawl**: Nạp `source_pack` tự động, kiểm chứng dữ liệu thực tế và tài liệu lịch sử, tự động nạp file `.env` cục bộ.
 
 ## Core requirements (from upstream design, still binding)
 1. **Stability first** — one sentence in → whole book out, no architectural self-interruption.
