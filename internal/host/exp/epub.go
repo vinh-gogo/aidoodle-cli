@@ -123,9 +123,9 @@ p { text-indent: 2em; margin: 0.5em 0; }
 
 func renderChapterXHTML(ch int, title string, loc chapterLocation, hasLoc bool, body string) string {
 	var b strings.Builder
-	displayTitle := fmt.Sprintf("Chương %d", ch)
+	displayTitle := fmt.Sprintf("Tập %d", ch)
 	if title != "" {
-		displayTitle = fmt.Sprintf("Chương %d: %s", ch, title)
+		displayTitle = fmt.Sprintf("Tập %d: %s", ch, title)
 	}
 
 	fmt.Fprintf(&b, `<?xml version="1.0" encoding="utf-8"?>
@@ -139,7 +139,7 @@ func renderChapterXHTML(ch int, title string, loc chapterLocation, hasLoc bool, 
 `, html.EscapeString(displayTitle))
 
 	if hasLoc && loc.IsFirstOfVolume {
-		fmt.Fprintf(&b, "  <div class=\"volume-divider\">Quyển %d: %s</div>\n",
+		fmt.Fprintf(&b, "  <div class=\"volume-divider\">Mùa %d: %s</div>\n",
 			loc.VolumeIdx, html.EscapeString(strings.TrimSpace(loc.VolumeTitle)))
 	}
 
@@ -213,9 +213,9 @@ func renderNavXHTML(hasCover bool, chapters []int, titleIdx chapterTitleIndex) s
 	// 而且 EPUB 3 nav 嵌套 ol 在某些阅读器上渲染怪。保持简单。
 	for _, ch := range chapters {
 		title := strings.TrimSpace(titleIdx[ch])
-		display := fmt.Sprintf("Chương %d", ch)
+		display := fmt.Sprintf("Tập %d", ch)
 		if title != "" {
-			display = fmt.Sprintf("Chương %d: %s", ch, title)
+			display = fmt.Sprintf("Tập %d: %s", ch, title)
 		}
 		fmt.Fprintf(&b, "      <li><a href=\"%s\">%s</a></li>\n",
 			chapterFileName(ch), html.EscapeString(display))

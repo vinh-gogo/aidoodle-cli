@@ -1,12 +1,12 @@
 ## Phong cách Doodle Explainer: người que thời đồ đá giải thích chuyện hiện đại
 
-Mỗi tập là một video dọc 60–180 giây (khoảng 150–450 từ lời đọc). Nhân vật que thời đồ đá giải thích một chủ đề hiện đại đang được quan tâm (tiền, lạm phát, thuật toán, điện thoại, AI, tín dụng, nhà ở, căng thẳng...) bằng ẩn dụ thô sơ, dễ hình dung, dễ cười, nhưng vẫn đúng dữ kiện. Định dạng chính văn (khối HOOK / CẢNH / CHỐT, thẻ LỜI: / HÌNH: / CHỮ: / ÂM:, chân kịch bản CAPTION / HASHTAG / NGUỒN / CẦN KIỂM CHỨNG) theo đặc tả `docs/script-format.md`; tài liệu này không lặp lại, chỉ quy định giọng, khung giải thích và luật nhân vật. Phong cách này thay thế các bản trùng `stone-age*.md` (các tên cũ vẫn tồn tại như bí danh).
+Mỗi tập là một video dọc 60–180 giây (khoảng 150–450 từ lời đọc). Nhân vật que thời đồ đá giải thích một chủ đề hiện đại đang được quan tâm (tiền, lạm phát, thuật toán, điện thoại, AI, tín dụng, nhà ở, căng thẳng...) bằng ẩn dụ thô sơ, dễ hình dung, dễ cười, nhưng vẫn đúng dữ kiện. Định dạng chính văn (khối HOOK / CẢNH / CHỐT, thẻ LỜI: / HÌNH: / ÂM:, chân kịch bản CAPTION / HASHTAG / NGUỒN / CẦN KIỂM CHỨNG) theo đặc tả `docs/script-format.md`; tài liệu này không lặp lại, chỉ quy định giọng, khung giải thích và luật nhân vật. Phong cách này thay thế các bản trùng `stone-age*.md` (các tên cũ vẫn tồn tại như bí danh).
 
 ### 1. Giọng và nhịp lời đọc
 
 - Lời đọc là tiếng nói, không phải văn viết: câu ngắn (thường 6–14 từ), một ý một câu, đọc to lên phải trôi ngay.
 - Xưng hô thân, như kể chuyện cho bạn: "mình", "bạn", "ông Gậy", "cả hang". Hỏi thẳng người xem ("Bạn có từng...?") nhưng không quá hai lần mỗi tập.
-- Hài khô, tự giễu, không giảng đạo. Người dẫn chuyện biết mình đang đùa; chỗ nghiêm túc thì nói thẳng, ngắn.
+- Hài khô, tự giễu, đệm nhẹ tiếng cười từ sự đồng cảm đời thường (xem `humor_relatability`). Mọi tình huống phải quen thuộc với con người để người xem thấy mình, bạn bè, bố mẹ mình trong đó. Không giảng đạo; người dẫn chuyện biết mình đang đùa; chỗ nghiêm túc thì nói thẳng, ngắn.
 - Mỗi câu phải có thứ nhìn được hoặc nghe được: que củi, hòn đá, tiếng bụng réo. Tránh danh từ trừu tượng chồng nhau.
 - Từ thuần Việt, từ tượng thanh tượng hình (bập bùng, lộc cốc, huỳnh huỵch, toe toét). Tránh Hán-Việt nặng và giọng "văn convert".
 - Cấm câu sáo: "Trong thế giới ngày nay", "Hãy cùng khám phá", "Có thể nói rằng", "Điều đáng chú ý là". Chi tiết ở `anti_ai_tone`.
@@ -42,6 +42,8 @@ Chỉ dùng kho này để gợi ý; luôn chọn ẩn dụ khớp với đúng 
 ### 5. Nhân vật que và hình ảnh
 
 - Dàn tái xuất, mỗi tập chỉ dùng 2–3 nhân vật: một host (thường là người dẫn, hơi ngố nhưng tò mò), một đến hai nhân vật phụ có tính cách rõ (kẻ hoài nghi, kẻ ham lời, bà thầy thuốc...), một linh vật (con thú nhỏ hoặc hòn đá biết nhìn) dùng làm running gag và phản ứng hài.
+- Không cố định tên nhân vật: tên host, nhân vật phụ và linh vật được sáng tạo linh hoạt theo chủ đề và yêu cầu người dùng (ví dụ: Que Rối cho tâm lý, Que Mót cho tài chính, Que Mò cho công nghệ...), không mặc định gán một tên duy nhất cho mọi series.
+- Tính cách nhân vật mang chiều sâu cổ mẫu nhân sinh (như Tây Du Ký, Thủy Hử, Tam Quốc): bề ngoài hung dữ nhưng thương sâu đậm, người quá khôn ngoan dễ tự làm khó mình, người nhân từ dễ bị thiệt, người lười biếng ham ăn chân thật đáng yêu... để mỗi hành vi đều quen thuộc như người thật ngoài đời.
 - Mỗi nhân vật nhận diện bằng một phụ kiện hoặc một dáng, không bằng nét vẽ phức tạp: que củi, mũ lá, râu bằng mấy nét, một câu cửa miệng.
 - Hình vẽ cực giản: nét đen trên nền sáng, một màu nhấn. Một cảnh một ý hình, đọc được trong 3–5 giây. Thẻ HÌNH: mô tả những gì vẽ được bằng que và vài hình khối; chi tiết xem `doodle_visual_language`.
 - Không dựa vào hình ảnh thật, người thật hay logo thật; chuyện về người thật thì nhân vật que chỉ là ẩn dụ, không đóng vai họ.
@@ -49,6 +51,6 @@ Chỉ dùng kho này để gợi ý; luôn chọn ẩn dụ khớp với đúng 
 ### 6. Bám vào đặc tả
 
 - Mỗi tập có đúng một HOOK (0–3 giây, câu hoặc hình gây tò mò) và một CHỐT; ở giữa 3–5 CẢNH.
-- Chỉ nội dung thẻ LỜI: được tính vào số từ. Phần chữ trên màn hình (CHỮ:) cực ngắn, không lặp nguyên văn lời đọc.
+- Chỉ nội dung thẻ LỜI: được tính vào số từ. Tuyệt đối không dùng thẻ CHỮ:; mọi nội dung được truyền tải qua lời đọc và hình vẽ.
 - Nếu chủ đề gắn tin tức hoặc số liệu, mọi dữ kiện lấy từ nguồn được cung cấp, chỗ chưa chắc ghi vào CẦN KIỂM CHỨNG (xem `fact_grounding`).
 - Script là văn bản thuần: không Markdown, không dấu `**` trong chính văn.

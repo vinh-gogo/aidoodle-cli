@@ -49,7 +49,7 @@ func TestLoad_NoOverrides(t *testing.T) {
 	if _, ok := b.Styles["default"]; !ok {
 		t.Fatal("内置风格集应含 default")
 	}
-	for _, style := range []string{"psychological", "stone-age-doodle", "vietnamese-history", "stone-age-doodle-explain", "doodle-explainer"} {
+	for _, style := range []string{"psychological", "stone-age-doodle", "vietnamese-history", "stone-age-doodle-explain", "doodle-explainer", "novel-manga", "behavioral-psychology"} {
 		if _, ok := b.Styles[style]; !ok {
 			t.Fatalf("phong cách %s chưa có trong b.Styles", style)
 		}
@@ -69,6 +69,43 @@ func TestLoad_NoOverrides(t *testing.T) {
 	}
 	if b.References.TiktokSafety == "" {
 		t.Fatal("thiếu tài liệu tham khảo TiktokSafety (tiktok-content-safety.md)")
+	}
+	if b.References.HumorRelatability == "" {
+		t.Fatal("thiếu tài liệu tham khảo HumorRelatability (humor-relatability.md)")
+	}
+}
+
+func TestLoad_DistinctModesNovelAndDoodle(t *testing.T) {
+	bNovel := Load("novel-manga", LoadOptions{})
+	if !strings.Contains(bNovel.Prompts.Writer, "Bạn là tác giả tiểu thuyết.") {
+		t.Fatalf("Chế độ novel-manga phải nạp prompt tác giả tiểu thuyết, nhận được: %s", bNovel.Prompts.Writer[:100])
+	}
+	if !strings.Contains(bNovel.Voice, "chính văn, tiêu đề chương, suy nghĩ và lời thoại") {
+		t.Fatalf("Chế độ novel-manga phải nạp voice chuẩn tiểu thuyết, nhận được: %s", bNovel.Voice[:100])
+	}
+
+	bDoodle := Load("doodle-explainer", LoadOptions{})
+	if !strings.Contains(bDoodle.Prompts.Writer, "Bạn là biên kịch doodle explainer") {
+		t.Fatalf("Chế độ doodle-explainer phải nạp prompt biên kịch video doodle, nhận được: %s", bDoodle.Prompts.Writer[:100])
+	}
+	if !strings.Contains(bDoodle.Voice, "lời đọc") {
+		t.Fatalf("Chế độ doodle-explainer phải nạp voice kịch bản video, nhận được: %s", bDoodle.Voice[:100])
+	}
+
+	bPsych := Load("behavioral-psychology", LoadOptions{})
+	if !strings.Contains(bPsych.Prompts.Writer, "Bạn là biên kịch video tâm lý học hành vi") {
+		t.Fatalf("Chế độ behavioral-psychology phải nạp prompt tâm lý học hành vi, nhận được: %s", bPsych.Prompts.Writer[:100])
+	}
+	if !strings.Contains(bPsych.Voice, "người bạn thông thái, đồng cảm và hóm hỉnh") {
+		t.Fatalf("Chế độ behavioral-psychology phải nạp voice tâm lý học hành vi, nhận được: %s", bPsych.Voice[:100])
+	}
+
+	bHistory := Load("vietnamese-history", LoadOptions{})
+	if !strings.Contains(bHistory.Prompts.Writer, "Bạn là tác giả tiểu thuyết lịch sử Việt Nam") {
+		t.Fatalf("Chế độ vietnamese-history phải nạp prompt tác giả lịch sử, nhận được: %s", bHistory.Prompts.Writer[:100])
+	}
+	if !strings.Contains(bHistory.Voice, "nhà chép sử đầy tâm huyết") {
+		t.Fatalf("Chế độ vietnamese-history phải nạp voice tiểu thuyết lịch sử, nhận được: %s", bHistory.Voice[:100])
 	}
 }
 

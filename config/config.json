@@ -1,0 +1,24 @@
+{
+  "provider": "kaggle-llama",
+  "model": "gemma-4-26b",
+  "reasoning_effort": "off",
+  "providers": {
+    "kaggle-llama": {
+      "type": "openai",
+      "api_key": "kaggle-key",
+      "base_url": "https://snowcapped-denice-unprudent.ngrok-free.dev/v1",
+      "models": [
+        {
+          "name": "gemma-4-26b",
+          "context_window": 65536
+        }
+      ],
+      "extra": {
+        "headers": {
+          "ngrok-skip-browser-warning": "true"
+        }
+      }
+    }
+  },
+  "style": "doodle-explainer"
+}

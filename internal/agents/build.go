@@ -17,6 +17,7 @@ import (
 	"github.com/voocel/ainovel-cli/internal/agents/guard"
 	"github.com/voocel/ainovel-cli/internal/bootstrap"
 	"github.com/voocel/ainovel-cli/internal/store"
+	"github.com/voocel/ainovel-cli/internal/tavily"
 	"github.com/voocel/ainovel-cli/internal/tools"
 )
 
@@ -119,8 +120,14 @@ func BuildWorkers(
 	contextTool := tools.NewContextTool(store, bundle.References, cfg.Style, styleStats)
 	readChapter := tools.NewReadChapterTool(store)
 
+	// Công cụ tra cứu internet Tavily phục vụ cơ sở khoa học & kiểm chứng
+	tavilyClient := tavily.NewClient(cfg.Tavily.ResolveAPIKey(), cfg.Tavily.BaseURL)
+	tavilySearch := tools.NewTavilySearchTool(tavilyClient)
+	tavilyCrawl := tools.NewTavilyCrawlTool(tavilyClient)
+
 	architectTools := []agentcore.Tool{
 		contextTool,
+		tavilySearch,
 		tools.NewSaveBookTool(store),
 		tools.NewSaveFoundationTool(store),
 		tools.NewReviseOutlineTool(store),
@@ -132,6 +139,8 @@ func BuildWorkers(
 	writerTools := []agentcore.Tool{
 		contextTool,
 		readChapter,
+		tavilySearch,
+		tavilyCrawl,
 		tools.NewPlanChapterTool(store),
 		tools.NewDraftChapterTool(store),
 		tools.NewEditChapterTool(store),
@@ -268,6 +277,10 @@ func BuildWorkers(
 		ContextManagerFactory: func(model agentcore.ChatModel) agentcore.ContextManager {
 			// 每章按当前 writer 模型重建上下文管理器。
 			window, _ := models.ResolveContextWindow(bootstrap.ModelProvider(model), bootstrap.ModelName(model))
+			keepRecent := 20000
+			if window > 0 && window/3 < keepRecent {
+				keepRecent = max(4000, window/3)
+			}
 			return newContextManager(contextManagerConfig{
 				Model:         model,
 				ContextWindow: window,
@@ -281,7 +294,7 @@ func BuildWorkers(
 				ExtraStrategies: []corecontext.Strategy{
 					ctxpack.NewStoreSummaryCompact(ctxpack.StoreSummaryCompactConfig{
 						Store:            store,
-						KeepRecentTokens: 20000,
+						KeepRecentTokens: keepRecent,
 					}),
 				},
 				Summary: &corecontext.FullSummaryConfig{

@@ -95,6 +95,24 @@ func TestWriterRestorePackRefreshReusesStoreBuilder(t *testing.T) {
 	if _, _, err := pack.buildMessage(0); err == nil {
 		t.Fatal("expected an explicit error when the restore pack does not fit")
 	}
+
+	hook := pack.Hook()
+	// When room <= 0 or pack doesn't fit, Hook should gracefully return (nil, nil) instead of failing.
+	res, err := hook(context.Background(), corecontext.SummaryInfo{}, nil, 0)
+	if err != nil {
+		t.Fatalf("hook should not fail on 0 room: %v", err)
+	}
+	if len(res) != 0 {
+		t.Fatalf("expected 0 messages on 0 room, got %d", len(res))
+	}
+
+	res, err = hook(context.Background(), corecontext.SummaryInfo{}, nil, restoreBudgetTokens)
+	if err != nil {
+		t.Fatalf("hook should succeed when room is sufficient: %v", err)
+	}
+	if len(res) != 1 {
+		t.Fatalf("expected 1 message when room is sufficient, got %d", len(res))
+	}
 }
 
 func seededWriterStore(t *testing.T) *storepkg.Store {

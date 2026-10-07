@@ -69,3 +69,31 @@ Summaries: Volume → Arc → Chapter (sliding window of last 3 chapter summarie
 
 ## Voice / rules customization
 Two override dirs: `<outputDir>/style/` (per book) > `~/.ainovel/style/` (global). **Guidance text (voice.md, anti-ai-tone.md) is appended; style presets (styles/, genres/) are replaced whole-file.** Execution-protocol prompts are not overridable. Mechanical constraints belong in `rules/`.
+
+## Multi-Mode AI Architecture Patterns (4 Specialized Modes)
+1. **Mode Separation & Asset Routing (`assets/load.go`)**:
+   - `novel-manga`: Nạp `assets/prompts/modes/novel-manga/`, `assets/voices/novel-manga.md`, `assets/references/modes/novel-manga/`.
+   - `doodle-explainer`: Nạp `assets/prompts/modes/doodle-explainer/`, `assets/voices/doodle-explainer.md`, `assets/references/modes/doodle-explainer/`.
+   - `behavioral-psychology`: Nạp `assets/prompts/modes/behavioral-psychology/`, `assets/voices/behavioral-psychology.md`, `assets/references/modes/behavioral-psychology/`.
+   - `vietnamese-history`: Nạp `assets/prompts/modes/vietnamese-history/`, `assets/voices/vietnamese-history.md`, `assets/references/modes/vietnamese-history/`.
+   - Tất cả 4 style đều là first-class identifier, tuyệt đối không phụ thuộc vào `style == "default"`.
+
+2. **Gated Script Validation (`internal/tools/commit_chapter.go`)**:
+   - `lintScript` (kiểm tra cấu trúc video HOOK/CẢNH/CHỐT, LỜI/HÌNH) **chỉ kích hoạt cho các chế độ video** (`doodle-explainer`, `behavioral-psychology`).
+   - Các chế độ tiểu thuyết văn xuôi (`novel-manga`, `vietnamese-history`) được giải phóng hoàn toàn khỏi các cảnh báo định dạng kịch bản video để tự do viết văn xuôi 2.000 – 4.000 từ.
+
+3. **Tavily Search & Fact-Grounding Pattern**:
+   - Client trung tâm: `internal/tavily` (`Search`, `Crawl`, `Extract`, `SearchAndBuildSourcePack`).
+   - LLM tools: `tavily_search` và `tavily_crawl` được cấp phát cho Architect và Writer.
+   - Nạp tự động `source_pack` vào ngữ cảnh `novel_context` và lưu trữ tại `meta/trends/sources/`.
+   - Tự động nạp API key từ file `.env` tại thư mục làm việc.
+
+4. **Doodle Explainer & Video Script Patterns**:
+   - **5-Stage Script Architecture**: `HOOK 0:00-0:03` -> `CẢNH 1 0:03-0:45` -> `CẢNH 2-4 0:45-3:45` (Tái Hook mỗi 60-90s) -> `CẢNH 5 3:45-4:30` (Reframe & Nudge) -> `CHỐT 4:30-5:15+` (Loop hook).
+   - **1:1 Alternating Voice-Visual Beats Pattern**: Xen kẽ liên tục cặp `LỜI:` (10-20 từ / 3-6s) và `HÌNH:` tương ứng; không để hình tĩnh kéo dài; loại bỏ hoàn toàn thẻ `CHỮ:`.
+   - **Dynamic Output Isolation**: Khi gõ `/new`, tự động tạo thư mục output theo thời gian thực `output/novel-YYYYMMDD-HHMM`.
+
+5. **Vietnamese History Novel Patterns**:
+   - Chuẩn mực xưng hô điển chế Đại Việt (Trẫm - khanh, Thần - Bệ hạ, Bản tướng - Chúa công).
+   - Nghiêm cấm từ ngữ convert kiếm hiệp Trung Quốc; 100% tiếng Việt sạch chữ Hán.
+   - 4 trụ cột: Tra cứu sử liệu Tavily, nhân vật con người thật đa chiều, bối cảnh lịch sử trong/ngoài nước, và nghịch cảnh sinh tử bi tráng.

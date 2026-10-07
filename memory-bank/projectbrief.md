@@ -1,19 +1,24 @@
-# Project Brief — ainovel-cli
+# Project Brief — ainovel-cli (aidoodle-cli)
 
-> Source of truth for scope. Created 2026-10-06 (first Memory Bank bootstrap, derived from README, docs/, source tree and git history).
+> Source of truth for scope. Updated 2026-10-07 (Doodle Explainer conversion completed).
 
 ## What it is
-`ainovel-cli` is a **fully automatic AI long-form novel writing engine** (Go CLI, TUI + headless). From a one-sentence request it plans, writes, reviews and rewrites an entire novel (target 200–500+ chapters) with no human intervention. Human steering is optional and live.
+`ainovel-cli` (aidoodle-cli) is an **autonomous, deterministic engine for generating Vietnamese content across 4 specialized AI working modes** (selectable via the interactive `/mode` command):
+1. **Tiểu thuyết / Manga (`novel-manga`)**: Sáng tác tiểu thuyết dài kỳ, manga, thế giới quan đa tầng, chiều sâu tâm lý nhân vật (2.000 – 4.000 từ/chương).
+2. **Doodle Explainer (`doodle-explainer`)**: Biên kịch video người que đồ đá giải thích các chủ đề xu hướng & kiến thức hiện đại cho TikTok / YouTube Shorts (5+ phút, nhịp 1:1 Thoại - Hình).
+3. **Tâm lý học hành vi (`behavioral-psychology`)**: Biên kịch video giải mã bẫy nhận thức, cơ chế Não Bò Sát vs Não Lý Trí, thí nghiệm khoa học chuẩn xác và Cú hích hành vi (Nudge) thực chiến.
+4. **Tiểu thuyết Lịch sử Việt Nam (`vietnamese-history`)**: Sáng tác tiểu thuyết và dã sử hào sảng về các nhân vật lịch sử Việt Nam (2.000 – 4.000 từ/chương), tích hợp tra cứu Tavily Search, khắc họa chân dung con người thật đa chiều, bối cảnh lịch sử đa tầng và những nghịch cảnh sinh tử bi tráng.
 
-- Module: `github.com/voocel/ainovel-cli` (upstream author: `voocel`; license MIT)
-- Go `1.25.5` in `go.mod` (local toolchain observed: go 1.27.0 windows/amd64)
+- Module: `github.com/voocel/ainovel-cli` (Fork repo: `aidoodle-cli`, branch `route` / `doodle-explainer`)
+- Go `1.25.5` in `go.mod` (local toolchain: go 1.27.0 windows/amd64)
 - Entrypoint: `cmd/ainovel-cli/main.go`
 
-## This repository is a FORK
-- Local repo `D:\ainovel-cli` has only 2 commits:
-  - `b67734c` (2026-10-03) "init vietnamese from ainovel-cli" — Vietnamese localization of the upstream project
-  - `13f98eb` (2026-10-04) "add style" — new genre styles + Windows lock fix + Vietnamese-language summary prompts (author `vinh-gogo`)
-- Goal of the fork: **write novels in Vietnamese** (and run locally, e.g. via Ollama), keeping upstream architecture intact.
+## Evolution of the Fork
+- Originally forked from `ainovel-cli` (novel writing engine).
+- Successfully expanded into an extensible multi-mode engine with 4 dedicated modes:
+  - **Video Script modes** (`doodle-explainer`, `behavioral-psychology`): 1 video = 1 "chapter" (thời lượng 5+ phút: 300–600s, ~700–1500 từ lời đọc, nhịp LỜI-HÌNH xen kẽ 1:1, chạy bộ kiểm tra kịch bản `lintScript`).
+  - **Novel modes** (`novel-manga`, `vietnamese-history`): 1 chapter = 2.000 – 4.000 từ văn xuôi tiểu thuyết, kết cấu chương hồi, không áp dụng ràng buộc kịch bản video.
+  - **Tích hợp Tavily Search & Crawl**: Nạp `source_pack` tự động, kiểm chứng dữ liệu thực tế và tài liệu lịch sử, tự động nạp file `.env` cục bộ.
 
 ## Core requirements (from upstream design, still binding)
 1. **Stability first** — one sentence in → whole book out, no architectural self-interruption.

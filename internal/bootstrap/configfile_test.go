@@ -337,3 +337,23 @@ func contains(s, sub string) bool {
 	}
 	return false
 }
+
+func TestLoadDotEnv(t *testing.T) {
+	dir := t.TempDir()
+	t.Chdir(dir)
+
+	envContent := "# Comment line\nTEST_ENV_VAR_1=hello_world\nTEST_ENV_VAR_2=\"quoted_val\"\n"
+	if err := os.WriteFile(".env", []byte(envContent), 0o644); err != nil {
+		t.Fatal(err)
+	}
+
+	loadDotEnv()
+
+	if got := os.Getenv("TEST_ENV_VAR_1"); got != "hello_world" {
+		t.Errorf("TEST_ENV_VAR_1 = %q, want hello_world", got)
+	}
+	if got := os.Getenv("TEST_ENV_VAR_2"); got != "quoted_val" {
+		t.Errorf("TEST_ENV_VAR_2 = %q, want quoted_val", got)
+	}
+}
+

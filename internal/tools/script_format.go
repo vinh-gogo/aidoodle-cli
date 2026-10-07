@@ -17,10 +17,10 @@ import (
 // lời đọc, mốc thời gian) dưới dạng violation mức warning, không chặn commit. Chất lượng hook,
 // độ hài hước, độ đúng sự thật là phán đoán ngữ nghĩa của Editor, KHÔNG viết thành luật cơ học ở đây.
 const (
-	scriptMinWords   = 150
-	scriptMaxWords   = 450
-	scriptMinSeconds = 60
-	scriptMaxSeconds = 180
+	scriptMinWords   = 700
+	scriptMaxWords   = 1500
+	scriptMinSeconds = 300
+	scriptMaxSeconds = 600
 )
 
 var (

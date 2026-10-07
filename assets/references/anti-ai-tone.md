@@ -1,6 +1,6 @@
 # Tiêu chuẩn khử văn phong AI (Anti-AI Tone) cho lời đọc ngắn
 
-Tài liệu này là kho tiêu chuẩn "mùi AI" dùng chung cho writer và editor, áp dụng cho **lời đọc (thẻ `LỜI:`) của video doodle explainer**: ngắn, nói thành tiếng, vui, thuần Việt. Writer phải tránh các mô thức dưới đây; editor khi thẩm định chiều aesthetic kiểm tra từng mục theo tài liệu này và **bắt buộc trích dẫn nguyên văn** làm dẫn chứng. Thẻ `HÌNH:`, `CHỮ:`, `ÂM:` cũng không được viết kiểu sáo rỗng.
+Tài liệu này là kho tiêu chuẩn "mùi AI" dùng chung cho writer và editor, áp dụng cho **lời đọc (thẻ `LỜI:`) của video doodle explainer**: ngắn, nói thành tiếng, vui, thuần Việt. Writer phải tránh các mô thức dưới đây; editor khi thẩm định chiều aesthetic kiểm tra từng mục theo tài liệu này và **bắt buộc trích dẫn nguyên văn** làm dẫn chứng. Thẻ `HÌNH:`, `ÂM:` cũng không được viết kiểu sáo rỗng.
 
 > Phần có thể liệt kê bằng máy (câu sáo cố định như "trong thế giới ngày nay", "hãy cùng khám phá", "có thể nói rằng", "điều đáng chú ý là", "không thể phủ nhận rằng", "trong bối cảnh hiện nay"; từ đệm hay lặp như "thực sự", "vô cùng", "tuy nhiên", "như thể") đã được `working_memory.user_rules.structured` kiểm tra khi commit. Tài liệu này chuyên xử lý **phán đoán ngữ nghĩa không cơ học hóa được**. Hai tầng bổ trợ nhau: tầng cơ học bắt bề nổi, tài liệu này bắt chất lượng câu chữ.
 
@@ -8,7 +8,7 @@ Phép thử chung: đọc to lời đọc lên. Nếu phải lấy hơi giữa c
 
 ## 1. Mùi AI trong cấu trúc
 
-- **Câu dài, nhiều mệnh đề**: lời đọc có câu trên khoảng 18 từ hoặc chứa hai ba dấu phẩy nối ý. Cách sửa: tách thành các câu 6–14 từ, mỗi câu một ý; ý phụ chuyển sang câu sau hoặc sang thẻ `CHỮ:`.
+- **Câu dài, nhiều mệnh đề**: lời đọc có câu trên khoảng 18 từ hoặc chứa hai ba dấu phẩy nối ý. Cách sửa: tách thành các câu 6–14 từ, mỗi câu một ý; ý phụ chuyển sang câu sau hoặc thể hiện bằng hình ảnh trong `HÌNH:`.
 - **Điệp ba vế / bộ ba song hành**: ba câu hoặc ba cụm đối xứng để "tạo thế" ("không lo lắng, không sợ hãi, không bỏ cuộc"). Cách sửa: giữ vế đắt nhất, các vế còn lại thành hình hoặc chi tiết cụ thể.
 - **Các câu đều tăm tắp**: câu nào cũng cùng độ dài và cú pháp, nghe như danh sách. Cách sửa: xen câu rất ngắn ("Mất sạch.") với câu vừa.
 - **Mở bài, thân bài, kết bài kiểu bài văn**: HOOK mà "giới thiệu chủ đề", CHỐT mà "tóm tắt lại". Cách sửa: HOOK là câu hỏi hoặc tình huống ngay; CHỐT là một hình hoặc một câu gọn.

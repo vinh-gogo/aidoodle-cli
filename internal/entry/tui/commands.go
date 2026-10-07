@@ -120,6 +120,19 @@ func commandRegistryInstance() commandRegistry {
 			},
 		},
 		{
+			Name:        "mode",
+			Aliases:     []string{"topic", "topics"},
+			Group:       "writing",
+			Usage:       "/mode",
+			Description: "Chọn chế độ làm việc của AI (Tiểu thuyết / Manga, Doodle Explainer...)",
+			AutoExecute: true,
+			Run: func(m Model, _ []string) (tea.Model, tea.Cmd) {
+				m.modeSelect = newModeSelectState(m.runtime, m.width, m.height)
+				m.textarea.Blur()
+				return m, nil
+			},
+		},
+		{
 			Name:        "review",
 			Group:       "writing",
 			Usage:       "/review on|off",
@@ -183,6 +196,17 @@ func commandRegistryInstance() commandRegistry {
 				}
 				cmd := m.enterStarting(prompt)
 				return m, tea.Batch(startRuntime(m.runtime, prompt), cmd)
+			},
+		},
+		{
+			Name:        "new",
+			Group:       "system",
+			Usage:       "/new [chủ đề]",
+			Description: "Tạo dự án mới trong thư mục output riêng (ví dụ output/novel-20261007-1825) và bắt đầu lại từ màn hình chào mừng",
+			Run: func(m Model, args []string) (tea.Model, tea.Cmd) {
+				m.restartRequested = true
+				m.restartPrompt = strings.TrimSpace(strings.Join(args, " "))
+				return m, tea.Quit
 			},
 		},
 		{

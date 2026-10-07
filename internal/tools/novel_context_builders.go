@@ -557,6 +557,18 @@ func (t *ContextTool) loadSourcePack(working map[string]any, entry *domain.Outli
 			}
 		}
 	}
+	// 4. Thử nạp theo StartPrompt của sách
+	if runMeta, err := t.store.RunMeta.Load(); err == nil && runMeta != nil && runMeta.StartPrompt != "" {
+		if sp, err := trend.LoadSourcePack(t.store.Dir(), runMeta.StartPrompt); err == nil && sp != nil {
+			working["source_pack"] = sp
+			return
+		}
+	}
+	// 5. Thử nạp theo "default"
+	if sp, err := trend.LoadSourcePack(t.store.Dir(), "default"); err == nil && sp != nil {
+		working["source_pack"] = sp
+		return
+	}
 }
 
 // buildOutlineWindow 为 Writer/Editor 保留与当前任务直接相关的大纲，而不是注入
@@ -829,6 +841,15 @@ func (t *ContextTool) buildArchitectPlanning(envelope *architectContextEnvelope,
 			"geo":        snap.Geo,
 			"fetched_at": snap.FetchedAt,
 			"items":      snap.Items,
+		}
+	}
+
+	// source_pack: nạp tài liệu khoa học/nguồn tin cậy nếu có cho Architect tham khảo khi lập series bible
+	if runMeta != nil && runMeta.StartPrompt != "" {
+		if sp, err := trend.LoadSourcePack(t.store.Dir(), runMeta.StartPrompt); err == nil && sp != nil {
+			envelope.Planning["source_pack"] = sp
+		} else if sp, err := trend.LoadSourcePack(t.store.Dir(), "default"); err == nil && sp != nil {
+			envelope.Planning["source_pack"] = sp
 		}
 	}
 }

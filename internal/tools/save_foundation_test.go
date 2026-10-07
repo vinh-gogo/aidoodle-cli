@@ -822,3 +822,228 @@ func TestSaveFoundationCompleteBookRejectsWithPendingRewrites(t *testing.T) {
 		t.Fatalf("phase should not be Complete with PendingRewrites: %s", progress.Phase)
 	}
 }
+
+func TestSaveFoundationInfersPremiseFromMarkdown(t *testing.T) {
+	dir := t.TempDir()
+	st := store.NewStore(dir)
+	if err := st.Init(); err != nil {
+		t.Fatalf("Init: %v", err)
+	}
+
+	tool := NewSaveFoundationTool(st)
+	// Missing "type" parameter, only "content" with markdown premise
+	args, _ := json.Marshal(map[string]any{
+		"content": "# Series bible\n\n## Kênh và khán giả\nKênh giải thích doodle bằng người que thời đồ đá.",
+	})
+	resRaw, err := tool.Execute(context.Background(), args)
+	if err != nil {
+		t.Fatalf("Execute failed: %v", err)
+	}
+	var res map[string]any
+	if err := json.Unmarshal(resRaw, &res); err != nil {
+		t.Fatal(err)
+	}
+	if res["type"] != "premise" {
+		t.Fatalf("expected inferred type 'premise', got %v", res["type"])
+	}
+	content, err := st.Outline.LoadPremise()
+	if err != nil || !strings.Contains(content, "Series bible") {
+		t.Fatalf("premise not properly saved: content=%q, err=%v", content, err)
+	}
+}
+
+func TestSaveFoundationInfersOutlineFromJSONArray(t *testing.T) {
+	dir := t.TempDir()
+	st := store.NewStore(dir)
+	if err := st.Init(); err != nil {
+		t.Fatalf("Init: %v", err)
+	}
+
+	tool := NewSaveFoundationTool(st)
+	// Missing "type", array with chapter/scenes
+	outlineData := []map[string]any{
+		{
+			"chapter":    1,
+			"title":      "Tập 1: Vì sao rụng lông",
+			"core_event": "Giải thích cơ chế tản nhiệt",
+			"scenes":     []string{"Hook 3s", "Thân", "Chốt"},
+		},
+	}
+	args, _ := json.Marshal(map[string]any{
+		"content": outlineData,
+	})
+	resRaw, err := tool.Execute(context.Background(), args)
+	if err != nil {
+		t.Fatalf("Execute failed: %v", err)
+	}
+	var res map[string]any
+	if err := json.Unmarshal(resRaw, &res); err != nil {
+		t.Fatal(err)
+	}
+	if res["type"] != "outline" {
+		t.Fatalf("expected inferred type 'outline', got %v", res["type"])
+	}
+	loaded, err := st.Outline.LoadOutline()
+	if err != nil || len(loaded) != 1 || loaded[0].Title != "Tập 1: Vì sao rụng lông" {
+		t.Fatalf("outline not properly saved: loaded=%+v, err=%v", loaded, err)
+	}
+}
+
+func TestSaveFoundationInfersCharactersFromJSONArray(t *testing.T) {
+	dir := t.TempDir()
+	st := store.NewStore(dir)
+	if err := st.Init(); err != nil {
+		t.Fatalf("Init: %v", err)
+	}
+
+	tool := NewSaveFoundationTool(st)
+	charsData := []map[string]any{
+		{
+			"name":        "Que Ú",
+			"role":        "host",
+			"description": "Người que tròn trịa",
+			"traits":      []string{"hài hước", "tò mò"},
+			"arc":         "Từ ngây ngô đến hiểu chuyện",
+		},
+	}
+	args, _ := json.Marshal(map[string]any{
+		"content": charsData,
+	})
+	resRaw, err := tool.Execute(context.Background(), args)
+	if err != nil {
+		t.Fatalf("Execute failed: %v", err)
+	}
+	var res map[string]any
+	if err := json.Unmarshal(resRaw, &res); err != nil {
+		t.Fatal(err)
+	}
+	if res["type"] != "characters" {
+		t.Fatalf("expected inferred type 'characters', got %v", res["type"])
+	}
+	chars, err := st.Characters.Load()
+	if err != nil || len(chars) != 1 || chars[0].Name != "Que Ú" {
+		t.Fatalf("characters not properly saved: chars=%+v, err=%v", chars, err)
+	}
+}
+
+func TestSaveFoundationInfersWorldRulesFromJSONArray(t *testing.T) {
+	dir := t.TempDir()
+	st := store.NewStore(dir)
+	if err := st.Init(); err != nil {
+		t.Fatalf("Init: %v", err)
+	}
+
+	tool := NewSaveFoundationTool(st)
+	rulesData := []map[string]any{
+		{
+			"category": "luật anachronism",
+			"rule":     "Được dùng đồ hiện đại dưới dạng ẩn dụ",
+			"boundary": "Không xúc phạm người thật",
+		},
+	}
+	args, _ := json.Marshal(map[string]any{
+		"content": rulesData,
+	})
+	resRaw, err := tool.Execute(context.Background(), args)
+	if err != nil {
+		t.Fatalf("Execute failed: %v", err)
+	}
+	var res map[string]any
+	if err := json.Unmarshal(resRaw, &res); err != nil {
+		t.Fatal(err)
+	}
+	if res["type"] != "world_rules" {
+		t.Fatalf("expected inferred type 'world_rules', got %v", res["type"])
+	}
+	rules, err := st.World.LoadWorldRules()
+	if err != nil || len(rules) != 1 || rules[0].Category != "luật anachronism" {
+		t.Fatalf("world rules not properly saved: rules=%+v, err=%v", rules, err)
+	}
+}
+
+func TestSaveFoundationRecoversFromDedicatedKey(t *testing.T) {
+	dir := t.TempDir()
+	st := store.NewStore(dir)
+	if err := st.Init(); err != nil {
+		t.Fatalf("Init: %v", err)
+	}
+
+	tool := NewSaveFoundationTool(st)
+	// Calling with dedicated field "premise"
+	args, _ := json.Marshal(map[string]any{
+		"premise": "# Series bible\n\nNội dung tiền đề",
+	})
+	resRaw, err := tool.Execute(context.Background(), args)
+	if err != nil {
+		t.Fatalf("Execute failed: %v", err)
+	}
+	var res map[string]any
+	if err := json.Unmarshal(resRaw, &res); err != nil {
+		t.Fatal(err)
+	}
+	if res["type"] != "premise" {
+		t.Fatalf("expected inferred type 'premise', got %v", res["type"])
+	}
+}
+
+func TestSaveFoundationRecoversFromNestedType(t *testing.T) {
+	dir := t.TempDir()
+	st := store.NewStore(dir)
+	if err := st.Init(); err != nil {
+		t.Fatalf("Init: %v", err)
+	}
+
+	tool := NewSaveFoundationTool(st)
+	// Calling with nested {"type": "premise", "content": "..."} inside content
+	args, _ := json.Marshal(map[string]any{
+		"content": map[string]any{
+			"type":    "premise",
+			"content": "# Series bible\n\nNội dung tiền đề lồng",
+		},
+	})
+	resRaw, err := tool.Execute(context.Background(), args)
+	if err != nil {
+		t.Fatalf("Execute failed: %v", err)
+	}
+	var res map[string]any
+	if err := json.Unmarshal(resRaw, &res); err != nil {
+		t.Fatal(err)
+	}
+	if res["type"] != "premise" {
+		t.Fatalf("expected inferred type 'premise', got %v", res["type"])
+	}
+}
+
+func TestSaveFoundationRecoversFromVietnameseAlias(t *testing.T) {
+	dir := t.TempDir()
+	st := store.NewStore(dir)
+	if err := st.Init(); err != nil {
+		t.Fatalf("Init: %v", err)
+	}
+
+	tool := NewSaveFoundationTool(st)
+	outlineData := []map[string]any{
+		{
+			"chapter":    1,
+			"title":      "Tập 1",
+			"core_event": "Sự kiện",
+			"scenes":     []string{"Cảnh 1"},
+		},
+	}
+	args, _ := json.Marshal(map[string]any{
+		"type":    "dàn ý",
+		"content": outlineData,
+	})
+	resRaw, err := tool.Execute(context.Background(), args)
+	if err != nil {
+		t.Fatalf("Execute failed: %v", err)
+	}
+	var res map[string]any
+	if err := json.Unmarshal(resRaw, &res); err != nil {
+		t.Fatal(err)
+	}
+	if res["type"] != "outline" {
+		t.Fatalf("expected normalized type 'outline', got %v", res["type"])
+	}
+}
+
