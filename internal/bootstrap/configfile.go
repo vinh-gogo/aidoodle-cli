@@ -215,6 +215,9 @@ func mergeConfig(base, overlay Config) Config {
 	if overlay.Trends.Enabled || overlay.Trends.Geo != "" || len(overlay.Trends.Sources) > 0 || overlay.Trends.MaxItems > 0 || overlay.Trends.TopicsPerBatch > 0 || overlay.Trends.FetchArticleChars > 0 {
 		base.Trends = overlay.Trends
 	}
+	if overlay.Tavily.Enabled || overlay.Tavily.APIKey != "" || overlay.Tavily.BaseURL != "" || overlay.Tavily.MaxResults > 0 || overlay.Tavily.SearchDepth != "" {
+		base.Tavily = overlay.Tavily
+	}
 	if overlay.AdvanceMode != "" {
 		base.AdvanceMode = overlay.AdvanceMode
 	}

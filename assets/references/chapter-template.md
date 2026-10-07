@@ -69,11 +69,14 @@ HÌNH: {cảnh kết chào khán giả, tương tác với biểu tượng follo
 
 CAPTION: {1-2 câu tóm tắt giá trị cốt lõi, có từ khóa hấp dẫn}
 HASHTAG: #doodle #kienthuc #giaithich #xuhuong
-NGUỒN: không có (kiến thức nền)
-CẦN KIỂM CHỨNG: không có
+NGUỒN:
+1. {Tên bài báo / tạp chí / cơ quan nghiên cứu - URL}
+2. {Sách giáo trình / chuyên gia uy tín}
+CẦN KIỂM CHỨNG:
+- {Các giả thuyết đối lập, số liệu ước tính, hoặc mâu thuẫn khoa học còn đang tranh cãi}
 ```
 
-Quy ước nhanh: mỗi khối cách nhau một dòng trống; `CẢNH n` đánh số tăng từ 1; mốc giờ dạng m:ss nối tiếp nhau; trong mỗi khối, LỜI và HÌNH xen kẽ nhau 1:1 theo từng câu thoại (mỗi 3-6 giây đổi hình một lần, tuyệt đối không để hình tĩnh kéo dài); tuyệt đối KHÔNG dùng thẻ `CHỮ:` (mọi thông điệp thể hiện qua lời đọc và hình vẽ); chủ đề kiến thức nền ghi `NGUỒN: không có (kiến thức nền)`.
+Quy ước nhanh: mỗi khối cách nhau một dòng trống; `CẢNH n` đánh số tăng từ 1; mốc giờ dạng m:ss nối tiếp nhau; trong mỗi khối, LỜI và HÌNH xen kẽ nhau 1:1 theo từng câu thoại (mỗi 3-6 giây đổi hình một lần, tuyệt đối không để hình tĩnh kéo dài); tuyệt đối KHÔNG dùng thẻ `CHỮ:` (mọi thông điệp thể hiện qua lời đọc và hình vẽ); chủ đề có dữ liệu khoa học/thực tế bắt buộc trích dẫn nguồn cụ thể vào `NGUỒN:` (từ source_pack hoặc công cụ tavily_search) và nêu rõ các điểm đối lập vào `CẦN KIỂM CHỨNG:`.
 
 ## Ví dụ hoàn chỉnh (~5 phút 15 giây, tâm lý học tiến hóa)
 
@@ -112,6 +115,10 @@ HÌNH: Que Ú mỉm cười thanh thản ngả lưng ngủ ngon giấc dưới b
 
 CAPTION: Nỗi sợ kỷ đá: vì sao bạn luôn lo âu vô cớ và bí quyết làm hòa với người gác cổng bên trong.
 HASHTAG: #tamly #loau #kienthuc #doodle #suckhoetinhthan #chualanh #xuhuong
-NGUỒN: không có (kiến thức nền)
-CẦN KIỂM CHỨNG: không có
+NGUỒN:
+1. VietnamPlus: Tâm lý học tiến hóa và phản ứng stress của con người (https://vietnamplus.vn/tam-ly-hoc-tien-hoa)
+2. GS. Randolph Nesse: Tác phẩm "Good Reasons for Bad Feelings" về nguồn gốc tiến hóa của chứng lo âu
+CẦN KIỂM CHỨNG:
+- Mức độ ảnh hưởng di truyền của hạch hạnh nhân so với các chấn thương tâm lý xã hội hiện đại.
+- Giả thuyết lệch pha tiến hóa (Evolutionary Mismatch) giải thích phần lớn các bệnh lo âu mãn tính nhưng vẫn cần thêm dữ liệu thần kinh học đối chứng.
 ```

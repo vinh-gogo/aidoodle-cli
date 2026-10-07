@@ -2,12 +2,12 @@
 
 Ẩn dụ đồ đá chỉ có giá trị khi dữ kiện đứng sau nó là thật. Tài liệu này là quy tắc để một kịch bản vui vẫn không làm sai sự thật. Writer đọc khi viết lời; architect đọc khi chọn chủ đề và góc nhìn của từng tập; editor dùng làm căn cứ kiểm tra.
 
-## 1. Chỉ dùng dữ kiện được cung cấp
+## 1. Nguồn dữ kiện và công cụ tra cứu Tavily
 
-- Nguồn sự thật gồm: tài liệu, đường dẫn, đoạn trích do người dùng đưa vào, và kiến thức nền phổ biến, ổn định (khái niệm, cơ chế). Dữ kiện nằm ngoài hai loại này không được dùng như thật.
-- Tin đang nóng, số liệu, sự kiện, tên người, tên tổ chức, mốc thời gian: chỉ viết khi có trong nguồn. Ghi nguồn vào chân kịch bản bằng thẻ `NGUỒN:`.
-- Không có nguồn cho một chủ đề tin tức thì nói rõ (với người dùng hoặc trong `CẦN KIỂM CHỨNG`), không tự "nhớ" cho đủ.
-- Chủ đề thường trực (lạm phát là gì, thuật toán hoạt động ra sao ở mức khái niệm) ghi `NGUỒN: không có (kiến thức nền)` và giữ ở mức khái niệm, không chèn số liệu cụ thể.
+- Nguồn sự thật gồm: gói dữ liệu nguồn (`source_pack`), kết quả tra cứu từ công cụ `tavily_search` / `tavily_crawl`, tài liệu/đoạn trích do người dùng đưa vào, và kiến thức khoa học đã được kiểm chứng.
+- Tin đang nóng, số liệu, sự kiện, tên nhà khoa học, tổ chức, mốc thời gian: BẮT BUỘC tra cứu qua Tavily Search hoặc bám sát `source_pack`. Ghi rõ tên bài báo, tổ chức/tạp chí và URL vào thẻ `NGUỒN:`.
+- Khi cần kiểm chứng số liệu, sự kiện hoặc tìm nguồn bài báo khoa học gốc: hãy chủ động gọi công cụ `tavily_search` hoặc `tavily_crawl`. Tuyệt đối không tự "nhớ" hay bịa đặt số liệu.
+- Tuyệt đối không ghi `NGUỒN: không có` khi đã có dữ liệu tra cứu từ Tavily hoặc `source_pack`.
 
 ## 2. Không bịa
 
