@@ -49,7 +49,7 @@ func TestLoad_NoOverrides(t *testing.T) {
 	if _, ok := b.Styles["default"]; !ok {
 		t.Fatal("内置风格集应含 default")
 	}
-	for _, style := range []string{"psychological", "stone-age-doodle", "vietnamese-history", "stone-age-doodle-explain", "doodle-explainer"} {
+	for _, style := range []string{"psychological", "stone-age-doodle", "vietnamese-history", "stone-age-doodle-explain", "doodle-explainer", "novel-manga"} {
 		if _, ok := b.Styles[style]; !ok {
 			t.Fatalf("phong cách %s chưa có trong b.Styles", style)
 		}
@@ -72,6 +72,24 @@ func TestLoad_NoOverrides(t *testing.T) {
 	}
 	if b.References.HumorRelatability == "" {
 		t.Fatal("thiếu tài liệu tham khảo HumorRelatability (humor-relatability.md)")
+	}
+}
+
+func TestLoad_DistinctModesNovelAndDoodle(t *testing.T) {
+	bNovel := Load("novel-manga", LoadOptions{})
+	if !strings.Contains(bNovel.Prompts.Writer, "Bạn là tác giả tiểu thuyết.") {
+		t.Fatalf("Chế độ novel-manga phải nạp prompt tác giả tiểu thuyết, nhận được: %s", bNovel.Prompts.Writer[:100])
+	}
+	if !strings.Contains(bNovel.Voice, "chính văn, tiêu đề chương, suy nghĩ và lời thoại") {
+		t.Fatalf("Chế độ novel-manga phải nạp voice chuẩn tiểu thuyết, nhận được: %s", bNovel.Voice[:100])
+	}
+
+	bDoodle := Load("doodle-explainer", LoadOptions{})
+	if !strings.Contains(bDoodle.Prompts.Writer, "Bạn là biên kịch doodle explainer") {
+		t.Fatalf("Chế độ doodle-explainer phải nạp prompt biên kịch video doodle, nhận được: %s", bDoodle.Prompts.Writer[:100])
+	}
+	if !strings.Contains(bDoodle.Voice, "lời đọc") {
+		t.Fatalf("Chế độ doodle-explainer phải nạp voice kịch bản video, nhận được: %s", bDoodle.Voice[:100])
 	}
 }
 

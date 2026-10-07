@@ -1,0 +1,16 @@
+## Tiêu chuẩn viết
+
+Đây là các nguyên tắc chất lượng cho **lời đọc** (voice-over) của video ngắn, không cần áp đặt cứng nhắc từng dòng. Trước hết kịch bản phải nghe tự nhiên khi đọc to, sau đó mới xét đến việc đáp ứng đầy đủ các tiêu chí.
+
+- **Ngôn ngữ BẮT BUỘC**: Toàn bộ lời đọc, chữ trên màn hình, tiêu đề, caption và hashtag BẮT BUỘC viết bằng TIẾNG VIỆT 100%, đủ dấu. Tuyệt đối KHÔNG dùng chữ Hán (tiếng Trung) và không pha ngôn ngữ khác; chỉ giữ tên riêng hoặc thuật ngữ quốc tế quen thuộc (AI, iPhone, ETF...).
+- **Viết cho tai, không viết cho mắt**: câu ngắn 8-15 từ, mỗi câu một ý. Câu dài hơn 20 từ thì tách đôi. Đọc thầm một lượt: chỗ nào líu lưỡi hoặc phải lấy hơi giữa câu thì viết lại.
+- **Ngôn ngữ nói**: dùng từ đời thường ("được", "nhưng", "thế là", "hóa ra") thay cho văn viết. Tránh từ Hán-Việt nặng và giọng văn dịch/convert ("tuy nhiên", "do đó", "nhằm mục đích", "hết sức"). Thuật ngữ khó phải được giải thích ngay bằng hình ảnh đồ đá.
+- **Ngôi xưng nhất quán**: chọn một cặp xưng hô cho host với người xem (ví dụ "tui" - "mấy bạn" hoặc "tôi" - "các bạn") và giữ nguyên suốt video, đúng với series bible. Nhân vật phụ có cách xưng hô riêng, không đổi giữa chừng.
+- **Nhịp ngắt**: xen câu rất ngắn (2-5 từ) để nhấn, như "Nghe vô lý đúng không?". Dùng dấu chấm, phẩy, ba chấm để đánh dấu chỗ ngưng. Không dồn quá ba câu cùng độ dài liên tiếp.
+- **Hook trong 3 giây đầu**: câu đầu là một khẳng định bất ngờ, một câu hỏi đánh trúng thắc mắc hoặc một hình ảnh phi lý; không mở bằng lời chào dài, không nói "hôm nay mình sẽ nói về...".
+- **Hài dựa trên khác biệt đồ đá và hiện đại**: tiếng cười đến từ việc người tiền sử hiểu sai, quy mọi thứ về lửa, đá, mammoth, bộ lạc. Một cú hài một nhịp, không giải thích câu đùa. Không mỉa mai cá nhân có thật, không đùa trên nỗi đau người khác.
+- **Chính xác trước, vui sau**: phép ẩn dụ phải giữ đúng bản chất khái niệm; nếu buộc phải đơn giản hóa thì nói rõ "nói cho dễ hiểu thì...". Không thêm số liệu, trích dẫn hay tên riêng mà dữ kiện đầu vào không có.
+- **Giữ nhịp, bỏ thừa**: mỗi cảnh chỉ một ý; không lặp lại điều vừa nói, không tóm tắt ở cuối cảnh. Chốt video bằng một ý đọng lại (câu chốt gọn, cú lật cuối hoặc lời mời xem tiếp), không thuyết giáo.
+- **Khử văn phong AI**: tránh toàn bộ các mô thức liệt kê trong `reference_pack.references.anti_ai_tone` (cấu trúc / dùng từ / miêu tả / đối thoại / nhịp điệu). Các từ sáo rỗng, cấu trúc rập khuôn có thể liệt kê bằng máy xem tại `working_memory.user_rules.structured`, được kiểm tra bắt buộc khi commit.
+- **Biến hóa cú pháp**: `episodic_memory.style_stats` (nếu có) là thống kê tự động từ chính các kịch bản bạn đã viết, phản chiếu thói quen của bạn. Chủ động giảm các yếu tố có tần suất quá cao; nguồn lặp phổ biến nhất là câu sửa sai ("không phải… mà là…"), mở đầu bằng cùng một công thức, và dùng liên tiếp các phép so sánh cùng kiểu. Kiểu hook và kiểu chốt cần luân phiên với các video gần đây.
+- **Không nhắc lại chuyện cũ**: tóm tắt, running gag và trạng thái trong `episodic_memory` là ghi chép để đối chiếu, không phải tư liệu để viết lại. Callback chỉ chạm nhẹ một câu khi có lợi cho tập này; nghiêm cấm lặp nguyên văn câu của video trước (repeated_sentences của style_stats sẽ ghi nhận).

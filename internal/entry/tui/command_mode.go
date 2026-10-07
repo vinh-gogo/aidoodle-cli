@@ -40,7 +40,7 @@ func defaultAIModeOptions() []aiModeOption {
 			Number:      1,
 			Title:       "Tiểu thuyết / Manga",
 			Badge:       "📖 Tiểu thuyết & Truyện tranh",
-			StyleKey:    "default",
+			StyleKey:    "novel-manga",
 			Available:   true,
 			Description: "Sáng tác tiểu thuyết dài kỳ, truyện tranh (Manga/Webtoon) với phân chia hồi/chương chặt chẽ, phát triển tâm lý nhân vật và quy tắc thế giới chuyên sâu.",
 			Features: []string{
@@ -95,7 +95,7 @@ func newModeSelectState(rt *host.Host, width, height int) *modeSelectState {
 	initialCursor := 0
 	for i, opt := range opts {
 		if opt.Available {
-			if opt.StyleKey == curStyle || (opt.StyleKey == "default" && curStyle != "doodle-explainer") {
+			if opt.StyleKey == curStyle || (opt.StyleKey == "novel-manga" && isNovelMode(curStyle)) {
 				initialCursor = i
 				break
 			}
@@ -112,15 +112,19 @@ func newModeSelectState(rt *host.Host, width, height int) *modeSelectState {
 	return state
 }
 
+func isNovelMode(style string) bool {
+	style = strings.ToLower(strings.TrimSpace(style))
+	return style == "novel-manga" || style == "novel" || style == "manga" || style == "fantasy" || style == "romance" || style == "suspense" || style == "psychological" || style == "psychology" || style == "vietnamese-history" || style == "default"
+}
+
 func (s *modeSelectState) isOptionActive(opt aiModeOption) bool {
 	if !opt.Available {
 		return false
 	}
-	if opt.StyleKey == "doodle-explainer" {
-		return s.currentStyle == "doodle-explainer"
+	if opt.StyleKey == "novel-manga" {
+		return isNovelMode(s.currentStyle)
 	}
-	// "default" hoặc các phong cách tiểu thuyết khác
-	return s.currentStyle != "doodle-explainer"
+	return s.currentStyle == opt.StyleKey
 }
 
 func (s *modeSelectState) refreshViewport(contentW int) {

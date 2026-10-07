@@ -12,7 +12,7 @@ import (
 	"github.com/voocel/ainovel-cli/internal/tools"
 )
 
-//go:embed prompts/*.md
+//go:embed prompts
 var promptsFS embed.FS
 
 //go:embed references
@@ -21,7 +21,7 @@ var referencesFS embed.FS
 //go:embed styles/*.md
 var stylesFS embed.FS
 
-//go:embed voice.md
+//go:embed voice.md voices
 var voiceFS embed.FS
 
 // Prompts 表示嵌入的提示词集合。
@@ -77,12 +77,31 @@ func DefaultLoadOptions(outputDir string) LoadOptions {
 
 // Load 返回指定风格对应的资源集合。文风资产(voice / anti-ai-tone / styles /
 // 题材 style-references)按 opts 做三层覆盖:内置 < 全局 < 本书。
+// isNovelMode kiểm tra xem một style có thuộc về chế độ Tiểu thuyết / Manga hay không.
+func isNovelMode(style string) bool {
+	style = strings.ToLower(strings.TrimSpace(style))
+	return style == "novel-manga" || style == "novel" || style == "manga"
+}
+
+func loadVoice(style string, opts LoadOptions) string {
+	voiceFile := "voice.md"
+	if isNovelMode(style) {
+		voiceFile = "voices/novel-manga.md"
+	} else if style == "doodle-explainer" {
+		voiceFile = "voices/doodle-explainer.md"
+	}
+	if data, err := voiceFS.ReadFile(voiceFile); err == nil {
+		return resolveAppendable(string(data), "voice.md", opts)
+	}
+	return resolveAppendable(mustRead(voiceFS, "voice.md"), "voice.md", opts)
+}
+
 func Load(style string, opts LoadOptions) Bundle {
 	return Bundle{
 		References: loadReferences(style, opts),
-		Prompts:    loadPrompts(),
+		Prompts:    loadPrompts(style),
 		Styles:     loadStyles(opts),
-		Voice:      resolveAppendable(mustRead(voiceFS, "voice.md"), "voice.md", opts),
+		Voice:      loadVoice(style, opts),
 	}
 }
 
@@ -140,18 +159,30 @@ func loadReferences(style string, opts LoadOptions) tools.References {
 	if style == "" {
 		style = "doodle-explainer"
 	}
+	refPrefix := "references/modes/doodle-explainer/"
+	if isNovelMode(style) {
+		refPrefix = "references/modes/novel-manga/"
+	}
+
+	readModeRef := func(name string) string {
+		if data, err := referencesFS.ReadFile(refPrefix + name); err == nil {
+			return string(data)
+		}
+		return mustRead(referencesFS, "references/"+name)
+	}
+
 	refs := tools.References{
-		ChapterGuide:      mustRead(referencesFS, "references/chapter-guide.md"),
-		HookTechniques:    mustRead(referencesFS, "references/hook-techniques.md"),
-		QualityChecklist:  mustRead(referencesFS, "references/quality-checklist.md"),
-		OutlineTemplate:   mustRead(referencesFS, "references/outline-template.md"),
-		CharacterTemplate: mustRead(referencesFS, "references/character-template.md"),
-		ChapterTemplate:   mustRead(referencesFS, "references/chapter-template.md"),
-		Consistency:       mustRead(referencesFS, "references/consistency.md"),
-		ContentExpansion:  mustRead(referencesFS, "references/content-expansion.md"),
-		DialogueWriting:   mustRead(referencesFS, "references/dialogue-writing.md"),
-		LongformPlanning:  mustRead(referencesFS, "references/longform-planning.md"),
-		Differentiation:   mustRead(referencesFS, "references/differentiation.md"),
+		ChapterGuide:      readModeRef("chapter-guide.md"),
+		HookTechniques:    readModeRef("hook-techniques.md"),
+		QualityChecklist:  readModeRef("quality-checklist.md"),
+		OutlineTemplate:   readModeRef("outline-template.md"),
+		CharacterTemplate: readModeRef("character-template.md"),
+		ChapterTemplate:   readModeRef("chapter-template.md"),
+		Consistency:       readModeRef("consistency.md"),
+		ContentExpansion:  readModeRef("content-expansion.md"),
+		DialogueWriting:   readModeRef("dialogue-writing.md"),
+		LongformPlanning:  readModeRef("longform-planning.md"),
+		Differentiation:   readModeRef("differentiation.md"),
 		AntiAITone:        resolveAppendable(mustRead(referencesFS, "references/anti-ai-tone.md"), "anti-ai-tone.md", opts),
 		DoodleVisual:      mustRead(referencesFS, "references/doodle-visual-language.md"),
 		FactGrounding:     mustRead(referencesFS, "references/fact-grounding.md"),
@@ -178,12 +209,30 @@ func loadReferences(style string, opts LoadOptions) tools.References {
 	return refs
 }
 
-func loadPrompts() Prompts {
+func loadPrompts(styles ...string) Prompts {
+	style := ""
+	if len(styles) > 0 {
+		style = styles[0]
+	}
+
+	modeSubdir := "modes/doodle-explainer"
+	if isNovelMode(style) {
+		modeSubdir = "modes/novel-manga"
+	}
+
+	readPrompt := func(name string) string {
+		path := "prompts/" + modeSubdir + "/" + name
+		if data, err := promptsFS.ReadFile(path); err == nil {
+			return string(data)
+		}
+		return mustRead(promptsFS, "prompts/"+name)
+	}
+
 	return Prompts{
-		ArchitectShort:   WithSimulationGuidance(mustRead(promptsFS, "prompts/architect-short.md"), "architect"),
-		ArchitectLong:    WithSimulationGuidance(mustRead(promptsFS, "prompts/architect-long.md"), "architect"),
-		Writer:           WithSimulationGuidance(mustRead(promptsFS, "prompts/writer.md"), "writer"),
-		Editor:           WithSimulationGuidance(mustRead(promptsFS, "prompts/editor.md"), "editor"),
+		ArchitectShort:   WithSimulationGuidance(readPrompt("architect-short.md"), "architect"),
+		ArchitectLong:    WithSimulationGuidance(readPrompt("architect-long.md"), "architect"),
+		Writer:           WithSimulationGuidance(readPrompt("writer.md"), "writer"),
+		Editor:           WithSimulationGuidance(readPrompt("editor.md"), "editor"),
 		ImportSegment:    mustRead(promptsFS, "prompts/import-segment.md"),
 		ImportAnalyze:    mustRead(promptsFS, "prompts/import-analyze.md"),
 		ImportSynthesize: mustRead(promptsFS, "prompts/import-synthesize.md"),
