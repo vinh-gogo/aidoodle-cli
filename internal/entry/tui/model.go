@@ -54,6 +54,7 @@ type Model struct {
 	runtime            *host.Host
 	cocreate           *cocreateState
 	help               *helpState
+	modeSelect         *modeSelectState
 	modelSwitch        *modelSwitchState
 	modelConfig        *modelConfigState
 	report             *reportState
@@ -641,6 +642,9 @@ func (m Model) View() string {
 	}
 	if m.help != nil {
 		return renderHelpModal(m.width, m.height, m.help)
+	}
+	if m.modeSelect != nil {
+		return renderModeSelectModal(m.width, m.height, m.modeSelect)
 	}
 	if m.report != nil {
 		return renderReportModal(m.width, m.height, m.report)
