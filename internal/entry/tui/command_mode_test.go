@@ -50,8 +50,11 @@ func TestModeCommand_ExecutionOpensModal(t *testing.T) {
 	if updated.modeSelect.options[1].Title != "Doodle Explainer" {
 		t.Errorf("Tùy chọn 2 phải là Doodle Explainer, nhận: %s", updated.modeSelect.options[1].Title)
 	}
-	if updated.modeSelect.options[2].Available {
-		t.Error("Tùy chọn 3 (chưa có/sắp ra mắt) không được đặt Available = true")
+	if updated.modeSelect.options[2].Title != "Tâm lý học hành vi" {
+		t.Errorf("Tùy chọn 3 phải là Tâm lý học hành vi, nhận: %s", updated.modeSelect.options[2].Title)
+	}
+	if !updated.modeSelect.options[2].Available {
+		t.Error("Tùy chọn 3 (Tâm lý học hành vi) phải có Available = true")
 	}
 	if updated.textarea.Focused() {
 		t.Fatal("Textarea phải bị blur khi mở modal lựa chọn chế độ")
@@ -151,7 +154,7 @@ func TestModeSelect_SelectDoodleExplainerQuickKey(t *testing.T) {
 	}
 }
 
-func TestModeSelect_SelectComingSoonShowsWarning(t *testing.T) {
+func TestModeSelect_SelectBehavioralPsychology(t *testing.T) {
 	m := Model{
 		textarea:   textarea.New(),
 		width:      100,
@@ -159,18 +162,15 @@ func TestModeSelect_SelectComingSoonShowsWarning(t *testing.T) {
 		modeSelect: newModeSelectState(nil, 100, 30),
 	}
 
-	// Chọn phím 3 (chưa có)
+	// Chọn phím 3 (Tâm lý học hành vi)
 	res, _ := m.handleModeSelectKey(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'3'}})
 	m = res.(Model)
 
-	if m.modeSelect == nil {
-		t.Fatal("Khi chọn chế độ chưa sẵn sàng, modal không được đóng")
+	if m.modeSelect != nil {
+		t.Fatal("Sau khi ấn '3', modal phải đóng")
 	}
-	if m.modeSelect.message == "" {
-		t.Fatal("Phải hiển thị cảnh báo giải thích chế độ 3 đang được nghiên cứu")
-	}
-	if !strings.Contains(m.modeSelect.message, "bước tiếp theo") {
-		t.Errorf("Nội dung thông báo không khớp mong đợi: %s", m.modeSelect.message)
+	if !m.textarea.Focused() {
+		t.Fatal("Textarea phải được focus sau khi chọn")
 	}
 }
 

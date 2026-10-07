@@ -49,7 +49,7 @@ func TestLoad_NoOverrides(t *testing.T) {
 	if _, ok := b.Styles["default"]; !ok {
 		t.Fatal("内置风格集应含 default")
 	}
-	for _, style := range []string{"psychological", "stone-age-doodle", "vietnamese-history", "stone-age-doodle-explain", "doodle-explainer", "novel-manga"} {
+	for _, style := range []string{"psychological", "stone-age-doodle", "vietnamese-history", "stone-age-doodle-explain", "doodle-explainer", "novel-manga", "behavioral-psychology"} {
 		if _, ok := b.Styles[style]; !ok {
 			t.Fatalf("phong cách %s chưa có trong b.Styles", style)
 		}
@@ -90,6 +90,14 @@ func TestLoad_DistinctModesNovelAndDoodle(t *testing.T) {
 	}
 	if !strings.Contains(bDoodle.Voice, "lời đọc") {
 		t.Fatalf("Chế độ doodle-explainer phải nạp voice kịch bản video, nhận được: %s", bDoodle.Voice[:100])
+	}
+
+	bPsych := Load("behavioral-psychology", LoadOptions{})
+	if !strings.Contains(bPsych.Prompts.Writer, "Bạn là biên kịch video tâm lý học hành vi") {
+		t.Fatalf("Chế độ behavioral-psychology phải nạp prompt tâm lý học hành vi, nhận được: %s", bPsych.Prompts.Writer[:100])
+	}
+	if !strings.Contains(bPsych.Voice, "người bạn thông thái, đồng cảm và hóm hỉnh") {
+		t.Fatalf("Chế độ behavioral-psychology phải nạp voice tâm lý học hành vi, nhận được: %s", bPsych.Voice[:100])
 	}
 }
 

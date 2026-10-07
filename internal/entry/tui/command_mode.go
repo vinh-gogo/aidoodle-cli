@@ -64,16 +64,17 @@ func defaultAIModeOptions() []aiModeOption {
 			},
 		},
 		{
-			ID:          "coming-soon",
+			ID:          "behavioral-psychology",
 			Number:      3,
-			Title:       "Chế độ mở rộng (Đang nghiên cứu & suy nghĩ tiếp)",
-			Badge:       "⏳ Sắp ra mắt",
-			StyleKey:    "",
-			Available:   false,
-			Description: "Dành cho các chế độ AI tiếp theo (như Podcast đối thoại, Kịch bản phóng sự, Video tài liệu chuyên sâu...). Hiện để ngỏ để cấu hình ở bước tiếp theo.",
+			Title:       "Tâm lý học hành vi",
+			Badge:       "🧠 Video Tâm lý học",
+			StyleKey:    "behavioral-psychology",
+			Available:   true,
+			Description: "Biên kịch video giải mã tâm lý học hành vi & bẫy nhận thức (5+ phút, nhịp 1:1 Thoại - Hình), giải mã sự phi lý trí đời thường, thí nghiệm khoa học chuẩn xác và cú hích thực chiến (Nudge).",
 			Features: []string{
-				"Khung cấu hình mở rộng trong tương lai",
-				"Đang chờ ý tưởng và kịch bản thiết kế tiếp",
+				"Giải mã nghịch lý & bẫy nhận thức đời thường",
+				"Minh họa Não lý trí vs Não cảm xúc trực quan 1:1",
+				"Thí nghiệm khoa học có nguồn & Cú hích thực chiến (Nudge)",
 			},
 		},
 	}
@@ -95,7 +96,9 @@ func newModeSelectState(rt *host.Host, width, height int) *modeSelectState {
 	initialCursor := 0
 	for i, opt := range opts {
 		if opt.Available {
-			if opt.StyleKey == curStyle || (opt.StyleKey == "novel-manga" && isNovelMode(curStyle)) {
+			if opt.StyleKey == curStyle || 
+			   (opt.StyleKey == "novel-manga" && isNovelMode(curStyle)) ||
+			   (opt.StyleKey == "behavioral-psychology" && isPsychologyMode(curStyle)) {
 				initialCursor = i
 				break
 			}
@@ -114,7 +117,12 @@ func newModeSelectState(rt *host.Host, width, height int) *modeSelectState {
 
 func isNovelMode(style string) bool {
 	style = strings.ToLower(strings.TrimSpace(style))
-	return style == "novel-manga" || style == "novel" || style == "manga" || style == "fantasy" || style == "romance" || style == "suspense" || style == "psychological" || style == "psychology" || style == "vietnamese-history" || style == "default"
+	return style == "novel-manga" || style == "novel" || style == "manga" || style == "fantasy" || style == "romance" || style == "suspense" || style == "vietnamese-history" || style == "default"
+}
+
+func isPsychologyMode(style string) bool {
+	style = strings.ToLower(strings.TrimSpace(style))
+	return style == "behavioral-psychology" || style == "psychology" || style == "psychological"
 }
 
 func (s *modeSelectState) isOptionActive(opt aiModeOption) bool {
@@ -123,6 +131,9 @@ func (s *modeSelectState) isOptionActive(opt aiModeOption) bool {
 	}
 	if opt.StyleKey == "novel-manga" {
 		return isNovelMode(s.currentStyle)
+	}
+	if opt.StyleKey == "behavioral-psychology" {
+		return isPsychologyMode(s.currentStyle)
 	}
 	return s.currentStyle == opt.StyleKey
 }
