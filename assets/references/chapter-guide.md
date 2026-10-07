@@ -39,10 +39,11 @@ Một chương = một video doodle explainer từ 5 phút trở lên (khoảng 
    - Đúc kết sâu sắc hoặc triết lý bất ngờ, mang lại cảm giác nhẹ nhõm, mỉm cười.
    - Loop Hook: Nối ngược vòng lặp về câu mở đầu của video để kích thích xem lại, hoặc để lại câu hỏi mở kêu gọi bình luận và bấm theo dõi kênh.
 
-## Lời đọc và hình: Nguyên tắc cốt lõi
+## Lời đọc và hình: Nguyên tắc cốt lõi (Khớp nhịp 1:1 theo từng câu thoại)
 
-- **Một cảnh = một ý = một hình chính.** Nhịp cảnh từ 15-45 giây, trong cảnh có các chuyển động chi tiết bổ sung.
-- **Lời và hình bổ sung cho nhau, không lặp.** Lời nói ý nghĩa / cơ chế, hình vẽ que mô tả hành động biểu cảm phóng đại hoặc ví dụ hài hước.
+- **Đổi hình liên tục mỗi 3–6 giây (Khớp 1:1 giữa LỜI và HÌNH)**: Video hoạt hình ngắn doodle explainer không được để màn hình đứng yên quá 5-6 giây. TUYỆT ĐỐI NGHIÊM CẤM viết một tràng LỜI dài 5-7 câu (40-60 giây) mà chỉ có đúng 1 thẻ HÌNH chung chung!
+- **Cấu trúc cặp LỜI - HÌNH xen kẽ**: Trong mỗi khối (HOOK, CẢNH 1..5, CHỐT), chia nhỏ thành các cặp nhịp: Mỗi câu thoại ngắn hoặc 1-2 câu (10-20 từ, tương đương 3-6 giây) BẮT BUỘC ĐI KÈM NGAY một thẻ `HÌNH:` tương ứng mô tả động thái que, góc máy hoặc sơ đồ minh họa. Một CẢNH dài 40-60 giây phải có từ 3 đến 6 cặp `LỜI:` và `HÌNH:` xen kẽ liên tiếp.
+- **Lời và hình bổ sung cho nhau, không lặp.** Lời nói ý nghĩa / cơ chế, hình vẽ que mô tả hành động biểu cảm phóng đại hoặc ví dụ hài hước. Khi LỜI nhắc đến nhân vật nào, động tác nào, thì HÌNH ngay sau đó vẽ đúng động tác/nhân vật đó.
 - **Không dùng thẻ CHỮ:** Mọi thông điệp và từ khóa truyền tải qua lời đọc và hình vẽ, không tạo thẻ CHỮ riêng lẻ.
 - **Lăng kính gây cười & đồng cảm nhân sinh:** Khai thác tính cách cổ mẫu (người hung dữ thương sâu, người khôn ngoan dễ hớ, người lười biếng thật thà...), tiếng cười sinh ra từ sự đồng cảm "sao giống mình quá".
 - **Câu ngắn, nói được ra miệng:** Tối đa khoảng 15-20 từ một câu, một ý một câu. Đọc to không vấp.
