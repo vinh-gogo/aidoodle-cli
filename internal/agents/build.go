@@ -70,17 +70,73 @@ func ParseThinkingLevel(s string) (agentcore.ThinkingLevel, error) {
 	}
 }
 
+// ModelSupportsThinking kiểm tra xem model và provider có thực sự hỗ trợ điều khiển thinking/reasoning hay không.
+// Với các model chat thông thường (như gemma, qwen, llama, gpt-4o...), litellm của OpenAI provider
+// chỉ hỗ trợ thinking cho các model reasoning chính thức (gpt-5 trở lên).
+// Nếu truyền bất kỳ thinking param nào (kể cả disabled/off), litellm sẽ từ chối với lỗi:
+// "openai: thinking is only supported for reasoning chat models".
+func ModelSupportsThinking(model agentcore.ChatModel) bool {
+	if model == nil {
+		return false
+	}
+	cp, ok := model.(llm.CapabilityProvider)
+	if !ok {
+		return true
+	}
+	caps := cp.Capabilities()
+	if caps.Thinking.Supported == llm.SupportNo {
+		return false
+	}
+
+	provider := strings.ToLower(strings.TrimSpace(caps.Provider))
+	modelName := strings.ToLower(strings.TrimSpace(caps.Model))
+	if provider == "" {
+		if info, ok := model.(interface{ Info() llm.ModelInfo }); ok {
+			provider = strings.ToLower(strings.TrimSpace(info.Info().Provider))
+			if modelName == "" {
+				modelName = strings.ToLower(strings.TrimSpace(info.Info().Name))
+			}
+		}
+	}
+	if modelName == "" {
+		modelName = strings.ToLower(strings.TrimSpace(bootstrap.ModelName(model)))
+	}
+
+	// Provider openai trong litellm chỉ cho phép thinking đối với gpt-5+
+	if provider == "openai" {
+		return isOpenAIReasoningModel(modelName)
+	}
+	// Provider bedrock trong litellm chỉ cho phép thinking đối với Claude
+	if provider == "bedrock" {
+		return strings.Contains(modelName, "claude")
+	}
+	return true
+}
+
+func isOpenAIReasoningModel(model string) bool {
+	model = strings.ToLower(strings.TrimSpace(model))
+	if _, after, ok := strings.Cut(model, "/"); ok {
+		model = after
+	}
+	if strings.Contains(model, "chat") {
+		return false
+	}
+	var major int
+	_, err := fmt.Sscanf(model, "gpt-%d", &major)
+	return err == nil && major >= 5
+}
+
 func ResolveThinkingForModel(model agentcore.ChatModel, level agentcore.ThinkingLevel) (agentcore.ThinkingLevel, bool) {
 	level = agentcore.NormalizeThinkingLevel(level)
-	// 对不支持 thinking 的普通 chat 模型，显式 off 不是 no-op，而是非法参数。
-	if cp, ok := model.(llm.CapabilityProvider); ok && cp.Capabilities().Thinking.Supported == llm.SupportNo {
-		return agentcore.ThinkingAuto, level == agentcore.ThinkingAuto
+	// Đối với model không hỗ trợ thinking, trả về ThinkingAuto ("") để không gửi tham số thinking đến provider.
+	if !ModelSupportsThinking(model) {
+		return agentcore.ThinkingAuto, level == agentcore.ThinkingAuto || level == agentcore.ThinkingOff
 	}
 	return llm.ThinkingPolicyFor(model).Resolve(level)
 }
 
 func AvailableThinkingForModel(model agentcore.ChatModel) []agentcore.ThinkingLevel {
-	if cp, ok := model.(llm.CapabilityProvider); ok && cp.Capabilities().Thinking.Supported == llm.SupportNo {
+	if !ModelSupportsThinking(model) {
 		return []agentcore.ThinkingLevel{agentcore.ThinkingAuto}
 	}
 	return llm.ThinkingPolicyFor(model).Available
