@@ -50,6 +50,18 @@ Văn phong kịch bản video tâm lý học hành vi phải là giọng nói c�
   - Không bảo: *"Bạn hãy rèn luyện thói quen đọc sách mỗi ngày."*
   - Hãy chỉ mẹo: *"Tối nay, hãy đặt cuốn sách mở sẵn ngay trên gối ngủ, và giấu sạc điện thoại sang góc phòng bên kia."* (Quy tắc giảm ma sát hành vi tốt, tăng ma sát hành vi xấu).
 
-## 6. Từ ngữ và mẫu câu CẤM KỴ
+## 6. Bộ quy tắc vàng về giọng viết (Core Voice Principles)
+- **Không chẩn đoán người đọc**, không gắn nhãn ("bạn bị...", "chứng bệnh của bạn"). Dùng: *"Nhiều người thấy..."*, *"Có thể là..."*, *"Bộ não của chúng ta thường..."*.
+- **Không đổ lỗi, không cường điệu**: Giải thích bằng cơ chế tiến hóa thần kinh thay vì kết án người xem là yếu đuối, lười biếng hay vô kỷ luật.
+- **Một video, một ý lớn**: Tập trung mổ xẻ duy nhất một câu hỏi / một bẫy tâm lý cho trọn vẹn, không gom nhiều chủ đề rời rạc vào một video.
+- **Ngôn từ khoa học chuẩn mực**:
+  - Dùng các từ chỉ xác suất/mức độ: *"có xu hướng"*, *"thường"*, *"trung bình"*, *"nghiên cứu trên nhóm quan sát cho thấy"* thay cho các từ tuyệt đối hóa như *"luôn luôn"*, *"chắc chắn 100%"*, *"tất cả mọi người"*.
+  - Phân biệt rành mạch giữa **tương quan** (hai điều cùng xuất hiện) và **nhân quả** (điều A gây ra điều B).
+  - Không nói bừa *"nghiên cứu cho thấy"* mà không có dẫn chứng tác giả/năm cụ thể.
+- **Thành thật về giới hạn và ngoại lệ**: Dành 1-2 câu ngắn nêu rõ khi nào cơ chế này không đúng, hoặc mẫu nghiên cứu phương Tây (WEIRD) có thể chưa hoàn toàn đại diện cho mọi hoàn cảnh; sự trung thực này làm tăng độ tin cậy của bạn trong mắt người xem.
+
+## 7. Từ ngữ và mẫu câu CẤM KỴ
 - Cấm các khẩu hiệu AI sáo rỗng: "Trong xã hội hiện đại ngày nay", "Hãy cùng khám phá", "Có thể nói rằng", "Điều đáng chú ý là", "Chúng ta đều biết rằng"...
-- Cấm ngôn ngữ chẩn đoán bệnh tâm thần: "Bạn đang bị trầm cảm", "Chứng rối loạn lo âu của bạn", "Bạn là người ái kỷ độc hại"... Thay vào đó, hãy mô tả hành vi cụ thể: "Những lúc bạn thấy lo âu vô cớ", "Khi đối mặt với người thích thao túng"...
+- Cấm ngôn ngữ chẩn đoán bệnh tâm thần lâm sàng: "Bạn đang bị trầm cảm", "Chứng rối loạn lo âu của bạn", "Bạn là người ái kỷ độc hại"... Thay vào đó, hãy mô tả hành vi cụ thể: "Những lúc bạn thấy lo âu vô cớ", "Khi đối mặt với người thích thao túng"...
+- Cấm lời hứa quá tay: "Thay đổi cuộc đời bạn mãi mãi", "Phương pháp chữa khỏi dứt điểm", "Bí quyết giúp bạn không bao giờ thất bại"...
+- Cấm kết bài bằng lời khuyên đạo đức hóa hoặc lên lớp dạy đời.
