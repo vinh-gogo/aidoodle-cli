@@ -821,7 +821,7 @@ Hướng dẫn nhanh:
   </div>
 
   <!-- Modal /dialog /mode -->
-  <div class="tui-modal-overlay" id="modal-mode">
+  <div class="tui-modal-overlay" id="modal-mode" onclick="if (event.target === this) closeModal('modal-mode')">
     <div class="tui-dialog">
       <div class="tui-dialog-header">
         <span>╭─── CHỌN CHẾ ĐỘ SÁNG TÁC (/mode) ───╮</span>
@@ -864,7 +864,7 @@ Hướng dẫn nhanh:
   </div>
 
   <!-- Modal /dialog /dash -->
-  <div class="tui-modal-overlay" id="modal-dash">
+  <div class="tui-modal-overlay" id="modal-dash" onclick="if (event.target === this) closeModal('modal-dash')">
     <div class="tui-dialog" style="width: 680px;">
       <div class="tui-dialog-header">
         <span>╭─── DANH SÁCH TÁC PHẨM TRONG OUTPUT (/dash) ───╮</span>
@@ -909,6 +909,7 @@ Hướng dẫn nhanh:
     let chapterCursor = 0;
     let modeCursor = 0;
     let dashCursor = 0;
+    let modalOpenedAt = 0;
 
     let paletteActive = false;
     let paletteFiltered = [];
@@ -1014,22 +1015,26 @@ Hướng dẫn nhanh:
       if (paletteActive) {
         if (e.key === 'ArrowDown') {
           e.preventDefault();
+          e.stopPropagation();
           paletteIndex = (paletteIndex + 1) % paletteFiltered.length;
           renderPalette();
           return;
         } else if (e.key === 'ArrowUp') {
           e.preventDefault();
+          e.stopPropagation();
           paletteIndex = (paletteIndex - 1 + paletteFiltered.length) % paletteFiltered.length;
           renderPalette();
           return;
         } else if (e.key === 'Enter' || e.key === 'Tab') {
           e.preventDefault();
+          e.stopPropagation();
           if (paletteFiltered[paletteIndex]) {
             selectPaletteItem(paletteFiltered[paletteIndex]);
           }
           return;
         } else if (e.key === 'Escape') {
           e.preventDefault();
+          e.stopPropagation();
           hidePalette();
           return;
         }
@@ -1038,6 +1043,7 @@ Hướng dẫn nhanh:
       if (e.key === 'ArrowUp') {
         if (commandHistory.length > 0) {
           e.preventDefault();
+          e.stopPropagation();
           if (historyIndex === -1) {
             historyIndex = commandHistory.length - 1;
           } else if (historyIndex > 0) {
@@ -1049,6 +1055,7 @@ Hướng dẫn nhanh:
       } else if (e.key === 'ArrowDown') {
         if (historyIndex !== -1) {
           e.preventDefault();
+          e.stopPropagation();
           if (historyIndex < commandHistory.length - 1) {
             historyIndex++;
             termInput.value = commandHistory[historyIndex] || '';
@@ -1061,6 +1068,8 @@ Hướng dẫn nhanh:
       }
 
       if (e.key === 'Enter') {
+        e.preventDefault();
+        e.stopPropagation();
         submitTerminalInput();
       }
     });
@@ -1071,6 +1080,14 @@ Hướng dẫn nhanh:
       const dashModal = document.getElementById('modal-dash');
 
       if (modeModal.classList.contains('open')) {
+        if (e.key === 'Escape') {
+          e.preventDefault();
+          closeModal('modal-mode');
+          return;
+        }
+        // Debounce: prevent the Enter key that opened the modal from selecting the first item
+        if (Date.now() - modalOpenedAt < 250) return;
+
         const items = document.querySelectorAll('#mode-dialog-body .dialog-item');
         if (e.key === 'ArrowDown') {
           e.preventDefault();
@@ -1087,11 +1104,18 @@ Hướng dẫn nhanh:
         else if (e.key === '2') selectStyleMode('doodle-explainer');
         else if (e.key === '3') selectStyleMode('behavioral-psychology');
         else if (e.key === '4') selectStyleMode('vietnamese-history');
-        else if (e.key === 'Escape') closeModal('modal-mode');
         return;
       }
 
       if (dashModal.classList.contains('open')) {
+        if (e.key === 'Escape') {
+          e.preventDefault();
+          closeModal('modal-dash');
+          return;
+        }
+        // Debounce: prevent the Enter key that opened the modal from selecting the first item
+        if (Date.now() - modalOpenedAt < 250) return;
+
         const items = document.querySelectorAll('#dash-project-list .dialog-item');
         if (items.length > 0) {
           if (e.key === 'ArrowDown') {
@@ -1107,7 +1131,6 @@ Hướng dẫn nhanh:
             if (items[dashCursor]) items[dashCursor].click();
           }
         }
-        if (e.key === 'Escape') closeModal('modal-dash');
         return;
       }
 
@@ -1274,19 +1297,39 @@ Hướng dẫn nhanh:
     }
 
     function openModeModal() {
+      modalOpenedAt = Date.now();
       modeCursor = 0;
+      if (document.activeElement) document.activeElement.blur();
       document.getElementById('modal-mode').classList.add('open');
       const items = document.querySelectorAll('#mode-dialog-body .dialog-item');
       highlightModeCursor(items);
     }
-    function openDashModal() {
+
+    async function openDashModal() {
+      modalOpenedAt = Date.now();
       dashCursor = 0;
+      if (document.activeElement) document.activeElement.blur();
       renderDashModalProjects(cliState.projects);
       document.getElementById('modal-dash').classList.add('open');
+
+      // Fetch fresh project list from server
+      try {
+        const res = await fetch('/api/projects');
+        const projs = await res.json();
+        if (projs && Array.isArray(projs)) {
+          cliState.projects = projs;
+          renderDashModalProjects(cliState.projects);
+        }
+      } catch (err) {
+        console.error("fetch projects error:", err);
+      }
     }
+
     function closeModal(id) {
       document.getElementById(id).classList.remove('open');
-      termInput.focus();
+      setTimeout(() => {
+        termInput.focus();
+      }, 50);
     }
 
     async function selectStyleMode(style) {
