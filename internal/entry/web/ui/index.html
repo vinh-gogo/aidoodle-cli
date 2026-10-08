@@ -84,7 +84,7 @@
 
     /* Top TUI Info / Status Bar */
     .tui-topbar {
-      height: 32px;
+      height: 38px;
       background: #111111;
       border-bottom: 1px solid var(--term-border);
       display: flex;
@@ -93,6 +93,7 @@
       padding: 0 16px;
       font-size: 0.82rem;
       flex-shrink: 0;
+      gap: 12px;
     }
     .topbar-left {
       display: flex;
@@ -103,7 +104,7 @@
     .topbar-center {
       font-weight: bold;
       color: var(--term-white);
-      max-width: 400px;
+      max-width: 380px;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -114,7 +115,7 @@
       gap: 8px;
     }
     .tui-badge {
-      padding: 2px 8px;
+      padding: 3px 8px;
       border-radius: 4px;
       font-size: 0.75rem;
       font-weight: bold;
@@ -124,6 +125,26 @@
     .badge-running { background: rgba(63, 185, 80, 0.2); color: var(--term-green); border: 1px solid var(--term-green); }
     .badge-review { background: rgba(229, 180, 73, 0.2); color: var(--term-yellow); border: 1px solid var(--term-yellow); }
     .badge-complete { background: rgba(88, 166, 255, 0.2); color: var(--term-blue); border: 1px solid var(--term-blue); }
+
+    /* Quick Action Pill Button in Header */
+    .top-action-pill {
+      background: #1e1e1e;
+      border: 1px solid var(--term-border);
+      color: #fff;
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.15s;
+    }
+    .top-action-pill:hover {
+      background: #2a2a2a;
+      border-color: var(--term-blue);
+      color: var(--term-blue);
+    }
 
     /* Main Terminal Layout (3 Panels like CLI) */
     .tui-body {
@@ -196,6 +217,9 @@
       font-weight: bold;
       border-bottom: 1px solid #282828;
       padding-bottom: 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
     .chapter-row {
       padding: 6px 8px;
@@ -240,20 +264,20 @@
 
     /* Review Hold Box */
     .review-box {
-      background: rgba(229, 180, 73, 0.1);
+      background: rgba(229, 180, 73, 0.12);
       border: 1px solid var(--term-yellow);
-      border-radius: 4px;
+      border-radius: 6px;
       padding: 10px 14px;
       display: none;
       align-items: center;
       justify-content: space-between;
       gap: 12px;
       margin-bottom: 8px;
-      font-size: 0.85rem;
+      font-size: 0.86rem;
       color: #ffd875;
     }
     .btn-term {
-      background: #252525;
+      background: #222222;
       border: 1px solid #444;
       color: #fff;
       font-family: inherit;
@@ -261,29 +285,45 @@
       padding: 5px 12px;
       border-radius: 4px;
       cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
       transition: all 0.15s;
       outline: none;
+      white-space: nowrap;
     }
     .btn-term:hover { background: #333; border-color: #666; }
-    .btn-term-primary { background: #1f4b27; border-color: var(--term-green); color: #7ec488; font-weight: bold; }
-    .btn-term-primary:hover { background: #2b6a37; }
+    .btn-term-primary {
+      background: #1b4d24;
+      border-color: var(--term-green);
+      color: #7ec488;
+      font-weight: bold;
+    }
+    .btn-term-primary:hover { background: #24632f; color: #fff; }
+    .btn-term-warn {
+      background: #4d3810;
+      border-color: var(--term-yellow);
+      color: #ffd875;
+      font-weight: bold;
+    }
+    .btn-term-warn:hover { background: #664b15; }
 
     /* Right Panel: Luồng sự kiện & Công cụ */
     .event-line {
       display: flex;
       flex-direction: column;
       gap: 2px;
-      padding: 4px 6px;
+      padding: 5px 8px;
       border-radius: 4px;
       background: #101010;
       border-left: 3px solid #333;
       font-size: 0.8rem;
     }
-    .event-line.tool { border-left-color: var(--term-cyan); }
-    .event-line.decision { border-left-color: var(--term-purple); }
-    .event-line.model { border-left-color: var(--term-blue); }
-    .event-line.system { border-left-color: var(--term-yellow); }
-    .event-line.error { border-left-color: var(--term-red); }
+    .event-line.tool { border-left-color: var(--term-cyan); background: #0c1518; }
+    .event-line.decision { border-left-color: var(--term-purple); background: #131018; }
+    .event-line.model { border-left-color: var(--term-blue); background: #0c121a; }
+    .event-line.system { border-left-color: var(--term-yellow); background: #14130c; }
+    .event-line.error { border-left-color: var(--term-red); background: #180c0c; }
     .event-meta { display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--term-dim); }
     .event-msg { word-break: break-word; color: #ddd; }
     .tool-text { color: var(--term-cyan); font-weight: bold; }
@@ -292,23 +332,48 @@
     .tui-bottom-bar {
       background: #111111;
       border-top: 1px solid var(--term-border);
-      padding: 8px 16px;
+      padding: 8px 14px;
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 8px;
       flex-shrink: 0;
       position: relative;
     }
+
+    /* Non-tech Friendly Functional Toolbar (Thanh công cụ thao tác 1-chạm) */
+    .action-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 2px;
+    }
+    .action-toolbar::-webkit-scrollbar { height: 4px; }
+    .action-toolbar .btn-term {
+      font-size: 0.78rem;
+      padding: 4px 10px;
+    }
+
+    /* Prompt Row with direct Submit button */
     .prompt-row {
       display: flex;
       align-items: center;
       gap: 8px;
+      background: #080808;
+      border: 1px solid #282828;
+      border-radius: 6px;
+      padding: 4px 10px;
+      transition: border-color 0.15s;
+    }
+    .prompt-row:focus-within {
+      border-color: var(--term-blue);
     }
     .ps-prefix {
       color: #388bfd;
       font-weight: bold;
       font-size: 0.88rem;
       white-space: nowrap;
+      user-select: none;
     }
     .terminal-input {
       flex: 1;
@@ -318,15 +383,61 @@
       color: #ffffff;
       font-family: inherit;
       font-size: 0.92rem;
+      min-width: 120px;
     }
     .terminal-input::placeholder { color: #555555; }
+    .btn-submit-action {
+      background: #1f4b27;
+      border: 1px solid var(--term-green);
+      color: #fff;
+      font-family: inherit;
+      font-size: 0.8rem;
+      font-weight: bold;
+      padding: 5px 14px;
+      border-radius: 4px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+    .btn-submit-action:hover {
+      background: #2b6a37;
+      box-shadow: 0 0 8px rgba(63, 185, 80, 0.4);
+    }
+
+    /* Quick Topic Suggestion Chips */
+    .suggestion-chips-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.76rem;
+      color: var(--term-dim);
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+    .chip-item {
+      background: #1a1a1a;
+      border: 1px solid #333;
+      color: #aaa;
+      padding: 2px 9px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .chip-item:hover {
+      background: #262626;
+      border-color: var(--term-cyan);
+      color: #fff;
+    }
 
     /* Autocomplete Command Palette Dropup */
     .command-palette {
       position: absolute;
-      bottom: 66px;
-      left: 16px;
-      right: 16px;
+      bottom: 84px;
+      left: 14px;
+      right: 14px;
       max-width: 680px;
       background: #161b22;
       border: 1px solid var(--term-blue);
@@ -392,11 +503,13 @@
     .hotkey-bar {
       display: flex;
       align-items: center;
-      gap: 16px;
-      font-size: 0.76rem;
+      gap: 14px;
+      font-size: 0.74rem;
       color: var(--term-dim);
       border-top: 1px solid #1c1c1c;
       padding-top: 4px;
+      overflow-x: auto;
+      white-space: nowrap;
     }
     .hk-item {
       cursor: pointer;
@@ -428,8 +541,8 @@
       background: #141414;
       border: 1px solid var(--term-border-focus);
       border-radius: 8px;
-      width: 580px;
-      max-width: 90vw;
+      width: 600px;
+      max-width: 92vw;
       box-shadow: 0 0 30px rgba(88, 166, 255, 0.2);
       display: flex;
       flex-direction: column;
@@ -444,6 +557,7 @@
       border-bottom: 1px solid #333;
       display: flex;
       justify-content: space-between;
+      align-items: center;
     }
     .tui-dialog-body {
       padding: 16px;
@@ -453,14 +567,14 @@
       font-size: 0.85rem;
     }
     .dialog-item {
-      padding: 8px 12px;
+      padding: 10px 14px;
       background: #0c0c0c;
       border: 1px solid #282828;
-      border-radius: 4px;
+      border-radius: 6px;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       transition: all 0.15s;
     }
     .dialog-item:hover {
@@ -510,14 +624,24 @@
       <span>·</span>
       <span id="top-model">openrouter</span>
       <span>·</span>
-      <span id="top-style" style="color: var(--term-cyan);">[⚔️ Lịch sử Việt Nam]</span>
+      <!-- Clickable Mode Switcher Pill in Header -->
+      <span id="top-style" class="top-action-pill" onclick="openModeModal()" title="Bấm để đổi chế độ AI (/mode)">
+        <span>⚔️ Lịch sử Việt Nam</span>
+        <span style="font-size: 0.65rem;">▾</span>
+      </span>
     </div>
 
-    <div class="topbar-center" id="top-book-title">
+    <div class="topbar-center" id="top-book-title" title="Tác phẩm hiện tại">
       《Chưa đặt tên sách》
     </div>
 
     <div class="topbar-right">
+      <button class="top-action-pill" onclick="openDashModal()" title="Xem tất cả tác phẩm trong output/">
+        <span>📂 Thư viện (/dash)</span>
+      </button>
+      <button class="top-action-pill" onclick="executeCommand('/new')" title="Khởi tạo phiên mới">
+        <span>➕ Tạo mới (/new)</span>
+      </button>
       <span id="badge-status" class="tui-badge badge-ready">READY</span>
     </div>
   </div>
@@ -529,7 +653,9 @@
     <div class="tui-panel" id="panel-0" onclick="setFocusPanel(0)">
       <div class="tui-panel-header">
         <span>╭─ SÁCH & TIẾN ĐỘ ─╮</span>
-        <span id="panel-phase-badge" style="color: var(--term-yellow);">Khởi tạo</span>
+        <div style="display: flex; gap: 4px;">
+          <button class="btn-term" style="padding: 2px 6px; font-size: 0.7rem;" onclick="openDashModal()">Đổi sách</button>
+        </div>
       </div>
       <div class="tui-panel-content">
         <div class="kv-row">
@@ -557,7 +683,10 @@
           <span class="kv-val" id="val-dir" style="font-size: 0.74rem; color: #888;">output\novel</span>
         </div>
 
-        <div class="section-divider">MỤC LỤC CÁC CHƯƠNG [↑/↓ để duyệt]</div>
+        <div class="section-divider">
+          <span>MỤC LỤC CÁC CHƯƠNG</span>
+          <span style="font-size: 0.68rem; color: var(--term-cyan);">[Bấm để đọc]</span>
+        </div>
         <div id="chapter-list-container" style="display: flex; flex-direction: column; gap: 3px;">
           <div style="color: var(--term-dim); font-size: 0.78rem; text-align: center; padding: 12px 0;">
             Chưa có chương nào được tạo.
@@ -570,29 +699,30 @@
     <div class="tui-panel" id="panel-1" onclick="setFocusPanel(1)">
       <div class="tui-panel-header">
         <span>╭─ BẢN THẢO TRỰC TIẾP (STREAM) ─╮</span>
-        <div style="display: flex; gap: 8px;">
-          <button class="btn-term" onclick="copyStreamContent()">Sao chép</button>
-          <button class="btn-term" onclick="toggleStreamMode()" id="btn-stream-toggle">Xem live</button>
+        <div style="display: flex; gap: 6px;">
+          <button class="btn-term" onclick="copyStreamContent()">📋 Sao chép</button>
+          <button class="btn-term" onclick="toggleStreamMode()" id="btn-stream-toggle">🔴 Xem live</button>
         </div>
       </div>
       <div class="tui-panel-content">
         
-        <!-- Review Hold Alert Box -->
+        <!-- Review Hold Alert Box (Prominent for non-tech users) -->
         <div class="review-box" id="review-alert-box">
           <div>
             <strong>◆ Chế độ duyệt từng chương:</strong> Chương vừa xong đang chờ bạn nghiệm thu.
           </div>
-          <button class="btn-term btn-term-primary" onclick="executeCommand('/next')">Duyệt & Viết tiếp (/next) ➔</button>
+          <button class="btn-term btn-term-primary" onclick="executeCommand('/next')">
+            ▶️ Duyệt & Viết tiếp (/next) ➔
+          </button>
         </div>
 
         <!-- Realtime Streaming Output Viewport -->
         <div class="stream-viewport" id="stream-viewport">
-          <span id="stream-text">Chào mừng bạn đến với aiNovel-CLI (Web Terminal Mode).
-Gõ đề tài sáng tác bên dưới và nhấn Enter để bắt đầu, hoặc gõ dấu "/" để mở bảng lệnh:
-  /mode  - Chọn 1 trong 4 chế độ làm việc AI chuyên biệt
-  /dash  - Xem và chuyển đổi các tác phẩm đã tạo trong output/
-  /next  - Duyệt viết chương tiếp theo (chế độ review)
-  /new   - Tạo dự án mới trong thư mục riêng biệt
+          <span id="stream-text">Chào mừng bạn đến với aiNovel-CLI (Web Studio Terminal).
+Bạn có thể:
+  1. Gõ đề tài vào ô bên dưới rồi nhấn [🚀 Bắt đầu] hoặc Enter.
+  2. Bấm vào các nút chức năng nhanh phía dưới để chọn chế độ, duyệt tiếp, hoặc đổi sách.
+  3. Gõ dấu "/" để tra cứu nhanh toàn bộ danh sách lệnh TUI.
 ================================================================================</span><span class="term-cursor" id="term-cursor"></span>
         </div>
 
@@ -629,11 +759,50 @@ Gõ đề tài sáng tác bên dưới và nhấn Enter để bắt đầu, ho�
       </div>
     </div>
 
-    <div class="prompt-row" onclick="focusPrompt()">
-      <span class="ps-prefix">PS D:\ainovel-cli&gt;</span>
-      <input type="text" id="term-input" class="terminal-input" placeholder="Nhập đề tài hoặc gõ '/' để xem danh sách lệnh (/mode, /dash, /next, /new)..." autocomplete="off" autofocus>
+    <!-- Quick Suggestion Chips (Gợi ý đề tài 1-chạm cho non-tech) -->
+    <div class="suggestion-chips-bar" id="suggestion-chips">
+      <span>💡 Gợi ý nhanh:</span>
+      <span class="chip-item" onclick="fillSuggestion('Chiến dịch Rạch Gầm - Xoài Mút năm 1785 của vua Quang Trung')">⚔️ Trận Rạch Gầm - Xoài Mút 1785</span>
+      <span class="chip-item" onclick="fillSuggestion('Trận Bạch Đằng năm 938 của Ngô Quyền đại phá quân Nam Hán')">⚔️ Trận Bạch Đằng 938</span>
+      <span class="chip-item" onclick="fillSuggestion('Giải thích hiệu ứng Dunning-Kruger và tại sao người dốt lại tự tin')">🦴 Hiệu ứng Dunning-Kruger</span>
+      <span class="chip-item" onclick="fillSuggestion('Tại sao con người có xu hướng trì hoãn và cách khắc phục bằng Cú hích Nudge')">🧠 Tâm lý học trì hoãn</span>
     </div>
 
+    <!-- Functional Action Toolbar (Nút bấm chức năng trực quan cho cả Dev & Non-tech) -->
+    <div class="action-toolbar">
+      <button class="btn-term" onclick="openModeModal()" title="Đổi phong cách AI làm việc">
+        🎭 Đổi chế độ (/mode)
+      </button>
+      <button class="btn-term" onclick="openDashModal()" title="Xem tất cả tác phẩm trong output/">
+        📂 Dự án cũ (/dash)
+      </button>
+      <button class="btn-term" onclick="executeCommand('/new')" title="Khởi tạo thư mục tác phẩm mới">
+        ➕ Dự án mới (/new)
+      </button>
+      <button class="btn-term btn-term-warn" id="btn-toolbar-next" onclick="executeCommand('/next')" title="Duyệt để viết tiếp chương sau">
+        ▶️ Duyệt tiếp (/next)
+      </button>
+      <button class="btn-term" id="btn-toolbar-pause" onclick="togglePauseResume()" title="Tạm dừng hoặc tiếp tục">
+        ⏸️ Tạm dừng
+      </button>
+      <button class="btn-term" onclick="copyStreamContent()" title="Sao chép toàn bộ văn bản hiện tại">
+        📋 Sao chép
+      </button>
+      <button class="btn-term" onclick="executeCommand('/clear')" title="Xóa màn hình hiển thị">
+        🧹 Xóa màn hình (/clear)
+      </button>
+    </div>
+
+    <!-- Prompt Row with direct Submit button -->
+    <div class="prompt-row" onclick="focusPrompt()">
+      <span class="ps-prefix">PS D:\ainovel-cli&gt;</span>
+      <input type="text" id="term-input" class="terminal-input" placeholder="Nhập đề tài sáng tác hoặc gõ '/' để xem danh sách lệnh..." autocomplete="off" autofocus>
+      <button class="btn-submit-action" id="btn-submit-main" onclick="submitTerminalInput()">
+        🚀 Bắt đầu ➔
+      </button>
+    </div>
+
+    <!-- Hotkey Bar for Devs -->
     <div class="hotkey-bar">
       <span class="hk-item" onclick="focusPrompt()"><span class="hk-key">[Enter]</span> Gửi lệnh</span>
       <span>│</span>
@@ -645,9 +814,9 @@ Gõ đề tài sáng tác bên dưới và nhấn Enter để bắt đầu, ho�
       <span>│</span>
       <span class="hk-item" onclick="executeCommand('/next')"><span class="hk-key">[/next]</span> Duyệt tiếp</span>
       <span>│</span>
-      <span class="hk-item" onclick="executeCommand('/pause')"><span class="hk-key">[Ctrl+C]</span> Tạm dừng</span>
+      <span class="hk-item" onclick="togglePauseResume()"><span class="hk-key">[Ctrl+C]</span> Tạm dừng</span>
       <span>│</span>
-      <span style="color: #555;">[←/→] Chuyển cột</span>
+      <span style="color: #666;">[↑/↓] Lịch sử lệnh / Cuộn • [←/→] Đổi cột</span>
     </div>
   </div>
 
@@ -656,7 +825,7 @@ Gõ đề tài sáng tác bên dưới và nhấn Enter để bắt đầu, ho�
     <div class="tui-dialog">
       <div class="tui-dialog-header">
         <span>╭─── CHỌN CHẾ ĐỘ SÁNG TÁC (/mode) ───╮</span>
-        <span style="cursor: pointer;" onclick="closeModal('modal-mode')">✕</span>
+        <button class="btn-term" style="padding: 2px 8px;" onclick="closeModal('modal-mode')">✕ Đóng</button>
       </div>
       <div class="tui-dialog-body" id="mode-dialog-body">
         <div class="dialog-item selected" data-style="novel-manga" onclick="selectStyleMode('novel-manga')">
@@ -688,7 +857,7 @@ Gõ đề tài sáng tác bên dưới và nhấn Enter để bắt đầu, ho�
           </div>
         </div>
         <div style="font-size: 0.75rem; color: var(--term-dim); text-align: center; margin-top: 6px;">
-          Dùng phím ↑/↓ và Enter, hoặc gõ trực tiếp phím số 1-4
+          Bấm trực tiếp bằng chuột hoặc dùng phím số 1-4 / phím ↑↓ và Enter
         </div>
       </div>
     </div>
@@ -699,19 +868,19 @@ Gõ đề tài sáng tác bên dưới và nhấn Enter để bắt đầu, ho�
     <div class="tui-dialog" style="width: 680px;">
       <div class="tui-dialog-header">
         <span>╭─── DANH SÁCH TÁC PHẨM TRONG OUTPUT (/dash) ───╮</span>
-        <span style="cursor: pointer;" onclick="closeModal('modal-dash')">✕</span>
+        <button class="btn-term" style="padding: 2px 8px;" onclick="closeModal('modal-dash')">✕ Đóng</button>
       </div>
       <div class="tui-dialog-body" style="max-height: 400px; overflow-y: auto;" id="dash-project-list">
         <!-- Project items rendered here -->
       </div>
-      <div style="background: #111; padding: 6px 14px; font-size: 0.72rem; color: var(--term-dim); border-top: 1px solid #222;">
-        Dùng phím ↑/↓ để di chuyển, Enter để mở dự án, Esc để đóng
+      <div style="background: #111; padding: 8px 14px; font-size: 0.74rem; color: var(--term-dim); border-top: 1px solid #222; display: flex; justify-content: space-between;">
+        <span>Bấm vào tác phẩm để mở lại ngay</span>
+        <span>Phím: ↑/↓ để chọn, Enter để mở, Esc để đóng</span>
       </div>
     </div>
   </div>
 
   <script>
-    // Danh sách toàn bộ lệnh Slash Commands hỗ trợ trong TUI
     const SLASH_COMMANDS = [
       { name: '/mode', usage: '', desc: 'Chọn 1 trong 4 chế độ AI (/mode 1-4)', auto: true },
       { name: '/dash', usage: '', desc: 'Mở danh sách các tác phẩm trong output/ (/dash)', auto: true },
@@ -736,18 +905,15 @@ Gõ đề tài sáng tác bên dưới và nhấn Enter để bắt đầu, ho�
       showingLive: true
     };
 
-    // Keyboard Navigation States
     let focusedPanel = 1; // 0: Left, 1: Center, 2: Right
     let chapterCursor = 0;
     let modeCursor = 0;
     let dashCursor = 0;
 
-    // Palette States
     let paletteActive = false;
     let paletteFiltered = [];
     let paletteIndex = 0;
 
-    // Command History (Up/Down in Terminal prompt)
     let commandHistory = [];
     let historyIndex = -1;
 
@@ -761,13 +927,17 @@ Gõ đề tài sáng tác bên dưới và nhấn Enter để bắt đầu, ho�
       termInput.focus();
     }
 
-    // Set Focused Panel visually
     function setFocusPanel(idx) {
       focusedPanel = idx;
       for (let i = 0; i < 3; i++) {
         const p = document.getElementById(`panel-${i}`);
         if (p) p.classList.toggle('focused', i === idx);
       }
+    }
+
+    function fillSuggestion(text) {
+      termInput.value = text;
+      termInput.focus();
     }
 
     // Input changes: Handle "/" trigger and filtering
@@ -812,7 +982,6 @@ Gõ đề tài sáng tác bên dưới và nhấn Enter để bắt đầu, ho�
         paletteList.appendChild(div);
       });
 
-      // Ensure active item visible in scroll
       const activeEl = paletteList.children[paletteIndex];
       if (activeEl) {
         activeEl.scrollIntoView({ block: 'nearest' });
@@ -830,9 +999,18 @@ Gõ đề tài sáng tác bên dưới và nhấn Enter để bắt đầu, ho�
       }
     }
 
+    function submitTerminalInput() {
+      const text = termInput.value.trim();
+      if (!text) return;
+      commandHistory.push(text);
+      historyIndex = -1;
+      termInput.value = '';
+      hidePalette();
+      handleUserInput(text);
+    }
+
     // Keydown Listener on Terminal Input
     termInput.addEventListener('keydown', async (e) => {
-      // 1. If Autocomplete Palette is Active
       if (paletteActive) {
         if (e.key === 'ArrowDown') {
           e.preventDefault();
@@ -857,7 +1035,6 @@ Gõ đề tài sáng tác bên dưới và nhấn Enter để bắt đầu, ho�
         }
       }
 
-      // 2. Command History navigation with ArrowUp/ArrowDown when palette is closed
       if (e.key === 'ArrowUp') {
         if (commandHistory.length > 0) {
           e.preventDefault();
@@ -883,15 +1060,8 @@ Gõ đề tài sáng tác bên dưới và nhấn Enter để bắt đầu, ho�
         return;
       }
 
-      // 3. Enter key: Submit command or prompt
       if (e.key === 'Enter') {
-        const text = termInput.value.trim();
-        if (!text) return;
-        commandHistory.push(text);
-        historyIndex = -1;
-        termInput.value = '';
-        hidePalette();
-        await handleUserInput(text);
+        submitTerminalInput();
       }
     });
 
@@ -900,7 +1070,6 @@ Gõ đề tài sáng tác bên dưới và nhấn Enter để bắt đầu, ho�
       const modeModal = document.getElementById('modal-mode');
       const dashModal = document.getElementById('modal-dash');
 
-      // 1. In /mode Modal
       if (modeModal.classList.contains('open')) {
         const items = document.querySelectorAll('#mode-dialog-body .dialog-item');
         if (e.key === 'ArrowDown') {
@@ -922,7 +1091,6 @@ Gõ đề tài sáng tác bên dưới và nhấn Enter để bắt đầu, ho�
         return;
       }
 
-      // 2. In /dash Modal
       if (dashModal.classList.contains('open')) {
         const items = document.querySelectorAll('#dash-project-list .dialog-item');
         if (items.length > 0) {
@@ -943,7 +1111,6 @@ Gõ đề tài sáng tác bên dưới và nhấn Enter để bắt đầu, ho�
         return;
       }
 
-      // 3. Panel switching with LEFT / RIGHT (when not editing inside input or Alt+Arrow)
       if (document.activeElement !== termInput || e.altKey) {
         if (e.key === 'ArrowLeft') {
           e.preventDefault();
@@ -956,10 +1123,8 @@ Gõ đề tài sáng tác bên dưới và nhấn Enter để bắt đầu, ho�
         }
       }
 
-      // 4. Panel Scrolling & Selection with UP / DOWN (when input is not focused)
       if (document.activeElement !== termInput) {
         if (focusedPanel === 0) {
-          // Left Panel: Navigate chapters
           const chRows = document.querySelectorAll('.chapter-row');
           if (chRows.length > 0) {
             if (e.key === 'ArrowDown') {
@@ -976,7 +1141,6 @@ Gõ đề tài sáng tác bên dưới và nhấn Enter để bắt đầu, ho�
             }
           }
         } else if (focusedPanel === 1) {
-          // Center Panel: Scroll stream viewport
           const vp = document.getElementById('stream-viewport');
           if (e.key === 'ArrowDown') {
             e.preventDefault();
@@ -992,7 +1156,6 @@ Gõ đề tài sáng tác bên dưới và nhấn Enter để bắt đầu, ho�
             vp.scrollTop -= 300;
           }
         } else if (focusedPanel === 2) {
-          // Right Panel: Scroll events container
           const ec = document.getElementById('events-container');
           if (e.key === 'ArrowDown') {
             e.preventDefault();
@@ -1003,7 +1166,6 @@ Gõ đề tài sáng tác bên dưới và nhấn Enter để bắt đầu, ho�
           }
         }
 
-        // Typing "/" or any letter jumps focus immediately to prompt
         if (e.key === '/' || (e.key.length === 1 && !e.ctrlKey && !e.altKey && !e.metaKey)) {
           termInput.focus();
         }
@@ -1034,7 +1196,6 @@ Gõ đề tài sáng tác bên dưới và nhấn Enter để bắt đầu, ho�
       }
     }
 
-    // Handle User Terminal Input (Supports slash commands or prompt)
     async function handleUserInput(text) {
       if (text.startsWith('/')) {
         const parts = text.split(' ');
@@ -1069,7 +1230,7 @@ Gõ đề tài sáng tác bên dưới và nhấn Enter để bắt đầu, ho�
             document.getElementById('stream-text').innerText = '';
             break;
           case '/help':
-            alert("Các lệnh khả dụng:\n/mode - Đổi chế độ sáng tác\n/dash - Danh sách các outputs cũ\n/next - Duyệt viết chương tiếp\n/new - Tạo tác phẩm mới\n/pause - Tạm dừng\n/resume - Tiếp tục\n/clear - Xóa màn hình\nPhím tắt:\n[↑/↓] Cuộn hoặc chọn\n[←/→] Chuyển đổi giữa 3 cột");
+            alert("Các lệnh khả dụng:\n/mode - Đổi chế độ sáng tác\n/dash - Danh sách các outputs cũ\n/next - Duyệt viết chương tiếp\n/new - Tạo tác phẩm mới\n/pause - Tạm dừng\n/resume - Tiếp tục\n/clear - Xóa màn hình");
             break;
           default:
             alert("Lệnh không xác định: " + cmd + ". Gõ /help để xem danh sách lệnh.");
@@ -1078,7 +1239,6 @@ Gõ đề tài sáng tác bên dưới và nhấn Enter để bắt đầu, ho�
         return;
       }
 
-      // Normal text input
       const isRunning = cliState.snapshot && cliState.snapshot.IsRunning;
       if (isRunning) {
         addEventLog({ Category: 'USER', Summary: `Chỉ đạo người dùng: "${text}"`, Time: new Date() });
@@ -1099,10 +1259,20 @@ Gõ đề tài sáng tác bên dưới và nhấn Enter để bắt đầu, ho�
         await sendAction('resume');
       } else if (cmd === '/new') {
         await sendAction('new', { prompt: arg, style: cliState.style });
+      } else if (cmd === '/clear') {
+        document.getElementById('stream-text').innerText = '';
       }
     }
 
-    // Modal Control
+    async function togglePauseResume() {
+      const isRunning = cliState.snapshot && cliState.snapshot.IsRunning;
+      if (isRunning) {
+        await executeCommand('/pause');
+      } else {
+        await executeCommand('/resume');
+      }
+    }
+
     function openModeModal() {
       modeCursor = 0;
       document.getElementById('modal-mode').classList.add('open');
@@ -1119,7 +1289,6 @@ Gõ đề tài sáng tác bên dưới và nhấn Enter để bắt đầu, ho�
       termInput.focus();
     }
 
-    // Select Style Mode
     async function selectStyleMode(style) {
       closeModal('modal-mode');
       cliState.style = style;
@@ -1129,29 +1298,28 @@ Gõ đề tài sáng tác bên dưới và nhấn Enter để bắt đầu, ho�
 
     function updateStyleLabels(style) {
       const names = {
-        'vietnamese-history': '[⚔️ Lịch sử Việt Nam]',
-        'doodle-explainer': '[🦴 Video TikTok]',
-        'behavioral-psychology': '[🧠 Tâm lý học hành vi]',
-        'novel-manga': '[📖 Tiểu thuyết / Manga]'
+        'vietnamese-history': '⚔️ Lịch sử Việt Nam',
+        'doodle-explainer': '🦴 Video TikTok',
+        'behavioral-psychology': '🧠 Tâm lý học hành vi',
+        'novel-manga': '📖 Tiểu thuyết / Manga'
       };
-      document.getElementById('top-style').innerText = names[style] || `[🏷️ ${style}]`;
+      const text = names[style] || style;
+      document.getElementById('top-style').innerHTML = `<span>${text}</span> <span style="font-size: 0.65rem;">▾</span>`;
     }
 
-    // Copy stream text
     function copyStreamContent() {
       const text = document.getElementById('stream-text').innerText;
       navigator.clipboard.writeText(text).then(() => {
-        alert("Đã sao chép nội dung bản thảo!");
+        alert("Đã sao chép nội dung bản thảo vào khay nhớ tạm!");
       });
     }
 
     function toggleStreamMode() {
       cliState.showingLive = true;
-      document.getElementById('btn-stream-toggle').innerText = "Xem live";
+      document.getElementById('btn-stream-toggle').innerText = "🔴 Xem live";
       document.getElementById('stream-text').innerText = cliState.streamingText || "Đang chờ dữ liệu...";
     }
 
-    // Fetch Full Status
     async function fetchStatus() {
       try {
         const res = await fetch('/api/status');
@@ -1186,7 +1354,6 @@ Gõ đề tài sáng tác bên dưới và nhấn Enter để bắt đầu, ho�
       }
     }
 
-    // Load Chapters
     async function loadChapters() {
       try {
         const res = await fetch('/api/chapters');
@@ -1198,7 +1365,6 @@ Gõ đề tài sáng tác bên dưới và nhấn Enter để bắt đầu, ho�
       }
     }
 
-    // Render Chapters List in Left Panel
     function renderChapterList(chapters) {
       const container = document.getElementById('chapter-list-container');
       if (!chapters || chapters.length === 0) {
@@ -1223,11 +1389,10 @@ Gõ đề tài sáng tác bên dưới và nhấn Enter để bắt đầu, ho�
       });
     }
 
-    // Select and Read Chapter in Center Panel
     async function selectAndReadChapter(chNum) {
       cliState.selectedChapter = chNum;
       cliState.showingLive = false;
-      document.getElementById('btn-stream-toggle').innerText = "Về live stream";
+      document.getElementById('btn-stream-toggle').innerText = "📖 Xem chương " + chNum;
       renderChapterList(cliState.chapters);
 
       const chInfo = cliState.chapters.find(c => c.chapter === chNum);
@@ -1247,7 +1412,6 @@ Gõ đề tài sáng tác bên dưới và nhấn Enter để bắt đầu, ho�
       }
     }
 
-    // Render Projects Modal (/dash)
     function renderDashModalProjects(projects) {
       const container = document.getElementById('dash-project-list');
       if (!projects || projects.length === 0) {
@@ -1265,7 +1429,7 @@ Gõ đề tài sáng tác bên dưới và nhấn Enter để bắt đầu, ho�
           await sendAction('switch', { dir: p.full_path });
         };
         div.innerHTML = `
-          <span style="color: var(--term-yellow);">${p.is_current ? '⭐' : '•'}</span>
+          <span style="color: var(--term-yellow); font-size: 1.1rem;">${p.is_current ? '⭐' : '📁'}</span>
           <div style="flex: 1; min-width: 0;">
             <div style="font-weight: bold; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${p.title}</div>
             <div style="font-size: 0.74rem; color: var(--term-dim); display: flex; justify-content: space-between; margin-top: 2px;">
@@ -1278,7 +1442,6 @@ Gõ đề tài sáng tác bên dưới và nhấn Enter để bắt đầu, ho�
       });
     }
 
-    // Update UI from Snapshot
     function updateSnapshotUI(snap) {
       if (!snap) return;
 
@@ -1289,7 +1452,6 @@ Gõ đề tài sáng tác bên dưới và nhấn Enter để bắt đầu, ho�
         document.getElementById('top-model').innerText = snap.ModelName;
       }
 
-      // Badge & State
       const badge = document.getElementById('badge-status');
       const label = snap.StatusLabel || (snap.IsRunning ? 'RUNNING' : 'READY');
       badge.innerText = label;
@@ -1301,23 +1463,36 @@ Gõ đề tài sáng tác bên dưới và nhấn Enter để bắt đầu, ho�
 
       document.getElementById('val-runtime-state').innerText = snap.RuntimeState || 'Sẵn sàng';
       document.getElementById('val-phase').innerText = snap.Phase || 'Khởi tạo';
-      document.getElementById('panel-phase-badge').innerText = snap.Phase || 'Khởi tạo';
       document.getElementById('val-progress').innerText = `${snap.CompletedCount || 0} / ${snap.TotalChapters || 0} chương`;
       document.getElementById('val-words').innerText = (snap.TotalWordCount || 0).toLocaleString();
       document.getElementById('val-cost').innerText = snap.TotalCostUSD ? `$${snap.TotalCostUSD.toFixed(4)}` : '$0.0000';
 
-      // Review hold alert
       const reviewBox = document.getElementById('review-alert-box');
+      const btnToolbarNext = document.getElementById('btn-toolbar-next');
       if (snap.HasAdvanceHold || label === 'REVIEW') {
         reviewBox.style.display = 'flex';
+        btnToolbarNext.style.display = 'inline-flex';
+        btnToolbarNext.classList.add('btn-term-warn');
       } else {
         reviewBox.style.display = 'none';
+        if (!snap.IsRunning && snap.CompletedCount > 0 && label !== 'COMPLETE') {
+          btnToolbarNext.style.display = 'inline-flex';
+        }
+      }
+
+      const btnPause = document.getElementById('btn-toolbar-pause');
+      const btnSubmit = document.getElementById('btn-submit-main');
+      if (snap.IsRunning) {
+        btnPause.innerText = "⏸️ Tạm dừng";
+        btnSubmit.innerText = "💬 Gửi chỉ đạo ➔";
+      } else {
+        btnPause.innerText = "▶️ Tiếp tục";
+        btnSubmit.innerText = "🚀 Bắt đầu ➔";
       }
 
       document.getElementById('term-cursor').style.display = snap.IsRunning ? 'inline-block' : 'none';
     }
 
-    // Events Logging
     function renderEvents(events) {
       const container = document.getElementById('events-container');
       container.innerHTML = '';
@@ -1363,7 +1538,6 @@ Gõ đề tài sáng tác bên dưới và nhấn Enter để bắt đầu, ho�
       return text.replace(/[&<>"']/g, m => map[m]);
     }
 
-    // Send Action
     async function sendAction(action, extraData = {}) {
       try {
         const payload = Object.assign({ action: action }, extraData);
@@ -1383,7 +1557,6 @@ Gõ đề tài sáng tác bên dưới và nhấn Enter để bắt đầu, ho�
       }
     }
 
-    // SSE Realtime Stream
     function initSSE() {
       if (eventSource) eventSource.close();
       eventSource = new EventSource('/api/stream');
