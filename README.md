@@ -1,4 +1,6 @@
-# 🚀 ainovel-cli — Hệ Thống AI Đa Chế Độ & Xưởng Sáng Tác Tự Động Hóa
+<p align="center">
+  <img src="assets/aidoodle-cli-title.svg" alt="aidoodle-cli — Hệ Thống AI Đa Chế Độ &amp; Xưởng Sáng Tác Tự Động Hóa" width="100%">
+</p>
 
 <p align="center">
   <a href="https://github.com/vinh-gogo/aidoodle-cli/releases"><img src="https://img.shields.io/github/v/release/vinh-gogo/aidoodle-cli?style=for-the-badge&color=blue" alt="GitHub Release"></a>
@@ -19,7 +21,7 @@
   <br>
   <em>Giao diện modal chọn chế độ AI làm việc (/mode) với 4 phong cách chuyên biệt</em>
   <br><br>
-  <img src="scripts/demo_workflow.png" alt="Quy trình làm việc TUI ainovel-cli" width="850">
+  <img src="scripts/demo_workflow.png" alt="Quy trình làm việc TUI aidoodle-cli" width="850">
   <br>
   <em>Quy trình làm việc tương tác thời gian thực trong giao diện dòng lệnh TUI</em>
 </p>
@@ -169,9 +171,9 @@ CẦN KIỂM CHỨNG: Số liệu ước đoán về quân số cần đối chi
 
 Dành cho người dùng Windows muốn sử dụng ngay lập tức mà không cần cài đặt môi trường lập trình Go:
 
-1. Truy cập trang **[GitHub Releases](https://github.com/vinh-gogo/aidoodle-cli/releases)** để tải file **`ainovel-cli-windows-amd64.zip`**.
+1. Truy cập trang **[GitHub Releases](https://github.com/vinh-gogo/aidoodle-cli/releases)** để tải file **`aidoodle-cli-windows-amd64.zip`**.
 2. Giải nén file `.zip` vào bất kỳ thư mục nào trên máy tính.
-3. Click đúp chuột vào file **`Chay-AiNovel.bat`** để khởi chạy giao diện TUI ngay lập tức!
+3. Chạy trực tiếp **`aidoodle-cli.exe`** (hoặc click đúp file **`Chay-AiDoodle.bat`**) để khởi chạy giao diện TUI ngay lập tức!
 
 ---
 
@@ -187,22 +189,22 @@ git clone https://github.com/vinh-gogo/aidoodle-cli.git
 cd aidoodle-cli
 
 # 2. Biên dịch chương trình
-go build -o ainovel-cli.exe ./cmd/ainovel-cli   # Trên Windows
-# go build -o ainovel-cli ./cmd/ainovel-cli     # Trên Linux / macOS
+go build -o aidoodle-cli.exe ./cmd/ainovel-cli   # Trên Windows
+# go build -o aidoodle-cli ./cmd/ainovel-cli     # Trên Linux / macOS
 
 # 3. Khởi chạy giao diện TUI
-.\ainovel-cli.exe   # Hoặc ./ainovel-cli
+.\aidoodle-cli.exe   # Hoặc ./aidoodle-cli
 ```
 
 ---
 
-### 🌐 Cách 3: Chạy & Theo Dõi Trên Trình Duyệt Web (--web)
+### 🌐 Cách 3: Chạy & Theo Dõi Trên Trình Duyệt Web (web)
 
 Bạn muốn trải nghiệm trên trình duyệt Web (Desktop, Điện thoại, Máy tính bảng)?
 Khởi chạy chế độ Web Dashboard với:
 
 ```bash
-.\ainovel-cli.exe --web 8080
+.\aidoodle-cli.exe web 8080   # Hoặc .\aidoodle-cli.exe --web 8080
 ```
 
 Mở trình duyệt truy cập: **`http://localhost:8080`**
