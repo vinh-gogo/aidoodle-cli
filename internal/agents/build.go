@@ -184,6 +184,7 @@ func BuildWorkers(
 	architectTools := []agentcore.Tool{
 		contextTool,
 		tavilySearch,
+		tavilyCrawl,
 		tools.NewSaveBookTool(store),
 		tools.NewSaveFoundationTool(store),
 		tools.NewReviseOutlineTool(store),
