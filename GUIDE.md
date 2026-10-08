@@ -122,7 +122,7 @@ File cấu hình sẽ tự động được lưu an toàn tại `~/.ainovel/conf
 
 ### Cách 2: Thiết lập thủ công qua file cấu hình
 
-Bạn có thể tự tạo hoặc chỉnh sửa file `~/.ainovel/config.json` (toàn cục) hoặc tạo thư mục `.ainovel/config.json` ngay trong thư mục dự án.
+Bạn có thể chỉnh sửa file cấu hình dự án tại **`config/config.json`** (được ưu tiên hàng đầu khi chạy trong thư mục dự án), hoặc **`.ainovel/config.json`** (cục bộ dự án), hoặc **`~/.ainovel/config.json`** (toàn cục máy tính).
 
 Dưới đây là một số mẫu cấu hình chuẩn:
 
@@ -167,48 +167,66 @@ Dưới đây là một số mẫu cấu hình chuẩn:
 }
 ```
 
-#### Mẫu 3: Dùng Kaggle / Colab qua ngrok (Chạy model nguồn mở như Qwen-27B)
+#### Mẫu 3: Dùng Colab / Kaggle qua ngrok (Chạy model nguồn mở như Gemma-4-26B hoặc Qwen-27B)
 ```jsonc
 {
-  "provider": "kaggle-llama",
-  "model": "qwen-27b",
+  "provider": "colab-llama",
+  "model": "gemma-4-26b",
+  "reasoning_effort": "off",
   "providers": {
-    "kaggle-llama": {
+    "colab-llama": {
       "type": "openai",
-      "api_key": "dummy",
+      "api_key": "colab-key",
       "base_url": "https://<your-subdomain>.ngrok-free.dev/v1",
-      "stream_idle_timeout": "15m",
+      "models": [
+        {
+          "name": "gemma-4-26b",
+          "context_window": 65536
+        }
+      ],
       "extra": {
         "headers": {
           "ngrok-skip-browser-warning": "true"
         }
       },
-      "extra_body": {
-        "temperature": 0.7,
-        "top_p": 0.9,
-        "frequency_penalty": 0.3,
-        "presence_penalty": 0.2,
-        "repetition_penalty": 1.1
-      }
+      "stream_idle_timeout": "15m"
     }
   },
-  "style": "doodle-explainer"
+  "style": "doodle-explainer",
+  "tavily": {
+    "enabled": true,
+    "api_key": "tvly-dev-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "search_depth": "advanced",
+    "max_results": 5
+  }
 }
 ```
 > [!TIP]
-> **Khắc phục lỗi lặp từ trên Model mã nguồn mở**: Các mô hình như Qwen hay Llama khi chạy nội bộ có thể mắc bẫy lặp từ vô tận (`- true\n- true...`). Khai báo khối `extra_body` với `frequency_penalty: 0.3` và `repetition_penalty: 1.1` như mẫu trên sẽ triệt tiêu hoàn toàn lỗi này.
+> - **Ý nghĩa trường `"style"`**: Quy định chế độ sáng tác mặc định khi khởi động (`doodle-explainer`, `novel-manga`, `behavioral-psychology`, `vietnamese-history`). Bạn có thể đổi sang thể loại khác bất kỳ lúc nào bằng lệnh `/mode` trong TUI mà không cần sửa file config.
+> - **Khắc phục lỗi lặp từ trên Model mã nguồn mở**: Các mô hình như Qwen hay Llama khi chạy nội bộ nếu mắc bẫy lặp từ vô tận (`- true\n- true...`), bạn có thể bổ sung khối `extra_body` với `frequency_penalty: 0.3` và `repetition_penalty: 1.1` vào cấu hình provider.
 
 ---
 
 ### Thiết lập Tavily Search (Tra cứu thời sự & sử liệu)
 
-Hệ thống có cơ chế **tự động nạp file `.env`**. Bạn chỉ cần tạo một file tên là `.env` ngay tại thư mục `aidoodle-cli`:
+Hệ thống hỗ trợ **2 cách** thiết lập khóa Tavily:
 
-```env
-TAVILY_API_KEY=tvly-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-```
+1. **Cách 1: Khai báo trực tiếp trong `config/config.json`** (như mẫu 3 ở trên):
+   ```jsonc
+   "tavily": {
+     "enabled": true,
+     "api_key": "tvly-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "search_depth": "advanced",
+     "max_results": 5
+   }
+   ```
 
-Khi chạy, hệ thống sẽ tự động cấp công cụ `tavily_search` và `tavily_crawl` cho các tác tử Architect và Writer để tra cứu dữ liệu thực tế.
+2. **Cách 2: Qua file môi trường `.env`** (Hệ thống có cơ chế **tự động nạp file `.env`** ngay tại thư mục dự án):
+   ```env
+   TAVILY_API_KEY=tvly-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+   ```
+
+Khi chạy, hệ thống sẽ tự động cấp công cụ `tavily_search` và `tavily_crawl` cho các tác tử Architect và Writer để tra cứu dữ liệu thời sự, cơ sở khoa học và sử liệu thực tế.
 
 ---
 

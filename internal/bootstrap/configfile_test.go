@@ -99,6 +99,26 @@ func TestEffectiveConfigPathPrefersProject(t *testing.T) {
 	}
 }
 
+func TestEffectiveConfigPathPrefersConfigDir(t *testing.T) {
+	writeGlobal(t, validGlobal)
+
+	proj := t.TempDir()
+	t.Chdir(proj)
+	if err := os.MkdirAll("config", 0o755); err != nil {
+		t.Fatalf("mkdir config: %v", err)
+	}
+	if err := os.WriteFile(filepath.Join("config", "config.json"), []byte(validGlobal), 0o644); err != nil {
+		t.Fatalf("write config: %v", err)
+	}
+	wantAbs, err := filepath.Abs(filepath.Join("config", "config.json"))
+	if err != nil {
+		t.Fatalf("abs: %v", err)
+	}
+	if got := EffectiveConfigPath(); got != wantAbs {
+		t.Fatalf("有 config/config.json 应优先指向它，got %q want %q", got, wantAbs)
+	}
+}
+
 // 文件不存在是正常情况（便携/首次），不能报错。
 func TestLoadConfig_MissingFilesNoError(t *testing.T) {
 	home := t.TempDir()
