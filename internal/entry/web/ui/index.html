@@ -145,6 +145,11 @@
       display: flex;
       flex-direction: column;
       overflow: hidden;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .tui-panel.focused {
+      border-color: var(--term-blue);
+      box-shadow: 0 0 10px rgba(88, 166, 255, 0.25);
     }
     .tui-panel-header {
       padding: 6px 12px;
@@ -158,6 +163,10 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+    }
+    .tui-panel.focused .tui-panel-header {
+      background: #1f2735;
+      color: var(--term-blue);
     }
     .tui-panel-content {
       flex: 1;
@@ -199,6 +208,11 @@
       transition: background 0.15s;
     }
     .chapter-row:hover { background: #222; color: #fff; }
+    .chapter-row.cursor-selected {
+      background: #1f2b38;
+      border: 1px solid #388bfd;
+      color: #fff;
+    }
     .chapter-row.active { background: #1c2b3d; color: var(--term-blue); font-weight: bold; }
     .chapter-title-text { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; }
 
@@ -283,6 +297,7 @@
       flex-direction: column;
       gap: 6px;
       flex-shrink: 0;
+      position: relative;
     }
     .prompt-row {
       display: flex;
@@ -305,6 +320,73 @@
       font-size: 0.92rem;
     }
     .terminal-input::placeholder { color: #555555; }
+
+    /* Autocomplete Command Palette Dropup */
+    .command-palette {
+      position: absolute;
+      bottom: 66px;
+      left: 16px;
+      right: 16px;
+      max-width: 680px;
+      background: #161b22;
+      border: 1px solid var(--term-blue);
+      border-radius: 6px;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.6);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      z-index: 50;
+    }
+    .palette-header {
+      background: #21262d;
+      padding: 6px 12px;
+      font-size: 0.76rem;
+      font-weight: bold;
+      color: var(--term-blue);
+      border-bottom: 1px solid #30363d;
+    }
+    .palette-list {
+      max-height: 240px;
+      overflow-y: auto;
+      padding: 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .palette-item {
+      padding: 6px 10px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.84rem;
+      cursor: pointer;
+    }
+    .palette-item:hover { background: #262c36; }
+    .palette-item.selected {
+      background: #1f3552;
+      border-left: 3px solid var(--term-blue);
+      color: #fff;
+    }
+    .palette-cmd {
+      color: var(--term-cyan);
+      font-weight: bold;
+      width: 90px;
+    }
+    .palette-desc {
+      color: var(--term-text);
+      flex: 1;
+      font-size: 0.8rem;
+    }
+    .palette-footer {
+      background: #111;
+      padding: 4px 12px;
+      font-size: 0.7rem;
+      color: var(--term-dim);
+      border-top: 1px solid #222;
+      display: flex;
+      justify-content: space-between;
+    }
 
     /* Hotkey Bar */
     .hotkey-bar {
@@ -367,7 +449,7 @@
       padding: 16px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 8px;
       font-size: 0.85rem;
     }
     .dialog-item {
@@ -443,8 +525,8 @@
   <!-- Main Terminal 3-Column Panels -->
   <div class="tui-body">
 
-    <!-- Panel 1: Sách & Tiến độ (Left) -->
-    <div class="tui-panel">
+    <!-- Panel 1: Sách & Tiến độ (Left) [Focus ID: 0] -->
+    <div class="tui-panel" id="panel-0" onclick="setFocusPanel(0)">
       <div class="tui-panel-header">
         <span>╭─ SÁCH & TIẾN ĐỘ ─╮</span>
         <span id="panel-phase-badge" style="color: var(--term-yellow);">Khởi tạo</span>
@@ -475,7 +557,7 @@
           <span class="kv-val" id="val-dir" style="font-size: 0.74rem; color: #888;">output\novel</span>
         </div>
 
-        <div class="section-divider">MỤC LỤC CÁC CHƯƠNG</div>
+        <div class="section-divider">MỤC LỤC CÁC CHƯƠNG [↑/↓ để duyệt]</div>
         <div id="chapter-list-container" style="display: flex; flex-direction: column; gap: 3px;">
           <div style="color: var(--term-dim); font-size: 0.78rem; text-align: center; padding: 12px 0;">
             Chưa có chương nào được tạo.
@@ -484,8 +566,8 @@
       </div>
     </div>
 
-    <!-- Panel 2: Bản thảo trực tiếp (Center) -->
-    <div class="tui-panel">
+    <!-- Panel 2: Bản thảo trực tiếp (Center) [Focus ID: 1] -->
+    <div class="tui-panel" id="panel-1" onclick="setFocusPanel(1)">
       <div class="tui-panel-header">
         <span>╭─ BẢN THẢO TRỰC TIẾP (STREAM) ─╮</span>
         <div style="display: flex; gap: 8px;">
@@ -506,7 +588,7 @@
         <!-- Realtime Streaming Output Viewport -->
         <div class="stream-viewport" id="stream-viewport">
           <span id="stream-text">Chào mừng bạn đến với aiNovel-CLI (Web Terminal Mode).
-Gõ đề tài sáng tác bên dưới và nhấn Enter để bắt đầu, hoặc dùng các lệnh:
+Gõ đề tài sáng tác bên dưới và nhấn Enter để bắt đầu, hoặc gõ dấu "/" để mở bảng lệnh:
   /mode  - Chọn 1 trong 4 chế độ làm việc AI chuyên biệt
   /dash  - Xem và chuyển đổi các tác phẩm đã tạo trong output/
   /next  - Duyệt viết chương tiếp theo (chế độ review)
@@ -517,8 +599,8 @@ Gõ đề tài sáng tác bên dưới và nhấn Enter để bắt đầu, ho�
       </div>
     </div>
 
-    <!-- Panel 3: Luồng sự kiện & Công cụ (Right) -->
-    <div class="tui-panel">
+    <!-- Panel 3: Luồng sự kiện & Công cụ (Right) [Focus ID: 2] -->
+    <div class="tui-panel" id="panel-2" onclick="setFocusPanel(2)">
       <div class="tui-panel-header">
         <span>╭─ LUỒNG SỰ KIỆN & CÔNG CỤ ─╮</span>
         <span id="event-count-badge" style="color: var(--term-cyan);">0 logs</span>
@@ -532,13 +614,28 @@ Gõ đề tài sáng tác bên dưới và nhấn Enter để bắt đầu, ho�
 
   <!-- Bottom Terminal Command & Keybindings Bar -->
   <div class="tui-bottom-bar">
-    <div class="prompt-row">
+    
+    <!-- Slash Command Palette Dropup -->
+    <div class="command-palette" id="command-palette" style="display: none;">
+      <div class="palette-header">
+        <span>╭─ DANH SÁCH LỆNH (COMMAND PALETTE) ─────────────────────╮</span>
+      </div>
+      <div class="palette-list" id="palette-list">
+        <!-- Palette items rendered here -->
+      </div>
+      <div class="palette-footer">
+        <span>[↑/↓] Điều hướng  •  [Tab/Enter] Chọn  •  [Esc] Đóng</span>
+        <span id="palette-count-text">0 lệnh</span>
+      </div>
+    </div>
+
+    <div class="prompt-row" onclick="focusPrompt()">
       <span class="ps-prefix">PS D:\ainovel-cli&gt;</span>
-      <input type="text" id="term-input" class="terminal-input" placeholder="Nhập đề tài hoặc lệnh (/mode, /dash, /next, /new, /pause, /resume)..." autocomplete="off" autofocus>
+      <input type="text" id="term-input" class="terminal-input" placeholder="Nhập đề tài hoặc gõ '/' để xem danh sách lệnh (/mode, /dash, /next, /new)..." autocomplete="off" autofocus>
     </div>
 
     <div class="hotkey-bar">
-      <span class="hk-item" onclick="document.getElementById('term-input').focus()"><span class="hk-key">[Enter]</span> Gửi lệnh</span>
+      <span class="hk-item" onclick="focusPrompt()"><span class="hk-key">[Enter]</span> Gửi lệnh</span>
       <span>│</span>
       <span class="hk-item" onclick="openModeModal()"><span class="hk-key">[/mode]</span> Đổi chế độ</span>
       <span>│</span>
@@ -549,6 +646,8 @@ Gõ đề tài sáng tác bên dưới và nhấn Enter để bắt đầu, ho�
       <span class="hk-item" onclick="executeCommand('/next')"><span class="hk-key">[/next]</span> Duyệt tiếp</span>
       <span>│</span>
       <span class="hk-item" onclick="executeCommand('/pause')"><span class="hk-key">[Ctrl+C]</span> Tạm dừng</span>
+      <span>│</span>
+      <span style="color: #555;">[←/→] Chuyển cột</span>
     </div>
   </div>
 
@@ -559,29 +658,29 @@ Gõ đề tài sáng tác bên dưới và nhấn Enter để bắt đầu, ho�
         <span>╭─── CHỌN CHẾ ĐỘ SÁNG TÁC (/mode) ───╮</span>
         <span style="cursor: pointer;" onclick="closeModal('modal-mode')">✕</span>
       </div>
-      <div class="tui-dialog-body">
-        <div class="dialog-item" onclick="selectStyleMode('novel-manga')">
+      <div class="tui-dialog-body" id="mode-dialog-body">
+        <div class="dialog-item selected" data-style="novel-manga" onclick="selectStyleMode('novel-manga')">
           <span class="dialog-num">[1]</span>
           <div>
             <strong>📖 Tiểu thuyết / Manga (novel-manga)</strong>
             <div style="color: var(--term-dim); font-size: 0.76rem;">Cốt truyện trường thiên, nhân vật đa tầng, ma pháp chặt chẽ</div>
           </div>
         </div>
-        <div class="dialog-item" onclick="selectStyleMode('doodle-explainer')">
+        <div class="dialog-item" data-style="doodle-explainer" onclick="selectStyleMode('doodle-explainer')">
           <span class="dialog-num">[2]</span>
           <div>
             <strong>🦴 Doodle TikTok Video (doodle-explainer)</strong>
             <div style="color: var(--term-dim); font-size: 0.76rem;">Kịch bản người que đồ đá 5+ phút viral, nhịp 1:1 Thoại - Hình</div>
           </div>
         </div>
-        <div class="dialog-item" onclick="selectStyleMode('behavioral-psychology')">
+        <div class="dialog-item" data-style="behavioral-psychology" onclick="selectStyleMode('behavioral-psychology')">
           <span class="dialog-num">[3]</span>
           <div>
             <strong>🧠 Tâm lý học hành vi (behavioral-psychology)</strong>
             <div style="color: var(--term-dim); font-size: 0.76rem;">Chuẩn 8 bước khoa học, giải mã tâm lý, Cú hích Nudge</div>
           </div>
         </div>
-        <div class="dialog-item" onclick="selectStyleMode('vietnamese-history')">
+        <div class="dialog-item" data-style="vietnamese-history" onclick="selectStyleMode('vietnamese-history')">
           <span class="dialog-num">[4]</span>
           <div>
             <strong>⚔️ Lịch sử Việt Nam (vietnamese-history)</strong>
@@ -589,7 +688,7 @@ Gõ đề tài sáng tác bên dưới và nhấn Enter để bắt đầu, ho�
           </div>
         </div>
         <div style="font-size: 0.75rem; color: var(--term-dim); text-align: center; margin-top: 6px;">
-          Gõ phím 1-4 hoặc nhấp chuột để chọn chế độ
+          Dùng phím ↑/↓ và Enter, hoặc gõ trực tiếp phím số 1-4
         </div>
       </div>
     </div>
@@ -605,10 +704,26 @@ Gõ đề tài sáng tác bên dưới và nhấn Enter để bắt đầu, ho�
       <div class="tui-dialog-body" style="max-height: 400px; overflow-y: auto;" id="dash-project-list">
         <!-- Project items rendered here -->
       </div>
+      <div style="background: #111; padding: 6px 14px; font-size: 0.72rem; color: var(--term-dim); border-top: 1px solid #222;">
+        Dùng phím ↑/↓ để di chuyển, Enter để mở dự án, Esc để đóng
+      </div>
     </div>
   </div>
 
   <script>
+    // Danh sách toàn bộ lệnh Slash Commands hỗ trợ trong TUI
+    const SLASH_COMMANDS = [
+      { name: '/mode', usage: '', desc: 'Chọn 1 trong 4 chế độ AI (/mode 1-4)', auto: true },
+      { name: '/dash', usage: '', desc: 'Mở danh sách các tác phẩm trong output/ (/dash)', auto: true },
+      { name: '/next', usage: '', desc: 'Duyệt để tiến hành viết một chương mới (/next)', auto: true },
+      { name: '/new', usage: '[prompt]', desc: 'Tạo dự án mới trong thư mục output riêng (/new)', auto: false },
+      { name: '/review', usage: 'on|off', desc: 'Bật/tắt chế độ duyệt từng chương (/review on|off)', auto: false },
+      { name: '/pause', usage: '', desc: 'Tạm dừng quá trình sáng tác', auto: true },
+      { name: '/resume', usage: '', desc: 'Tiếp tục sáng tác từ trạng thái tạm dừng', auto: true },
+      { name: '/clear', usage: '', desc: 'Xóa màn hình hiển thị trực tiếp', auto: true },
+      { name: '/help', usage: '', desc: 'Xem danh sách và mô tả các lệnh TUI', auto: true }
+    ];
+
     let cliState = {
       dir: "",
       style: "vietnamese-history",
@@ -621,18 +736,303 @@ Gõ đề tài sáng tác bên dưới và nhấn Enter để bắt đầu, ho�
       showingLive: true
     };
 
+    // Keyboard Navigation States
+    let focusedPanel = 1; // 0: Left, 1: Center, 2: Right
+    let chapterCursor = 0;
+    let modeCursor = 0;
+    let dashCursor = 0;
+
+    // Palette States
+    let paletteActive = false;
+    let paletteFiltered = [];
+    let paletteIndex = 0;
+
+    // Command History (Up/Down in Terminal prompt)
+    let commandHistory = [];
+    let historyIndex = -1;
+
     let eventSource = null;
 
-    // Terminal Input keydown handler
     const termInput = document.getElementById('term-input');
-    termInput.addEventListener('keydown', (e) => {
+    const paletteBox = document.getElementById('command-palette');
+    const paletteList = document.getElementById('palette-list');
+
+    function focusPrompt() {
+      termInput.focus();
+    }
+
+    // Set Focused Panel visually
+    function setFocusPanel(idx) {
+      focusedPanel = idx;
+      for (let i = 0; i < 3; i++) {
+        const p = document.getElementById(`panel-${i}`);
+        if (p) p.classList.toggle('focused', i === idx);
+      }
+    }
+
+    // Input changes: Handle "/" trigger and filtering
+    termInput.addEventListener('input', () => {
+      const val = termInput.value;
+      if (val.startsWith('/')) {
+        const q = val.toLowerCase().trim();
+        paletteFiltered = SLASH_COMMANDS.filter(cmd => {
+          return cmd.name.toLowerCase().startsWith(q) || cmd.desc.toLowerCase().includes(q.substring(1));
+        });
+        if (paletteFiltered.length > 0) {
+          paletteActive = true;
+          paletteIndex = 0;
+          renderPalette();
+          paletteBox.style.display = 'flex';
+        } else {
+          hidePalette();
+        }
+      } else {
+        hidePalette();
+      }
+    });
+
+    function hidePalette() {
+      paletteActive = false;
+      paletteBox.style.display = 'none';
+    }
+
+    function renderPalette() {
+      paletteList.innerHTML = '';
+      document.getElementById('palette-count-text').innerText = `${paletteFiltered.length} lệnh`;
+
+      paletteFiltered.forEach((cmd, i) => {
+        const div = document.createElement('div');
+        div.className = `palette-item ${i === paletteIndex ? 'selected' : ''}`;
+        div.onclick = () => selectPaletteItem(cmd);
+        div.innerHTML = `
+          <span style="color: var(--term-yellow); width: 14px;">${i === paletteIndex ? '>' : ' '}</span>
+          <span class="palette-cmd">${cmd.name}</span>
+          <span class="palette-desc">${cmd.desc}</span>
+        `;
+        paletteList.appendChild(div);
+      });
+
+      // Ensure active item visible in scroll
+      const activeEl = paletteList.children[paletteIndex];
+      if (activeEl) {
+        activeEl.scrollIntoView({ block: 'nearest' });
+      }
+    }
+
+    async function selectPaletteItem(cmd) {
+      hidePalette();
+      if (cmd.auto) {
+        termInput.value = '';
+        await handleUserInput(cmd.name);
+      } else {
+        termInput.value = cmd.name + ' ';
+        termInput.focus();
+      }
+    }
+
+    // Keydown Listener on Terminal Input
+    termInput.addEventListener('keydown', async (e) => {
+      // 1. If Autocomplete Palette is Active
+      if (paletteActive) {
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          paletteIndex = (paletteIndex + 1) % paletteFiltered.length;
+          renderPalette();
+          return;
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          paletteIndex = (paletteIndex - 1 + paletteFiltered.length) % paletteFiltered.length;
+          renderPalette();
+          return;
+        } else if (e.key === 'Enter' || e.key === 'Tab') {
+          e.preventDefault();
+          if (paletteFiltered[paletteIndex]) {
+            selectPaletteItem(paletteFiltered[paletteIndex]);
+          }
+          return;
+        } else if (e.key === 'Escape') {
+          e.preventDefault();
+          hidePalette();
+          return;
+        }
+      }
+
+      // 2. Command History navigation with ArrowUp/ArrowDown when palette is closed
+      if (e.key === 'ArrowUp') {
+        if (commandHistory.length > 0) {
+          e.preventDefault();
+          if (historyIndex === -1) {
+            historyIndex = commandHistory.length - 1;
+          } else if (historyIndex > 0) {
+            historyIndex--;
+          }
+          termInput.value = commandHistory[historyIndex] || '';
+        }
+        return;
+      } else if (e.key === 'ArrowDown') {
+        if (historyIndex !== -1) {
+          e.preventDefault();
+          if (historyIndex < commandHistory.length - 1) {
+            historyIndex++;
+            termInput.value = commandHistory[historyIndex] || '';
+          } else {
+            historyIndex = -1;
+            termInput.value = '';
+          }
+        }
+        return;
+      }
+
+      // 3. Enter key: Submit command or prompt
       if (e.key === 'Enter') {
         const text = termInput.value.trim();
         if (!text) return;
+        commandHistory.push(text);
+        historyIndex = -1;
         termInput.value = '';
-        handleUserInput(text);
+        hidePalette();
+        await handleUserInput(text);
       }
     });
+
+    // Global Key Listener for UP/DOWN/LEFT/RIGHT and Modal interactions
+    window.addEventListener('keydown', async (e) => {
+      const modeModal = document.getElementById('modal-mode');
+      const dashModal = document.getElementById('modal-dash');
+
+      // 1. In /mode Modal
+      if (modeModal.classList.contains('open')) {
+        const items = document.querySelectorAll('#mode-dialog-body .dialog-item');
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          modeCursor = (modeCursor + 1) % items.length;
+          highlightModeCursor(items);
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          modeCursor = (modeCursor - 1 + items.length) % items.length;
+          highlightModeCursor(items);
+        } else if (e.key === 'Enter') {
+          e.preventDefault();
+          if (items[modeCursor]) items[modeCursor].click();
+        } else if (e.key === '1') selectStyleMode('novel-manga');
+        else if (e.key === '2') selectStyleMode('doodle-explainer');
+        else if (e.key === '3') selectStyleMode('behavioral-psychology');
+        else if (e.key === '4') selectStyleMode('vietnamese-history');
+        else if (e.key === 'Escape') closeModal('modal-mode');
+        return;
+      }
+
+      // 2. In /dash Modal
+      if (dashModal.classList.contains('open')) {
+        const items = document.querySelectorAll('#dash-project-list .dialog-item');
+        if (items.length > 0) {
+          if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            dashCursor = (dashCursor + 1) % items.length;
+            highlightDashCursor(items);
+          } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            dashCursor = (dashCursor - 1 + items.length) % items.length;
+            highlightDashCursor(items);
+          } else if (e.key === 'Enter') {
+            e.preventDefault();
+            if (items[dashCursor]) items[dashCursor].click();
+          }
+        }
+        if (e.key === 'Escape') closeModal('modal-dash');
+        return;
+      }
+
+      // 3. Panel switching with LEFT / RIGHT (when not editing inside input or Alt+Arrow)
+      if (document.activeElement !== termInput || e.altKey) {
+        if (e.key === 'ArrowLeft') {
+          e.preventDefault();
+          setFocusPanel((focusedPanel - 1 + 3) % 3);
+          return;
+        } else if (e.key === 'ArrowRight') {
+          e.preventDefault();
+          setFocusPanel((focusedPanel + 1) % 3);
+          return;
+        }
+      }
+
+      // 4. Panel Scrolling & Selection with UP / DOWN (when input is not focused)
+      if (document.activeElement !== termInput) {
+        if (focusedPanel === 0) {
+          // Left Panel: Navigate chapters
+          const chRows = document.querySelectorAll('.chapter-row');
+          if (chRows.length > 0) {
+            if (e.key === 'ArrowDown') {
+              e.preventDefault();
+              chapterCursor = (chapterCursor + 1) % chRows.length;
+              highlightChapterCursor(chRows);
+            } else if (e.key === 'ArrowUp') {
+              e.preventDefault();
+              chapterCursor = (chapterCursor - 1 + chRows.length) % chRows.length;
+              highlightChapterCursor(chRows);
+            } else if (e.key === 'Enter') {
+              e.preventDefault();
+              if (chRows[chapterCursor]) chRows[chapterCursor].click();
+            }
+          }
+        } else if (focusedPanel === 1) {
+          // Center Panel: Scroll stream viewport
+          const vp = document.getElementById('stream-viewport');
+          if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            vp.scrollTop += 60;
+          } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            vp.scrollTop -= 60;
+          } else if (e.key === 'PageDown') {
+            e.preventDefault();
+            vp.scrollTop += 300;
+          } else if (e.key === 'PageUp') {
+            e.preventDefault();
+            vp.scrollTop -= 300;
+          }
+        } else if (focusedPanel === 2) {
+          // Right Panel: Scroll events container
+          const ec = document.getElementById('events-container');
+          if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            ec.scrollTop += 60;
+          } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            ec.scrollTop -= 60;
+          }
+        }
+
+        // Typing "/" or any letter jumps focus immediately to prompt
+        if (e.key === '/' || (e.key.length === 1 && !e.ctrlKey && !e.altKey && !e.metaKey)) {
+          termInput.focus();
+        }
+      }
+    });
+
+    function highlightModeCursor(items) {
+      items.forEach((it, idx) => {
+        it.classList.toggle('selected', idx === modeCursor);
+      });
+    }
+
+    function highlightDashCursor(items) {
+      items.forEach((it, idx) => {
+        it.classList.toggle('selected', idx === dashCursor);
+      });
+      if (items[dashCursor]) {
+        items[dashCursor].scrollIntoView({ block: 'nearest' });
+      }
+    }
+
+    function highlightChapterCursor(rows) {
+      rows.forEach((r, idx) => {
+        r.classList.toggle('cursor-selected', idx === chapterCursor);
+      });
+      if (rows[chapterCursor]) {
+        rows[chapterCursor].scrollIntoView({ block: 'nearest' });
+      }
+    }
 
     // Handle User Terminal Input (Supports slash commands or prompt)
     async function handleUserInput(text) {
@@ -669,7 +1069,7 @@ Gõ đề tài sáng tác bên dưới và nhấn Enter để bắt đầu, ho�
             document.getElementById('stream-text').innerText = '';
             break;
           case '/help':
-            alert("Các lệnh khả dụng:\n/mode - Đổi chế độ sáng tác\n/dash - Danh sách các outputs cũ\n/next - Duyệt viết chương tiếp\n/new - Tạo tác phẩm mới\n/pause - Tạm dừng\n/resume - Tiếp tục\n/clear - Xóa màn hình");
+            alert("Các lệnh khả dụng:\n/mode - Đổi chế độ sáng tác\n/dash - Danh sách các outputs cũ\n/next - Duyệt viết chương tiếp\n/new - Tạo tác phẩm mới\n/pause - Tạm dừng\n/resume - Tiếp tục\n/clear - Xóa màn hình\nPhím tắt:\n[↑/↓] Cuộn hoặc chọn\n[←/→] Chuyển đổi giữa 3 cột");
             break;
           default:
             alert("Lệnh không xác định: " + cmd + ". Gõ /help để xem danh sách lệnh.");
@@ -681,11 +1081,9 @@ Gõ đề tài sáng tác bên dưới và nhấn Enter để bắt đầu, ho�
       // Normal text input
       const isRunning = cliState.snapshot && cliState.snapshot.IsRunning;
       if (isRunning) {
-        // Send Steer
         addEventLog({ Category: 'USER', Summary: `Chỉ đạo người dùng: "${text}"`, Time: new Date() });
         await sendAction('steer', { message: text });
       } else {
-        // Start Generation
         document.getElementById('stream-text').innerText = `[Bắt đầu sáng tác đề tài]: ${text}\nĐang khởi tạo Agent và nạp tài nguyên phong cách [${cliState.style}]...\n\n`;
         cliState.streamingText = '';
         await sendAction('start', { prompt: text, style: cliState.style });
@@ -705,12 +1103,21 @@ Gõ đề tài sáng tác bên dưới và nhấn Enter để bắt đầu, ho�
     }
 
     // Modal Control
-    function openModeModal() { document.getElementById('modal-mode').classList.add('open'); }
+    function openModeModal() {
+      modeCursor = 0;
+      document.getElementById('modal-mode').classList.add('open');
+      const items = document.querySelectorAll('#mode-dialog-body .dialog-item');
+      highlightModeCursor(items);
+    }
     function openDashModal() {
+      dashCursor = 0;
       renderDashModalProjects(cliState.projects);
       document.getElementById('modal-dash').classList.add('open');
     }
-    function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('open');
+      termInput.focus();
+    }
 
     // Select Style Mode
     async function selectStyleMode(style) {
@@ -729,20 +1136,6 @@ Gõ đề tài sáng tác bên dưới và nhấn Enter để bắt đầu, ho�
       };
       document.getElementById('top-style').innerText = names[style] || `[🏷️ ${style}]`;
     }
-
-    // Global Key Listener for modal shortcuts (1, 2, 3, 4)
-    window.addEventListener('keydown', (e) => {
-      const modeModal = document.getElementById('modal-mode');
-      if (modeModal.classList.contains('open')) {
-        if (e.key === '1') selectStyleMode('novel-manga');
-        else if (e.key === '2') selectStyleMode('doodle-explainer');
-        else if (e.key === '3') selectStyleMode('behavioral-psychology');
-        else if (e.key === '4') selectStyleMode('vietnamese-history');
-        else if (e.key === 'Escape') closeModal('modal-mode');
-      } else if (document.getElementById('modal-dash').classList.contains('open')) {
-        if (e.key === 'Escape') closeModal('modal-dash');
-      }
-    });
 
     // Copy stream text
     function copyStreamContent() {
@@ -814,10 +1207,13 @@ Gõ đề tài sáng tác bên dưới và nhấn Enter để bắt đầu, ho�
       }
 
       container.innerHTML = '';
-      chapters.forEach(ch => {
+      chapters.forEach((ch, idx) => {
         const div = document.createElement('div');
-        div.className = `chapter-row ${cliState.selectedChapter === ch.chapter ? 'active' : ''}`;
-        div.onclick = () => selectAndReadChapter(ch.chapter);
+        div.className = `chapter-row ${cliState.selectedChapter === ch.chapter ? 'active' : ''} ${idx === chapterCursor ? 'cursor-selected' : ''}`;
+        div.onclick = () => {
+          chapterCursor = idx;
+          selectAndReadChapter(ch.chapter);
+        };
         div.innerHTML = `
           <span style="color: var(--term-blue); font-weight: bold;">[${ch.chapter < 10 ? '0' + ch.chapter : ch.chapter}]</span>
           <span class="chapter-title-text" title="${ch.title}">${ch.title}</span>
@@ -860,10 +1256,11 @@ Gõ đề tài sáng tác bên dưới và nhấn Enter để bắt đầu, ho�
       }
 
       container.innerHTML = '';
-      projects.forEach(p => {
+      projects.forEach((p, idx) => {
         const div = document.createElement('div');
-        div.className = `dialog-item ${p.is_current ? 'selected' : ''}`;
+        div.className = `dialog-item ${p.is_current ? 'selected' : ''} ${idx === dashCursor ? 'selected' : ''}`;
         div.onclick = async () => {
+          dashCursor = idx;
           closeModal('modal-dash');
           await sendAction('switch', { dir: p.full_path });
         };
@@ -1029,6 +1426,7 @@ Gõ đề tài sáng tác bên dưới và nhấn Enter để bắt đầu, ho�
     }
 
     window.addEventListener('DOMContentLoaded', () => {
+      setFocusPanel(1);
       fetchStatus();
       initSSE();
       setInterval(fetchStatus, 10000);
