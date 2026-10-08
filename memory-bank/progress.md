@@ -22,9 +22,11 @@ _Last updated: 2026-10-08 (Branches `doodle-explainer` & `main`: Web Dashboard, 
   - Tạo tài liệu Microsoft Word chuẩn OpenXML (.docx) không phụ thuộc thư viện thứ 3.
   - Chuẩn định dạng sách xuất bản: Trang tiêu đề, ngắt trang giữa các chương, thụt đầu dòng 0.5 inch, Times New Roman 13pt.
   - Tích hợp cờ `--word` / format `word` cho CLI, TUI (`/export --word`) và Web UI.
-- [x] **Khắc Phục Toàn Diện Lỗi Treo / Load Mãi Khi Xuất Word Trên Web**:
+- [x] **Khắc Phục Toàn Diện Lỗi Treo / Phản Hồi Khi Xuất Word Trên Web**:
   - Sửa lỗi crash Nil Pointer Panic trong `SwitchProject` khi chuyển sang dự án đã hoàn thành (`h == nil`).
-  - Chuyển đổi phương thức download từ navigation thẻ `<a>` sang `fetch()` blob ngầm, chống tab bị xoay tròn và hiển thị trạng thái `⏳ Đang xuất Word...`.
+  - Phản hồi xác nhận thành công rõ ràng: Web UI nhận JSON kết quả (`ok: true`, `filename`, `path`, `chapters`, `bytes`) và bật `alert(...)` thông báo chi tiết tức thì.
+  - Tự động kích hoạt tải tệp trực tiếp qua iframe ẩn + link dự phòng, chống 100% việc trình duyệt Chrome/Edge âm thầm chặn download tự động sau tác vụ bất đồng bộ.
+  - Loại bỏ hoàn toàn tình trạng tab trình duyệt bị xoay/load mãi không dừng và hiển thị trạng thái nút `⏳ Đang xuất Word...`.
   - Chuẩn hóa header `Content-Disposition` theo RFC 6266 / RFC 5987 hỗ trợ tiếng Việt có dấu.
   - Bổ sung fallback tự động tìm kịch bản chương trong `*-video/scripts/` và `drafts/`.
   - Tự động nạp snapshot dự phòng từ `meta/` khi host rỗng để dashboard luôn hiển thị đúng thông tin sách đã hoàn thành.

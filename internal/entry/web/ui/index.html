@@ -276,20 +276,6 @@
       font-size: 0.86rem;
       color: #ffd875;
     }
-    /* Complete Celebration Box */
-    .complete-box {
-      background: rgba(46, 160, 67, 0.15);
-      border: 1px solid var(--term-green);
-      border-radius: 6px;
-      padding: 10px 14px;
-      display: none;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 8px;
-      font-size: 0.86rem;
-      color: #7ee787;
-    }
     .btn-term {
       background: #222222;
       border: 1px solid #444;
@@ -712,9 +698,10 @@
     <!-- Panel 2: Bản thảo trực tiếp (Center) [Focus ID: 1] -->
     <div class="tui-panel" id="panel-1" onclick="setFocusPanel(1)">
       <div class="tui-panel-header">
-        <span>╭─ BẢN THẢO TRỰC TIẾP (STREAM) ─╮</span>
+        <span>╭─ STREAM ─╮</span>
         <div style="display: flex; gap: 6px;">
           <button class="btn-term btn-term-primary" onclick="exportWord()" title="Xuất toàn bộ tác phẩm thành file Word (.docx)">📄 Xuất Word</button>
+          <button class="btn-term" onclick="exportVideo()" title="Xuất kịch bản, lời đọc và shotlist video">📦 Gói Video</button>
           <button class="btn-term" onclick="copyStreamContent()">📋 Sao chép</button>
           <button class="btn-term" onclick="toggleStreamMode()" id="btn-stream-toggle">🔴 Xem live</button>
         </div>
@@ -729,21 +716,6 @@
           <button class="btn-term btn-term-primary" onclick="executeCommand('/next')">
             ▶️ Duyệt & Viết tiếp (/next) ➔
           </button>
-        </div>
-
-        <!-- Complete Celebration Box (when novel finished) -->
-        <div class="complete-box" id="complete-alert-box">
-          <div>
-            <strong>🎉 Tác phẩm đã hoàn thành!</strong> Bản thảo đã sẵn sàng để xuất file.
-          </div>
-          <div style="display: flex; gap: 8px;">
-            <button class="btn-term btn-term-primary" onclick="exportWord()" title="Tải xuống tài liệu Microsoft Word (.docx)">
-              📄 Xuất file Word (.docx)
-            </button>
-            <button class="btn-term" onclick="exportVideo()" title="Xuất kịch bản, lời đọc và shotlist video">
-              📦 Gói Video
-            </button>
-          </div>
         </div>
 
         <!-- Realtime Streaming Output Viewport -->
@@ -817,6 +789,9 @@ Hướng dẫn nhanh:
       </button>
       <button class="btn-term btn-term-primary" onclick="exportWord()" title="Xuất toàn bộ tác phẩm thành file Word (.docx)">
         📄 Xuất Word (/export)
+      </button>
+      <button class="btn-term" onclick="exportVideo()" title="Xuất kịch bản, lời đọc và shotlist video">
+        📦 Gói Video
       </button>
       <button class="btn-term" onclick="copyStreamContent()" title="Sao chép toàn bộ văn bản hiện tại">
         📋 Sao chép
@@ -1413,8 +1388,8 @@ Hướng dẫn nhanh:
 
       try {
         const targetDir = cliState.dir || '';
-        const downloadUrl = `/api/export?format=word&dir=${encodeURIComponent(targetDir)}&download=1&t=${Date.now()}`;
-        const res = await fetch(downloadUrl);
+        const apiUrl = `/api/export?format=word&dir=${encodeURIComponent(targetDir)}&t=${Date.now()}`;
+        const res = await fetch(apiUrl);
         
         if (!res.ok) {
           let errMsg = `Mã lỗi HTTP ${res.status}`;
@@ -1429,39 +1404,48 @@ Hướng dẫn nhanh:
           return;
         }
 
-        // Đọc blob dữ liệu file docx
-        const blob = await res.blob();
-        let fileName = 'tac-pham.docx';
-        const disposition = res.headers.get('Content-Disposition') || '';
-        if (disposition) {
-          // Ưu tiên RFC 5987 filename*=UTF-8''
-          const utf8Match = disposition.match(/filename\*=UTF-8''([^;]+)/i);
-          if (utf8Match && utf8Match[1]) {
-            fileName = decodeURIComponent(utf8Match[1]);
-          } else {
-            const match = disposition.match(/filename=(?:"([^"]+)"|([^;]+))/i);
-            if (match) {
-              fileName = (match[1] || match[2] || '').trim();
-            }
-          }
+        const data = await res.json();
+        if (!data.ok) {
+          const errMsg = data.error || 'Xuất file Word thất bại';
+          alert("Lỗi xuất file Word: " + errMsg);
+          addEventLog({ Category: 'SYSTEM', Summary: '❌ Lỗi xuất Word: ' + errMsg, Level: 'error', Time: new Date() });
+          return;
         }
 
-        // Tạo thẻ a tải xuống tự động
-        const blobUrl = window.URL.createObjectURL(blob);
+        const sizeKb = (data.bytes / 1024).toFixed(1);
+        const fileName = data.filename || 'tac-pham.docx';
+        const filePath = data.path || fileName;
+        const chaptersCount = data.chapters || 0;
+
+        // 1. Ghi log sự kiện nổi bật trong khung giao diện TUI
+        addEventLog({ 
+          Category: 'SYSTEM', 
+          Summary: `✓ Đã tạo xong file Word: ${fileName} (${chaptersCount} chương, ${sizeKb} KB)`, 
+          Time: new Date() 
+        });
+
+        // 2. Kích hoạt tải tệp trực tiếp về máy tính người dùng (an toàn 100% không bị popup blocker chặn)
+        const downloadUrl = data.download_url ? `${data.download_url}&t=${Date.now()}` : `/api/export?format=word&dir=${encodeURIComponent(targetDir)}&download=1&t=${Date.now()}`;
+        
+        const ifr = document.createElement('iframe');
+        ifr.style.display = 'none';
+        ifr.src = downloadUrl;
+        document.body.appendChild(ifr);
+        setTimeout(() => {
+          if (ifr.parentNode) ifr.parentNode.removeChild(ifr);
+        }, 60000);
+
+        // Kèm thêm fallback thẻ <a> tải về dự phòng
         const a = document.createElement('a');
-        a.href = blobUrl;
+        a.href = downloadUrl;
         a.download = fileName;
         a.style.display = 'none';
         document.body.appendChild(a);
         a.click();
-        
-        setTimeout(() => {
-          window.URL.revokeObjectURL(blobUrl);
-          if (a.parentNode) a.parentNode.removeChild(a);
-        }, 1500);
+        setTimeout(() => { if (a.parentNode) a.parentNode.removeChild(a); }, 2000);
 
-        const sizeKb = (blob.size / 1024).toFixed(1);
-        addEventLog({ Category: 'SYSTEM', Summary: `✓ Tải xuống thành công: ${fileName} (${sizeKb} KB)`, Time: new Date() });
+        // 3. Hiển thị thông báo Popup xác nhận thành công rõ ràng
+        alert(`✓ ĐÃ XUẤT FILE WORD (.DOCX) THÀNH CÔNG!\n\n📄 Tên tệp: ${fileName}\n📊 Quy mô: ${chaptersCount} chương (${sizeKb} KB)\n📂 Đã lưu tại: ${filePath}\n\nFile đang được tự động tải về thư mục Downloads của bạn.`);
       } catch (err) {
         console.error("exportWord error:", err);
         alert("Lỗi kết nối khi xuất Word: " + err.message);
@@ -1660,7 +1644,6 @@ Hướng dẫn nhanh:
       document.getElementById('val-cost').innerText = snap.TotalCostUSD ? `$${snap.TotalCostUSD.toFixed(4)}` : '$0.0000';
 
       const reviewBox = document.getElementById('review-alert-box');
-      const completeBox = document.getElementById('complete-alert-box');
       const btnToolbarNext = document.getElementById('btn-toolbar-next');
       if (snap.HasAdvanceHold || label === 'REVIEW') {
         reviewBox.style.display = 'flex';
@@ -1671,12 +1654,6 @@ Hướng dẫn nhanh:
         if (!snap.IsRunning && snap.CompletedCount > 0 && label !== 'COMPLETE') {
           btnToolbarNext.style.display = 'inline-flex';
         }
-      }
-
-      if (label === 'COMPLETE' || (snap.TotalChapters > 0 && snap.CompletedCount >= snap.TotalChapters)) {
-        if (completeBox) completeBox.style.display = 'flex';
-      } else {
-        if (completeBox) completeBox.style.display = 'none';
       }
 
       const btnPause = document.getElementById('btn-toolbar-pause');
