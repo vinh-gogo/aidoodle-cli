@@ -6,11 +6,15 @@
 
 ## I. Cấu trúc 7 bước của một chương truyện
 
-### 1. Mở đầu bằng một khoảnh khắc sống
-- **Cảnh sống cụ thể:** Đặt nhân vật ngay vào một hành động đời thường có thật trong thế giới ấy (một buổi chợ quê, một đêm canh gác lạnh buốt, một cuộc cãi vã gia đình, tiếng quai búa thợ rèn, mùi mắm cá đồng bốc lên từ chái bếp).
-- **Đánh thức giác quan:** Cho người đọc thấy mùi, tiếng động, việc làm hằng ngày của thời ấy qua hành động, không qua lời giảng.
-- **Gài sớm căng thẳng:** Nhân vật đang muốn gì, sợ điều gì trong khoảnh khắc này?
-- **TRÁNH:** Mở đầu bằng lời thuyết minh niên biểu hay giọng giáo khoa ("Năm... niên hiệu... triều đại đang rơi vào thời kỳ suy tàn...").
+### 1. Mở đầu bằng một khoảnh khắc sống (Hook lịch sử sắc bén)
+- **Áp dụng các kỹ thuật Hook lịch sử chuyên biệt** (xem chi tiết tại `hook-techniques.md`):
+  - *Vào giữa khoảnh khắc từ góc nhìn người nhỏ:* Người lính chèo thuyền, thợ rèn gươm, người gác cổng, phu phen vô danh...
+  - *Chi tiết giác quan lạ nhưng đúng thời:* Mùi bùn sông nồng ngái, tiếng búa tôi thép, ngọn đèn dầu lạc leo lắt, hơi thở buốt giá.
+  - *Kết cục đã biết, người trong cuộc chưa biết (Mỉa mai kịch tính):* Người đọc biết biến cố sắp ập xuống nhưng nhân vật vẫn đang lo toan việc thường nhật.
+  - *Khoảng trống của sử:* Khai phá những điều chính sử chỉ chép vắn tắt một dòng.
+  - *Lựa chọn bất khả:* Đặt nhân vật ngay trước thế tiến thoái lưỡng nan giữa tình thân và nợ nước.
+- **Gài sớm căng thẳng:** Nhân vật đang khao khát điều gì, sợ hãi điều gì trong thời khắc này?
+- **TRÁNH TUYỆT ĐỐI:** Mở đầu bằng lời thuyết minh niên biểu hay giọng giáo khoa ("Năm... triều đại... đang trên đà suy thoái..."). Đừng đổi dữ kiện lịch sử cho kịch tính; đừng nhồi bối cảnh chính trị vào câu đầu.
 
 ### 2. Thiết lập nhân vật & Xung đột kép
 - **Vị trí và ràng buộc:** Cho thấy rõ vị trí xã hội, bổn phận gia tộc và khao khát cá nhân của nhân vật.

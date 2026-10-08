@@ -27,6 +27,7 @@ _Last updated: 2026-10-08 (Branch history-vietnam: Đại tu toàn diện Prompt
     - `chapter-guide.md`: Hướng dẫn toàn diện 7 bước triển khai chương văn xuôi lịch sử (2.000 - 4.000 từ).
     - `chapter-template.md`: Mẫu chương chuẩn mực *Khói Lò Rèn Bên Bến Vạn Kiếp* đầy đủ hành động, giác quan, xung đột kép, mất mát thực tế và mục Hậu ký tác giả mẫu.
     - `quality-checklist.md`: Bộ kiểm tra nhanh 5 câu hỏi vàng & Checklist thẩm định 7 tiêu chuẩn chi tiết.
+    - `hook-techniques.md`: Cẩm nang 12 kỹ thuật hook chuyên biệt cho đề tài lịch sử, 7 lỗi cần tránh, chọn theo mục đích, chuyển sang video/doodle explainer và quy trình 4 bước luyện hook nhanh.
     - `character-building.md`: Xây dựng nhân vật đa chiều, cửa vào độc giả, tránh thần thánh hóa một chiều, nhân vật phụ soi chiếu góc khuất sử sách.
     - `fact-grounding.md`: Nền móng trước khi viết, lập Bảng bất biến & Bảng vùng tự do, phân cấp 4 tầng nguồn tư liệu.
     - `adversity-conflict.md`: Mô hình xung đột kép (đời tư va đập thời cuộc), hai dòng chảy song hành và khoảnh khắc lựa chọn/đánh đổi ở cao trào.

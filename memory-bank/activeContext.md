@@ -16,9 +16,11 @@ Repo đang hoạt động trên branch **`history-vietnam`** (chuyển từ `tam
     - Lập **Bảng bất biến lịch sử**: Các mốc niên đại, nhân vật thật, kết quả trận đánh không được phép thay đổi.
     - Lập **Bảng vùng tự do**: Những khoảng trống sử sách im lặng hoặc mâu thuẫn (đời tư, động cơ nội tâm, đối thoại, nhân vật phụ) để hư cấu lấp đầy.
     - Phân cấp 4 tầng tư liệu: Cấp 1 (Chính sử), Cấp 2 (Dã sử, ký kiến, truyện truyền kỳ), Cấp 3 (Truyền thuyết dân gian), Cấp 4 (Khảo cổ học, nghiên cứu đương đại, tra cứu Tavily Search).
-  - **1. Mở đầu bằng một khoảnh khắc sống**:
+  - **1. Mở đầu bằng một khoảnh khắc sống & 12 Kỹ thuật Hook Lịch sử**:
     - Bắt đầu từ một cảnh sống cụ thể của nhân vật trong thế giới đó (buổi chợ, đêm canh gác, cuộc cãi vã, tiếng búa lò rèn).
-    - Đánh thức mùi, tiếng, việc làm hàng ngày qua hành động, gài sớm căng thẳng; TUYỆT ĐỐI TRÁNH mở bài bằng thuyết minh lịch sử giáo khoa.
+    - Đánh thức mùi, tiếng, việc làm hàng ngày qua hành động, gài sớm căng thẳng; TUYỆT ĐỐI TRÁNH mở bài bằng thuyết minh lịch sử giáo khoa ("Năm..., triều đại...").
+    - **12 Kỹ thuật Hook riêng cho đề tài lịch sử**: (1) Vào giữa khoảnh khắc từ góc nhìn người nhỏ; (2) Chi tiết giác quan lạ đúng thời; (3) Mỉa mai kịch tính (kết cục đã biết, người trong cuộc chưa biết); (4) Khoảng trống của sử; (5) Lựa chọn bất khả; (6) Lời thề/hẹn có giá đắt; (7) Vật chứng/di tích dẫn về quá khứ; (8) Flash-forward; (9) Nhân vật lịch sử không giống tượng đài; (10) Câu hỏi "nếu là bạn"; (11) Trích tư liệu gốc ngắn; (12) Con số/khoảng cách có kiểm chứng.
+    - **Chuyển sang video / doodle explainer**: Hook 3 giây, hình làm việc thay lời, khai thác nghịch lý lịch sử có nguồn, gắn nhãn CẦN KIỂM CHỨNG, re-hook mỗi 60-90 giây.
   - **2. Thiết lập nhân vật & Xung đột kép**:
     - Nhân vật chính hư cấu (hoặc nhân vật thật với đời tư hư cấu có kiểm soát) làm "cửa vào" cho độc giả.
     - Dựng **Xung đột kép**: Tầng đời tư (tình thân, gia đình, nợ nần, danh dự) va đập trực tiếp với Tầng thời cuộc (vận nước, tranh quyền, giặc ngoài).

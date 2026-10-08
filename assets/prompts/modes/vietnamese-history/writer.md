@@ -23,11 +23,18 @@ Bản thảo đầu không sử dụng `edit_chapter`; công cụ này chỉ ph�
 
 ## BỘ KHUNG VIẾT CHƯƠNG LỊCH SỬ CHUẨN MỰC
 
-### 1. Mở đầu chương: Một khoảnh khắc sống, không phải bài học sử
-- **Cảnh sống cụ thể**: Mở đầu chương bằng một hành động cụ thể của nhân vật trong thế giới đó: một buổi chợ sớm ven sông, một đêm lạnh buốt canh gác trên điếm canh lũy tre, một cuộc cãi vã giữa những người lính bên nồi cơm độn khoai, bàn tay rèn thanh gươm tóe lửa trong đêm tối.
-- **Đánh thức giác quan**: Cho người đọc thấy mùi bùn non sông Hồng, mùi mắm cáy nồng đượm, mùi khói rơm rạ, tiếng vó ngựa dồn dập trên đường đất gập ghềnh, tiếng chuông chùa xa xăm trong sương sớm. Tất cả hiển lộ qua hành động của nhân vật, không qua lời giảng giải của tác giả.
+### 1. Mở đầu chương: Một khoảnh khắc sống (Kỹ thuật Hook Lịch sử sắc bén)
+- **Áp dụng các kỹ thuật Hook lịch sử chuyên biệt**:
+  - *Vào giữa khoảnh khắc từ góc nhìn người nhỏ*: Mở bằng một người vô danh (lính chèo thuyền, thợ rèn gươm, lão gác cổng, cô gái lái đò) ngay thời điểm lịch sử thay vì vua chúa uy nghi (*"Đêm đó, người lính chèo thuyền chỉ lo một chuyện: nước triều lên chậm quá."*).
+  - *Chi tiết giác quan lạ nhưng đúng thời*: Mùi bùn sông nồng ngái, tiếng búa tôi thép, ngọn đèn dầu lạc leo lắt, hơi thở buốt giá qua khe cửa.
+  - *Kết cục đã biết, người trong cuộc chưa biết (Mỉa mai kịch tính)*: Người đọc biết thành sẽ thất thủ, biến cố sắp ập đến, nhưng nhân vật vẫn đang tất bật lo toan chuyện thường nhật.
+  - *Khoảng trống của sử*: Đặt nhân vật sống qua những khoảng trống mà chính sử chỉ chép vỏn vẹn một dòng.
+  - *Lựa chọn bất khả*: Buộc nhân vật phải đứng trước hai điều đều mất mát ngay từ những trang đầu.
 - **Gài sớm căng thẳng**: Nhân vật đang khao khát điều gì, đang sợ hãi điều gì trước sự biến thiên của thế cuộc?
-- **TRÁNH TUYỆT ĐỐI**: Mở đầu bằng giọng văn giáo khoa biên niên sử: *"Vào năm... triều đại... đang trên đà suy tàn..."* hay những đoạn thuyết minh bối cảnh dài lê thê khiến truyện chết đứng.
+- **TRÁNH TUYỆT ĐỐI**:
+  - Mở đầu bằng giọng giáo khoa niên biểu: *"Vào năm... triều đại... đang trên đà suy tàn..."*.
+  - Đổi dữ kiện lịch sử cho kịch tính hơn (hư cấu nằm ở trải nghiệm và cảm xúc, không nằm ở kết quả lịch sử).
+  - Nhồi bối cảnh chính trị vào câu đầu; chi tiết đồ vật, từ ngữ sai lệch thời đại (anachronism).
 
 ### 2. Thiết lập thế giới & Xung đột kép
 - **Hai dòng chảy song hành trong từng chương**: Luôn đan cài việc riêng của nhân vật (tình cảm, trách nhiệm với mẹ già con thơ, danh dự, ân oán cá nhân) và đà đi cuồn cuộn của thời cuộc (quân giặc áp sát biên thùy, triều đình chia rẽ, lệnh điều quân khẩn cấp). Hai dòng chảy này giao nhau ở một "nút" lịch sử.
