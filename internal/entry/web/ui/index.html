@@ -276,20 +276,6 @@
       font-size: 0.86rem;
       color: #ffd875;
     }
-    /* Complete Celebration Box */
-    .complete-box {
-      background: rgba(46, 160, 67, 0.15);
-      border: 1px solid var(--term-green);
-      border-radius: 6px;
-      padding: 10px 14px;
-      display: none;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 8px;
-      font-size: 0.86rem;
-      color: #7ee787;
-    }
     .btn-term {
       background: #222222;
       border: 1px solid #444;
@@ -715,6 +701,7 @@
         <span>╭─ BẢN THẢO TRỰC TIẾP (STREAM) ─╮</span>
         <div style="display: flex; gap: 6px;">
           <button class="btn-term btn-term-primary" onclick="exportWord()" title="Xuất toàn bộ tác phẩm thành file Word (.docx)">📄 Xuất Word</button>
+          <button class="btn-term" onclick="exportVideo()" title="Xuất kịch bản, lời đọc và shotlist video">📦 Gói Video</button>
           <button class="btn-term" onclick="copyStreamContent()">📋 Sao chép</button>
           <button class="btn-term" onclick="toggleStreamMode()" id="btn-stream-toggle">🔴 Xem live</button>
         </div>
@@ -729,21 +716,6 @@
           <button class="btn-term btn-term-primary" onclick="executeCommand('/next')">
             ▶️ Duyệt & Viết tiếp (/next) ➔
           </button>
-        </div>
-
-        <!-- Complete Celebration Box (when novel finished) -->
-        <div class="complete-box" id="complete-alert-box">
-          <div>
-            <strong>🎉 Tác phẩm đã hoàn thành!</strong> Bản thảo đã sẵn sàng để xuất file.
-          </div>
-          <div style="display: flex; gap: 8px;">
-            <button class="btn-term btn-term-primary" onclick="exportWord()" title="Tải xuống tài liệu Microsoft Word (.docx)">
-              📄 Xuất file Word (.docx)
-            </button>
-            <button class="btn-term" onclick="exportVideo()" title="Xuất kịch bản, lời đọc và shotlist video">
-              📦 Gói Video
-            </button>
-          </div>
         </div>
 
         <!-- Realtime Streaming Output Viewport -->
@@ -817,6 +789,9 @@ Hướng dẫn nhanh:
       </button>
       <button class="btn-term btn-term-primary" onclick="exportWord()" title="Xuất toàn bộ tác phẩm thành file Word (.docx)">
         📄 Xuất Word (/export)
+      </button>
+      <button class="btn-term" onclick="exportVideo()" title="Xuất kịch bản, lời đọc và shotlist video">
+        📦 Gói Video
       </button>
       <button class="btn-term" onclick="copyStreamContent()" title="Sao chép toàn bộ văn bản hiện tại">
         📋 Sao chép
@@ -1669,7 +1644,6 @@ Hướng dẫn nhanh:
       document.getElementById('val-cost').innerText = snap.TotalCostUSD ? `$${snap.TotalCostUSD.toFixed(4)}` : '$0.0000';
 
       const reviewBox = document.getElementById('review-alert-box');
-      const completeBox = document.getElementById('complete-alert-box');
       const btnToolbarNext = document.getElementById('btn-toolbar-next');
       if (snap.HasAdvanceHold || label === 'REVIEW') {
         reviewBox.style.display = 'flex';
@@ -1680,12 +1654,6 @@ Hướng dẫn nhanh:
         if (!snap.IsRunning && snap.CompletedCount > 0 && label !== 'COMPLETE') {
           btnToolbarNext.style.display = 'inline-flex';
         }
-      }
-
-      if (label === 'COMPLETE' || (snap.TotalChapters > 0 && snap.CompletedCount >= snap.TotalChapters)) {
-        if (completeBox) completeBox.style.display = 'flex';
-      } else {
-        if (completeBox) completeBox.style.display = 'none';
       }
 
       const btnPause = document.getElementById('btn-toolbar-pause');
