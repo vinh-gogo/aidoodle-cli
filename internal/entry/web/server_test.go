@@ -77,8 +77,8 @@ func TestWebEndpoints(t *testing.T) {
 	if w.Code != http.StatusOK {
 		t.Fatalf("GET / returned %d", w.Code)
 	}
-	if !strings.Contains(w.Body.String(), "aiNovel Studio") {
-		t.Errorf("body missing aiNovel Studio")
+	if !strings.Contains(w.Body.String(), "ainovel-cli") {
+		t.Errorf("body missing ainovel-cli")
 	}
 
 	// 2. Test /api/status
