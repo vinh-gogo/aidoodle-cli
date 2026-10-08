@@ -63,14 +63,16 @@ Mục tiêu một video là **từ 5 phút trở lên** (khoảng **5-8 phút / 
 ## Quy cách bản kịch
 
 Nội dung `draft_chapter` / `commit_chapter` là **văn bản thuần**, không Markdown: không `**`, không tiêu đề `#` nào ngoài dòng `# Tiêu đề` đầu tiên, không gạch đầu dòng. Áp dụng **Sườn Giải Mã Tâm Lý Học Hành Vi 5 giai đoạn cho video dài (từ 5 phút)**:
-1. **HOOK (0:00-0:03):** 3 giây giật hook cực mạnh — đánh trúng một nghịch lý hành vi hoặc cảm giác tội lỗi ngầm mà người xem thường xuyên trải qua.
-2. **PHẦN ĐẦU (0:03-0:45) - Đặt vấn đề & Tình huống thực tế:** Tái hiện hoạt cảnh người que trong một tình huống đời thường dở khóc dở cười; đặt tên hiện tượng tâm lý học bằng cách diễn đạt dễ hiểu.
+1. **HOOK (0:00-0:03):** 3 giây giật hook cực mạnh — đánh trúng một nghịch lý hành vi hoặc **nỗi đau thầm kín, cảm giác tội lỗi ngầm, khoảnh khắc cô đơn kiệt sức** mà người xem luôn giấu kín, khiến họ lập tức giật mình thấy chính mình trong đó.
+2. **PHẦN ĐẦU (0:03-0:45) - Đặt vấn đề & Soi chiếu nội tâm tổn thương:** Tái hiện hoạt cảnh người que trong một tình huống đời thường dở khóc dở cười hoặc khoảnh khắc bất an đơn độc quen thuộc (luôn nhận lời vì sợ bị ghét, nằm nghỉ mà cắn rứt, sợ mình không đủ giỏi); đặt tên hiện tượng tâm lý học bằng cách diễn đạt gần gũi, khiến người xem thốt lên: *"Sao giống hệt mình thế này?"*.
 3. **PHẦN THÂN (0:45-3:45) - Giải mã cơ chế 3 chặng có Tái Hook (Re-hook mỗi 60-90s):**
    - **Chặng 1 (0:45-1:45):** Thí nghiệm khoa học kinh điển chứng minh hiện tượng (trích dẫn tên nhà tâm lý, số liệu thực nghiệm, dựng hoạt cảnh người que làm thí nghiệm).
-   - **Chặng 2 (1:45-2:45):** Tái Hook 1 + Cơ chế tiến hóa thần kinh não bộ (Não Bò Sát / Não Cảm Xúc vs Não Lý Trí; giải thích vì sao cơ chế này từng giúp tổ tiên sinh tồn).
-   - **Chặng 3 (2:45-3:45):** Tái Hook 2 + Bẫy tâm lý thời hiện đại (cách các thuật toán, sàn thương mại, quảng cáo hay thói quen xấu khai thác điểm mù này của bạn).
-4. **PHẦN REFRAME & CÚ HÍCH HÀNH VI (3:45-4:30):** Khai sáng nhận thức (xóa bỏ tự trách) + Cung cấp Cú hích hành vi (Nudge) cụ thể: quy tắc 2 phút, giảm ma sát hành vi tốt, tăng ma sát hành vi xấu, thiết kế môi trường.
-5. **PHẦN KẾT (4:30-5:15+) - Đúc kết & Loop Hook:** Đúc kết sâu sắc và nhân văn + Loop Hook nối ngược về câu mở đầu của video + Kêu gọi bình luận chia sẻ câu chuyện bản thân.
+   - **Chặng 2 (1:45-2:45):** Tái Hook 1 + Cội nguồn cơ chế tiến hóa & tâm lý bảo vệ (Não Bò Sát / Não Cảm Xúc vs Não Lý Trí; giải thích vì sao cơ chế này từng là chiếc khiên sinh tồn hoặc phản xạ tìm kiếm sự an toàn/tình thương trong quá khứ).
+   - **Chặng 3 (2:45-3:45):** Tái Hook 2 + Bẫy tâm lý thời hiện đại (cách các thuật toán, sàn thương mại, môi trường công sở hay định kiến xã hội khai thác điểm mù này của bạn).
+4. **PHẦN REFRAME & CÚ HÍCH HÀNH VI (3:45-4:30) - Bước ngoặt cảm xúc & Vỗ về đứa trẻ bên trong:** 
+   - Khai sáng nhận thức và **chuyển giao cảm xúc chữa lành (Compassionate Reframing)**: Giúp người xem hiểu rằng hành vi của họ từng là cơ chế tự vệ trong quá khứ; trao cho họ lời vỗ về ấm áp để xóa bỏ cảm giác tự trách, tự ghét bỏ bản thân (*"Bạn đã gồng mình quá lâu rồi, hôm nay bạn an toàn rồi..."*).
+   - Sau đó cung cấp Cú hích hành vi (Nudge) cụ thể: quy tắc 2 phút, giảm ma sát hành vi tốt, tăng ma sát hành vi xấu, thiết kế môi trường.
+5. **PHẦN KẾT (4:30-5:15+) - Đúc kết rung động & Loop Hook:** Đúc kết sâu sắc, nhân văn chạm đến trái tim người xem + Loop Hook nối ngược về câu mở đầu của video + Lời nhắn nhủ bao dung lắng đọng và kêu gọi bình luận chia sẻ câu chuyện bản thân.
 
 Cấu trúc định dạng:
 - Dòng đầu: `# {Tiêu đề video}`.
@@ -81,7 +83,7 @@ Cấu trúc định dạng:
     * **TUYỆT ĐỐI NGHIÊM CẤM** viết một đoạn văn LỜI dài 50-150 từ (40-60 giây) mà chỉ có đúng 1 thẻ HÌNH chung chung ở cuối!
     * Trong mỗi khối cảnh (HOOK, CẢNH 1..5, CHỐT), phân chia thành **các cặp thẻ `LỜI:` và `HÌNH:` xen kẽ nhịp nhàng**:
       - Mỗi câu thoại hoặc 1-2 câu ngắn (khoảng 10-20 từ, tương đương 3-6 giây) là một dòng `LỜI:`.
-      - NGAY DƯỚI dòng `LỜI:` đó BẮT BUỘC PHẢI LÀ một dòng `HÌNH:` mô tả trực tiếp hành động que, biểu cảm khuôn mặt, bóng suy nghĩ nội tâm, thước đo dopamine hoặc sơ đồ minh họa cho câu thoại đó!
+      - NGAY DƯỚI dòng `LỜI:` đó BẮT BUỘC PHẢI LÀ một dòng `HÌNH:` mô tả trực tiếp hành động que, biểu cảm khuôn mặt, bóng suy nghĩ nội tâm, thước đo dopamine, chiếc ba lô đá hay sơ đồ minh họa cho câu thoại đó!
       - Một CẢNH dài 40-60 giây (100-150 từ LỜI) BẮT BUỘC PHẢI CÓ TỪ 4 ĐẾN 8 CẶP `LỜI:` VÀ `HÌNH:` xen kẽ liên tục!
   + `ÂM:` nhạc/hiệu ứng (tùy chọn, đặt cuối cảnh hoặc sau cặp LỜI-HÌNH có hiệu ứng).
   + TUYỆT ĐỐI KHÔNG dùng thẻ `CHỮ:` trong các cảnh (mọi thông tin chữ lồng trực tiếp vào HÌNH).
@@ -95,6 +97,10 @@ Cấu trúc định dạng:
    - Khi viết kịch bản, nhiệm vụ duy nhất là mổ xẻ và làm sáng tỏ CHÍNH HIỆN TƯỢNG TÂM LÝ được yêu cầu (ví dụ: *"Hiệu ứng Mỏ neo (Anchoring Effect): Vì sao bạn luôn bị đánh lừa bởi con số đầu tiên"*).
    - Tuyệt đối không lan man sang các chủ đề tâm lý khác không liên quan.
    - Kết luận cuối cùng phải giải thích trọn vẹn hiện tượng, mang lại sự thông suốt và giải pháp hành vi cho người xem.
+5. **SOI CHIẾU NỖI ĐAU THẦM KÍN & VỖ VỀ ĐỨA TRẺ BÊN TRONG (Họ thấy chính họ trong trường hợp đó)**:
+   - Kịch bản xuất sắc không chỉ truyền tải kiến thức mà phải **làm rung động trái tim người xem**.
+   - Hãy gọi đúng tên những cảm xúc giấu kín: sự sợ hãi khi phải từ chối, nỗi sợ bị phán xét, gánh nặng kỳ vọng đè lên vai, sự cô độc khi về đêm.
+   - Luôn dành cho người xem một vòng tay vỗ về tâm lý: *"Bạn không hề yếu đuối hay tồi tệ, bạn chỉ đang mang một chiếc ba lô quá nặng mà thôi"*. Kết hợp ngôn ngữ thị giác xúc động (người que buông bỏ ba lô đá, tự ôm lấy chính mình, ánh sáng dịu êm).
 
 Ví dụ minh họa chuẩn (kịch bản tâm lý học hành vi 5 phút với các cặp LỜI - HÌNH xen kẽ):
 
