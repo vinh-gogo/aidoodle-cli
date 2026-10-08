@@ -6,6 +6,7 @@ Phong cách kịch bản video giải thích ngắn (5+ phút, từ 700-1500 t�
 - **Giải mã nghịch lý đời thường**: Khởi đầu từ những khoảnh khắc "ai cũng từng ngớ ngẩn": biết thức khuya có hại nhưng vẫn lướt điện thoại 2h sáng, tiếc 15k tiền ship nhưng sẵn sàng chi 60k cho cốc trà sữa, ngại từ chối đồng nghiệp dù trong lòng muốn hét lên...
 - **Phi lý trí có quy luật (Predictably Irrational)**: Con người không hề điên rồ ngẫu nhiên, mà hành vi lệch chuẩn đều tuân theo các phím tắt nhận thức (heuristics) và bẫy tâm lý đã được tiến hóa lập trình từ thời nguyên thủy.
 - **Thấu hiểu thay vì phán xét**: Tuyệt đối không phán xét, đổ lỗi hay lên giọng dạy đời người xem ("bạn thật lười biếng", "bạn yếu đuối"). Luôn mang đến cảm giác đồng cảm ấm áp: "Bạn không một mình, bộ não sinh học của tất cả chúng ta đều được thiết kế như thế!".
+- **Chạm đến trái tim & Chữa lành nỗi đau tự trách (Emotional Depth & Heart-touching Resonance)**: Soi chiếu chính xác những nỗi cô đơn ngầm, cảm giác bất an sợ bị bỏ rơi, hội chứng kẻ mạo danh hay sự kiệt sức vì cố làm hài lòng người khác. Dẫn dắt người xem từ sự ngộ ra đến cảm giác vỡ òa, bao dung và tự ôm lấy chính mình.
 
 ### 2. Hệ nhân vật & Hình tượng trực quan hóa nội tâm
 Khai thác ngôn ngữ doodle người que để biến các khái niệm tâm lý trừu tượng thành hoạt cảnh sinh động:
@@ -17,6 +18,11 @@ Khai thác ngôn ngữ doodle người que để biến các khái niệm tâm l
   - *Chiếc Cân Mất Mát*: Một bên là 100k kiếm được (nhẹ bẫng), một bên là 100k bị rơi (nặng trĩu đè bẹp dí).
   - *Chiếc Mỏ Neo Định Kiến (Anchoring)*: Chiếc mỏ neo khổng lồ cắm thẳng vào đầu nhân vật giữ chặt giá ban đầu.
   - *Bánh xe chuột Hamster / Hộp Skinner*: Vòng lặp thói quen vô tận kích hoạt bởi phần thưởng ngẫu nhiên.
+- **Hình tượng Doodle lay động cảm xúc & Chữa lành**:
+  - *Chiếc ba lô đá vô hình*: Oằn trên lưng người que gánh kỳ vọng người khác; buông xuống thở phào nhẹ nhõm.
+  - *Chiếc mặt nạ cười gượng*: Người que cầm mặt nạ cười nhưng bên trong là khuôn mặt mệt mỏi với giọt nước mắt rơi.
+  - *Vòng tay tự ôm lấy bờ vai*: Khoảnh khắc người que khẽ nhắm mắt, hai tay bắt chéo ôm lấy chính mình trong ánh sáng dịu êm.
+  - *Mầm cây trồi lên từ vết nứt*: Giọt nước mắt rơi xuống đất khô cằn làm trồi lên một chồi non xanh mướt tượng trưng cho sự tha thứ bản thân.
 
 ### 3. Nhịp điệu và Định dạng kịch bản chuẩn
 - Tuân thủ nghiêm ngặt **khung 5 giai đoạn** của kịch bản giải thích:

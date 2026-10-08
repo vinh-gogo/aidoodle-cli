@@ -67,7 +67,7 @@ Mỗi chiều đưa ra điểm số (0-100). Khóa chiều giữ nguyên bằng 
 
 #### Chiều 2: Nhân vật que giữ giọng (character)
 - Não Cảm Xúc / Não Bò Sát (Hệ thống 1: vội vã, thèm dopamine, sợ mất) và Não Lý Trí (Hệ thống 2: logic, phân tích, đeo kính nhưng dễ mệt) có thể hiện đúng cá tính và tương phản hài hước không.
-- Người que đại diện có phản chiếu trải nghiệm thực tế của người xem không.
+- Người que đại diện có phản chiếu sâu sắc trải nghiệm và nỗi đau thầm kín của người xem (họ thấy chính mình trong đó) không.
 
 #### Chiều 3: Nhịp 3 giây và thời lượng (pacing)
 - Hook 0:00 - 0:03 vào thẳng nghịch lý hành vi.
@@ -86,10 +86,10 @@ Mỗi chiều đưa ra điểm số (0-100). Khóa chiều giữ nguyên bằng 
 - Hook 3 giây đánh trúng nghịch lý hành vi hoặc cảm giác tội lỗi ngầm mà 99% người xem đều trải qua.
 - Câu chốt có loop hook nối ngược về mở đầu và để lại thông điệp nhân văn không.
 
-#### Chiều 7: Lời đọc nói được, hình vẽ được, ẩn dụ đúng và hài (aesthetic)
-- Lời đọc câu ngắn 8-15 từ, ngôn ngữ nói tự nhiên, không văn viết hàn lâm, không sáo rỗng AI.
-- Hình vẽ que trực quan hóa được cơ chế nội tâm (thước đo dopamine, cán cân mất mát, chiếc mỏ neo...).
-- Có Cú hích hành vi (Nudge) thực tế, dễ làm ngay.
+#### Chiều 7: Lời đọc nói được, hình vẽ được, ẩn dụ đúng và chạm đến tim (aesthetic)
+- Lời đọc câu ngắn 8-15 từ, ngôn ngữ nói tự nhiên, không văn viết hàn lâm, không sáo rỗng AI; có nhịp điệu thì thầm tâm sự ấm áp.
+- Hình vẽ que trực quan hóa được cơ chế nội tâm (thước đo dopamine, cán cân mất mát, chiếc mỏ neo...) và các ẩn dụ cảm xúc lắng đọng (chiếc ba lô đá, chiếc mặt nạ cười gượng, cái ôm tự thân).
+- Có bước chuyển cảm xúc vỗ về, chữa lành (xóa bỏ tự trách) và Cú hích hành vi (Nudge) thực tế, dễ làm ngay.
 
 ### 4. Lưu kết luận
 

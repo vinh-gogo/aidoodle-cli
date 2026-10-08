@@ -40,7 +40,7 @@ Gọi `save_book(title=<tên series chính thức>, synopsis=<giới thiệu ser
 Định dạng Markdown. Dòng đầu tiên dùng đúng `# Series bible`. Bắt buộc xuất hiện đủ **13 tiêu đề cấp hai** dưới đây:
 
 - `## Kênh và khán giả`: kênh giải mã tâm lý học hành vi, thính giả người xem mục tiêu.
-- `## Giọng kể và nhân vật dẫn chuyện`: giọng đọc đồng cảm, ấm áp, hóm hỉnh.
+- `## Giọng kể và nhân vật dẫn chuyện`: giọng đọc đồng cảm, ấm áp, thấu cảm chữa lành và hóm hỉnh; giúp người xem thấy chính mình và được vỗ về.
 - `## Câu hỏi cốt lõi của series`: nghịch lý hành vi xuyên suốt.
 - `## Công thức video`: khung chuẩn 5 giai đoạn cho video từ 5 phút trở lên.
 - `## Công thức hook`: các kiểu hook tâm lý.
