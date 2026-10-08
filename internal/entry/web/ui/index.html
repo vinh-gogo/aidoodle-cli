@@ -3,1117 +3,1085 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>aiNovel Studio Web Dashboard</title>
+  <title>aiNovel Studio — Xưởng Sáng Tác AI Chuyên Nghiệp</title>
   <style>
     :root {
-      --bg-primary: #0d1117;
-      --bg-secondary: #161b22;
-      --bg-tertiary: #21262d;
-      --bg-card: #1c2128;
-      --border-color: #30363d;
-      --text-primary: #f0f6fc;
-      --text-secondary: #8b949e;
-      --text-muted: #6e7681;
-      --accent-blue: #58a6ff;
-      --accent-green: #3fb950;
-      --accent-yellow: #d29922;
-      --accent-purple: #bc8cff;
-      --accent-red: #f85149;
-      --accent-cyan: #39c5cf;
-      --sidebar-width: 320px;
-      --event-panel-width: 380px;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-      background-color: var(--bg-primary);
-      color: var(--text-primary);
-      height: 100vh;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
+      --bg-base: #090d16;
+      --bg-surface: #0f172a;
+      --bg-card: #1e293b;
+      --bg-card-hover: #243247;
+      --border-subtle: #1e293b;
+      --border-base: #334155;
+      --border-focus: #6366f1;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --primary: #6366f1;
+      --primary-hover: #4f46e5;
+      --primary-light: rgba(99, 102, 241, 0.15);
+      --success: #10b981;
+      --success-light: rgba(16, 185, 129, 0.15);
+      --warning: #f59e0b;
+      --warning-light: rgba(245, 158, 11, 0.15);
+      --danger: #ef4444;
+      --info: #06b6d4;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 16px;
+      --radius-xl: 20px;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+      --shadow-md: 0 4px 14px rgba(0,0,0,0.4);
+      --shadow-lg: 0 12px 28px rgba(0,0,0,0.5);
+      --font-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", "Helvetica Neue", sans-serif;
+      --font-reader: "Merriweather", "Georgia", "Cambria", -apple-system, serif;
     }
 
-    /* Header */
-    header {
-      height: 56px;
-      background-color: var(--bg-secondary);
-      border-bottom: 1px solid var(--border-color);
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-ui);
+      background-color: var(--bg-base);
+      color: var(--text-main);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Top Navigation Bar */
+    .top-nav {
+      height: 60px;
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border-subtle);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 16px;
+      padding: 0 20px;
       flex-shrink: 0;
-      z-index: 10;
+      z-index: 20;
     }
-    .logo-group {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .logo-title {
-      font-weight: 700;
-      font-size: 1.1rem;
-      letter-spacing: -0.5px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      color: #fff;
-    }
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      padding: 3px 8px;
-      border-radius: 12px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      gap: 4px;
-    }
-    .badge-ready { background: rgba(139, 148, 158, 0.2); color: var(--text-secondary); border: 1px solid var(--border-color); }
-    .badge-running { background: rgba(63, 185, 80, 0.2); color: var(--accent-green); border: 1px solid rgba(63, 185, 80, 0.4); animation: pulse 2s infinite; }
-    .badge-review { background: rgba(210, 153, 34, 0.2); color: var(--accent-yellow); border: 1px solid rgba(210, 153, 34, 0.4); }
-    .badge-complete { background: rgba(88, 166, 255, 0.2); color: var(--accent-blue); border: 1px solid rgba(88, 166, 255, 0.4); }
-    @keyframes pulse { 0% { opacity: 0.7; } 50% { opacity: 1; } 100% { opacity: 0.7; } }
-
-    .header-stats {
+    .nav-left {
       display: flex;
       align-items: center;
       gap: 16px;
-      font-size: 0.85rem;
-      color: var(--text-secondary);
     }
-    .stat-item { display: flex; align-items: center; gap: 5px; }
-    .stat-val { color: var(--text-primary); font-weight: 600; }
+    .btn-icon {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-muted);
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-sm);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.1rem;
+      transition: all 0.15s;
+    }
+    .btn-icon:hover {
+      background: var(--bg-card);
+      color: var(--text-main);
+      border-color: var(--border-base);
+    }
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      font-size: 1.15rem;
+      color: #fff;
+      text-decoration: none;
+      letter-spacing: -0.5px;
+    }
+    .brand-badge {
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: #fff;
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
 
-    .header-actions {
+    .project-header-title {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      max-width: 300px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      padding-left: 12px;
+      border-left: 1px solid var(--border-base);
+    }
+
+    .nav-center {
       display: flex;
       align-items: center;
       gap: 10px;
     }
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      background: var(--bg-card);
+      border: 1px solid var(--border-base);
+      color: var(--text-muted);
+    }
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--text-dim);
+    }
+    .status-pill.running {
+      background: var(--success-light);
+      border-color: rgba(16, 185, 129, 0.4);
+      color: var(--success);
+    }
+    .status-pill.running .status-dot {
+      background: var(--success);
+      box-shadow: 0 0 8px var(--success);
+      animation: pulse-dot 1.5s infinite;
+    }
+    .status-pill.review {
+      background: var(--warning-light);
+      border-color: rgba(245, 158, 11, 0.4);
+      color: var(--warning);
+    }
+    .status-pill.review .status-dot { background: var(--warning); }
+    @keyframes pulse-dot { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* Buttons */
     .btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 6px;
-      padding: 6px 12px;
-      border-radius: 6px;
+      padding: 8px 14px;
+      border-radius: var(--radius-md);
       font-size: 0.85rem;
       font-weight: 500;
       cursor: pointer;
-      border: 1px solid transparent;
+      border: 1px solid var(--border-base);
+      background: var(--bg-card);
+      color: var(--text-main);
       transition: all 0.15s ease-in-out;
       outline: none;
-      background: var(--bg-tertiary);
-      color: var(--text-primary);
+      white-space: nowrap;
     }
-    .btn:hover { background: #2c323b; border-color: var(--border-color); }
-    .btn-primary { background: #238636; color: #fff; }
-    .btn-primary:hover { background: #2ea043; }
-    .btn-warn { background: #b08800; color: #fff; }
-    .btn-warn:hover { background: #c69900; }
-    .btn-danger { background: #da3633; color: #fff; }
-    .btn-danger:hover { background: #f85149; }
-    .btn-sm { padding: 4px 8px; font-size: 0.75rem; border-radius: 4px; }
+    .btn:hover {
+      background: var(--bg-card-hover);
+      border-color: #475569;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #6366f1, #4f46e5);
+      border: none;
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.35);
+    }
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #4f46e5, #4338ca);
+      box-shadow: 0 6px 16px rgba(99, 102, 241, 0.45);
+    }
+    .btn-sm {
+      padding: 5px 10px;
+      font-size: 0.78rem;
+      border-radius: var(--radius-sm);
+    }
 
-    /* Layout */
-    .app-body {
+    /* Main Container */
+    .app-main {
       display: flex;
       flex: 1;
-      height: calc(100vh - 56px);
+      height: calc(100vh - 60px);
+      position: relative;
       overflow: hidden;
     }
 
-    /* Sidebar (Left) */
+    /* Collapsible Left Sidebar */
     .sidebar {
-      width: var(--sidebar-width);
-      background-color: var(--bg-secondary);
-      border-right: 1px solid var(--border-color);
+      width: 280px;
+      background: var(--bg-surface);
+      border-right: 1px solid var(--border-subtle);
       display: flex;
       flex-direction: column;
       flex-shrink: 0;
+      transition: width 0.25s ease, transform 0.25s ease;
+      z-index: 15;
       overflow: hidden;
     }
-    .sidebar-section {
+    .sidebar.collapsed {
+      width: 0;
+      transform: translateX(-100%);
+      border-right: none;
+    }
+    .sidebar-inner {
+      width: 280px;
       display: flex;
       flex-direction: column;
-      border-bottom: 1px solid var(--border-color);
-      overflow: hidden;
+      height: 100%;
+      padding: 16px 12px;
+      gap: 16px;
+      overflow-y: auto;
     }
-    .sidebar-header {
-      padding: 10px 14px;
-      font-size: 0.75rem;
+
+    .sidebar-section-title {
+      font-size: 0.72rem;
       font-weight: 700;
       text-transform: uppercase;
-      color: var(--text-secondary);
-      letter-spacing: 0.5px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: rgba(22, 27, 34, 0.8);
+      letter-spacing: 0.6px;
+      color: var(--text-dim);
+      padding: 0 8px;
+      margin-bottom: 6px;
     }
-    .mode-list {
-      padding: 8px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-    .mode-item {
+    .project-nav-item {
       display: flex;
       align-items: center;
       gap: 10px;
-      padding: 8px 10px;
-      border-radius: 6px;
+      padding: 9px 10px;
+      border-radius: var(--radius-md);
       cursor: pointer;
-      background: var(--bg-primary);
+      background: transparent;
       border: 1px solid transparent;
       transition: all 0.15s;
     }
-    .mode-item:hover { background: var(--bg-tertiary); border-color: var(--border-color); }
-    .mode-item.active { background: rgba(56, 139, 253, 0.15); border-color: var(--accent-blue); }
-    .mode-icon { font-size: 1.2rem; }
-    .mode-info { flex: 1; min-width: 0; }
-    .mode-name { font-size: 0.85rem; font-weight: 600; color: #fff; }
-    .mode-desc { font-size: 0.75rem; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
-    .scrollable-list {
+    .project-nav-item:hover {
+      background: var(--bg-card);
+    }
+    .project-nav-item.active {
+      background: var(--primary-light);
+      border-color: rgba(99, 102, 241, 0.3);
+    }
+    .project-nav-title {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-main);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
       flex: 1;
-      overflow-y: auto;
-      padding: 8px;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
     }
-    .project-card {
-      padding: 8px 10px;
-      border-radius: 6px;
-      cursor: pointer;
-      background: var(--bg-primary);
-      border: 1px solid transparent;
-      transition: all 0.15s;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
+    .project-nav-badge {
+      font-size: 0.7rem;
+      color: var(--info);
     }
-    .project-card:hover { background: var(--bg-tertiary); border-color: var(--border-color); }
-    .project-card.active { border-color: var(--accent-blue); background: rgba(56, 139, 253, 0.08); }
-    .proj-title { font-size: 0.85rem; font-weight: 600; color: #fff; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .proj-meta { display: flex; align-items: center; justify-content: space-between; font-size: 0.72rem; color: var(--text-secondary); }
-    .proj-badge { font-size: 0.7rem; color: var(--accent-cyan); }
 
-    .chapter-item {
+    .chapter-nav-list {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .chapter-nav-item {
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 7px 10px;
-      border-radius: 6px;
+      border-radius: var(--radius-sm);
       cursor: pointer;
-      background: var(--bg-primary);
-      border: 1px solid transparent;
       font-size: 0.82rem;
+      color: var(--text-muted);
+      transition: all 0.15s;
     }
-    .chapter-item:hover { background: var(--bg-tertiary); border-color: var(--border-color); }
-    .chapter-item.active { border-color: var(--accent-green); background: rgba(63, 185, 80, 0.1); }
-    .chapter-num { font-weight: 600; color: var(--accent-blue); width: 28px; }
-    .chapter-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .chapter-wc { font-size: 0.72rem; color: var(--text-secondary); }
+    .chapter-nav-item:hover {
+      background: var(--bg-card);
+      color: var(--text-main);
+    }
+    .chapter-nav-item.active {
+      background: var(--primary-light);
+      color: var(--primary);
+      font-weight: 600;
+    }
 
-    /* Center (Main Workspace) */
-    .workspace {
+    /* Central Writing Studio Canvas */
+    .studio-viewport {
       flex: 1;
       display: flex;
       flex-direction: column;
+      height: 100%;
       min-width: 0;
-      background-color: var(--bg-primary);
+      background: var(--bg-base);
       position: relative;
     }
-    .workspace-nav {
-      height: 44px;
-      border-bottom: 1px solid var(--border-color);
+
+    /* Hero / Empty Creation View */
+    .hero-container {
+      max-width: 760px;
+      width: 100%;
+      margin: auto;
+      padding: 40px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 28px;
+    }
+    .hero-title {
+      font-size: 2.2rem;
+      font-weight: 800;
+      letter-spacing: -0.8px;
+      text-align: center;
+      background: linear-gradient(135deg, #fff 40%, #94a3b8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-subtitle {
+      font-size: 1rem;
+      color: var(--text-muted);
+      text-align: center;
+      margin-top: -16px;
+      max-width: 540px;
+      line-height: 1.5;
+    }
+
+    /* Mode Selection Cards */
+    .mode-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      width: 100%;
+    }
+    .mode-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      text-align: left;
+    }
+    .mode-card:hover {
+      background: var(--bg-card);
+      border-color: var(--border-base);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+    .mode-card.selected {
+      background: rgba(99, 102, 241, 0.08);
+      border-color: var(--primary);
+      box-shadow: 0 0 0 1px var(--primary);
+    }
+    .mode-card-icon {
+      font-size: 1.6rem;
+      padding: 8px;
+      background: var(--bg-card);
+      border-radius: var(--radius-md);
+      flex-shrink: 0;
+    }
+    .mode-card-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    .mode-card-desc {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    /* Prompt Box */
+    .prompt-box-card {
+      width: 100%;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-base);
+      border-radius: var(--radius-xl);
+      padding: 18px 20px;
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: border-color 0.2s;
+    }
+    .prompt-box-card:focus-within {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2), var(--shadow-lg);
+    }
+    .prompt-textarea {
+      width: 100%;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: #fff;
+      font-family: inherit;
+      font-size: 1.05rem;
+      line-height: 1.6;
+      resize: none;
+      min-height: 70px;
+      max-height: 200px;
+    }
+    .prompt-textarea::placeholder {
+      color: var(--text-dim);
+    }
+
+    .prompt-suggestions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .suggestion-chip {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      padding: 5px 10px;
+      border-radius: 14px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .suggestion-chip:hover {
+      background: var(--border-base);
+      color: #fff;
+    }
+
+    .prompt-action-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--border-subtle);
+      padding-top: 12px;
+    }
+
+    /* Studio Content Canvas View */
+    .studio-content-view {
+      display: none;
+      flex-direction: column;
+      flex: 1;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    /* Studio Subheader */
+    .studio-toolbar {
+      height: 50px;
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      flex-shrink: 0;
+    }
+    .studio-tabs {
+      display: flex;
+      gap: 4px;
+    }
+    .studio-tab-btn {
+      padding: 6px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .studio-tab-btn:hover { color: #fff; }
+    .studio-tab-btn.active {
+      color: #fff;
+      background: var(--bg-card);
+      font-weight: 600;
+    }
+
+    /* Document Reader & Stream Container */
+    .document-scroll {
+      flex: 1;
+      overflow-y: auto;
+      padding: 32px 24px 140px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .document-paper {
+      max-width: 820px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* Active Tool / AI Thinking Pill */
+    .ai-activity-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: var(--radius-md);
+      background: rgba(99, 102, 241, 0.08);
+      border: 1px solid rgba(99, 102, 241, 0.25);
+      font-size: 0.84rem;
+      color: #a5b4fc;
+      cursor: pointer;
+      transition: all 0.15s;
+      width: fit-content;
+    }
+    .ai-activity-pill:hover {
+      background: rgba(99, 102, 241, 0.15);
+      border-color: var(--primary);
+    }
+    .ai-pulse-icon {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--primary);
+      animation: pulse-dot 1.2s infinite;
+    }
+
+    .document-title {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.5px;
+      line-height: 1.3;
+    }
+    .document-meta {
+      font-size: 0.85rem;
+      color: var(--text-dim);
+      display: flex;
+      gap: 16px;
+      border-bottom: 1px solid var(--border-subtle);
+      padding-bottom: 16px;
+    }
+
+    /* Story Text */
+    .story-text {
+      font-family: var(--font-reader);
+      font-size: 1.12rem;
+      line-height: 1.9;
+      color: #e2e8f0;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .story-cursor {
+      display: inline-block;
+      width: 8px;
+      height: 18px;
+      background: var(--primary);
+      margin-left: 3px;
+      vertical-align: middle;
+      animation: blink 0.9s infinite;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* Floating Bottom Action Bar */
+    .floating-bar {
+      position: absolute;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90%;
+      max-width: 780px;
+      background: rgba(15, 23, 42, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--border-base);
+      border-radius: var(--radius-xl);
+      padding: 12px 18px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      z-index: 10;
+    }
+    .steer-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .steer-input {
+      flex: 1;
+      background: var(--bg-card);
+      border: 1px solid var(--border-base);
+      border-radius: var(--radius-md);
+      padding: 10px 14px;
+      color: #fff;
+      font-size: 0.9rem;
+      outline: none;
+    }
+    .steer-input:focus { border-color: var(--primary); }
+
+    .review-action-banner {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: var(--warning-light);
+      border: 1px solid var(--warning);
+      border-radius: var(--radius-md);
+      padding: 10px 16px;
+      color: #fde68a;
+      font-size: 0.88rem;
+    }
+
+    /* Slide-out Activity Drawer (Right) */
+    .activity-drawer {
+      position: fixed;
+      top: 60px;
+      right: 0;
+      bottom: 0;
+      width: 380px;
+      background: var(--bg-surface);
+      border-left: 1px solid var(--border-base);
+      box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+      display: flex;
+      flex-direction: column;
+      transform: translateX(100%);
+      transition: transform 0.25s ease-in-out;
+      z-index: 30;
+    }
+    .activity-drawer.open {
+      transform: translateX(0);
+    }
+    .drawer-header {
+      height: 52px;
+      border-bottom: 1px solid var(--border-subtle);
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 0 16px;
-      background: var(--bg-secondary);
-      flex-shrink: 0;
-    }
-    .tab-group {
-      display: flex;
-      gap: 4px;
-    }
-    .tab-btn {
-      padding: 6px 14px;
-      border-radius: 6px;
       font-size: 0.85rem;
-      font-weight: 500;
-      cursor: pointer;
-      color: var(--text-secondary);
-      background: transparent;
-      border: none;
-      transition: all 0.15s;
+      font-weight: 700;
+      color: var(--text-main);
     }
-    .tab-btn:hover { color: #fff; background: var(--bg-tertiary); }
-    .tab-btn.active { color: #fff; background: var(--bg-primary); font-weight: 600; border: 1px solid var(--border-color); border-bottom-color: transparent; }
-
-    .workspace-content {
+    .drawer-events {
       flex: 1;
       overflow-y: auto;
-      padding: 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    /* Live Stream Box */
-    .stream-box {
-      flex: 1;
-      min-height: 250px;
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      padding: 20px;
-      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
-      font-size: 0.95rem;
-      line-height: 1.6;
-      white-space: pre-wrap;
-      overflow-y: auto;
-      color: #e6edf3;
-      position: relative;
-    }
-    .cursor-blink {
-      display: inline-block;
-      width: 8px;
-      height: 16px;
-      background-color: var(--accent-blue);
-      margin-left: 2px;
-      vertical-align: middle;
-      animation: blink 1s step-start infinite;
-    }
-    @keyframes blink { 50% { opacity: 0; } }
-
-    /* Review Notice Banner */
-    .review-banner {
-      background: rgba(210, 153, 34, 0.15);
-      border: 1px solid var(--accent-yellow);
-      border-radius: 8px;
-      padding: 12px 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-    }
-    .review-banner-text {
-      font-size: 0.9rem;
-      color: #f1e05a;
-    }
-
-    /* Reader Box */
-    .reader-box {
-      max-width: 840px;
-      margin: 0 auto;
-      width: 100%;
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      padding: 36px 48px;
-      line-height: 1.8;
-      font-size: 1.05rem;
-    }
-    .reader-header {
-      border-bottom: 1px solid var(--border-color);
-      padding-bottom: 16px;
-      margin-bottom: 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .reader-title { font-size: 1.5rem; font-weight: 700; color: #fff; }
-    .reader-body { white-space: pre-wrap; color: #d0d7de; }
-
-    /* Command / Steer Bar (Bottom) */
-    .command-bar {
-      border-top: 1px solid var(--border-color);
-      background: var(--bg-secondary);
-      padding: 12px 16px;
+      padding: 12px;
       display: flex;
       flex-direction: column;
       gap: 8px;
-      flex-shrink: 0;
     }
-    .command-input-row {
-      display: flex;
-      gap: 10px;
-      align-items: flex-end;
-    }
-    .prompt-textarea {
-      flex: 1;
-      background: var(--bg-primary);
-      border: 1px solid var(--border-color);
-      border-radius: 6px;
+    .event-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
       padding: 10px 12px;
-      color: #fff;
-      font-size: 0.9rem;
-      resize: vertical;
-      min-height: 42px;
-      max-height: 120px;
-      outline: none;
-      font-family: inherit;
-    }
-    .prompt-textarea:focus { border-color: var(--accent-blue); }
-
-    /* Event Panel (Right) */
-    .event-panel {
-      width: var(--event-panel-width);
-      background: var(--bg-secondary);
-      border-left: 1px solid var(--border-color);
-      display: flex;
-      flex-direction: column;
-      flex-shrink: 0;
-      overflow: hidden;
-    }
-    .event-panel-header {
-      padding: 10px 14px;
-      border-bottom: 1px solid var(--border-color);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-size: 0.8rem;
-      font-weight: 700;
-      color: var(--text-secondary);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    .event-list {
-      flex: 1;
-      overflow-y: auto;
-      padding: 8px;
       display: flex;
       flex-direction: column;
       gap: 6px;
-      font-size: 0.8rem;
+      font-size: 0.82rem;
     }
-    .event-card {
-      background: var(--bg-primary);
-      border: 1px solid var(--border-color);
-      border-radius: 6px;
-      padding: 8px 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      transition: all 0.15s;
-    }
-    .event-card:hover { border-color: #58a6ff; }
+    .event-card:hover { border-color: var(--border-base); }
     .event-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 6px;
     }
-    .event-tag {
+    .tag {
       font-size: 0.68rem;
       font-weight: 700;
       padding: 2px 6px;
       border-radius: 4px;
       text-transform: uppercase;
     }
-    .tag-tool { background: rgba(57, 197, 207, 0.2); color: var(--accent-cyan); border: 1px solid rgba(57, 197, 207, 0.4); }
-    .tag-decision { background: rgba(210, 153, 34, 0.2); color: var(--accent-yellow); border: 1px solid rgba(210, 153, 34, 0.4); }
-    .tag-model { background: rgba(188, 140, 255, 0.2); color: var(--accent-purple); border: 1px solid rgba(188, 140, 255, 0.4); }
-    .tag-system { background: rgba(139, 148, 158, 0.2); color: var(--text-secondary); border: 1px solid var(--border-color); }
-    .tag-error { background: rgba(248, 81, 73, 0.2); color: var(--accent-red); border: 1px solid rgba(248, 81, 73, 0.4); }
-    .event-time { font-size: 0.7rem; color: var(--text-muted); }
-    .event-summary { font-family: ui-monospace, monospace; color: #e6edf3; word-break: break-word; line-height: 1.4; }
-    .event-tool-call { color: #79c0ff; font-weight: 600; }
-    .event-detail-preview {
-      font-size: 0.72rem;
-      color: var(--text-secondary);
-      background: var(--bg-tertiary);
-      padding: 4px 6px;
-      border-radius: 4px;
-      white-space: pre-wrap;
-      max-height: 80px;
-      overflow-y: auto;
-    }
+    .tag-tool { background: rgba(6, 182, 212, 0.15); color: var(--info); border: 1px solid rgba(6, 182, 212, 0.3); }
+    .tag-decision { background: rgba(245, 158, 11, 0.15); color: var(--warning); border: 1px solid rgba(245, 158, 11, 0.3); }
+    .tag-model { background: rgba(139, 92, 246, 0.15); color: #c084fc; border: 1px solid rgba(139, 92, 246, 0.3); }
+    .tag-system { background: rgba(148, 163, 184, 0.15); color: var(--text-muted); }
+    .event-time { font-size: 0.7rem; color: var(--text-dim); }
+    .event-summary { font-family: ui-monospace, monospace; color: #f1f5f9; line-height: 1.4; word-break: break-word; }
+    .tool-highlight { color: #38bdf8; font-weight: 600; }
 
-    /* Modal */
-    .modal-overlay {
+    /* Modal Backdrop */
+    .drawer-overlay {
       position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0, 0, 0, 0.7);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 99;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.2s;
+      top: 60px; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.4);
+      z-index: 25;
+      display: none;
     }
-    .modal-overlay.open { opacity: 1; pointer-events: auto; }
-    .modal-box {
-      background: var(--bg-secondary);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      width: 540px;
-      max-width: 90vw;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-    .modal-title { font-size: 1.1rem; font-weight: 700; color: #fff; }
-
-    /* Scrollbars */
-    ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: #30363d; border-radius: 3px; }
-    ::-webkit-scrollbar-thumb:hover { background: #484f58; }
+    .drawer-overlay.active { display: block; }
   </style>
 </head>
 <body>
 
-  <!-- Top Header -->
-  <header>
-    <div class="logo-group">
-      <div class="logo-title">
-        <span>⚡ aiNovel Studio</span>
-      </div>
-      <span id="badge-status" class="badge badge-ready">READY</span>
-      <span id="badge-mode" class="badge" style="background: rgba(88, 166, 255, 0.15); color: #58a6ff; border: 1px solid rgba(88, 166, 255, 0.3);">📖 Tiểu thuyết / Manga</span>
+  <!-- Top Navigation Bar -->
+  <header class="top-nav">
+    <div class="nav-left">
+      <button class="btn-icon" id="btn-toggle-sidebar" onclick="toggleSidebar()" title="Đóng/Mở thanh bên">
+        ☰
+      </button>
+      <a href="#" class="brand-logo" onclick="showHeroCreation()">
+        <span>aiNovel</span>
+        <span class="brand-badge">Studio</span>
+      </a>
+      <div id="project-title-display" class="project-header-title">Chưa mở tác phẩm</div>
     </div>
 
-    <div class="header-stats">
-      <div class="stat-item">
-        <span>Tác phẩm:</span>
-        <span id="stat-book-title" class="stat-val">Chưa mở</span>
-      </div>
-      <div class="stat-item">
-        <span>Chương:</span>
-        <span id="stat-chapters" class="stat-val">0/0</span>
-      </div>
-      <div class="stat-item">
-        <span>Số chữ:</span>
-        <span id="stat-words" class="stat-val">0</span>
-      </div>
-      <div class="stat-item">
-        <span>Chi phí:</span>
-        <span id="stat-cost" class="stat-val">$0.00</span>
+    <div class="nav-center">
+      <div id="status-pill" class="status-pill">
+        <span class="status-dot"></span>
+        <span id="status-text">SẴN SÀNG</span>
       </div>
     </div>
 
-    <div class="header-actions">
-      <button class="btn btn-sm btn-primary" onclick="openNewProjectModal()">+ Dự án mới</button>
-      <button class="btn btn-sm" onclick="fetchStatus()">Làm mới</button>
+    <div class="nav-right">
+      <button class="btn btn-sm btn-primary" onclick="showHeroCreation()">+ Tác phẩm mới</button>
+      <button class="btn btn-sm" id="btn-toggle-drawer" onclick="toggleDrawer()">
+        ⚡ Hoạt động AI <span id="event-badge" style="background: var(--primary); padding: 1px 6px; border-radius: 10px; font-size: 0.7rem; color: #fff;">0</span>
+      </button>
     </div>
   </header>
 
-  <!-- App Body Layout -->
-  <div class="app-body">
+  <div class="app-main">
 
-    <!-- Left Sidebar -->
-    <div class="sidebar">
-      
-      <!-- Chế độ làm việc (Modes) -->
-      <div class="sidebar-section">
-        <div class="sidebar-header">
-          <span>Chế độ AI (/mode)</span>
-        </div>
-        <div class="mode-list">
-          <div class="mode-item active" data-style="novel-manga" onclick="selectStyle('novel-manga')">
-            <span class="mode-icon">📖</span>
-            <div class="mode-info">
-              <div class="mode-name">Tiểu thuyết / Manga</div>
-              <div class="mode-desc">Cốt truyện nhiều chương, đa góc nhìn</div>
-            </div>
-          </div>
-          <div class="mode-item" data-style="doodle-explainer" onclick="selectStyle('doodle-explainer')">
-            <span class="mode-icon">🦴</span>
-            <div class="mode-info">
-              <div class="mode-name">Doodle TikTok Video</div>
-              <div class="mode-desc">Kịch bản phân cảnh người que thời đồ đá</div>
-            </div>
-          </div>
-          <div class="mode-item" data-style="behavioral-psychology" onclick="selectStyle('behavioral-psychology')">
-            <span class="mode-icon">🧠</span>
-            <div class="mode-info">
-              <div class="mode-name">Tâm lý học hành vi</div>
-              <div class="mode-desc">Phân tích tình huống, dẫn chứng khoa học</div>
-            </div>
-          </div>
-          <div class="mode-item" data-style="vietnamese-history" onclick="selectStyle('vietnamese-history')">
-            <span class="mode-icon">⚔️</span>
-            <div class="mode-info">
-              <div class="mode-name">Lịch sử Việt Nam</div>
-              <div class="mode-desc">Tra cứu Tavily, chuẩn xác niên biểu sử Việt</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Mục lục các chương (Chapters) -->
-      <div class="sidebar-section" style="flex: 1; display: flex; flex-direction: column;">
-        <div class="sidebar-header">
-          <span>Mục lục các chương</span>
-          <span id="chapter-count-badge" style="font-size: 0.7rem; color: var(--accent-blue);">0 chương</span>
-        </div>
-        <div id="chapter-list" class="scrollable-list">
-          <div style="padding: 12px; text-align: center; color: var(--text-muted); font-size: 0.8rem;">
-            Chưa có chương nào được tạo.
-          </div>
-        </div>
-      </div>
-
-      <!-- Danh sách dự án cũ (Projects) -->
-      <div class="sidebar-section" style="height: 180px; display: flex; flex-direction: column;">
-        <div class="sidebar-header">
-          <span>Dự án trong output/</span>
-          <span id="project-count-badge" style="font-size: 0.7rem; color: var(--text-secondary);">0</span>
-        </div>
-        <div id="project-list" class="scrollable-list">
-          <div style="padding: 12px; text-align: center; color: var(--text-muted); font-size: 0.8rem;">
-            Đang quét danh sách...
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- Center Workspace -->
-    <div class="workspace">
-      <!-- Tabs Navigation -->
-      <div class="workspace-nav">
-        <div class="tab-group">
-          <button class="tab-btn active" id="tab-btn-live" onclick="switchTab('live')">🔴 Đang sáng tác (Live)</button>
-          <button class="tab-btn" id="tab-btn-reader" onclick="switchTab('reader')">📖 Đọc tác phẩm (Reader)</button>
-          <button class="tab-btn" id="tab-btn-outline" onclick="switchTab('outline')">📐 Dàn ý & Nhân vật</button>
-        </div>
-
-        <div id="live-phase-indicator" style="font-size: 0.82rem; color: var(--text-secondary);">
-          Giai đoạn: <span id="val-phase" style="color: #fff; font-weight: 600;">Khởi tạo</span>
-        </div>
-      </div>
-
-      <!-- Workspace Content -->
-      <div class="workspace-content">
+    <!-- Collapsible Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-inner">
         
-        <!-- Review Hold Alert Banner -->
-        <div id="review-banner" class="review-banner" style="display: none;">
-          <div class="review-banner-text">
-            <strong>⏸️ Chế độ nghiệm thu từng chương:</strong> Chương vừa hoàn thành và đang chờ bạn đọc lại hoặc duyệt tiếp.
-          </div>
-          <button class="btn btn-sm btn-warn" onclick="sendAction('next')">Duyệt & Viết Chương Tiếp Theo ➔</button>
-        </div>
-
-        <!-- Live Streaming Tab View -->
-        <div id="view-live" style="display: flex; flex-direction: column; flex: 1;">
-          <div class="stream-box" id="stream-output">
-            <span id="stream-content">Chào mừng bạn đến với aiNovel Studio!
-Hãy nhập ý tưởng đề tài bên dưới để bắt đầu sáng tác hoặc chọn một tác phẩm đã tạo từ cột bên trái.</span><span class="cursor-blink" id="cursor-indicator"></span>
+        <div>
+          <div class="sidebar-section-title">Chế độ hiện tại</div>
+          <div id="sidebar-current-mode" style="padding: 8px 12px; background: var(--bg-card); border-radius: var(--radius-md); font-size: 0.85rem; font-weight: 600; display: flex; align-items: center; gap: 8px;">
+            <span>⚔️</span>
+            <span>Lịch sử Việt Nam</span>
           </div>
         </div>
 
-        <!-- Reader Tab View -->
-        <div id="view-reader" style="display: none; flex-direction: column; flex: 1;">
-          <div class="reader-box">
-            <div class="reader-header">
-              <div>
-                <div class="reader-title" id="reader-chapter-title">Chọn chương để đọc</div>
-                <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 4px;" id="reader-meta">--</div>
-              </div>
-              <div style="display: flex; gap: 8px;">
-                <button class="btn btn-sm" onclick="copyReaderText()">📋 Sao chép</button>
-              </div>
-            </div>
-            <div class="reader-body" id="reader-content">
-              Vui lòng nhấp vào một chương ở thanh Mục lục bên trái để xem nội dung đầy đủ.
-            </div>
+        <!-- Mục lục các chương (khi tác phẩm đang mở) -->
+        <div id="sidebar-chapters-section" style="display: none; flex-direction: column;">
+          <div class="sidebar-section-title" style="display: flex; justify-content: space-between;">
+            <span>Mục lục các chương</span>
+            <span id="sidebar-chapter-count" style="color: var(--primary);">0</span>
+          </div>
+          <div class="chapter-nav-list" id="sidebar-chapter-list">
+            <!-- Chapter items -->
           </div>
         </div>
 
-        <!-- Outline Tab View -->
-        <div id="view-outline" style="display: none; flex-direction: column; flex: 1; gap: 16px;">
-          <div class="reader-box">
-            <h2 style="font-size: 1.3rem; margin-bottom: 12px; color: var(--accent-blue);">Dàn ý toàn bộ tác phẩm</h2>
-            <div id="outline-premise" style="margin-bottom: 16px; font-style: italic; color: var(--text-secondary);"></div>
-            <div id="outline-list" style="display: flex; flex-direction: column; gap: 10px;">
-              Chưa có dàn ý.
+        <!-- Tác phẩm trong output/ -->
+        <div style="flex: 1; display: flex; flex-direction: column;">
+          <div class="sidebar-section-title">Tác phẩm gần đây</div>
+          <div style="display: flex; flex-direction: column; gap: 6px; overflow-y: auto; flex: 1;" id="sidebar-project-list">
+            <div style="padding: 12px; text-align: center; color: var(--text-dim); font-size: 0.8rem;">
+              Đang tải danh sách tác phẩm...
             </div>
           </div>
         </div>
 
       </div>
+    </aside>
 
-      <!-- Bottom Command & Steer Bar -->
-      <div class="command-bar">
-        <div class="command-input-row">
-          <textarea id="prompt-input" class="prompt-textarea" rows="2" placeholder="Nhập đề tài hoặc chỉ đạo can thiệp (ví dụ: 'Viết tiểu thuyết dã sử về Quang Trung...', hoặc 'Tập trung miêu tả trận đánh Rạch Gầm')..."></textarea>
-          <button id="btn-submit" class="btn btn-primary" style="height: 42px; padding: 0 20px;" onclick="handleSubmit()">
-            Bắt đầu sáng tác
-          </button>
-          <button id="btn-pause" class="btn btn-warn" style="height: 42px; display: none;" onclick="sendAction('pause')">
-            Tạm dừng
-          </button>
-          <button id="btn-resume" class="btn btn-primary" style="height: 42px; display: none;" onclick="sendAction('resume')">
-            Tiếp tục
-          </button>
+    <!-- Central Viewport -->
+    <main class="studio-viewport">
+
+      <!-- View 1: Hero / Clean Creation State (ChatGPT / Claude style) -->
+      <div id="view-hero" class="hero-container">
+        <h1 class="hero-title">Bạn muốn sáng tác tác phẩm gì?</h1>
+        <p class="hero-subtitle">Chọn chế độ làm việc AI chuyên biệt và nhập chủ đề của bạn để hệ thống tự động tra cứu, lập dàn ý và sáng tác.</p>
+
+        <!-- 4 Specialized Mode Cards -->
+        <div class="mode-grid">
+          <div class="mode-card selected" data-style="vietnamese-history" onclick="chooseHeroMode('vietnamese-history')">
+            <span class="mode-card-icon">⚔️</span>
+            <div>
+              <div class="mode-card-title">Lịch sử Việt Nam</div>
+              <div class="mode-card-desc">Tra cứu sử liệu tự động qua Tavily, chuẩn xác niên biểu, bảo toàn phong vị sử thi hào sảng.</div>
+            </div>
+          </div>
+          <div class="mode-card" data-style="doodle-explainer" onclick="chooseHeroMode('doodle-explainer')">
+            <span class="mode-card-icon">🦴</span>
+            <div>
+              <div class="mode-card-title">Doodle TikTok Video</div>
+              <div class="mode-card-desc">Kịch bản người que đồ đá 5+ phút viral, nhịp 1:1 Thoại - Hình liên tục, phân cảnh chi tiết.</div>
+            </div>
+          </div>
+          <div class="mode-card" data-style="behavioral-psychology" onclick="chooseHeroMode('behavioral-psychology')">
+            <span class="mode-card-icon">🧠</span>
+            <div>
+              <div class="mode-card-title">Tâm lý học hành vi</div>
+              <div class="mode-card-desc">Chuẩn 8 bước khoa học, giải mã tâm lý, Cú hích Nudge và tình huống thực tiễn chạm cảm xúc.</div>
+            </div>
+          </div>
+          <div class="mode-card" data-style="novel-manga" onclick="chooseHeroMode('novel-manga')">
+            <span class="mode-card-icon">📖</span>
+            <div>
+              <div class="mode-card-title">Tiểu thuyết / Manga</div>
+              <div class="mode-card-desc">Cốt truyện trường thiên, chiều sâu nội tâm nhân vật và quy tắc thế giới quan ma pháp chặt chẽ.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Prompt Card -->
+        <div class="prompt-box-card">
+          <textarea id="hero-prompt-input" class="prompt-textarea" placeholder="Nhập đề tài hoặc ý tưởng của bạn (ví dụ: 'Chiến dịch Rạch Gầm - Xoài Mút năm 1785', hoặc 'Tại sao chúng ta hay trì hoãn?')..."></textarea>
+
+          <div class="prompt-suggestions" id="hero-suggestions">
+            <span class="suggestion-chip" onclick="fillPrompt('Chiến dịch Rạch Gầm - Xoài Mút năm 1785 của vua Quang Trung')">⚔️ Trận Rạch Gầm - Xoài Mút 1785</span>
+            <span class="suggestion-chip" onclick="fillPrompt('Trận Bạch Đằng năm 938 của Ngô Quyền đại phá quân Nam Hán')">⚔️ Trận Bạch Đằng 938</span>
+            <span class="suggestion-chip" onclick="fillPrompt('Giải thích hiệu ứng Dunning-Kruger và tại sao người dốt lại tự tin')">🦴 Hiệu ứng Dunning-Kruger</span>
+            <span class="suggestion-chip" onclick="fillPrompt('Tại sao con người có xu hướng trì hoãn và cách khắc phục bằng Cú hích (Nudge)')">🧠 Tâm lý học về sự trì hoãn</span>
+          </div>
+
+          <div class="prompt-action-row">
+            <div style="font-size: 0.8rem; color: var(--text-dim);">
+              Chế độ hiện tại: <strong id="hero-selected-mode-text" style="color: #fff;">Lịch sử Việt Nam</strong>
+            </div>
+            <button class="btn btn-primary" onclick="submitHeroStart()">
+              Bắt đầu sáng tác ➔
+            </button>
+          </div>
         </div>
       </div>
 
-    </div>
+      <!-- View 2: Studio / Reader Content State -->
+      <div id="view-studio" class="studio-content-view">
+        
+        <!-- Studio Toolbar -->
+        <div class="studio-toolbar">
+          <div class="studio-tabs">
+            <button class="studio-tab-btn active" id="tab-live" onclick="switchStudioTab('live')">🔴 Trực tiếp (Live)</button>
+            <button class="studio-tab-btn" id="tab-reader" onclick="switchStudioTab('reader')">📖 Trình đọc (Reader)</button>
+          </div>
 
-    <!-- Right Event & Tools Panel -->
-    <div class="event-panel">
-      <div class="event-panel-header">
-        <span>⚡ Luồng Sự Kiện & Công Cụ</span>
-        <div style="display: flex; align-items: center; gap: 6px;">
-          <label style="font-size: 0.7rem; font-weight: normal; text-transform: none; display: flex; align-items: center; gap: 4px; cursor: pointer;">
-            <input type="checkbox" id="chk-autoscroll" checked> Cuộn tự động
-          </label>
+          <div style="display: flex; gap: 8px;">
+            <button class="btn btn-sm" onclick="copyCurrentStory()">📋 Sao chép</button>
+            <button class="btn btn-sm" id="btn-pause-resume" onclick="togglePauseResume()">Tạm dừng</button>
+          </div>
         </div>
+
+        <!-- Document Paper Canvas -->
+        <div class="document-scroll" id="doc-scroll-area">
+          <div class="document-paper">
+            
+            <!-- AI Activity Pill (Click to open Drawer) -->
+            <div id="ai-activity-pill" class="ai-activity-pill" onclick="toggleDrawer()" style="display: none;">
+              <span class="ai-pulse-icon"></span>
+              <span id="ai-activity-pill-text">AI đang thực thi nhiệm vụ...</span>
+              <span style="font-size: 0.72rem; color: var(--text-dim); margin-left: 4px;">Xem chi tiết ➔</span>
+            </div>
+
+            <!-- Header Titles -->
+            <div class="document-title" id="story-title">Đang sáng tác...</div>
+            <div class="document-meta">
+              <span id="doc-meta-chapter">Chương 1</span>
+              <span id="doc-meta-words">0 chữ</span>
+              <span id="doc-meta-style">Lịch sử Việt Nam</span>
+            </div>
+
+            <!-- Content Area -->
+            <div class="story-text" id="story-body"></div>
+            <span class="story-cursor" id="story-cursor" style="display: none;"></span>
+
+          </div>
+        </div>
+
+        <!-- Floating Bottom Action Bar -->
+        <div class="floating-bar" id="floating-bar">
+          
+          <!-- Review Notice Banner (when chapter waiting for review) -->
+          <div class="review-action-banner" id="review-banner">
+            <div>
+              <strong>🎉 Chương vừa hoàn thành!</strong> Đọc lại bên trên hoặc duyệt để viết chương tiếp theo.
+            </div>
+            <button class="btn btn-sm btn-primary" onclick="sendAction('next')">Duyệt & Viết Chương Tiếp ➔</button>
+          </div>
+
+          <!-- Steer Input Row -->
+          <div class="steer-row">
+            <input type="text" id="steer-input" class="steer-input" placeholder="Gửi chỉ đạo hoặc can thiệp cho AI (ví dụ: 'miêu tả kỹ hơn tâm lý tướng sĩ', 'đẩy nhanh nhịp độ')..." onkeydown="if(event.key==='Enter') submitSteer()">
+            <button class="btn btn-primary" onclick="submitSteer()">Gửi chỉ đạo</button>
+          </div>
+
+        </div>
+
       </div>
 
-      <div id="event-list" class="event-list">
-        <!-- Event Cards will be appended here -->
-      </div>
-    </div>
+    </main>
 
-  </div>
+    <!-- Slide-out Activity Drawer (Right) -->
+    <div class="drawer-overlay" id="drawer-overlay" onclick="toggleDrawer()"></div>
+    <aside class="activity-drawer" id="activity-drawer">
+      <div class="drawer-header">
+        <span>⚡ Hoạt động AI & Công Cụ</span>
+        <button class="btn-icon" onclick="toggleDrawer()" title="Đóng">✕</button>
+      </div>
 
-  <!-- New Project Modal -->
-  <div id="modal-new" class="modal-overlay">
-    <div class="modal-box">
-      <div class="modal-title">Tạo Tác Phẩm Mới</div>
-      <div style="font-size: 0.85rem; color: var(--text-secondary);">
-        Hệ thống sẽ tạo một thư mục riêng biệt trong <code>output/</code> để đảm bảo an toàn toàn bộ dữ liệu hiện có.
+      <div class="drawer-events" id="drawer-events-list">
+        <!-- Event cards will be appended here -->
       </div>
-      <div>
-        <label style="font-size: 0.8rem; font-weight: 600; display: block; margin-bottom: 6px;">Chế độ sáng tác:</label>
-        <select id="modal-style-select" style="width: 100%; padding: 8px; background: var(--bg-primary); border: 1px solid var(--border-color); color: #fff; border-radius: 6px;">
-          <option value="novel-manga">📖 Tiểu thuyết / Manga (novel-manga)</option>
-          <option value="doodle-explainer">🦴 Doodle TikTok Video (doodle-explainer)</option>
-          <option value="behavioral-psychology">🧠 Tâm lý học hành vi (behavioral-psychology)</option>
-          <option value="vietnamese-history">⚔️ Lịch sử Việt Nam (vietnamese-history)</option>
-        </select>
-      </div>
-      <div>
-        <label style="font-size: 0.8rem; font-weight: 600; display: block; margin-bottom: 6px;">Đề tài / Yêu cầu mở đầu:</label>
-        <textarea id="modal-prompt-input" rows="3" style="width: 100%; padding: 8px; background: var(--bg-primary); border: 1px solid var(--border-color); color: #fff; border-radius: 6px; outline: none; font-family: inherit;" placeholder="Ví dụ: Chiến dịch Rạch Gầm - Xoài Mút năm 1785..."></textarea>
-      </div>
-      <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px;">
-        <button class="btn" onclick="closeNewProjectModal()">Hủy</button>
-        <button class="btn btn-primary" onclick="confirmNewProject()">Tạo & Bắt đầu</button>
-      </div>
-    </div>
+    </aside>
+
   </div>
 
   <script>
-    let appState = {
+    let state = {
       dir: "",
-      style: "novel-manga",
+      style: "vietnamese-history",
       snapshot: null,
       streamingText: "",
       events: [],
       projects: [],
       chapters: [],
-      currentTab: "live",
+      activeTab: "live",
+      currentView: "hero", // "hero" or "studio"
+      drawerOpen: false,
       selectedChapter: null
     };
 
-    // Initialize EventSource
     let eventSource = null;
 
-    function initSSE() {
-      if (eventSource) {
-        eventSource.close();
-      }
-      eventSource = new EventSource('/api/stream');
+    // Toggle Sidebar
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      sidebar.classList.toggle('collapsed');
+    }
 
-      eventSource.addEventListener('ping', (e) => {
-        // keepalive
+    // Toggle Activity Drawer
+    function toggleDrawer() {
+      state.drawerOpen = !state.drawerOpen;
+      document.getElementById('activity-drawer').classList.toggle('open', state.drawerOpen);
+      document.getElementById('drawer-overlay').classList.toggle('active', state.drawerOpen);
+    }
+
+    // Show Hero Creation View
+    function showHeroCreation() {
+      state.currentView = "hero";
+      document.getElementById('view-hero').style.display = "flex";
+      document.getElementById('view-studio').style.display = "none";
+      document.getElementById('project-title-display').innerText = "Tạo tác phẩm mới";
+    }
+
+    // Show Studio View
+    function showStudioView() {
+      state.currentView = "studio";
+      document.getElementById('view-hero').style.display = "none";
+      document.getElementById('view-studio').style.display = "flex";
+    }
+
+    // Choose Mode in Hero
+    function chooseHeroMode(style) {
+      state.style = style;
+      document.querySelectorAll('.mode-card').forEach(c => {
+        c.classList.toggle('selected', c.getAttribute('data-style') === style);
       });
 
-      eventSource.addEventListener('event', (e) => {
-        try {
-          const ev = JSON.parse(e.data);
-          addEventCard(ev);
-        } catch (err) {
-          console.error("SSE event parse error:", err);
-        }
-      });
-
-      eventSource.addEventListener('delta', (e) => {
-        appendDelta(e.data);
-      });
-
-      eventSource.addEventListener('clear', (e) => {
-        clearStreamText();
-      });
-
-      eventSource.addEventListener('status', (e) => {
-        try {
-          const snap = JSON.parse(e.data);
-          updateSnapshotUI(snap);
-        } catch (err) {}
-      });
-
-      eventSource.onerror = (err) => {
-        console.warn("SSE disconnected, retrying in 3s...", err);
-        setTimeout(initSSE, 3000);
+      const names = {
+        'vietnamese-history': 'Lịch sử Việt Nam',
+        'doodle-explainer': 'Doodle TikTok Video',
+        'behavioral-psychology': 'Tâm lý học hành vi',
+        'novel-manga': 'Tiểu thuyết / Manga'
       };
+      document.getElementById('hero-selected-mode-text').innerText = names[style] || style;
+      updateSidebarMode(style);
+      sendAction('set_style', { style: style });
     }
 
-    // Fetch Full Status
-    async function fetchStatus() {
-      try {
-        const res = await fetch('/api/status');
-        const data = await res.json();
-        appState.dir = data.dir || "";
-        appState.style = data.style || "novel-manga";
-        appState.snapshot = data.snapshot || null;
-
-        updateStyleUI(appState.style);
-        if (data.snapshot) {
-          updateSnapshotUI(data.snapshot);
-        }
-        if (data.streaming_text) {
-          setStreamText(data.streaming_text);
-        }
-        if (data.recent_events && data.recent_events.length > 0) {
-          renderEvents(data.recent_events);
-        }
-        if (data.projects) {
-          renderProjects(data.projects);
-        }
-
-        loadChapters();
-      } catch (err) {
-        console.error("fetchStatus error:", err);
-      }
+    function updateSidebarMode(style) {
+      const names = {
+        'vietnamese-history': '⚔️ Lịch sử Việt Nam',
+        'doodle-explainer': '🦴 Doodle TikTok Video',
+        'behavioral-psychology': '🧠 Tâm lý học hành vi',
+        'novel-manga': '📖 Tiểu thuyết / Manga'
+      };
+      document.getElementById('sidebar-current-mode').innerHTML = `<span>${names[style] || style}</span>`;
     }
 
-    // Load Chapters for current project
-    async function loadChapters() {
-      try {
-        const res = await fetch('/api/chapters');
-        const items = await res.json();
-        appState.chapters = items || [];
-        renderChapters(appState.chapters);
-      } catch (err) {
-        console.error("loadChapters error:", err);
-      }
+    function fillPrompt(text) {
+      document.getElementById('hero-prompt-input').value = text;
+      document.getElementById('hero-prompt-input').focus();
     }
 
-    // Render Chapters List
-    function renderChapters(chapters) {
-      const container = document.getElementById('chapter-list');
-      const badge = document.getElementById('chapter-count-badge');
-      if (!container) return;
-
-      badge.innerText = `${chapters.length} chương`;
-
-      if (chapters.length === 0) {
-        container.innerHTML = '<div style="padding: 12px; text-align: center; color: var(--text-muted); font-size: 0.8rem;">Chưa có chương nào được tạo.</div>';
+    // Submit New Story Creation
+    async function submitHeroStart() {
+      const prompt = document.getElementById('hero-prompt-input').value.trim();
+      if (!prompt) {
+        alert("Vui lòng nhập đề tài hoặc ý tưởng sáng tác.");
         return;
       }
 
-      container.innerHTML = '';
-      chapters.forEach(ch => {
-        const div = document.createElement('div');
-        div.className = `chapter-item ${appState.selectedChapter === ch.chapter ? 'active' : ''}`;
-        div.onclick = () => selectChapter(ch.chapter);
-        div.innerHTML = `
-          <span class="chapter-num">${ch.chapter < 10 ? '0' + ch.chapter : ch.chapter}</span>
-          <span class="chapter-name" title="${ch.title}">${ch.title}</span>
-          <span class="chapter-wc">${ch.completed ? '✓ ' : ''}${ch.word_count > 0 ? ch.word_count.toLocaleString() + 'c' : ''}</span>
-        `;
-        container.appendChild(div);
-      });
+      showStudioView();
+      document.getElementById('story-title').innerText = prompt;
+      document.getElementById('story-body').innerText = "Đang khởi tạo phiên sáng tác và nạp tài nguyên...";
+      document.getElementById('story-cursor').style.display = "inline-block";
+
+      await sendAction('start', { prompt: prompt, style: state.style });
     }
 
-    // Select and Read Chapter
+    // Submit Steer from Floating Bar
+    async function submitSteer() {
+      const input = document.getElementById('steer-input');
+      const text = input.value.trim();
+      if (!text) return;
+
+      input.value = '';
+      await sendAction('steer', { message: text });
+    }
+
+    // Pause / Resume Toggle
+    async function togglePauseResume() {
+      const isRunning = state.snapshot && state.snapshot.IsRunning;
+      if (isRunning) {
+        await sendAction('pause');
+      } else {
+        await sendAction('resume');
+      }
+    }
+
+    // Switch Studio Tab (Live vs Reader)
+    function switchStudioTab(tab) {
+      state.activeTab = tab;
+      document.getElementById('tab-live').classList.toggle('active', tab === 'live');
+      document.getElementById('tab-reader').classList.toggle('active', tab === 'reader');
+
+      if (tab === 'live') {
+        document.getElementById('story-body').innerText = state.streamingText || "Đang chờ nội dung từ AI...";
+        document.getElementById('story-cursor').style.display = state.snapshot && state.snapshot.IsRunning ? "inline-block" : "none";
+      } else {
+        document.getElementById('story-cursor').style.display = "none";
+        if (state.chapters.length > 0 && !state.selectedChapter) {
+          selectChapter(state.chapters[0].chapter);
+        }
+      }
+    }
+
+    // Load and Read Chapter
     async function selectChapter(chNum) {
-      appState.selectedChapter = chNum;
-      renderChapters(appState.chapters);
-      switchTab('reader');
+      state.selectedChapter = chNum;
+      switchStudioTab('reader');
+      renderSidebarChapters(state.chapters);
 
-      const titleElem = document.getElementById('reader-chapter-title');
-      const metaElem = document.getElementById('reader-meta');
-      const contentElem = document.getElementById('reader-content');
-
-      const chInfo = appState.chapters.find(c => c.chapter === chNum);
-      titleElem.innerText = chInfo ? chInfo.title : `Chương ${chNum}`;
-      metaElem.innerText = chInfo && chInfo.word_count ? `${chInfo.word_count.toLocaleString()} chữ` : '';
-      contentElem.innerText = "Đang tải nội dung chương...";
+      const chInfo = state.chapters.find(c => c.chapter === chNum);
+      document.getElementById('story-title').innerText = chInfo ? chInfo.title : `Chương ${chNum}`;
+      document.getElementById('doc-meta-chapter').innerText = `Chương ${chNum}`;
+      document.getElementById('doc-meta-words').innerText = chInfo && chInfo.word_count ? `${chInfo.word_count.toLocaleString()} chữ` : '';
+      document.getElementById('story-body').innerText = "Đang tải nội dung chương...";
 
       try {
         const res = await fetch(`/api/chapter?ch=${chNum}`);
         const data = await res.json();
         if (data.ok && data.content) {
-          contentElem.innerText = data.content;
+          document.getElementById('story-body').innerText = data.content;
         } else {
-          contentElem.innerText = data.error || "Chưa có nội dung cho chương này.";
+          document.getElementById('story-body').innerText = data.error || "Chưa có nội dung cho chương này.";
         }
       } catch (err) {
-        contentElem.innerText = "Lỗi khi tải chương: " + err.message;
+        document.getElementById('story-body').innerText = "Lỗi khi tải chương: " + err.message;
       }
     }
 
-    // Render Projects List
-    function renderProjects(projects) {
-      const container = document.getElementById('project-list');
-      const badge = document.getElementById('project-count-badge');
-      if (!container) return;
-
-      badge.innerText = `${projects.length}`;
-      if (projects.length === 0) {
-        container.innerHTML = '<div style="padding: 12px; text-align: center; color: var(--text-muted); font-size: 0.8rem;">Chưa có dự án nào.</div>';
-        return;
-      }
-
-      container.innerHTML = '';
-      projects.forEach(p => {
-        const card = document.createElement('div');
-        card.className = `project-card ${p.is_current ? 'active' : ''}`;
-        card.onclick = () => switchProject(p.full_path);
-
-        const timeStr = p.mod_time ? new Date(p.mod_time).toLocaleDateString('vi-VN') : '';
-        card.innerHTML = `
-          <div class="proj-title" title="${p.title}">${p.title}</div>
-          <div class="proj-meta">
-            <span class="proj-badge">${p.style_badge || ''}</span>
-            <span>${p.progress_text}</span>
-          </div>
-        `;
-        container.appendChild(card);
+    // Copy Story Content
+    function copyCurrentStory() {
+      const text = document.getElementById('story-body').innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        alert("Đã sao chép văn bản vào khay nhớ tạm!");
       });
     }
 
-    // Update UI from Snapshot
-    function updateSnapshotUI(snap) {
-      if (!snap) return;
-
-      // Status Badge
-      const statusBadge = document.getElementById('badge-status');
-      const statusLabel = snap.StatusLabel || (snap.IsRunning ? 'RUNNING' : 'READY');
-      statusBadge.innerText = statusLabel;
-      statusBadge.className = 'badge';
-      if (statusLabel === 'RUNNING') statusBadge.classList.add('badge-running');
-      else if (statusLabel === 'REVIEW') statusBadge.classList.add('badge-review');
-      else if (statusLabel === 'COMPLETE') statusBadge.classList.add('badge-complete');
-      else statusBadge.classList.add('badge-ready');
-
-      // Stats
-      document.getElementById('stat-book-title').innerText = snap.BookTitle || (snap.Premise ? snap.Premise.substring(0, 25) + '...' : 'Đang sáng tác');
-      document.getElementById('stat-chapters').innerText = `${snap.CompletedCount || 0}/${snap.TotalChapters || 0}`;
-      document.getElementById('stat-words').innerText = (snap.TotalWordCount || 0).toLocaleString();
-      document.getElementById('stat-cost').innerText = snap.TotalCostUSD ? `$${snap.TotalCostUSD.toFixed(3)}` : '$0.00';
-
-      // Phase
-      document.getElementById('val-phase').innerText = snap.Phase || 'Khởi tạo';
-
-      // Buttons / Command Bar State
-      const btnSubmit = document.getElementById('btn-submit');
-      const btnPause = document.getElementById('btn-pause');
-      const btnResume = document.getElementById('btn-resume');
-      const reviewBanner = document.getElementById('review-banner');
-
-      if (snap.HasAdvanceHold || statusLabel === 'REVIEW') {
-        reviewBanner.style.display = 'flex';
-      } else {
-        reviewBanner.style.display = 'none';
-      }
-
-      if (snap.IsRunning) {
-        btnSubmit.innerText = "Gửi chỉ đạo (Steer)";
-        btnSubmit.className = "btn btn-primary";
-        btnPause.style.display = "inline-flex";
-        btnResume.style.display = "none";
-      } else {
-        btnSubmit.innerText = "Bắt đầu sáng tác";
-        btnSubmit.className = "btn btn-primary";
-        btnPause.style.display = "none";
-        if (snap.CompletedCount > 0 && statusLabel !== 'COMPLETE') {
-          btnResume.style.display = "inline-flex";
-        } else {
-          btnResume.style.display = "none";
-        }
-      }
-
-      // Outline tab update if available
-      if (snap.Outline && snap.Outline.length > 0) {
-        renderOutline(snap.Premise, snap.Outline);
-      }
-    }
-
-    function renderOutline(premise, outline) {
-      const premiseEl = document.getElementById('outline-premise');
-      const listEl = document.getElementById('outline-list');
-      if (premiseEl) premiseEl.innerText = premise || '';
-
-      if (listEl) {
-        listEl.innerHTML = '';
-        outline.forEach(item => {
-          const div = document.createElement('div');
-          div.style.padding = "8px 12px";
-          div.style.background = "var(--bg-primary)";
-          div.style.borderRadius = "6px";
-          div.style.border = "1px solid var(--border-color)";
-          div.innerHTML = `
-            <div style="font-weight: 600; color: #fff;">Chương ${item.Chapter}: ${item.Title}</div>
-            <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 4px;">${item.CoreEvent || ''}</div>
-          `;
-          listEl.appendChild(div);
-        });
-      }
-    }
-
-    // Update Style UI
-    function updateStyleUI(style) {
-      document.querySelectorAll('.mode-item').forEach(el => {
-        if (el.getAttribute('data-style') === style) {
-          el.classList.add('active');
-        } else {
-          el.classList.remove('active');
-        }
-      });
-
-      const badge = document.getElementById('badge-mode');
-      switch (style) {
-        case 'doodle-explainer':
-          badge.innerText = '🦴 Video TikTok Doodle';
-          break;
-        case 'behavioral-psychology':
-          badge.innerText = '🧠 Tâm lý học hành vi';
-          break;
-        case 'vietnamese-history':
-          badge.innerText = '⚔️ Lịch sử Việt Nam';
-          break;
-        default:
-          badge.innerText = '📖 Tiểu thuyết / Manga';
-          break;
-      }
-    }
-
-    // Select Style
-    async function selectStyle(style) {
-      appState.style = style;
-      updateStyleUI(style);
-      await sendAction('set_style', { style: style });
-    }
-
-    // Stream text management
-    function appendDelta(delta) {
-      const content = document.getElementById('stream-content');
-      content.innerText += delta;
-      scrollStreamToBottom();
-    }
-
-    function clearStreamText() {
-      const content = document.getElementById('stream-content');
-      content.innerText = '';
-    }
-
-    function setStreamText(text) {
-      const content = document.getElementById('stream-content');
-      content.innerText = text;
-      scrollStreamToBottom();
-    }
-
-    function scrollStreamToBottom() {
-      const box = document.getElementById('stream-output');
-      if (box) {
-        box.scrollTop = box.scrollHeight;
-      }
-    }
-
-    // Events Rendering
-    function renderEvents(events) {
-      const list = document.getElementById('event-list');
-      list.innerHTML = '';
-      events.forEach(ev => addEventCard(ev, false));
-      scrollEventsToBottom();
-    }
-
-    function addEventCard(ev, shouldScroll = true) {
-      const list = document.getElementById('event-list');
-      const card = document.createElement('div');
-      card.className = 'event-card';
-
-      let tagClass = 'tag-system';
-      let cat = (ev.Category || 'SYSTEM').toUpperCase();
-      if (cat === 'TOOL') tagClass = 'tag-tool';
-      else if (cat === 'DECISION') tagClass = 'tag-decision';
-      else if (cat === 'MODEL') tagClass = 'tag-model';
-      else if (cat === 'ERROR') tagClass = 'tag-error';
-
-      const timeStr = ev.Time ? new Date(ev.Time).toLocaleTimeString('vi-VN', { hour12: false }) : '';
-
-      let summaryHtml = escapeHtml(ev.Summary || '');
-      if (cat === 'TOOL') {
-        summaryHtml = `<span class="event-tool-call">${summaryHtml}</span>`;
-      }
-
-      let detailHtml = '';
-      if (ev.Detail && ev.Detail.trim() !== '' && ev.Detail !== ev.Summary) {
-        detailHtml = `<div class="event-detail-preview">${escapeHtml(ev.Detail)}</div>`;
-      }
-
-      card.innerHTML = `
-        <div class="event-header">
-          <span class="event-tag ${tagClass}">${cat}</span>
-          <span class="event-time">${timeStr}</span>
-        </div>
-        <div class="event-summary">${summaryHtml}</div>
-        ${detailHtml}
-      `;
-
-      list.appendChild(card);
-      if (shouldScroll && document.getElementById('chk-autoscroll').checked) {
-        scrollEventsToBottom();
-      }
-    }
-
-    function scrollEventsToBottom() {
-      const list = document.getElementById('event-list');
-      if (list) {
-        list.scrollTop = list.scrollHeight;
-      }
-    }
-
-    function escapeHtml(text) {
-      const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
-      return text.replace(/[&<>"']/g, m => map[m]);
-    }
-
-    // Tab Switching
-    function switchTab(tab) {
-      appState.currentTab = tab;
-      document.getElementById('tab-btn-live').classList.toggle('active', tab === 'live');
-      document.getElementById('tab-btn-reader').classList.toggle('active', tab === 'reader');
-      document.getElementById('tab-btn-outline').classList.toggle('active', tab === 'outline');
-
-      document.getElementById('view-live').style.display = tab === 'live' ? 'flex' : 'none';
-      document.getElementById('view-reader').style.display = tab === 'reader' ? 'flex' : 'none';
-      document.getElementById('view-outline').style.display = tab === 'outline' ? 'flex' : 'none';
-    }
-
-    // Form Submissions & Actions
-    async function handleSubmit() {
-      const promptInput = document.getElementById('prompt-input');
-      const text = promptInput.value.trim();
-      if (!text) return;
-
-      const isRunning = appState.snapshot && appState.snapshot.IsRunning;
-      if (isRunning) {
-        // Send Steer
-        await sendAction('steer', { message: text });
-      } else {
-        // Start Generation
-        await sendAction('start', { prompt: text, style: appState.style });
-      }
-
-      promptInput.value = '';
-    }
-
+    // Send Action helper
     async function sendAction(action, extraData = {}) {
       try {
         const payload = Object.assign({ action: action }, extraData);
@@ -1124,7 +1092,7 @@ Hãy nhập ý tưởng đề tài bên dưới để bắt đầu sáng tác ho
         });
         const data = await res.json();
         if (!data.ok) {
-          alert("Lỗi: " + (data.error || "Không thể thực hiện hành động"));
+          alert("Lỗi: " + (data.error || "Không thể thực hiện"));
         } else {
           setTimeout(fetchStatus, 300);
         }
@@ -1133,41 +1101,268 @@ Hãy nhập ý tưởng đề tài bên dưới để bắt đầu sáng tác ho
       }
     }
 
-    async function switchProject(fullPath) {
-      if (!confirm(`Bạn có muốn chuyển sang dự án này không?`)) return;
-      await sendAction('switch', { dir: fullPath });
+    // Fetch Status from server
+    async function fetchStatus() {
+      try {
+        const res = await fetch('/api/status');
+        const data = await res.json();
+
+        state.dir = data.dir || "";
+        state.style = data.style || "vietnamese-history";
+        state.snapshot = data.snapshot || null;
+
+        updateSidebarMode(state.style);
+        chooseHeroMode(state.style);
+
+        if (data.snapshot) {
+          updateSnapshotUI(data.snapshot);
+        }
+        if (data.streaming_text) {
+          state.streamingText = data.streaming_text;
+          if (state.activeTab === 'live' && state.currentView === 'studio') {
+            document.getElementById('story-body').innerText = state.streamingText;
+          }
+        }
+        if (data.recent_events && data.recent_events.length > 0) {
+          renderEvents(data.recent_events);
+        }
+        if (data.projects) {
+          state.projects = data.projects;
+          renderSidebarProjects(data.projects);
+        }
+
+        loadChapters();
+      } catch (err) {
+        console.error("fetchStatus error:", err);
+      }
     }
 
-    // Modal
-    function openNewProjectModal() {
-      document.getElementById('modal-style-select').value = appState.style;
-      document.getElementById('modal-prompt-input').value = '';
-      document.getElementById('modal-new').classList.add('open');
+    // Load Chapters
+    async function loadChapters() {
+      try {
+        const res = await fetch('/api/chapters');
+        const items = await res.json();
+        state.chapters = items || [];
+        renderSidebarChapters(state.chapters);
+
+        if (state.chapters.length > 0 && state.currentView === 'hero' && state.snapshot && state.snapshot.CompletedCount > 0) {
+          // If we have an existing novel with chapters, automatically open studio view
+          showStudioView();
+        }
+      } catch (err) {
+        console.error("loadChapters error:", err);
+      }
     }
 
-    function closeNewProjectModal() {
-      document.getElementById('modal-new').classList.remove('open');
-    }
+    // Render Sidebar Chapters
+    function renderSidebarChapters(chapters) {
+      const container = document.getElementById('sidebar-chapter-list');
+      const section = document.getElementById('sidebar-chapters-section');
+      const countBadge = document.getElementById('sidebar-chapter-count');
 
-    async function confirmNewProject() {
-      const style = document.getElementById('modal-style-select').value;
-      const prompt = document.getElementById('modal-prompt-input').value.trim();
-      closeNewProjectModal();
-      await sendAction('new', { style: style, prompt: prompt });
-    }
+      if (!chapters || chapters.length === 0) {
+        section.style.display = "none";
+        return;
+      }
 
-    function copyReaderText() {
-      const text = document.getElementById('reader-content').innerText;
-      navigator.clipboard.writeText(text).then(() => {
-        alert("Đã sao chép nội dung chương vào khay nhớ tạm!");
+      section.style.display = "flex";
+      countBadge.innerText = `${chapters.length} chương`;
+      container.innerHTML = '';
+
+      chapters.forEach(ch => {
+        const div = document.createElement('div');
+        div.className = `chapter-nav-item ${state.selectedChapter === ch.chapter ? 'active' : ''}`;
+        div.onclick = () => selectChapter(ch.chapter);
+        div.innerHTML = `
+          <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Chương ${ch.chapter}: ${ch.title}</span>
+          <span style="font-size: 0.7rem; color: var(--text-dim);">${ch.completed ? '✓' : ''}</span>
+        `;
+        container.appendChild(div);
       });
     }
 
-    // Bootstrap
+    // Render Sidebar Projects
+    function renderSidebarProjects(projects) {
+      const container = document.getElementById('sidebar-project-list');
+      if (!projects || projects.length === 0) {
+        container.innerHTML = '<div style="padding: 12px; text-align: center; color: var(--text-dim); font-size: 0.8rem;">Chưa có tác phẩm nào.</div>';
+        return;
+      }
+
+      container.innerHTML = '';
+      projects.forEach(p => {
+        const div = document.createElement('div');
+        div.className = `project-nav-item ${p.is_current ? 'active' : ''}`;
+        div.onclick = async () => {
+          await sendAction('switch', { dir: p.full_path });
+          showStudioView();
+        };
+
+        div.innerHTML = `
+          <div style="flex: 1; min-width: 0;">
+            <div class="project-nav-title" title="${p.title}">${p.title}</div>
+            <div style="font-size: 0.72rem; color: var(--text-dim); display: flex; justify-content: space-between; margin-top: 2px;">
+              <span>${p.style_badge || ''}</span>
+              <span>${p.progress_text}</span>
+            </div>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    // Update UI from Snapshot
+    function updateSnapshotUI(snap) {
+      if (!snap) return;
+
+      const titleDisplay = document.getElementById('project-title-display');
+      const docTitle = document.getElementById('story-title');
+      const bookTitle = snap.BookTitle || (snap.Premise ? snap.Premise.substring(0, 30) + '...' : 'Tác phẩm đang sáng tác');
+      titleDisplay.innerText = bookTitle;
+      if (state.currentView === 'studio' && (!state.selectedChapter || state.activeTab === 'live')) {
+        docTitle.innerText = bookTitle;
+      }
+
+      // Status pill
+      const pill = document.getElementById('status-pill');
+      const statusText = document.getElementById('status-text');
+      const isRunning = snap.IsRunning;
+
+      pill.className = 'status-pill';
+      if (snap.HasAdvanceHold || snap.StatusLabel === 'REVIEW') {
+        pill.classList.add('review');
+        statusText.innerText = "CHỜ DUYỆT TIẾP";
+      } else if (isRunning) {
+        pill.classList.add('running');
+        statusText.innerText = "ĐANG SÁNG TÁC";
+      } else {
+        statusText.innerText = snap.StatusLabel || "SẴN SÀNG";
+      }
+
+      // Review banner
+      const reviewBanner = document.getElementById('review-banner');
+      if (snap.HasAdvanceHold || snap.StatusLabel === 'REVIEW') {
+        reviewBanner.style.display = "flex";
+      } else {
+        reviewBanner.style.display = "none";
+      }
+
+      // Pause / Resume button
+      const btnPause = document.getElementById('btn-pause-resume');
+      if (isRunning) {
+        btnPause.innerText = "Tạm dừng";
+      } else {
+        btnPause.innerText = "Tiếp tục";
+      }
+
+      // Cursor
+      document.getElementById('story-cursor').style.display = (isRunning && state.activeTab === 'live') ? "inline-block" : "none";
+    }
+
+    // Render Events in Activity Drawer
+    function renderEvents(events) {
+      const container = document.getElementById('drawer-events-list');
+      const badge = document.getElementById('event-badge');
+      badge.innerText = events.length;
+
+      container.innerHTML = '';
+      events.slice(-50).forEach(ev => {
+        addEventCard(ev, false);
+      });
+    }
+
+    function addEventCard(ev, isNew = true) {
+      const container = document.getElementById('drawer-events-list');
+      const card = document.createElement('div');
+      card.className = 'event-card';
+
+      let cat = (ev.Category || 'SYSTEM').toUpperCase();
+      let tagClass = 'tag-system';
+      if (cat === 'TOOL') tagClass = 'tag-tool';
+      else if (cat === 'DECISION') tagClass = 'tag-decision';
+      else if (cat === 'MODEL') tagClass = 'tag-model';
+
+      const timeStr = ev.Time ? new Date(ev.Time).toLocaleTimeString('vi-VN', { hour12: false }) : '';
+      let summary = escapeHtml(ev.Summary || '');
+      if (cat === 'TOOL') {
+        summary = `<span class="tool-highlight">${summary}</span>`;
+      }
+
+      card.innerHTML = `
+        <div class="event-header">
+          <span class="tag ${tagClass}">${cat}</span>
+          <span class="event-time">${timeStr}</span>
+        </div>
+        <div class="event-summary">${summary}</div>
+      `;
+
+      container.appendChild(card);
+      if (isNew) {
+        container.scrollTop = container.scrollHeight;
+        updateActivityPill(ev);
+      }
+    }
+
+    function updateActivityPill(ev) {
+      const pill = document.getElementById('ai-activity-pill');
+      const text = document.getElementById('ai-activity-pill-text');
+      if (!ev || !ev.Summary) return;
+
+      pill.style.display = "inline-flex";
+      text.innerText = ev.Summary;
+    }
+
+    function escapeHtml(text) {
+      const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+      return text.replace(/[&<>"']/g, m => map[m]);
+    }
+
+    // Initialize SSE stream
+    function initSSE() {
+      if (eventSource) eventSource.close();
+      eventSource = new EventSource('/api/stream');
+
+      eventSource.addEventListener('delta', (e) => {
+        state.streamingText += e.data;
+        if (state.activeTab === 'live' && state.currentView === 'studio') {
+          const body = document.getElementById('story-body');
+          body.innerText += e.data;
+          const scroll = document.getElementById('doc-scroll-area');
+          scroll.scrollTop = scroll.scrollHeight;
+        }
+      });
+
+      eventSource.addEventListener('clear', () => {
+        state.streamingText = '';
+        if (state.activeTab === 'live' && state.currentView === 'studio') {
+          document.getElementById('story-body').innerText = '';
+        }
+      });
+
+      eventSource.addEventListener('event', (e) => {
+        try {
+          const ev = JSON.parse(e.data);
+          addEventCard(ev, true);
+        } catch (err) {}
+      });
+
+      eventSource.addEventListener('status', (e) => {
+        try {
+          const snap = JSON.parse(e.data);
+          state.snapshot = snap;
+          updateSnapshotUI(snap);
+        } catch (err) {}
+      });
+
+      eventSource.onerror = () => {
+        setTimeout(initSSE, 3000);
+      };
+    }
+
     window.addEventListener('DOMContentLoaded', () => {
       fetchStatus();
       initSSE();
-      setInterval(fetchStatus, 15000); // Polling refresh stats every 15s
+      setInterval(fetchStatus, 15000);
     });
   </script>
 </body>
