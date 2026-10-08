@@ -887,9 +887,36 @@ func (h *Host) SetStyle(style string) error {
 	if h.engine != nil {
 		h.engine.style = style
 	}
+	if h.store != nil && h.store.RunMeta != nil {
+		if err := h.store.RunMeta.SetStyle(style); err != nil {
+			slog.Warn("Cập nhật style vào RunMeta thất bại", "err", err)
+		}
+	}
+	// Tải lại bundle và cập nhật prompts cho engine
+	h.bundle = assets.Load(style, assets.DefaultLoadOptions(h.cfg.OutputDir))
+	if h.engine != nil {
+		h.engine.planStartPrompt = h.bundle.Prompts.ArbiterPlanStart
+		h.engine.failurePrompt = h.bundle.Prompts.ArbiterFailure
+		if h.models != nil && h.usage != nil {
+			newWorkers, restore, applyThinking := agents.BuildWorkers(h.cfg, h.store, h.styleStats, h.models, h.bundle, h.usage.Record,
+				func(agent, reason string, consecutive int32) {
+					h.emitEvent(Event{Time: time.Now(), Category: "SYSTEM", Agent: agent,
+						Summary: fmt.Sprintf("StopGuard: %s cố kết thúc khi chưa hoàn thành sản phẩm cần thiết, đã chặn và nhắc nhở (lần thứ %d liên tiếp)", agent, consecutive), Level: "info"})
+				})
+			if h.observer != nil {
+				newWorkers.SetEventObserver(func(meta subagent.RunMeta, ev agentcore.Event) {
+					h.observer.handleWorkerEvent(meta.Agent, ev)
+				})
+			}
+			h.engine.workers = newWorkers
+			h.thinkingApplier = applyThinking
+			h.writerRestore = restore
+		}
+	}
 	if h.configPath != "" {
 		if err := bootstrap.SaveConfig(h.configPath, h.cfg); err != nil {
 			slog.Warn("Lưu cấu hình style thất bại", "path", h.configPath, "err", err)
+			return fmt.Errorf("lưu cấu hình thất bại: %w", err)
 		}
 	}
 	return nil

@@ -293,14 +293,22 @@ func (m Model) handleModeSelectKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 
 			m.modeSelect = nil
 			if m.runtime != nil {
-				_ = m.runtime.SetStyle(chosen.StyleKey)
+				if err := m.runtime.SetStyle(chosen.StyleKey); err != nil {
+					m.applyEvent(host.Event{
+						Time:     time.Now(),
+						Category: "ERROR",
+						Level:    "error",
+						Summary:  fmt.Sprintf("Chuyển đổi chế độ thất bại: %v", err),
+					})
+				} else {
+					m.applyEvent(host.Event{
+						Time:     time.Now(),
+						Category: "SYSTEM",
+						Level:    "info",
+						Summary:  fmt.Sprintf("Đã chuyển sang chế độ làm việc: %s", chosen.Title),
+					})
+				}
 			}
-			m.applyEvent(host.Event{
-				Time:     time.Now(),
-				Category: "SYSTEM",
-				Level:    "info",
-				Summary:  fmt.Sprintf("Đã chuyển sang chế độ làm việc: %s", chosen.Title),
-			})
 			m.refreshEventViewport()
 			return m, tea.Batch(fetchSnapshot(m.runtime), m.textarea.Focus())
 		}
@@ -341,14 +349,22 @@ func (m Model) handleModeSelectKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 
 					m.modeSelect = nil
 					if m.runtime != nil {
-						_ = m.runtime.SetStyle(chosen.StyleKey)
+						if err := m.runtime.SetStyle(chosen.StyleKey); err != nil {
+							m.applyEvent(host.Event{
+								Time:     time.Now(),
+								Category: "ERROR",
+								Level:    "error",
+								Summary:  fmt.Sprintf("Chuyển đổi chế độ thất bại: %v", err),
+							})
+						} else {
+							m.applyEvent(host.Event{
+								Time:     time.Now(),
+								Category: "SYSTEM",
+								Level:    "info",
+								Summary:  fmt.Sprintf("Đã chuyển sang chế độ làm việc: %s", chosen.Title),
+							})
+						}
 					}
-					m.applyEvent(host.Event{
-						Time:     time.Now(),
-						Category: "SYSTEM",
-						Level:    "info",
-						Summary:  fmt.Sprintf("Đã chuyển sang chế độ làm việc: %s", chosen.Title),
-					})
 					m.refreshEventViewport()
 					return m, tea.Batch(fetchSnapshot(m.runtime), m.textarea.Focus())
 				}

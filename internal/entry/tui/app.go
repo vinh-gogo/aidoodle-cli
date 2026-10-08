@@ -116,6 +116,9 @@ func Run(cfg bootstrap.Config, bundle assets.Bundle, build buildversion.Info) er
 
 		if m, ok := finalModel.(Model); ok && m.restartRequested {
 			cfg.OutputDir = nextOutputDir(cfg.OutputDir, time.Now())
+			if rt != nil && rt.Style() != "" {
+				cfg.Style = rt.Style()
+			}
 			bundle = assets.Load(cfg.Style, assets.DefaultLoadOptions(cfg.OutputDir))
 			initialPrompt = m.restartPrompt
 			newProjectDirHint = cfg.OutputDir

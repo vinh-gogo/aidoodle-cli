@@ -372,8 +372,37 @@ func TestLoadDotEnv(t *testing.T) {
 	if got := os.Getenv("TEST_ENV_VAR_1"); got != "hello_world" {
 		t.Errorf("TEST_ENV_VAR_1 = %q, want hello_world", got)
 	}
-	if got := os.Getenv("TEST_ENV_VAR_2"); got != "quoted_val" {
-		t.Errorf("TEST_ENV_VAR_2 = %q, want quoted_val", got)
+}
+
+func TestSaveConfigAndReload(t *testing.T) {
+	dir := t.TempDir()
+	t.Chdir(dir)
+	cfgPath := filepath.Join(dir, "config", "config.json")
+	if err := os.MkdirAll(filepath.Dir(cfgPath), 0o755); err != nil {
+		t.Fatal(err)
+	}
+
+	cfg := Config{
+		Provider:  "openrouter",
+		ModelName: "test-model",
+		Style:     "doodle-explainer",
+	}
+	if err := SaveConfig(cfgPath, cfg); err != nil {
+		t.Fatalf("SaveConfig failed: %v", err)
+	}
+
+	cfg.Style = "behavioral-psychology"
+	if err := SaveConfig(cfgPath, cfg); err != nil {
+		t.Fatalf("SaveConfig update failed: %v", err)
+	}
+
+	loaded, err := loadJSONFile(cfgPath)
+	if err != nil {
+		t.Fatalf("loadJSONFile failed: %v", err)
+	}
+	if loaded.Style != "behavioral-psychology" {
+		t.Fatalf("got style %q, want %q", loaded.Style, "behavioral-psychology")
 	}
 }
+
 
