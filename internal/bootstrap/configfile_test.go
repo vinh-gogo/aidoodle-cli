@@ -372,6 +372,9 @@ func TestLoadDotEnv(t *testing.T) {
 	if got := os.Getenv("TEST_ENV_VAR_1"); got != "hello_world" {
 		t.Errorf("TEST_ENV_VAR_1 = %q, want hello_world", got)
 	}
+	if got := os.Getenv("TEST_ENV_VAR_2"); got != "quoted_val" {
+		t.Errorf("TEST_ENV_VAR_2 = %q, want quoted_val", got)
+	}
 }
 
 func TestSaveConfigAndReload(t *testing.T) {
@@ -404,5 +407,4 @@ func TestSaveConfigAndReload(t *testing.T) {
 		t.Fatalf("got style %q, want %q", loaded.Style, "behavioral-psychology")
 	}
 }
-
 
