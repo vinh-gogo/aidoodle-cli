@@ -39,6 +39,9 @@ type References struct {
 	FactGrounding     string // Neo dữ kiện cho chủ đề trend (writer + architect luôn nhận)
 	TiktokSafety      string // Tiêu chuẩn an toàn nội dung TikTok & pháp lý VN (writer + architect luôn nhận)
 	HumorRelatability string // Chuyên gia gây cười & soi chiếu đồng cảm nhân sinh (writer + architect luôn nhận)
+	// Character & conflict references
+	CharacterBuilding string // Xây dựng nhân vật đa chiều, cửa vào độc giả
+	AdversityConflict string // Xung đột kép & khoảnh khắc đánh đổi sinh tử
 }
 
 // ContextTool 组装当前章节所需上下文。
@@ -475,6 +478,8 @@ func (t *ContextTool) writerReferences(chapter int) map[string]string {
 	add("fact_grounding", t.refs.FactGrounding)
 	add("tiktok_content_safety", t.refs.TiktokSafety)
 	add("humor_relatability", t.refs.HumorRelatability)
+	add("character_building", t.refs.CharacterBuilding)
+	add("adversity_conflict", t.refs.AdversityConflict)
 	if chapter <= 3 {
 		add("chapter_guide", t.refs.ChapterGuide)
 		add("dialogue_writing", t.refs.DialogueWriting)
@@ -500,6 +505,8 @@ func (t *ContextTool) architectReferences() map[string]string {
 	add("character_template", t.refs.CharacterTemplate)
 	add("longform_planning", t.refs.LongformPlanning)
 	add("differentiation", t.refs.Differentiation)
+	add("character_building", t.refs.CharacterBuilding)
+	add("adversity_conflict", t.refs.AdversityConflict)
 	add("style_reference", t.refs.StyleReference)
 	add("arc_templates", t.refs.ArcTemplates)
 	add("anti_ai_tone", t.refs.AntiAITone) // architect 大纲去 AI 腔；亦兜 editor 走 Chapter=0 路径
