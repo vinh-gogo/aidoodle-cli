@@ -94,6 +94,21 @@ func validateAdvanceControl(meta domain.RunMeta) error {
 	return nil
 }
 
+// SetStyle cập nhật phong cách/chế độ làm việc hiện tại của tác phẩm.
+func (s *RunMetaStore) SetStyle(style string) error {
+	return s.io.WithWriteLock(func() error {
+		meta, err := s.loadUnlocked()
+		if err != nil {
+			return err
+		}
+		if meta == nil {
+			meta = &domain.RunMeta{}
+		}
+		meta.Style = style
+		return s.saveUnlocked(*meta)
+	})
+}
+
 // SetStartPrompt 固化用户的原始创作需求——输入事实,在启动裁定**之前**落盘。
 // 裁定失败(如模型故障)时它仍然在,恢复/继续由引擎据此补裁(engine.planStartFallback),
 // 启动失败不再是死局。
