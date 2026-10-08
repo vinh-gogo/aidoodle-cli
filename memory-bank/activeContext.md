@@ -1,68 +1,57 @@
 # Active Context
 
-_Last updated: 2026-10-08 (Branch: history-vietnam - Đại tu Prompt & Reference Tiểu thuyết Lịch sử Việt Nam chuẩn mực)_
+_Last updated: 2026-10-08 (Branches: `doodle-explainer` & `main` - Đồng bộ Web Dashboard, Native Word Exporter .docx, Fix Lỗi Treo Export & GitHub Actions CI/CD Windows)_
 
 ## Current Status & Direction
-Repo đang hoạt động trên branch **`history-vietnam`** (chuyển từ `tam-ly-hoc`):
-- **4 Chế độ làm việc chuyên biệt (`/mode`)**:
+Repo đang hoạt động đồng bộ trên hai nhánh chính: **`doodle-explainer`** (mặc định) và **`main`**:
+- **Phiên bản phát hành chính thức v1.0.0**: Đã thiết lập GitHub Actions tự động build và xuất bản các bản thực thi Windows Portable (AMD64 & ARM64).
+- **Hệ thống 4 Chế độ Sáng tác Chuyên biệt (`/mode`)**:
   1. `[1] Tiểu thuyết / Manga` (`novel-manga`): Tiểu thuyết văn xuôi chương hồi (2.000 – 4.000 từ/chương).
   2. `[2] Doodle Explainer` (`doodle-explainer`): Video người que giải thích kiến thức TikTok / YouTube Shorts (5+ phút, nhịp 1:1 Thoại - Hình).
   3. `[3] Tâm lý học hành vi` (`behavioral-psychology`): Video giải mã bẫy nhận thức, cơ chế não bộ, chuẩn mực 8 phần khoa học kết hợp nghệ thuật kể chuyện cuốn hút.
-  4. `[4] Tiểu thuyết Lịch sử Việt Nam` (`vietnamese-history`): Tiểu thuyết văn xuôi chuẩn mực "Đúng đủ để người đọc tin, sống đủ để người đọc quan tâm" (2.000 – 4.000 từ/chương).
-- **Đại tu toàn diện chế độ Tiểu thuyết Lịch sử Việt Nam (`vietnamese-history`)**:
-  - **Tôn chỉ cốt lõi**: *"Tiểu thuyết lịch sử hay phải đúng đủ để người đọc tin và sống đủ để người đọc quan tâm."*
-  - **0. Nền móng trước khi viết**:
-    - Chọn khoảng thời gian hẹp (vài năm hoặc một biến cố cụ thể, không ôm cả triều đại).
-    - Lập **Bảng bất biến lịch sử**: Các mốc niên đại, nhân vật thật, kết quả trận đánh không được phép thay đổi.
-    - Lập **Bảng vùng tự do**: Những khoảng trống sử sách im lặng hoặc mâu thuẫn (đời tư, động cơ nội tâm, đối thoại, nhân vật phụ) để hư cấu lấp đầy.
-    - Phân cấp 4 tầng tư liệu: Cấp 1 (Chính sử), Cấp 2 (Dã sử, ký kiến, truyện truyền kỳ), Cấp 3 (Truyền thuyết dân gian), Cấp 4 (Khảo cổ học, nghiên cứu đương đại, tra cứu Tavily Search).
-  - **1. Mở đầu bằng một khoảnh khắc sống & 12 Kỹ thuật Hook Lịch sử**:
-    - Bắt đầu từ một cảnh sống cụ thể của nhân vật trong thế giới đó (buổi chợ, đêm canh gác, cuộc cãi vã, tiếng búa lò rèn).
-    - Đánh thức mùi, tiếng, việc làm hàng ngày qua hành động, gài sớm căng thẳng; TUYỆT ĐỐI TRÁNH mở bài bằng thuyết minh lịch sử giáo khoa ("Năm..., triều đại...").
-    - **12 Kỹ thuật Hook riêng cho đề tài lịch sử**: (1) Vào giữa khoảnh khắc từ góc nhìn người nhỏ; (2) Chi tiết giác quan lạ đúng thời; (3) Mỉa mai kịch tính (kết cục đã biết, người trong cuộc chưa biết); (4) Khoảng trống của sử; (5) Lựa chọn bất khả; (6) Lời thề/hẹn có giá đắt; (7) Vật chứng/di tích dẫn về quá khứ; (8) Flash-forward; (9) Nhân vật lịch sử không giống tượng đài; (10) Câu hỏi "nếu là bạn"; (11) Trích tư liệu gốc ngắn; (12) Con số/khoảng cách có kiểm chứng.
-    - **Chuyển sang video / doodle explainer**: Hook 3 giây, hình làm việc thay lời, khai thác nghịch lý lịch sử có nguồn, gắn nhãn CẦN KIỂM CHỨNG, re-hook mỗi 60-90 giây.
-  - **2. Thiết lập nhân vật & Xung đột kép**:
-    - Nhân vật chính hư cấu (hoặc nhân vật thật với đời tư hư cấu có kiểm soát) làm "cửa vào" cho độc giả.
-    - Dựng **Xung đột kép**: Tầng đời tư (tình thân, gia đình, nợ nần, danh dự) va đập trực tiếp với Tầng thời cuộc (vận nước, tranh quyền, giặc ngoài).
-    - Thông tin lịch sử chỉ đưa khi nhân vật cần dùng đến.
-  - **3. Biến cố lịch sử có thật làm cú hích**:
-    - Lấy sự kiện có thật làm cú hích buộc nhân vật phải lựa chọn; biến cố chạm đến cá nhân, nhân vật chịu hậu quả thật, không làm thay việc nhân vật có thật.
-  - **4. Phát triển cốt truyện đan xen hai dòng chảy**:
-    - Hai dòng chảy song hành: Việc của nhân vật và đà đi của thời cuộc, thỉnh thoảng giao nhau ở một "nút" lịch sử.
-    - Cho nhân vật nếm trải mất mát, thất bại có giá trị thực tế; tạo bước ngoặt giữa truyện.
-    - Dùng nhân vật phụ (dân thường, binh lính, thợ thủ công, phụ nữ) để soi chiếu những góc sử không ghi.
-  - **5. Cao trào: Khoảnh khắc lựa chọn & Cái giá lớn nhất**:
-    - Khi sự kiện lịch sử đạt đỉnh, nhân vật đối mặt với khoảnh khắc đánh đổi sinh tử.
-    - Sức căng nghệ thuật đến từ **cách thức** và **cái giá phải trả**; giữ nguyên các mốc bất biến lịch sử.
-  - **6. Kết cục: Biến chuyển số phận & Dư âm thời cuộc**:
-    - Khắc họa nhân vật đã thay đổi, hậu quả dài hạn bằng hình ảnh hoặc số phận cụ thể; không kết bằng bài học đạo đức giáo điều.
-  - **7. Hậu ký & Ghi chú tác giả (ở chương cuối)**:
-    - Bắt buộc có mục `# Hậu ký và Ghi chú lịch sử của tác giả` tách bạch rành mạch phần chính sử và phần hư cấu, nêu nguồn tham khảo chính và giải thích cách hiểu.
-  - **Bộ kiểm tra nhanh (5 câu hỏi vàng)**:
-    1. Bỏ hết yếu tố lịch sử ra, chuyện của nhân vật có còn hấp dẫn không?
-    2. Độc giả năm nay đọc có hiểu được động cơ nhân vật không?
-    3. Có đoạn nào đang giảng sử thay vì kể chuyện không?
-    4. Kết quả lịch sử có bị thay đổi không?
-    5. Chi tiết đời sống có chi tiết nào lệch thời đại không?
-  - **Kỷ luật ngôn ngữ & Xưng hô**:
-    - Giọng văn nhà chép sử đầy tâm huyết kết hợp ngòi bút văn chương đĩnh đạc, trầm hùng.
-    - Xưng hô Đại Việt chuẩn mực (*Trẫm - khanh, bệ hạ - thần, thầy - con, huynh - đệ, chàng - thiếp*).
-    - CẤM TUYỆT ĐỐI từ ngữ convert kiếm hiệp (*tiểu nhị, bản tọa, đại hiệp, hiệp khách, cô nương, yêm...*).
-    - 100% tiếng Việt có dấu, sạch chữ Hán.
-- **Cơ chế Tra cứu Tavily Search Bắt buộc (Realtime Fact-grounding)**:
-  - **Vấn đề**: Trước đây LLM chỉ dùng kiến thức pre-trained, không tự kích hoạt `tavily_search` để lấy thông tin chuẩn xác về chủ đề/nhân vật/chiến dịch mà client yêu cầu trước khi lên kịch bản.
-  - **Giải pháp**:
-    - Bổ sung `tavilyCrawl` vào `architectTools` trong `internal/agents/build.go`.
-    - Thêm **BƯỚC 0 (BẮT BUỘC PHẢI GỌI ĐẦU TIÊN)** vào `architect-short.md` và `architect-long.md`: Ngay khi nhận đề tài, Architect bắt buộc phải thực hiện 1-3 truy vấn `tavily_search` (tra cứu nhân vật, chiến dịch, địa danh cổ, khoảng trống sử liệu / cơ chế khoa học) trước khi gọi `novel_context`, `save_book` hay `save_foundation`.
-    - Thêm chỉ dẫn cho `writer.md`: Chủ động gọi `tavily_search` để lấy dữ liệu thực chứng (vũ khí, trang phục, địa hình trận đánh, phong tục cổ / thí nghiệm thực nghiệm) trước khi viết bản thảo.
-    - Áp dụng đồng bộ cho cả chế độ `vietnamese-history` và `behavioral-psychology`.
-- **Dashboard Quản lý Outputs (`/dash`) & Khởi tạo mới (`/new`)**:
-  - Gõ `/dash` -> Enter: Mở danh sách trực quan tất cả outputs, gắn tag mode, hỗ trợ chuyển đổi trực tiếp.
-  - Gõ `/new` -> Enter: Bắt đầu ngay phiên làm việc mới sạch trong thư mục timestamp riêng.
+  4. `[4] Tiểu thuyết Lịch sử Việt Nam` (`vietnamese-history`): Tiểu thuyết văn xuôi chuẩn mực "Đúng đủ để người đọc tin, sống đủ để người đọc quan tâm" (Bảng bất biến, Vùng tự do, Xung đột kép, 12 kỹ thuật hook, 4 tầng sử liệu, Tavily Search realtime).
+
+---
+
+## Recent Major Features & Enhancements
+
+### 1. Web UI Dashboard Phong cách Retro Terminal (`ainovel-cli web`)
+- **Kiến trúc Server (`internal/entry/web`)**:
+  - Giao diện Web SPA phong cách Retro Terminal TUI tông màu amber/neon sắc sảo, chia bố cục 3 panel:
+    - **Panel 1 (Bên trái)**: Thông tin tác phẩm, thanh tiến độ, chi phí API thực tế và bảng danh sách chương có thể click đọc tức thì.
+    - **Panel 2 (Ở giữa)**: Khung hiển thị trực tiếp (Live Stream Markdown) bản thảo AI đang viết theo thời gian thực hoặc xem lại các chương đã chọn.
+    - **Panel 3 (Bên phải)**: Terminal console tương tác với thanh gợi ý lệnh nhanh (`/mode`, `/dash`, `/next`, `/new`, `/export`, `/pause`, `/resume`) và bảng Event Logs theo dõi chi tiết hoạt động của các Agents.
+  - Tích hợp SSE (`/api/stream`) truyền phát real-time stream token, delta và system lifecycle events.
+  - Tích hợp Modal chọn chế độ sáng tác trực quan (`/mode`) và Thư viện quản lý outputs (`/dash`).
+
+### 2. Bộ Xuất File Word (.docx) Native Không Phụ Thuộc Thư Viện Ngoài
+- **Engine Word OpenXML (`internal/host/exp/docx.go`)**:
+  - Tự tay xây dựng cấu trúc file Microsoft Word chuẩn `.docx` (Office OpenXML standard) bằng Go thuần với `archive/zip` (zero external dependencies).
+  - Định dạng chuẩn xuất bản: Trang bìa tiêu đề sách, ngắt trang trang trọng (`w:br w:type="page"`), Heading 1 phân tách chương, căn lề văn bản thụt đầu dòng (indent 0.5 inch / 720 dxa), phông chữ Times New Roman 13pt, khoảng cách dòng thoáng (1.25x line spacing).
+  - Tích hợp cờ `--word` / format `word` trong CLI, lệnh TUI (`/export --word`) và các nút xuất nhanh trên Web UI (Action Toolbar, Panel Header, Celebration Banner).
+
+### 3. Sửa Triệt Để Lỗi Treo / Load Mãi Khi Xuất File Word & Chuyển Dự Án
+- **Khắc phục Crash Nil Pointer Panic**:
+  - Trong `server.SwitchProject`: Khắc phục lỗi `panic: nil pointer dereference` khi gọi `h.ReplayQueue()` trên dự án đã hoàn thành (không có active LLM host). Bọc điều kiện an toàn `h != nil`.
+- **Nạp Snapshot Dự Phòng từ Store**:
+  - Khi chuyển sang một dự án đã viết xong trong quá khứ (`s.host == nil`), `/api/status` tự động đọc dữ liệu từ thư mục `meta/` (tên sách, số chương hoàn thành, trạng thái `COMPLETE`) để giao diện web lập tức hiển thị đầy đủ thông tin sách và nút xuất file.
+- **Tải File Blob Trực Tiếp Chống Treo Trình Duyệt**:
+  - Thay thế phương thức click link `<a>` navigation cũ bằng cơ chế `fetch()` blob tải ngầm: loại bỏ hoàn toàn tình trạng tab trình duyệt bị xoay/load mãi không dừng.
+  - Hiển thị phản hồi tức thì trên nút bấm (`⏳ Đang xuất Word...`), khóa nút chống double-click, bắt lỗi chi tiết qua popup thông báo và ghi log đỏ.
+- **Chuẩn Hóa Mã Hóa Header Tên File Tiếng Việt (RFC 6266 / RFC 5987)**:
+  - Header `Content-Disposition` sử dụng cú pháp `filename*=UTF-8''...` kết hợp fallback ASCII an toàn, tải đúng tên tệp tiếng Việt có dấu trên mọi trình duyệt.
+- **Bổ Sung Fallback Đọc Nội Dung Chương Trong Exporter**:
+  - Bổ sung cơ chế fallback tự động tìm kịch bản chương trong `*-video/scripts/%02d-*.md` và `drafts/` nếu file `chapters/%02d.md` không nằm ở vị trí mặc định.
+
+### 4. GitHub Actions CI/CD Tự Động Build Bản Cài Đặt Windows
+- File cấu hình `.github/workflows/build-windows.yml` tự động build và phát hành các bản:
+  - `ainovel-cli-windows-amd64.exe` (Intel / AMD 64-bit)
+  - `ainovel-cli-windows-arm64.exe` (Windows on ARM)
+- Đính kèm tự động vào GitHub Release `v1.0.0`.
 
 ---
 
 ## Active Workspace State
-- **Branch**: `history-vietnam` trên repo `https://github.com/vinh-gogo/aidoodle-cli.git`.
+- **Branches**: Đồng bộ giữa `doodle-explainer` (mặc định) và `main`.
 - **Tests**: 100% test suite `go test ./...` pass green.
-- **Binary**: `ainovel-cli.exe` biên dịch thành công từ commit mới nhất.
+- **Binary**: `ainovel-cli.exe` mới nhất biên dịch thành công.

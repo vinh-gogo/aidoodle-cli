@@ -5,26 +5,30 @@
 - **agentcore** `github.com/voocel/agentcore v1.8.3` — minimal agent kernel (tool-calling, streaming, `context` compression helpers)
 - **litellm** `github.com/voocel/litellm v1.8.10` — unified LLM provider adapter
 - **Bubble Tea** `bubbletea v1.3.10`, `bubbles v1.0.0`, `lipgloss v1.1.0`, `charmbracelet/x/ansi`, `termenv` — TUI
+- **Web UI & Server**: Standard library `net/http` + SSE (Server-Sent Events) + embedded HTML5/CSS/JS (`go:embed`)
+- **Word OpenXML (.docx) Exporter**: Native Go implementation via `archive/zip` (zero external dependencies)
 - `gofrs/flock v0.13.0` — per-book directory lease (`.ainovel.lock`)
 - `golang.org/x/{mod,text,image,sys}` — semver / encoding (GB18030 for import) / EPUB images / syscalls
 
 ## Layout
 ```
-cmd/ainovel-cli/main.go      CLI entry (flags, setup, update, eval subcommand)
+cmd/ainovel-cli/main.go      CLI entry (flags, setup, update, eval, web subcommand)
 assets/                      embedded prompts/, references/ (+genres/<style>/), styles/, voice.md, load.go, testdata/
-internal/                    25 packages (see systemPatterns.md)
-docs/                        design docs (Chinese)
+internal/entry/web/          Web server, REST handlers, SSE broadcaster, embedded web/ui/index.html
+internal/host/exp/           multi-format export engine (docx, epub, txt, video scripts)
+internal/                    26 packages (see systemPatterns.md)
+docs/                        design docs
 evals/cases/smoke/           architect_long/short.json, writer_first_chapter.json
 scripts/                     install.sh, check_chapter_wordcount.py, sample.gif, novel.png
-.github/workflows/           ci.yml, docker.yml, release.yml (+ scripts/gen-changelog.sh)
+.github/workflows/           ci.yml, docker.yml, release.yml, build-windows.yml
 output/                      generated books (gitignored: `output*`)
-run.sh                       Vietnamese Ollama setup script (Git Bash/WSL/macOS/Linux)
+run.sh                       Vietnamese Ollama setup script & runner (run.sh web)
 Modelfile                    FROM qwen3.5:4b ; num_ctx 32768
 OllamaSetup.exe, ainovel-cli.exe   local binaries (*.exe gitignored)
 ```
 
 ## CLI surface (`cmd/ainovel-cli/main.go`)
-`ainovel-cli` (TUI) · `--headless [--prompt S | --prompt-file F|-]` · `--style/-s NAME` · `--dir/-d OUTDIR` · `--version/-v` / `version` · `update [version]` · `eval …` (offline harness, separate flags). Positional args are rejected (novel request must be typed in TUI). `--prompt*` only valid with `--headless`. Headless refuses first-run setup. Unknown style → error listing available styles from `bundle.Styles`.
+`ainovel-cli` (TUI) · `ainovel-cli web [--port P]` (Web Dashboard) · `--headless [--prompt S | --prompt-file F|-]` · `--style/-s NAME` · `--dir/-d OUTDIR` · `--version/-v` / `version` · `update [version]` · `eval …` (offline harness, separate flags).
 
 ## Dev commands (from CI)
 ```powershell

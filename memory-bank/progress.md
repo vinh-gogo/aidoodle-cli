@@ -1,17 +1,38 @@
 # Progress
 
-_Last updated: 2026-10-08 (Branch history-vietnam: Đại tu toàn diện Prompt & Reference Tiểu thuyết Lịch sử Việt Nam)_
+_Last updated: 2026-10-08 (Branches `doodle-explainer` & `main`: Web Dashboard, Native Word Exporter .docx, Fix Export Hang, GitHub Actions Release v1.0.0)_
 
 ## What works (per upstream docs; verified locally)
 - Deterministic Engine + Route table, Arbiter decisions, 3 Workers, Store with atomic IO, checkpoints, commit Saga.
 - Rolling volume/arc planning, layered summaries, related-chapter recommendation, compression pipeline.
 - TUI (+ co-create, `/config`, `/model`, `/review`, `/next`, `/diag`, `/simulate`, `/importsim`, `/sync`, `/import`, `/export`, `/start`, `/mode`, `/dash`, `/new`) and headless mode.
+- **Web UI Dashboard (`ainovel-cli web`)**: Retro terminal layout, 3-panel UI, realtime SSE stream, command executor, chapter reader, visual project manager.
+- **Multi-format Exporter**: TXT, EPUB, Video Scripts Package, and **Microsoft Word (.docx)** native OpenXML zero-dependency.
 - Multi-mode support: 4 specialized AI modes (`novel-manga`, `doodle-explainer`, `behavioral-psychology`, `vietnamese-history`).
+- Automated CI/CD: GitHub Actions building Windows AMD64 & ARM64 executables, Release v1.0.0.
 - Full unit test suite and integration tests passing 100% across all packages.
 
 ---
 
-## Recent Milestones on branch `history-vietnam` (2026-10-08)
+## Recent Milestones on branches `doodle-explainer` & `main` (2026-10-08)
+- [x] **Web UI Dashboard Toàn Diện (`internal/entry/web`)**:
+  - Máy chủ HTTP độc lập hỗ trợ RESTful API và Server-Sent Events (SSE).
+  - Giao diện Web SPA phong cách Retro Terminal TUI, hỗ trợ theo dõi bản thảo trực tiếp, quản lý dự án (`/dash`), tạo mới (`/new`), đổi mode (`/mode`), duyệt tiếp (`/next`).
+- [x] **Trình Xuất File Word (.docx) Native (`internal/host/exp/docx.go`)**:
+  - Tạo tài liệu Microsoft Word chuẩn OpenXML (.docx) không phụ thuộc thư viện thứ 3.
+  - Chuẩn định dạng sách xuất bản: Trang tiêu đề, ngắt trang giữa các chương, thụt đầu dòng 0.5 inch, Times New Roman 13pt.
+  - Tích hợp cờ `--word` / format `word` cho CLI, TUI (`/export --word`) và Web UI.
+- [x] **Khắc Phục Toàn Diện Lỗi Treo / Load Mãi Khi Xuất Word Trên Web**:
+  - Sửa lỗi crash Nil Pointer Panic trong `SwitchProject` khi chuyển sang dự án đã hoàn thành (`h == nil`).
+  - Chuyển đổi phương thức download từ navigation thẻ `<a>` sang `fetch()` blob ngầm, chống tab bị xoay tròn và hiển thị trạng thái `⏳ Đang xuất Word...`.
+  - Chuẩn hóa header `Content-Disposition` theo RFC 6266 / RFC 5987 hỗ trợ tiếng Việt có dấu.
+  - Bổ sung fallback tự động tìm kịch bản chương trong `*-video/scripts/` và `drafts/`.
+  - Tự động nạp snapshot dự phòng từ `meta/` khi host rỗng để dashboard luôn hiển thị đúng thông tin sách đã hoàn thành.
+- [x] **GitHub Actions CI/CD Tự Động Build Bản Cài Đặt Windows**:
+  - Workflow `.github/workflows/build-windows.yml` tự động build và upload bản thực thi `amd64` và `arm64`.
+  - Cập nhật GitHub Release `v1.0.0`.
+- [x] **Đồng Bộ Nhánh & Đặt `doodle-explainer` Làm Mặc Định**:
+  - Đồng bộ commit giữa `doodle-explainer` và `main`.
 - [x] **Tạo nhánh mới `history-vietnam`**:
   - Tách nhánh từ `tam-ly-hoc`, kế thừa toàn bộ tính năng `/dash`, `/new`, Tavily Graceful Fallback và hệ thống 4 modes.
 - [x] **Đại tu toàn diện chế độ Tiểu thuyết Lịch sử Việt Nam (`vietnamese-history`)**:

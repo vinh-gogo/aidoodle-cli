@@ -17,8 +17,8 @@ New decision points must follow this two-plane symmetry; don't invent new patter
 
 | Layer | Package(s) | Does | Doesn't |
 |---|---|---|---|
-| Entry | `internal/entry/{tui,headless,startup}` | display, input | business decisions |
-| Host/Engine | `internal/host` (73 go files, largest) | lifecycle, Route execution, run Workers (`subagent.Runner.Run`), sentinel boundaries, steer orchestration, usage/budget, book lock | literary judgment |
+| Entry | `internal/entry/{tui,headless,startup,web}` | display, input, TUI, web dashboard, SSE, REST | business decisions |
+| Host/Engine | `internal/host` (inc. `host/exp` docx/epub/txt) | lifecycle, Route execution, run Workers (`subagent.Runner.Run`), sentinel boundaries, steer orchestration, usage/budget, book lock, multi-format export | literary judgment |
 | Arbiter | `internal/arbiter` | structured semantic decisions | create, execute |
 | Workers | `internal/agents` | think/write/review | touch Store directly |
 | Tools | `internal/tools` | atomic single-file IO, explicit errors, idempotent; commit uses Saga | cross-agent dispatch instructions |
