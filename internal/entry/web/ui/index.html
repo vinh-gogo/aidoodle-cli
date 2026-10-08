@@ -1413,8 +1413,8 @@ Hướng dẫn nhanh:
 
       try {
         const targetDir = cliState.dir || '';
-        const downloadUrl = `/api/export?format=word&dir=${encodeURIComponent(targetDir)}&download=1&t=${Date.now()}`;
-        const res = await fetch(downloadUrl);
+        const apiUrl = `/api/export?format=word&dir=${encodeURIComponent(targetDir)}&t=${Date.now()}`;
+        const res = await fetch(apiUrl);
         
         if (!res.ok) {
           let errMsg = `Mã lỗi HTTP ${res.status}`;
@@ -1429,39 +1429,48 @@ Hướng dẫn nhanh:
           return;
         }
 
-        // Đọc blob dữ liệu file docx
-        const blob = await res.blob();
-        let fileName = 'tac-pham.docx';
-        const disposition = res.headers.get('Content-Disposition') || '';
-        if (disposition) {
-          // Ưu tiên RFC 5987 filename*=UTF-8''
-          const utf8Match = disposition.match(/filename\*=UTF-8''([^;]+)/i);
-          if (utf8Match && utf8Match[1]) {
-            fileName = decodeURIComponent(utf8Match[1]);
-          } else {
-            const match = disposition.match(/filename=(?:"([^"]+)"|([^;]+))/i);
-            if (match) {
-              fileName = (match[1] || match[2] || '').trim();
-            }
-          }
+        const data = await res.json();
+        if (!data.ok) {
+          const errMsg = data.error || 'Xuất file Word thất bại';
+          alert("Lỗi xuất file Word: " + errMsg);
+          addEventLog({ Category: 'SYSTEM', Summary: '❌ Lỗi xuất Word: ' + errMsg, Level: 'error', Time: new Date() });
+          return;
         }
 
-        // Tạo thẻ a tải xuống tự động
-        const blobUrl = window.URL.createObjectURL(blob);
+        const sizeKb = (data.bytes / 1024).toFixed(1);
+        const fileName = data.filename || 'tac-pham.docx';
+        const filePath = data.path || fileName;
+        const chaptersCount = data.chapters || 0;
+
+        // 1. Ghi log sự kiện nổi bật trong khung giao diện TUI
+        addEventLog({ 
+          Category: 'SYSTEM', 
+          Summary: `✓ Đã tạo xong file Word: ${fileName} (${chaptersCount} chương, ${sizeKb} KB)`, 
+          Time: new Date() 
+        });
+
+        // 2. Kích hoạt tải tệp trực tiếp về máy tính người dùng (an toàn 100% không bị popup blocker chặn)
+        const downloadUrl = data.download_url ? `${data.download_url}&t=${Date.now()}` : `/api/export?format=word&dir=${encodeURIComponent(targetDir)}&download=1&t=${Date.now()}`;
+        
+        const ifr = document.createElement('iframe');
+        ifr.style.display = 'none';
+        ifr.src = downloadUrl;
+        document.body.appendChild(ifr);
+        setTimeout(() => {
+          if (ifr.parentNode) ifr.parentNode.removeChild(ifr);
+        }, 60000);
+
+        // Kèm thêm fallback thẻ <a> tải về dự phòng
         const a = document.createElement('a');
-        a.href = blobUrl;
+        a.href = downloadUrl;
         a.download = fileName;
         a.style.display = 'none';
         document.body.appendChild(a);
         a.click();
-        
-        setTimeout(() => {
-          window.URL.revokeObjectURL(blobUrl);
-          if (a.parentNode) a.parentNode.removeChild(a);
-        }, 1500);
+        setTimeout(() => { if (a.parentNode) a.parentNode.removeChild(a); }, 2000);
 
-        const sizeKb = (blob.size / 1024).toFixed(1);
-        addEventLog({ Category: 'SYSTEM', Summary: `✓ Tải xuống thành công: ${fileName} (${sizeKb} KB)`, Time: new Date() });
+        // 3. Hiển thị thông báo Popup xác nhận thành công rõ ràng
+        alert(`✓ ĐÃ XUẤT FILE WORD (.DOCX) THÀNH CÔNG!\n\n📄 Tên tệp: ${fileName}\n📊 Quy mô: ${chaptersCount} chương (${sizeKb} KB)\n📂 Đã lưu tại: ${filePath}\n\nFile đang được tự động tải về thư mục Downloads của bạn.`);
       } catch (err) {
         console.error("exportWord error:", err);
         alert("Lỗi kết nối khi xuất Word: " + err.message);

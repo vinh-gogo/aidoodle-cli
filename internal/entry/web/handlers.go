@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"os"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -219,8 +220,8 @@ func (s *Server) handleExport(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Nếu client yêu cầu tải trực tiếp file (download=1 hoặc không yêu cầu application/json)
-	if r.URL.Query().Get("download") == "1" || !strings.Contains(r.Header.Get("Accept"), "application/json") {
+	// Nếu client yêu cầu tải trực tiếp file (download=1)
+	if r.URL.Query().Get("download") == "1" {
 		fileName := filepath.Base(res.Path)
 		contentType := "application/octet-stream"
 		switch strings.ToLower(format) {
@@ -231,21 +232,34 @@ func (s *Server) handleExport(w http.ResponseWriter, r *http.Request) {
 		case "txt":
 			contentType = "text/plain; charset=utf-8"
 		}
+		data, readErr := os.ReadFile(res.Path)
+		if readErr != nil {
+			writeJSON(w, http.StatusInternalServerError, map[string]interface{}{
+				"ok":    false,
+				"error": "Đọc file đã xuất thất bại: " + readErr.Error(),
+			})
+			return
+		}
 		w.Header().Set("Content-Type", contentType)
+		w.Header().Set("Content-Length", strconv.Itoa(len(data)))
 		asciiFallback := sanitizeASCIIFileName(fileName)
 		encodedFileName := url.PathEscape(fileName)
 		w.Header().Set("Content-Disposition", fmt.Sprintf("attachment; filename=%q; filename*=UTF-8''%s", asciiFallback, encodedFileName))
 		w.Header().Set("Access-Control-Expose-Headers", "Content-Disposition")
-		http.ServeFile(w, r, res.Path)
+		w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
+		w.WriteHeader(http.StatusOK)
+		w.Write(data)
 		return
 	}
 
+	fileName := filepath.Base(res.Path)
 	writeJSON(w, http.StatusOK, map[string]interface{}{
 		"ok":           true,
+		"filename":     fileName,
 		"path":         res.Path,
 		"chapters":     res.Chapters,
 		"bytes":        res.Bytes,
-		"download_url": fmt.Sprintf("/api/export?format=%s&dir=%s&download=1", format, dir),
+		"download_url": fmt.Sprintf("/api/export?format=%s&dir=%s&download=1", format, url.QueryEscape(dir)),
 	})
 }
 

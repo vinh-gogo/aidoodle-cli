@@ -30,14 +30,16 @@ Repo đang hoạt động đồng bộ trên hai nhánh chính: **`doodle-explai
   - Định dạng chuẩn xuất bản: Trang bìa tiêu đề sách, ngắt trang trang trọng (`w:br w:type="page"`), Heading 1 phân tách chương, căn lề văn bản thụt đầu dòng (indent 0.5 inch / 720 dxa), phông chữ Times New Roman 13pt, khoảng cách dòng thoáng (1.25x line spacing).
   - Tích hợp cờ `--word` / format `word` trong CLI, lệnh TUI (`/export --word`) và các nút xuất nhanh trên Web UI (Action Toolbar, Panel Header, Celebration Banner).
 
-### 3. Sửa Triệt Để Lỗi Treo / Load Mãi Khi Xuất File Word & Chuyển Dự Án
+### 3. Sửa Triệt Để Lỗi Treo / Phản Hồi Khi Xuất File Word & Chuyển Dự Án
 - **Khắc phục Crash Nil Pointer Panic**:
   - Trong `server.SwitchProject`: Khắc phục lỗi `panic: nil pointer dereference` khi gọi `h.ReplayQueue()` trên dự án đã hoàn thành (không có active LLM host). Bọc điều kiện an toàn `h != nil`.
 - **Nạp Snapshot Dự Phòng từ Store**:
   - Khi chuyển sang một dự án đã viết xong trong quá khứ (`s.host == nil`), `/api/status` tự động đọc dữ liệu từ thư mục `meta/` (tên sách, số chương hoàn thành, trạng thái `COMPLETE`) để giao diện web lập tức hiển thị đầy đủ thông tin sách và nút xuất file.
-- **Tải File Blob Trực Tiếp Chống Treo Trình Duyệt**:
-  - Thay thế phương thức click link `<a>` navigation cũ bằng cơ chế `fetch()` blob tải ngầm: loại bỏ hoàn toàn tình trạng tab trình duyệt bị xoay/load mãi không dừng.
-  - Hiển thị phản hồi tức thì trên nút bấm (`⏳ Đang xuất Word...`), khóa nút chống double-click, bắt lỗi chi tiết qua popup thông báo và ghi log đỏ.
+- **Phản Hồi Xác Nhận Thành Công Rõ Ràng & Tự Động Tải Tệp Trực Tiếp**:
+  - Web UI gọi endpoint `/api/export` nhận JSON kết quả (`ok: true`, `filename`, `path`, `chapters`, `bytes`, `download_url`).
+  - Hiển thị hộp thoại `alert(...)` xác nhận thành công với đầy đủ chi tiết: tên file, số chương, dung lượng và đường dẫn lưu trên máy tính.
+  - Tự động kích hoạt tải tệp trực tiếp về thư mục Downloads qua iframe ẩn kết hợp link dự phòng (tránh 100% việc trình duyệt Chrome/Edge âm thầm chặn popup download tự động sau tác vụ bất đồng bộ).
+  - Ghi log nổi bật màu xanh vào bảng Event Log của giao diện Retro Terminal.
 - **Chuẩn Hóa Mã Hóa Header Tên File Tiếng Việt (RFC 6266 / RFC 5987)**:
   - Header `Content-Disposition` sử dụng cú pháp `filename*=UTF-8''...` kết hợp fallback ASCII an toàn, tải đúng tên tệp tiếng Việt có dấu trên mọi trình duyệt.
 - **Bổ Sung Fallback Đọc Nội Dung Chương Trong Exporter**:
