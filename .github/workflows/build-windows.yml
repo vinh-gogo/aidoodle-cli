@@ -1,0 +1,113 @@
+name: Build Windows Release
+
+on:
+  push:
+    branches: [ "main" ]
+    tags: [ "v*" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+    inputs:
+      create_release:
+        description: 'Tạo GitHub Release chính thức'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build Windows Binary
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: 'stable'
+          check-latest: true
+
+      - name: Cache Go modules
+        uses: actions/cache@v4
+        with:
+          path: ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
+
+      - name: Run unit tests
+        run: go test -v ./...
+
+      - name: Prepare build metadata
+        id: meta
+        shell: pwsh
+        run: |
+          $ver = "${{ github.ref_name }}"
+          if ($ver -eq "" -or $ver -eq "main") {
+            $ver = "v1.0.0-" + (Get-Date -Format "yyyyMMdd-HHmm")
+          }
+          $commit = "${{ github.sha }}"
+          $date = (Get-Date -Format "yyyy-MM-ddTHH:mm:ssZ")
+          echo "VERSION=$ver" >> $env:GITHUB_ENV
+          echo "COMMIT=$commit" >> $env:GITHUB_ENV
+          echo "DATE=$date" >> $env:GITHUB_ENV
+
+      - name: Build Windows amd64 (x64)
+        shell: pwsh
+        run: |
+          $env:GOOS = "windows"
+          $env:GOARCH = "amd64"
+          $ldflags = "-s -w -X main.version=$env:VERSION -X main.commit=$env:COMMIT -X main.date=$env:DATE"
+          New-Item -ItemType Directory -Force -Path "dist/ainovel-cli-windows-amd64"
+          go build -trimpath -ldflags "$ldflags" -o "dist/ainovel-cli-windows-amd64/ainovel-cli.exe" ./cmd/ainovel-cli
+          Copy-Item -Path "README.md" -Destination "dist/ainovel-cli-windows-amd64/" -ErrorAction SilentlyContinue
+
+      - name: Build Windows arm64
+        shell: pwsh
+        run: |
+          $env:GOOS = "windows"
+          $env:GOARCH = "arm64"
+          $ldflags = "-s -w -X main.version=$env:VERSION -X main.commit=$env:COMMIT -X main.date=$env:DATE"
+          New-Item -ItemType Directory -Force -Path "dist/ainovel-cli-windows-arm64"
+          go build -trimpath -ldflags "$ldflags" -o "dist/ainovel-cli-windows-arm64/ainovel-cli.exe" ./cmd/ainovel-cli
+          Copy-Item -Path "README.md" -Destination "dist/ainovel-cli-windows-arm64/" -ErrorAction SilentlyContinue
+
+      - name: Package ZIP Archives
+        shell: pwsh
+        run: |
+          Compress-Archive -Path "dist/ainovel-cli-windows-amd64/*" -DestinationPath "dist/ainovel-cli-windows-amd64.zip" -Force
+          Compress-Archive -Path "dist/ainovel-cli-windows-arm64/*" -DestinationPath "dist/ainovel-cli-windows-arm64.zip" -Force
+
+      - name: Upload Windows x64 Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ainovel-cli-windows-amd64
+          path: dist/ainovel-cli-windows-amd64.zip
+          retention-days: 30
+
+      - name: Upload Windows arm64 Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ainovel-cli-windows-arm64
+          path: dist/ainovel-cli-windows-arm64.zip
+          retention-days: 30
+
+      - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v') || github.event.inputs.create_release == 'true'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/ainovel-cli-windows-amd64.zip
+            dist/ainovel-cli-windows-arm64.zip
+            dist/ainovel-cli-windows-amd64/ainovel-cli.exe
+          name: Release ${{ env.VERSION }}
+          generate_release_notes: true
+          draft: false
+          prerelease: false
