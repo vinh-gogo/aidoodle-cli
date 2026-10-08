@@ -74,6 +74,7 @@ func wipeDir(dir string) error {
 func Run(cfg bootstrap.Config, bundle assets.Bundle, build buildversion.Info) error {
 	var initialPrompt string
 	var newProjectDirHint string
+	var switchedProjectDirHint string
 	for {
 		rt, err := host.New(cfg, bundle, host.WithFileLog("tui.log", false,
 			slog.String("version", build.Version),
@@ -95,6 +96,15 @@ func Run(cfg bootstrap.Config, bundle assets.Bundle, build buildversion.Info) er
 			})
 			newProjectDirHint = ""
 		}
+		if switchedProjectDirHint != "" {
+			m.applyEvent(host.Event{
+				Time:     time.Now(),
+				Category: "SYSTEM",
+				Level:    "info",
+				Summary:  fmt.Sprintf("Đã mở lại dự án tại: %s", switchedProjectDirHint),
+			})
+			switchedProjectDirHint = ""
+		}
 		if logErr := rt.FileLogError(); logErr != nil {
 			logWarning := fmt.Errorf("nhật ký tệp không khả dụng, tiếp tục dùng nhật ký terminal: %w", logErr)
 			m.err = logWarning
@@ -112,6 +122,18 @@ func Run(cfg bootstrap.Config, bundle assets.Bundle, build buildversion.Info) er
 
 		if err != nil {
 			return err
+		}
+
+		if m, ok := finalModel.(Model); ok && m.switchOutputDir != "" {
+			cfg.OutputDir = m.switchOutputDir
+			if targetStyle := detectProjectStyle(cfg.OutputDir); targetStyle != "" {
+				cfg.Style = targetStyle
+			}
+			bundle = assets.Load(cfg.Style, assets.DefaultLoadOptions(cfg.OutputDir))
+			initialPrompt = ""
+			newProjectDirHint = ""
+			switchedProjectDirHint = cfg.OutputDir
+			continue
 		}
 
 		if m, ok := finalModel.(Model); ok && m.restartRequested {

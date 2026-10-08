@@ -55,6 +55,7 @@ type Model struct {
 	cocreate           *cocreateState
 	help               *helpState
 	modeSelect         *modeSelectState
+	dashSelect         *dashState
 	modelSwitch        *modelSwitchState
 	modelConfig        *modelConfigState
 	report             *reportState
@@ -109,6 +110,7 @@ type Model struct {
 	mouseOff           bool // true 时已禁用鼠标上报，让用户原生拖拽选中复制；再次切换恢复
 	restartRequested   bool
 	restartPrompt      string
+	switchOutputDir    string
 }
 
 // NewModel 创建 TUI Model。
@@ -645,6 +647,9 @@ func (m Model) View() string {
 	}
 	if m.modeSelect != nil {
 		return renderModeSelectModal(m.width, m.height, m.modeSelect)
+	}
+	if m.dashSelect != nil {
+		return renderDashModal(m.width, m.height, m.dashSelect)
 	}
 	if m.report != nil {
 		return renderReportModal(m.width, m.height, m.report)

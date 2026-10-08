@@ -251,20 +251,20 @@ type TavilyConfig struct {
 	MaxResults  int    `json:"max_results,omitempty"`  // Mặc định 5
 }
 
-// ResolveAPIKey trả về API key có hiệu lực từ config, biến môi trường TAVILY_API_KEY hoặc khóa mặc định.
+// ResolveAPIKey trả về API key có hiệu lực từ config hoặc biến môi trường TAVILY_API_KEY.
 func (c TavilyConfig) ResolveAPIKey() string {
 	if c.APIKey != "" {
-		return c.APIKey
+		return strings.TrimSpace(c.APIKey)
 	}
-	if env := os.Getenv("TAVILY_API_KEY"); env != "" {
+	if env := strings.TrimSpace(os.Getenv("TAVILY_API_KEY")); env != "" {
 		return env
 	}
-	return "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"
+	return ""
 }
 
-// IsEnabled trả về true nếu chức năng Tavily được bật hoặc có API key khả dụng.
+// IsEnabled trả về true nếu chức năng Tavily được bật và có API key khả dụng.
 func (c TavilyConfig) IsEnabled() bool {
-	return c.Enabled || c.ResolveAPIKey() != ""
+	return c.ResolveAPIKey() != ""
 }
 
 // TrendsConfig cấu hình thu thập xu hướng (trends) tự động từ RSS cho kịch bản doodle explainer.

@@ -108,3 +108,58 @@ func TestTavilyCrawlTool(t *testing.T) {
 		t.Fatalf("expected non-empty content, got %v", res["content"])
 	}
 }
+
+func TestTavilySearchTool_GracefulFallback(t *testing.T) {
+	// 1. Trường hợp client không có API key
+	emptyTool := NewTavilySearchTool(tavily.NewClient("", "http://127.0.0.1:9999"))
+	args, _ := json.Marshal(map[string]any{"query": "nghịch lý lựa chọn"})
+	resRaw, err := emptyTool.Execute(context.Background(), args)
+	if err != nil {
+		t.Fatalf("Execute không được trả về error khi thiếu API key: %v", err)
+	}
+	var res map[string]any
+	_ = json.Unmarshal(resRaw, &res)
+	if res["total_found"] != float64(0) {
+		t.Errorf("expected total_found 0, got %v", res["total_found"])
+	}
+
+	// 2. Trường hợp server lỗi HTTP 401
+	errorServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		http.Error(w, `{"detail":"Invalid API Key"}`, http.StatusUnauthorized)
+	}))
+	defer errorServer.Close()
+
+	errClient := tavily.NewClient("invalid-key", errorServer.URL)
+	errTool := NewTavilySearchTool(errClient)
+	resRaw2, err2 := errTool.Execute(context.Background(), args)
+	if err2 != nil {
+		t.Fatalf("Execute không được trả về error khi API trả về 401: %v", err2)
+	}
+	var res2 map[string]any
+	_ = json.Unmarshal(resRaw2, &res2)
+	if res2["total_found"] != float64(0) {
+		t.Errorf("expected total_found 0 on 401 error, got %v", res2["total_found"])
+	}
+}
+
+func TestTavilyCrawlTool_GracefulFallback(t *testing.T) {
+	// Trường hợp server lỗi HTTP 401
+	errorServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		http.Error(w, `{"detail":"Invalid API Key"}`, http.StatusUnauthorized)
+	}))
+	defer errorServer.Close()
+
+	errClient := tavily.NewClient("invalid-key", errorServer.URL)
+	errTool := NewTavilyCrawlTool(errClient)
+	args, _ := json.Marshal(map[string]any{"url": "https://example.com/test"})
+	resRaw, err := errTool.Execute(context.Background(), args)
+	if err != nil {
+		t.Fatalf("Execute không được trả về error khi crawl gặp lỗi: %v", err)
+	}
+	var res map[string]any
+	_ = json.Unmarshal(resRaw, &res)
+	if res["word_count"] != float64(0) {
+		t.Errorf("expected word_count 0 on error, got %v", res["word_count"])
+	}
+}
+
