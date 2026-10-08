@@ -16,8 +16,10 @@ import (
 	"github.com/voocel/ainovel-cli/internal/entry/tui"
 	"github.com/voocel/ainovel-cli/internal/entry/web"
 	"github.com/voocel/ainovel-cli/internal/eval"
+	"github.com/voocel/ainovel-cli/internal/host/exp"
 	"github.com/voocel/ainovel-cli/internal/host/trend"
 	"github.com/voocel/ainovel-cli/internal/rules"
+	"github.com/voocel/ainovel-cli/internal/store"
 	buildversion "github.com/voocel/ainovel-cli/internal/version"
 )
 
@@ -51,12 +53,12 @@ func main() {
 		}
 		return
 	}
-	headlessMode = opts.Headless || opts.Web
+	headlessMode = opts.Headless || opts.Web || opts.Export
 
 	// 首次引导
 	if bootstrap.NeedsSetup() {
-		if opts.Headless || opts.Web {
-			die("error: chế độ headless/web không hỗ trợ hướng dẫn khởi tạo lần đầu, vui lòng chạy giao diện TUI một lần để hoàn tất cấu hình")
+		if opts.Headless || opts.Web || opts.Export {
+			die("error: chế độ headless/web/export không hỗ trợ hướng dẫn khởi tạo lần đầu, vui lòng chạy giao diện TUI một lần để hoàn tất cấu hình")
 		}
 		setupCfg, err := bootstrap.RunSetup()
 		if err != nil {
@@ -161,6 +163,23 @@ func runWithConfig(cfg bootstrap.Config, opts cliOptions, args []string) {
 		return
 	}
 
+	if opts.Export {
+		st := store.NewStore(cfg.OutputDir)
+		f := exp.Format(opts.ExportFormat)
+		if f == "" {
+			f = exp.FormatWord
+		}
+		res, err := exp.Run(context.Background(), exp.Deps{Store: st}, exp.Options{
+			Format:    f,
+			Overwrite: true,
+		})
+		if err != nil {
+			die("xuất file thất bại: %v", err)
+		}
+		fmt.Printf("✓ Đã xuất %s (%d chương) đến %s (%d bytes)\n", string(f), res.Chapters, res.Path, res.Bytes)
+		return
+	}
+
 	if opts.Headless {
 		if opts.Next {
 			if err := headless.Run(cfg, bundle, headless.Options{Next: true}); err != nil {
@@ -201,6 +220,8 @@ type cliOptions struct {
 	Headless      bool
 	Web           bool
 	Port          int
+	Export        bool
+	ExportFormat  string
 	Trends        bool
 	Review        bool
 	Next          bool
@@ -243,7 +264,7 @@ func parseCLIOptions(argv []string) (cliOptions, []string, error) {
 			}
 		case "--headless":
 			opts.Headless = true
-		case "--web", "-w":
+		case "web", "--web", "-w":
 			opts.Web = true
 			if i+1 < len(argv) && !strings.HasPrefix(argv[i+1], "-") {
 				if p, err := strconv.Atoi(argv[i+1]); err == nil && p > 0 {
@@ -251,6 +272,16 @@ func parseCLIOptions(argv []string) (cliOptions, []string, error) {
 					i++
 				}
 			}
+		case "export":
+			opts.Export = true
+		case "--word":
+			opts.ExportFormat = "word"
+		case "--epub":
+			opts.ExportFormat = "epub"
+		case "--txt":
+			opts.ExportFormat = "txt"
+		case "--video":
+			opts.ExportFormat = "video"
 		case "--port", "-p":
 			if i+1 >= len(argv) {
 				return opts, nil, fmt.Errorf("--port thiếu giá trị")
