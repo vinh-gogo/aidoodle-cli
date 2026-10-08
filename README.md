@@ -1,6 +1,7 @@
 # 🚀 ainovel-cli — Hệ Thống AI Đa Chế Độ & Xưởng Sáng Tác Tự Động Hóa
 
 <p align="center">
+  <a href="https://github.com/vinh-gogo/aidoodle-cli/actions/workflows/build-windows.yml"><img src="https://github.com/vinh-gogo/aidoodle-cli/actions/workflows/build-windows.yml/badge.svg" alt="Build & Package Windows"></a>
   <img src="https://img.shields.io/badge/Go-1.25+-00ADD8?style=for-the-badge&logo=go&logoColor=white" alt="Go Version">
   <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License">
   <img src="https://img.shields.io/badge/Architecture-Deterministic_Engine-blueviolet?style=for-the-badge" alt="Architecture">
@@ -164,33 +165,37 @@ CẦN KIỂM CHỨNG: Số liệu ước đoán về quân số cần đối chi
 
 ---
 
-## ⚡ Cài Đặt & Khởi Động Nhanh Trong 60 Giây
+### 🚀 Cách 1: Tải Bản Đóng Gói Sẵn Cho Windows (Khuyên Dùng — Không Cần Cài Go)
 
-### Yêu cầu hệ thống
-- **Git** (tải tại [git-scm.com](https://git-scm.com/)).
-- **Go >= 1.25** (tải tại [go.dev/dl](https://go.dev/dl/)).
-- **API Key LLM**: Hỗ trợ OpenRouter, Gemini, OpenAI, Anthropic, DeepSeek hoặc Ollama cục bộ.
+Dành cho người dùng Windows muốn sử dụng ngay lập tức mà không cần cài đặt môi trường lập trình Go:
 
-### Các bước thực hiện:
+1. Truy cập mục **[Artifacts mới nhất](https://github.com/vinh-gogo/aidoodle-cli/actions/workflows/build-windows.yml)** hoặc **[Releases](https://github.com/vinh-gogo/aidoodle-cli/releases)** để tải file **`ainovel-cli-windows-amd64.zip`**.
+2. Giải nén file `.zip` vào bất kỳ thư mục nào trên máy tính.
+3. Click đúp chuột vào file **`Chay-AiNovel.bat`** để khởi chạy giao diện TUI ngay lập tức!
+
+---
+
+### 🛠️ Cách 2: Cài Đặt & Biên Dịch Từ Mã Nguồn (Windows, Linux, macOS)
+
+Dành cho nhà phát triển muốn tùy biến hoặc người dùng Linux / macOS:
+
+- **Yêu cầu**: Đã cài đặt [Git](https://git-scm.com/) và [Go >= 1.25](https://go.dev/dl/).
 
 ```bash
 # 1. Clone kho lưu trữ
 git clone https://github.com/vinh-gogo/aidoodle-cli.git
 cd aidoodle-cli
 
-# 2. Chuyển sang nhánh mới nhất (history-vietnam)
-git checkout history-vietnam
-
-# 3. Biên dịch chương trình
+# 2. Biên dịch chương trình
 go build -o ainovel-cli.exe ./cmd/ainovel-cli   # Trên Windows
 # go build -o ainovel-cli ./cmd/ainovel-cli     # Trên Linux / macOS
 
-# 4. Khởi chạy giao diện TUI
-.\ainovel-cli.exe
+# 3. Khởi chạy giao diện TUI
+.\ainovel-cli.exe   # Hoặc ./ainovel-cli
 ```
 
 > [!NOTE]
-> Lần đầu khởi chạy, **Thuật sĩ cấu hình (Bootstrap Wizard)** sẽ tự động hướng dẫn bạn thiết lập Provider, API Key, Base URL và Model. Cấu hình được lưu an toàn tại `~/.ainovel/config.json`.
+> Lần đầu khởi chạy, **Thuật sĩ cấu hình (Bootstrap Wizard)** sẽ tự động hướng dẫn bạn thiết lập Provider (OpenRouter, Gemini, OpenAI...), API Key và Model. Cấu hình được lưu an toàn tại `~/.ainovel/config.json`.
 
 ---
 
