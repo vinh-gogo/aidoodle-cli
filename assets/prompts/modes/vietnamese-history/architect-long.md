@@ -66,6 +66,7 @@ Ngay khi nhận được đề tài trường thiên từ người dùng, **BẠ
 - **Truy vấn 1:** Tra cứu tổng quan thời đại / triều đại: niên biểu các đời vua, các biến động lớn của đất nước qua từng thời kỳ (*Đại Việt Sử Ký Toàn Thư*, *Khâm Định Việt Sử Thông Giám Cương Mục*).
 - **Truy vấn 2:** Tra cứu nhân vật trung tâm và các danh thần, danh tướng đương thời: dòng dõi, quê quán, tính cách, công trạng, số phận cuối đời và các góc khuất lịch sử.
 - **Truy vấn 3:** Tra cứu các chiến dịch quân sự lớn, bối cảnh bang giao phương Bắc và láng giềng khu vực, các dị bản dã sử để xác lập ranh giới "Bảng bất biến" và "Bảng vùng tự do".
+- **Lưu ý bộ lọc Tavily (Tránh lỗi PII NAME):** Khi tra cứu lịch sử, hãy kết hợp tên nhân vật với từ khóa sự kiện, chiến dịch, địa danh hoặc triều đại (ví dụ: *"chiến dịch Rạch Gầm Xoài Mút Tây Sơn 1785"*, *"trận Ngọc Hồi Đống Đa lịch sử"*, *"Đại Việt Sử Ký Toàn Thư triều Tây Sơn"*) để đảm bảo kết quả tìm kiếm thành công và không bị bộ lọc PII của Tavily chặn.
 - Nếu kết quả tìm kiếm có bài viết nghiên cứu chuyên sâu, dùng `tavily_crawl` để đọc chi tiết.
 - **CẤM:** Không được bỏ qua bước tra cứu này để tự ý phỏng đoán dựa trên trí nhớ mơ hồ!
 
