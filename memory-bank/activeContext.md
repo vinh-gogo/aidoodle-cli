@@ -49,6 +49,13 @@ Repo đang hoạt động trên branch **`history-vietnam`** (chuyển từ `tam
     - Xưng hô Đại Việt chuẩn mực (*Trẫm - khanh, bệ hạ - thần, thầy - con, huynh - đệ, chàng - thiếp*).
     - CẤM TUYỆT ĐỐI từ ngữ convert kiếm hiệp (*tiểu nhị, bản tọa, đại hiệp, hiệp khách, cô nương, yêm...*).
     - 100% tiếng Việt có dấu, sạch chữ Hán.
+- **Cơ chế Tra cứu Tavily Search Bắt buộc (Realtime Fact-grounding)**:
+  - **Vấn đề**: Trước đây LLM chỉ dùng kiến thức pre-trained, không tự kích hoạt `tavily_search` để lấy thông tin chuẩn xác về chủ đề/nhân vật/chiến dịch mà client yêu cầu trước khi lên kịch bản.
+  - **Giải pháp**:
+    - Bổ sung `tavilyCrawl` vào `architectTools` trong `internal/agents/build.go`.
+    - Thêm **BƯỚC 0 (BẮT BUỘC PHẢI GỌI ĐẦU TIÊN)** vào `architect-short.md` và `architect-long.md`: Ngay khi nhận đề tài, Architect bắt buộc phải thực hiện 1-3 truy vấn `tavily_search` (tra cứu nhân vật, chiến dịch, địa danh cổ, khoảng trống sử liệu / cơ chế khoa học) trước khi gọi `novel_context`, `save_book` hay `save_foundation`.
+    - Thêm chỉ dẫn cho `writer.md`: Chủ động gọi `tavily_search` để lấy dữ liệu thực chứng (vũ khí, trang phục, địa hình trận đánh, phong tục cổ / thí nghiệm thực nghiệm) trước khi viết bản thảo.
+    - Áp dụng đồng bộ cho cả chế độ `vietnamese-history` và `behavioral-psychology`.
 - **Dashboard Quản lý Outputs (`/dash`) & Khởi tạo mới (`/new`)**:
   - Gõ `/dash` -> Enter: Mở danh sách trực quan tất cả outputs, gắn tag mode, hỗ trợ chuyển đổi trực tiếp.
   - Gõ `/new` -> Enter: Bắt đầu ngay phiên làm việc mới sạch trong thư mục timestamp riêng.

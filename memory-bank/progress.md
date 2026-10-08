@@ -34,6 +34,11 @@ _Last updated: 2026-10-08 (Branch history-vietnam: Đại tu toàn diện Prompt
     - `dialogue-writing.md`: Nghệ thuật đối thoại và chuẩn mực xưng hô Đại Việt, danh mục cấm từ ngữ convert kiếm hiệp lai căng.
     - `plot-structures.md`: Cấu trúc 8 giai đoạn chuẩn mực tiểu thuyết lịch sử Việt Nam từ kinh nghiệm các tác phẩm lớn (*Hồ Quý Ly*, *Hội thề*, *Bão táp triều Trần*, *Sống mãi với thủ đô*).
     - `character-template.md` & `outline-template.md`: Cấu trúc dữ liệu JSON mẫu tích hợp trường Bảng bất biến, Vùng tự do và Xung đột kép.
+- [x] **Cơ chế Bắt buộc Tra cứu Realtime Tavily Search (`tavily_search` & `tavily_crawl`)**:
+  - Bổ sung `tavilyCrawl` vào `architectTools` trong `internal/agents/build.go`.
+  - Thiết lập **BƯỚC 0 BẮT BUỘC** trong `architect-short.md` và `architect-long.md`: Ép LLM thực hiện 1-3 truy vấn `tavily_search` tra cứu thời gian thực về niên đại, địa danh cổ, nhân vật, diễn biến trận đánh, giai thoại dã sử TRƯỚC KHI gọi `novel_context`, `save_book` hay `save_foundation`.
+  - Bổ sung chỉ dẫn và danh sách công cụ trong `writer.md` cho phép Writer tra cứu sử liệu chi tiết (vũ khí, trang phục, phong tục, địa hình) trước khi viết bản thảo.
+  - Đồng bộ cơ chế cho cả mode `vietnamese-history` và `behavioral-psychology`.
 - [x] **Kiểm thử & Biên dịch**:
   - 100% test suite `go test ./...` pass green.
   - `ainovel-cli.exe` biên dịch thành công.
