@@ -201,8 +201,9 @@ func commandRegistryInstance() commandRegistry {
 		{
 			Name:        "new",
 			Group:       "system",
-			Usage:       "/new [chủ đề]",
+			Usage:       "/new",
 			Description: "Tạo dự án mới trong thư mục output riêng (ví dụ output/novel-20261007-1825) và bắt đầu lại từ màn hình chào mừng",
+			AutoExecute: true,
 			Run: func(m Model, args []string) (tea.Model, tea.Cmd) {
 				m.restartRequested = true
 				m.restartPrompt = strings.TrimSpace(strings.Join(args, " "))
