@@ -452,6 +452,12 @@ func (h *Host) StartPrepared(rawRequirement string) error {
 			})
 		} else if err != nil {
 			slog.Warn("Tự động tra cứu Tavily cho chủ đề thất bại (tiếp tục bằng kiến thức sẵn có)", "err", err)
+			h.emitEvent(Event{
+				Time:     time.Now(),
+				Category: "SYSTEM",
+				Level:    "warn",
+				Summary:  fmt.Sprintf("Tra cứu Tavily tự động không hoàn thành: %v (tiếp tục bằng kiến thức sẵn có)", err),
+			})
 		}
 	}
 

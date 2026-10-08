@@ -3,6 +3,7 @@ package arbiter
 import (
 	"context"
 	"fmt"
+	"os"
 	"strings"
 
 	"github.com/voocel/agentcore"
@@ -36,6 +37,7 @@ type InterventionFacts struct {
 	Running                  bool             `json:"running"`                  // 干预到达时是否有 run 在进行
 	CheckpointSeq            int64            `json:"checkpoint_seq,omitempty"` // Collect 时刻最新 checkpoint;Engine 对账用
 	RecentDecisions          []RecentDecision `json:"recent_decisions,omitempty"`
+	TavilyEnabled            bool             `json:"tavily_enabled"` // He thong da cau hinh va tich hop cong cu Tavily
 }
 
 // RecentDecision 是干预记忆:最近几次裁定的摘要,覆盖"上次改的怎么样了"类跨干预引用。
@@ -60,6 +62,7 @@ func CollectInterventionFacts(st *storepkg.Store) (InterventionFacts, error) {
 	if st == nil {
 		return f, fmt.Errorf("store không được để trống")
 	}
+	f.TavilyEnabled = strings.TrimSpace(os.Getenv("TAVILY_API_KEY")) != ""
 	missing, err := st.FoundationMissing()
 	if err != nil {
 		return f, fmt.Errorf("đọc trạng thái thiết lập cơ bản: %w", err)

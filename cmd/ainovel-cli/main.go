@@ -6,6 +6,7 @@ import (
 	"io"
 	"os"
 	"sort"
+	"strconv"
 	"strings"
 
 	"github.com/voocel/ainovel-cli/assets"
@@ -13,6 +14,7 @@ import (
 	"github.com/voocel/ainovel-cli/internal/entry/headless"
 	"github.com/voocel/ainovel-cli/internal/entry/startup"
 	"github.com/voocel/ainovel-cli/internal/entry/tui"
+	"github.com/voocel/ainovel-cli/internal/entry/web"
 	"github.com/voocel/ainovel-cli/internal/eval"
 	"github.com/voocel/ainovel-cli/internal/host/trend"
 	"github.com/voocel/ainovel-cli/internal/rules"
@@ -49,12 +51,12 @@ func main() {
 		}
 		return
 	}
-	headlessMode = opts.Headless
+	headlessMode = opts.Headless || opts.Web
 
 	// 首次引导
 	if bootstrap.NeedsSetup() {
-		if opts.Headless {
-			die("error: chế độ headless không hỗ trợ hướng dẫn khởi tạo lần đầu, vui lòng chạy giao diện TUI một lần để hoàn tất cấu hình")
+		if opts.Headless || opts.Web {
+			die("error: chế độ headless/web không hỗ trợ hướng dẫn khởi tạo lần đầu, vui lòng chạy giao diện TUI một lần để hoàn tất cấu hình")
 		}
 		setupCfg, err := bootstrap.RunSetup()
 		if err != nil {
@@ -148,6 +150,17 @@ func runWithConfig(cfg bootstrap.Config, opts cliOptions, args []string) {
 		cfg.AdvanceMode = "review"
 	}
 
+	if opts.Web {
+		port := opts.Port
+		if port <= 0 {
+			port = 8080
+		}
+		if err := web.Run(cfg, bundle, port, versionInfo()); err != nil {
+			die("web error: %v", err)
+		}
+		return
+	}
+
 	if opts.Headless {
 		if opts.Next {
 			if err := headless.Run(cfg, bundle, headless.Options{Next: true}); err != nil {
@@ -186,6 +199,8 @@ func availableStyles(m map[string]string) string {
 
 type cliOptions struct {
 	Headless      bool
+	Web           bool
+	Port          int
 	Trends        bool
 	Review        bool
 	Next          bool
@@ -228,6 +243,24 @@ func parseCLIOptions(argv []string) (cliOptions, []string, error) {
 			}
 		case "--headless":
 			opts.Headless = true
+		case "--web", "-w":
+			opts.Web = true
+			if i+1 < len(argv) && !strings.HasPrefix(argv[i+1], "-") {
+				if p, err := strconv.Atoi(argv[i+1]); err == nil && p > 0 {
+					opts.Port = p
+					i++
+				}
+			}
+		case "--port", "-p":
+			if i+1 >= len(argv) {
+				return opts, nil, fmt.Errorf("--port thiếu giá trị")
+			}
+			p, err := strconv.Atoi(argv[i+1])
+			if err != nil || p <= 0 {
+				return opts, nil, fmt.Errorf("cổng --port không hợp lệ: %s", argv[i+1])
+			}
+			opts.Port = p
+			i++
 		case "--prompt":
 			if i+1 >= len(argv) {
 				return opts, nil, fmt.Errorf("--prompt thiếu giá trị")
@@ -264,6 +297,12 @@ func parseCLIOptions(argv []string) (cliOptions, []string, error) {
 	}
 	if opts.Next && !opts.Headless {
 		return opts, nil, fmt.Errorf("--next chỉ có thể sử dụng trong chế độ --headless (trong TUI vui lòng dùng lệnh /next)")
+	}
+	if opts.Web && opts.Headless {
+		return opts, nil, fmt.Errorf("--web và --headless không thể dùng đồng thời")
+	}
+	if opts.Web && (opts.Next || opts.Prompt != "" || opts.PromptFile != "") {
+		return opts, nil, fmt.Errorf("--prompt/--prompt-file/--next không dùng cùng --web (vui lòng thao tác trên giao diện Web)")
 	}
 	if opts.Prompt != "" && opts.PromptFile != "" {
 		return opts, nil, fmt.Errorf("--prompt và --prompt-file không thể dùng đồng thời")

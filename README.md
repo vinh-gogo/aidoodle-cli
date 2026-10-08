@@ -194,8 +194,24 @@ go build -o ainovel-cli.exe ./cmd/ainovel-cli   # Trên Windows
 .\ainovel-cli.exe   # Hoặc ./ainovel-cli
 ```
 
-> [!NOTE]
-> Lần đầu khởi chạy, **Thuật sĩ cấu hình (Bootstrap Wizard)** sẽ tự động hướng dẫn bạn thiết lập Provider (OpenRouter, Gemini, OpenAI...), API Key và Model. Cấu hình được lưu an toàn tại `~/.ainovel/config.json`.
+---
+
+### 🌐 Cách 3: Chạy & Theo Dõi Trên Trình Duyệt Web (--web)
+
+Bạn muốn trải nghiệm trên trình duyệt Web (Desktop, Điện thoại, Máy tính bảng)?
+Khởi chạy chế độ Web Dashboard với:
+
+```bash
+.\ainovel-cli.exe --web 8080
+```
+
+Mở trình duyệt truy cập: **`http://localhost:8080`**
+- **Single Page App 3 cột hiện đại**:
+  - **Cột Trái**: Bộ chọn chế độ AI (`/mode`), mục lục các chương và lịch sử tác phẩm cũ (`/dash`).
+  - **Cột Giữa**: Luồng văn bản streaming Markdown thời gian thực + trình đọc truyện Reader ban đêm.
+  - **Cột Phải**: Luồng sự kiện live (hiển thị chi tiết từng truy vấn `tavily_search`, phán quyết Arbiter, tiến độ Writer/Editor).
+  - **Thanh Điều Khiển Dưới**: Nhập đề tài sáng tác hoặc gửi chỉ đạo can thiệp (Steer) trực tiếp cho AI.
+- **Zero dependencies**: Giao diện được nhúng trực tiếp vào file nhị phân Go bằng `//go:embed`, không cần Node.js hay npm.
 
 ---
 

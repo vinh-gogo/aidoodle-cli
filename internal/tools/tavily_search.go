@@ -91,15 +91,26 @@ func (t *TavilySearchTool) Execute(ctx context.Context, args json.RawMessage) (j
 		IncludeAnswer: true,
 	})
 	if err != nil {
-		// Thay vì báo lỗi làm đứt gãy luồng ReAct (khiến LLM thử lại liên tục dẫn tới bế tắc),
-		// trả về kết quả dự phòng hướng dẫn LLM tiếp tục sáng tác dựa trên tri thức sẵn có.
+		errStr := err.Error()
+		isPII := strings.Contains(errStr, "PII detected") || strings.Contains(errStr, "NAME")
+		var answer, warning, instruction string
+		if isPII {
+			answer = "Truy vấn Tavily bị bộ lọc an toàn chặn do chứa tên riêng cá nhân (PII: NAME). Bạn hãy đổi truy vấn sang tên chiến dịch, địa danh lịch sử, niên đại hoặc sự kiện (ví dụ: 'chiến dịch Rạch Gầm Xoài Mút', 'trận Ngọc Hồi Đống Đa 1789') thay vì dùng tên người trực tiếp."
+			warning = fmt.Sprintf("Tavily chặn truy vấn do chứa tên riêng (%v).", err)
+			instruction = "Hãy gọi lại tavily_search với từ khóa chiến dịch, địa danh hoặc niên đại lịch sử (tránh đưa tên riêng nhân vật vào query)."
+		} else {
+			answer = fmt.Sprintf("Dịch vụ tra cứu Tavily hiện không khả dụng (%v). Bạn hãy sử dụng nguồn tri thức khoa học, lịch sử và học thuật sâu rộng sẵn có của bạn để giải thích các cơ chế/sự kiện và hoàn thành tác phẩm mà KHÔNG CẦN gọi lại tavily_search.", err)
+			warning = fmt.Sprintf("Tra cứu Tavily không thành công: %v. Hãy tiếp tục sáng tác dựa trên tri thức sẵn có.", err)
+			instruction = "Không gọi lại tavily_search. Hãy tiến hành viết nội dung ngay dựa trên cơ sở kiến thức học thuật sẵn có."
+		}
+
 		fallbackMap := map[string]any{
 			"query":       query,
-			"answer":      fmt.Sprintf("Dịch vụ tra cứu Tavily hiện không khả dụng (%v). Bạn hãy sử dụng nguồn tri thức khoa học, tâm lý học và học thuật sâu rộng sẵn có của bạn để giải thích các cơ chế, trích dẫn tác giả nghiên cứu kinh điển và hoàn thành kịch bản mà KHÔNG CẦN gọi lại tavily_search.", err),
+			"answer":      answer,
 			"results":     []searchItem{},
 			"total_found": 0,
-			"warning":     fmt.Sprintf("Tra cứu Tavily không thành công: %v. Hãy tiếp tục sáng tác dựa trên tri thức sẵn có.", err),
-			"instruction": "Không gọi lại tavily_search. Hãy tiến hành viết nội dung ngay dựa trên cơ sở kiến thức học thuật sẵn có.",
+			"warning":     warning,
+			"instruction": instruction,
 		}
 		data, _ := json.Marshal(fallbackMap)
 		return data, nil

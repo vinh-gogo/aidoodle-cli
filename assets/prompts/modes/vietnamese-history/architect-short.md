@@ -81,6 +81,7 @@ Ngay khi nhận được chủ đề, tên nhân vật, triều đại hoặc ch
 - **Truy vấn 1:** Tra cứu nhân vật chính: năm sinh/mất, quê quán, dòng dõi, chức tước cổ, công trạng lớn ghi trong chính sử (*Đại Việt Sử Ký Toàn Thư*, *Khâm Định Việt Sử Thông Giám Cương Mục*).
 - **Truy vấn 2:** Tra cứu chiến dịch / biến cố: địa danh cổ (tương ứng địa phương ngày nay), địa hình chiến sự (cửa sông, ải hiểm), các trận đánh then chốt, tương quan lực lượng hai bên.
 - **Truy vấn 3:** Tra cứu khoảng trống sử liệu & chi tiết đời sống: giai thoại dã sử, thần tích đền miếu, phong tục tập quán, vũ khí trang bị đúng thời để làm căn cứ cho "Bảng vùng tự do".
+- **Lưu ý bộ lọc Tavily (Tránh lỗi PII NAME):** Khi tra cứu lịch sử, hãy kết hợp tên nhân vật với từ khóa sự kiện, chiến dịch, địa danh hoặc triều đại (ví dụ: *"chiến dịch Rạch Gầm Xoài Mút Tây Sơn 1785"*, *"trận Ngọc Hồi Đống Đa lịch sử"*, *"Đại Việt Sử Ký Toàn Thư triều Tây Sơn"*) để đảm bảo kết quả tìm kiếm thành công và không bị bộ lọc PII của Tavily chặn.
 - Nếu kết quả tìm kiếm có bài viết nghiên cứu sử học sâu sắc hoặc trích dẫn chính sử nguyên văn, dùng `tavily_crawl` để đọc chi tiết.
 - **TUYỆT ĐỐI CẤM:** Không được bỏ qua bước tra cứu này! Không tự suy diễn hay phỏng đoán dựa trên trí nhớ mô hình; toàn bộ các mốc trong Bảng bất biến và Bảng vùng tự do bắt buộc phải dựa trên dữ liệu thu thập được từ `tavily_search`.
 

@@ -281,6 +281,28 @@ func displayToolName(tool string, args json.RawMessage) string {
 			}
 			return fmt.Sprintf("%s(Chương %d%s)", tool, p.Chapter, suffix)
 		}
+	case "tavily_search":
+		var p struct {
+			Query string `json:"query"`
+		}
+		if json.Unmarshal(args, &p) == nil && p.Query != "" {
+			q := strings.TrimSpace(p.Query)
+			if len([]rune(q)) > 35 {
+				q = string([]rune(q)[:32]) + "..."
+			}
+			return fmt.Sprintf("tavily_search(\"%s\")", q)
+		}
+	case "tavily_crawl":
+		var p struct {
+			URL string `json:"url"`
+		}
+		if json.Unmarshal(args, &p) == nil && p.URL != "" {
+			u := strings.TrimSpace(p.URL)
+			if len([]rune(u)) > 35 {
+				u = string([]rune(u)[:32]) + "..."
+			}
+			return fmt.Sprintf("tavily_crawl(%s)", u)
+		}
 	}
 	return tool
 }
