@@ -1401,30 +1401,98 @@ Hướng dẫn nhanh:
     }
 
     async function exportWord() {
-      addEventLog({ Category: 'SYSTEM', Summary: 'Đang kết xuất và tải xuống file Word (.docx)...', Time: new Date() });
-      const downloadUrl = `/api/export?format=word&dir=${encodeURIComponent(cliState.dir || '')}&download=1&t=${Date.now()}`;
-      const a = document.createElement('a');
-      a.href = downloadUrl;
-      a.style.display = 'none';
-      document.body.appendChild(a);
-      a.click();
-      setTimeout(() => {
-        if (a.parentNode) a.parentNode.removeChild(a);
-      }, 1000);
+      addEventLog({ Category: 'SYSTEM', Summary: 'Đang kết xuất và tạo file Word (.docx)...', Time: new Date() });
+      
+      // Tìm các nút xuất Word trên giao diện để cập nhật trạng thái loading
+      const exportBtns = document.querySelectorAll('button[onclick="exportWord()"]');
+      exportBtns.forEach(b => {
+        b.dataset.origText = b.innerText;
+        b.innerText = "⏳ Đang xuất Word...";
+        b.disabled = true;
+      });
 
       try {
-        await sendAction('export', { format: 'word', dir: cliState.dir });
+        const targetDir = cliState.dir || '';
+        const downloadUrl = `/api/export?format=word&dir=${encodeURIComponent(targetDir)}&download=1&t=${Date.now()}`;
+        const res = await fetch(downloadUrl);
+        
+        if (!res.ok) {
+          let errMsg = `Mã lỗi HTTP ${res.status}`;
+          try {
+            const errData = await res.json();
+            if (errData && errData.error) errMsg = errData.error;
+          } catch (e) {
+            errMsg = res.statusText || errMsg;
+          }
+          alert("Lỗi xuất file Word: " + errMsg);
+          addEventLog({ Category: 'SYSTEM', Summary: '❌ Lỗi xuất Word: ' + errMsg, Level: 'error', Time: new Date() });
+          return;
+        }
+
+        // Đọc blob dữ liệu file docx
+        const blob = await res.blob();
+        let fileName = 'tac-pham.docx';
+        const disposition = res.headers.get('Content-Disposition') || '';
+        if (disposition) {
+          // Ưu tiên RFC 5987 filename*=UTF-8''
+          const utf8Match = disposition.match(/filename\*=UTF-8''([^;]+)/i);
+          if (utf8Match && utf8Match[1]) {
+            fileName = decodeURIComponent(utf8Match[1]);
+          } else {
+            const match = disposition.match(/filename=(?:"([^"]+)"|([^;]+))/i);
+            if (match) {
+              fileName = (match[1] || match[2] || '').trim();
+            }
+          }
+        }
+
+        // Tạo thẻ a tải xuống tự động
+        const blobUrl = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = blobUrl;
+        a.download = fileName;
+        a.style.display = 'none';
+        document.body.appendChild(a);
+        a.click();
+        
+        setTimeout(() => {
+          window.URL.revokeObjectURL(blobUrl);
+          if (a.parentNode) a.parentNode.removeChild(a);
+        }, 1500);
+
+        const sizeKb = (blob.size / 1024).toFixed(1);
+        addEventLog({ Category: 'SYSTEM', Summary: `✓ Tải xuống thành công: ${fileName} (${sizeKb} KB)`, Time: new Date() });
       } catch (err) {
-        console.error("send export action error:", err);
+        console.error("exportWord error:", err);
+        alert("Lỗi kết nối khi xuất Word: " + err.message);
+        addEventLog({ Category: 'SYSTEM', Summary: '❌ Lỗi tải Word: ' + err.message, Level: 'error', Time: new Date() });
+      } finally {
+        exportBtns.forEach(b => {
+          if (b.dataset.origText) b.innerText = b.dataset.origText;
+          b.disabled = false;
+        });
       }
     }
 
     async function exportVideo() {
       addEventLog({ Category: 'SYSTEM', Summary: 'Đang kết xuất gói kịch bản video TikTok (scripts, voiceover, csv)...', Time: new Date() });
       try {
-        await sendAction('export', { format: 'video', dir: cliState.dir });
+        const res = await fetch('/api/action', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'export', format: 'video', dir: cliState.dir })
+        });
+        const data = await res.json();
+        if (data.ok) {
+          addEventLog({ Category: 'SYSTEM', Summary: '✓ Đã xuất gói kịch bản video thành công!', Time: new Date() });
+          alert("✓ Đã xuất gói kịch bản video thành công!");
+        } else {
+          alert("Lỗi xuất video: " + (data.error || "Thất bại"));
+          addEventLog({ Category: 'SYSTEM', Summary: '❌ Lỗi xuất video: ' + data.error, Level: 'error', Time: new Date() });
+        }
       } catch (err) {
         console.error("send export video action error:", err);
+        alert("Lỗi kết nối khi xuất video: " + err.message);
       }
     }
 
@@ -1468,9 +1536,10 @@ Hướng dẫn nhanh:
       }
     }
 
-    async function loadChapters() {
+    async function loadChapters(dir) {
+      const targetDir = dir || cliState.dir || '';
       try {
-        const res = await fetch('/api/chapters');
+        const res = await fetch(`/api/chapters?dir=${encodeURIComponent(targetDir)}`);
         const items = await res.json();
         cliState.chapters = items || [];
         renderChapterList(cliState.chapters);
@@ -1514,7 +1583,8 @@ Hướng dẫn nhanh:
       document.getElementById('stream-text').innerText = `[Đang tải Chương ${chNum}: ${title}...]`;
 
       try {
-        const res = await fetch(`/api/chapter?ch=${chNum}`);
+        const targetDir = cliState.dir || '';
+        const res = await fetch(`/api/chapter?ch=${chNum}&dir=${encodeURIComponent(targetDir)}`);
         const data = await res.json();
         if (data.ok && data.content) {
           document.getElementById('stream-text').innerText = `# Chương ${chNum}: ${title}\n\n${data.content}`;
@@ -1540,7 +1610,15 @@ Hướng dẫn nhanh:
         div.onclick = async () => {
           dashCursor = idx;
           closeModal('modal-dash');
-          await sendAction('switch', { dir: p.full_path });
+          cliState.dir = p.full_path;
+          addEventLog({ Category: 'SYSTEM', Summary: `Đang mở tác phẩm: 《${p.title}》...`, Time: new Date() });
+          try {
+            await sendAction('switch', { dir: p.full_path });
+          } catch (e) {
+            console.error("switch project error:", e);
+          }
+          await fetchStatus();
+          await loadChapters(p.full_path);
         };
         div.innerHTML = `
           <span style="color: var(--term-yellow); font-size: 1.1rem;">${p.is_current ? '⭐' : '📁'}</span>

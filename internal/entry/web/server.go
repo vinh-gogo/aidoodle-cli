@@ -272,20 +272,23 @@ func (s *Server) SwitchProject(dir string) error {
 		slog.String("version", s.buildInfo.Version),
 	))
 	if err != nil {
-		return fmt.Errorf("mở dự án %s thất bại: %w", dir, err)
+		slog.Warn("Mở host cho dự án thất bại, dự án có thể đã hoàn thành", "dir", dir, "err", err)
+	} else {
+		s.attachHost(h)
 	}
-	s.attachHost(h)
 	s.clearStreaming()
 
 	// Phát lại replay log gần đây nếu có
-	if items, err := h.ReplayQueue(20); err == nil {
-		for _, it := range items {
-			s.recordEvent(host.Event{
-				Time:     it.Time,
-				Category: it.Category,
-				Summary:  it.Summary,
-				Level:    "info",
-			})
+	if h != nil {
+		if items, err := h.ReplayQueue(20); err == nil {
+			for _, it := range items {
+				s.recordEvent(host.Event{
+					Time:     it.Time,
+					Category: it.Category,
+					Summary:  it.Summary,
+					Level:    "info",
+				})
+			}
 		}
 	}
 

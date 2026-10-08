@@ -4,12 +4,15 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"net/url"
 	"path/filepath"
 	"strconv"
 	"strings"
 	"time"
 
+	"github.com/voocel/ainovel-cli/internal/domain"
 	"github.com/voocel/ainovel-cli/internal/host"
+	"github.com/voocel/ainovel-cli/internal/store"
 )
 
 func (s *Server) registerRoutes(mux *http.ServeMux) {
@@ -50,6 +53,8 @@ func (s *Server) handleStatus(w http.ResponseWriter, r *http.Request) {
 	if s.host != nil {
 		sp := s.host.Snapshot()
 		snap = &sp
+	} else {
+		snap = loadStoreSnapshot(dir)
 	}
 
 	recent := make([]host.Event, len(s.recentEvents))
@@ -227,7 +232,10 @@ func (s *Server) handleExport(w http.ResponseWriter, r *http.Request) {
 			contentType = "text/plain; charset=utf-8"
 		}
 		w.Header().Set("Content-Type", contentType)
-		w.Header().Set("Content-Disposition", fmt.Sprintf("attachment; filename=%q", fileName))
+		asciiFallback := sanitizeASCIIFileName(fileName)
+		encodedFileName := url.PathEscape(fileName)
+		w.Header().Set("Content-Disposition", fmt.Sprintf("attachment; filename=%q; filename*=UTF-8''%s", asciiFallback, encodedFileName))
+		w.Header().Set("Access-Control-Expose-Headers", "Content-Disposition")
 		http.ServeFile(w, r, res.Path)
 		return
 	}
@@ -298,4 +306,61 @@ func writeJSON(w http.ResponseWriter, code int, data interface{}) {
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.WriteHeader(code)
 	_ = json.NewEncoder(w).Encode(data)
+}
+
+func sanitizeASCIIFileName(s string) string {
+	var b strings.Builder
+	for _, r := range s {
+		if r >= 32 && r < 127 && r != '"' && r != '\\' && r != ';' {
+			b.WriteRune(r)
+		} else {
+			b.WriteRune('_')
+		}
+	}
+	res := strings.TrimSpace(b.String())
+	if res == "" || res == ".docx" || res == ".epub" || res == ".txt" {
+		return "novel" + filepath.Ext(s)
+	}
+	return res
+}
+
+func loadStoreSnapshot(dir string) *host.UISnapshot {
+	st := store.NewStore(dir)
+	book, _ := st.Book.Load()
+	progress, _ := st.Progress.Load()
+	outline, _ := st.Outline.LoadOutline()
+
+	title := ""
+	if book != nil {
+		title = book.Title
+	}
+	if title == "" {
+		title = filepath.Base(dir)
+	}
+
+	snap := &host.UISnapshot{
+		BookTitle:    title,
+		RuntimeState: "idle",
+		StatusLabel:  "READY",
+	}
+
+	if outline != nil {
+		snap.TotalChapters = len(outline)
+	}
+
+	if progress != nil {
+		snap.Phase = string(progress.Phase)
+		snap.CompletedCount = len(progress.CompletedChapters)
+		snap.TotalWordCount = progress.TotalWordCount
+		snap.CurrentChapter = progress.CurrentChapter
+		if progress.TotalChapters > 0 {
+			snap.TotalChapters = progress.TotalChapters
+		}
+		if progress.Phase == domain.PhaseComplete || (snap.TotalChapters > 0 && snap.CompletedCount >= snap.TotalChapters) {
+			snap.StatusLabel = "COMPLETE"
+			snap.RuntimeState = "completed"
+		}
+	}
+
+	return snap
 }

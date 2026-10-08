@@ -92,8 +92,12 @@ func Run(ctx context.Context, deps Deps, opts Options) (*Result, error) {
 	bodies := make(map[int]string, len(chapters))
 	for _, ch := range chapters {
 		text, err := deps.Store.Drafts.LoadChapterText(ch)
-		if err != nil {
-			return nil, fmt.Errorf("đọc chương %d thất bại: %w", ch, err)
+		if err != nil || strings.TrimSpace(text) == "" {
+			if fbText := findChapterFallback(deps.Store.Dir(), ch); strings.TrimSpace(fbText) != "" {
+				text = fbText
+			} else if draft, draftErr := deps.Store.Drafts.LoadDraft(ch); draftErr == nil && strings.TrimSpace(draft) != "" {
+				text = draft
+			}
 		}
 		if strings.TrimSpace(text) == "" {
 			return nil, fmt.Errorf("tiến độ đánh dấu chương %d đã hoàn thành, nhưng chapters/%02d.md bị thiếu hoặc rỗng", ch, ch)
@@ -259,4 +263,37 @@ func sanitizeFileName(name string) string {
 		"\x00", "_",
 	)
 	return replacer.Replace(name)
+}
+
+// findChapterFallback tìm nội dung chương từ chapters/%02d.md hoặc các thư mục *-video/scripts/%02d-*.md.
+func findChapterFallback(dir string, ch int) string {
+	chPath := filepath.Join(dir, "chapters", fmt.Sprintf("%02d.md", ch))
+	if data, err := os.ReadFile(chPath); err == nil && len(data) > 0 {
+		return string(data)
+	}
+
+	entries, err := os.ReadDir(dir)
+	if err != nil {
+		return ""
+	}
+
+	for _, entry := range entries {
+		if entry.IsDir() && strings.HasSuffix(entry.Name(), "-video") {
+			scriptsDir := filepath.Join(dir, entry.Name(), "scripts")
+			sFiles, sErr := os.ReadDir(scriptsDir)
+			if sErr != nil {
+				continue
+			}
+			prefix := fmt.Sprintf("%02d-", ch)
+			for _, sf := range sFiles {
+				if strings.HasPrefix(sf.Name(), prefix) && strings.HasSuffix(sf.Name(), ".md") {
+					if data, err := os.ReadFile(filepath.Join(scriptsDir, sf.Name())); err == nil {
+						return string(data)
+					}
+				}
+			}
+		}
+	}
+
+	return ""
 }

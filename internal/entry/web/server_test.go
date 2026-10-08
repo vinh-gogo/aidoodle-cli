@@ -112,3 +112,90 @@ func TestWebEndpoints(t *testing.T) {
 		t.Fatalf("expected 400 for unknown action, got %d", w.Code)
 	}
 }
+
+func TestExportProject(t *testing.T) {
+	projDir := "D:/ainovel-cli/output/novel-20261008-1037"
+	if _, err := os.Stat(projDir); err != nil {
+		projDir = filepath.Join("..", "..", "output", "novel-20261008-1037")
+		if _, err := os.Stat(projDir); err != nil {
+			t.Skip("novel-20261008-1037 directory not found, skipping integration test")
+		}
+	}
+
+	cfg := bootstrap.Config{
+		OutputDir: projDir,
+		Style:     "vietnamese-history",
+		Provider:  "mock",
+		ModelName: "test-model",
+	}
+	bundle := assets.Load("vietnamese-history", assets.DefaultLoadOptions(projDir))
+	buildInfo := buildversion.Info{Version: "test-v1"}
+
+	srv, err := NewServer(cfg, bundle, 8089, buildInfo)
+	if err != nil {
+		t.Fatalf("NewServer error: %v", err)
+	}
+	defer srv.Close()
+
+	mux := http.NewServeMux()
+	srv.registerRoutes(mux)
+
+	// 1. GET /api/export?format=word&dir=...&download=1
+	req := httptest.NewRequest("GET", "/api/export?format=word&dir="+projDir+"&download=1", nil)
+	w := httptest.NewRecorder()
+	mux.ServeHTTP(w, req)
+
+	if w.Code != http.StatusOK {
+		t.Fatalf("expected 200, got %d, body: %s", w.Code, w.Body.String())
+	}
+	if w.Body.Len() == 0 {
+		t.Fatalf("export returned empty body")
+	}
+	disp := w.Header().Get("Content-Disposition")
+	if !strings.Contains(disp, "attachment;") || !strings.Contains(disp, "filename*=") {
+		t.Errorf("expected RFC 6266 Content-Disposition header, got %s", disp)
+	}
+
+	// 2. Switch project then export with empty dir
+	err = srv.SwitchProject(projDir)
+	if err != nil {
+		t.Fatalf("SwitchProject error: %v", err)
+	}
+
+	req2 := httptest.NewRequest("GET", "/api/export?format=word&download=1", nil)
+	w2 := httptest.NewRecorder()
+	mux.ServeHTTP(w2, req2)
+	if w2.Code != http.StatusOK {
+		t.Fatalf("expected 200 after switch, got %d, body: %s", w2.Code, w2.Body.String())
+	}
+	if w2.Body.Len() == 0 {
+		t.Fatalf("export after switch returned empty body")
+	}
+
+	// 3. Test /api/status returns fallback snapshot when s.host is nil
+	req3 := httptest.NewRequest("GET", "/api/status", nil)
+	w3 := httptest.NewRecorder()
+	mux.ServeHTTP(w3, req3)
+	if w3.Code != http.StatusOK {
+		t.Fatalf("expected 200 for /api/status, got %d", w3.Code)
+	}
+	var statusResp struct {
+		Ok       bool `json:"ok"`
+		Snapshot *struct {
+			BookTitle   string `json:"BookTitle"`
+			StatusLabel string `json:"StatusLabel"`
+		} `json:"snapshot"`
+	}
+	if err := json.Unmarshal(w3.Body.Bytes(), &statusResp); err != nil {
+		t.Fatalf("unmarshal /api/status error: %v", err)
+	}
+	if !statusResp.Ok || statusResp.Snapshot == nil {
+		t.Fatalf("expected valid snapshot even when host is nil")
+	}
+	if !strings.Contains(statusResp.Snapshot.BookTitle, "Quang Trung") {
+		t.Errorf("expected book title with Quang Trung, got %s", statusResp.Snapshot.BookTitle)
+	}
+	if statusResp.Snapshot.StatusLabel != "COMPLETE" {
+		t.Errorf("expected COMPLETE status, got %s", statusResp.Snapshot.StatusLabel)
+	}
+}
