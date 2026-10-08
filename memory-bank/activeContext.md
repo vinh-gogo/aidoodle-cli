@@ -1,107 +1,83 @@
 # Active Context
 
-_Last updated: 2026-10-07 (Doodle Explainer 5-minute standard, 1:1 visual beats & system stabilization)_
+_Last updated: 2026-10-08 (Dashboard /dash, Clean /new, Tavily Graceful Fallback & Behavioral Psychology 8-Step Blueprint)_
 
 ## Current Status & Direction
-Repo đã hoàn tất chuyển đổi toàn diện từ novel-writing engine sang **TikTok Doodle Explainer Video Scriptwriting Engine (`aidoodle-cli`)** trên branch `doodle-explainer`:
-- **Định dạng sản phẩm**: Kịch bản video giải thích người que đồ đá cho TikTok / YouTube Shorts, thời lượng chuẩn **5+ phút (300–600 giây, 700–1500 từ LỜI)**.
-- **Cấu trúc 5 giai đoạn**: Hook 3s -> Mở đầu (0:03-0:45) -> Thân bài 3 chặng có Tái Hook mỗi 60-90s (0:45-3:45) -> Reframe & Hành động nhỏ (3:45-4:30) -> Chốt loop (4:30-5:15+).
-- **Nhịp thị giác 1:1 (Voice-Visual Pairs)**: Mỗi cảnh chia thành các cặp `LỜI:` đi liền ngay `HÌNH:` tương ứng (10–20 từ thoại / 3–6 giây đổi hình một lần), giải quyết triệt để vấn đề "chết hình" (static visuals).
-- **Thẻ kịch bản tối giản**: Chỉ dùng `LỜI:` (voiceover), `HÌNH:` (mô tả doodle que + text lồng trong hình nếu có), `ÂM:` (sfx/nhạc) và chân kịch bản (`CAPTION:`, `HASHTAG:`, `NGUỒN:`, `CẦN KIỂM CHỨNG:`). Thẻ `CHỮ:` đã được loại bỏ hoàn toàn.
-- **Series chuyên sâu (Deep Dive Series)**: Mặc định lập kế hoạch **3 tập chuyên sâu** cho một chủ đề đơn lẻ mà người dùng đưa vào (hoặc theo số tập người dùng chỉ định), tuyệt đối không phân nhánh lan man làm loãng chủ đề cốt lõi (Anti-Topic Drift).
-- **Môi trường LLM**: Kết nối mô hình lớn (vd: Qwen-27B) qua OpenAI-compatible API (Kaggle/ngrok/Ollama), áp dụng các tham số phạt lặp (`frequency_penalty: 0.3`, `presence_penalty: 0.2`, `repetition_penalty: 1.1`, `temperature: 0.7`) để triệt tiêu lỗi lặp vô tận (Degeneration trap).
+Repo đang hoạt động trên branch **`tam-ly-hoc`** (forked từ `route` / `aidoodle-cli`):
+- **4 Chế độ làm việc chuyên biệt (`/mode`)**:
+  1. `[1] Tiểu thuyết / Manga` (`novel-manga`): Tiểu thuyết văn xuôi chương hồi (2.000 – 4.000 từ/chương).
+  2. `[2] Doodle Explainer` (`doodle-explainer`): Video người que giải thích kiến thức TikTok / YouTube Shorts (5+ phút, nhịp 1:1 Thoại - Hình).
+  3. `[3] Tâm lý học hành vi` (`behavioral-psychology`): Video giải mã bẫy nhận thức, cơ chế não bộ, Cú hích hành vi (Nudge), chuẩn mực 8 phần khoa học kết hợp nghệ thuật kể chuyện cuốn hút và tự trắc ẩn vỗ về đứa trẻ bên trong.
+  4. `[4] Tiểu thuyết Lịch sử Việt Nam` (`vietnamese-history`): Tiểu thuyết văn xuôi hào sảng tái hiện danh nhân lịch sử Đại Việt (2.000 – 4.000 từ/chương), tra cứu Tavily Search.
+- **Dashboard Quản lý Outputs (`/dash`)**:
+  - Gõ `/dash` -> Enter (hoặc `/dashboard`, `/projects`, `/history`) mở modal trực quan liệt kê tất cả các dự án trong `output/` (mới nhất lên đầu).
+  - Tự động gắn **Tag Mode** trực quan: `[🧠 Tâm lý học hành vi]`, `[🦴 Video TikTok]`, `[⚔️ Lịch sử Việt Nam]`, `[📖 Tiểu thuyết / Manga]`.
+  - Hiển thị tiến độ: `✓ Đã xong (3/3)`, `⏳ Đang viết (1/3)`, `🌱 Khởi tạo`, đường dẫn `output\novel-...`, timestamp và đánh dấu `⭐ [Đang mở]`.
+  - Hỗ trợ di chuyển `↑`/`↓`/`j`/`k`, nhấn `Enter` để lập tức mở lại và chuyển đổi dự án (tự động nạp đúng mode và khôi phục tiến trình).
+- **Khởi tạo phiên mới sạch (`/new`)**:
+  - Gõ `/new` -> Enter lập tức bắt đầu session mới với thư mục output timestamp riêng biệt `output/novel-YYYYMMDD-HHMM` và quay về màn hình chào mừng sạch mà không yêu cầu thêm tham số.
+- **Tavily Graceful Fallback (Suy giảm chức năng an toàn)**:
+  - Loại bỏ hoàn toàn API key dev ảo hardcoded khỏi hệ thống.
+  - Công cụ `tavily_search` và `tavily_crawl` tự động chuyển đổi sang phản hồi mềm khi chưa cấu hình key hoặc máy chủ Tavily trả về lỗi HTTP 40x/50x/mạng, hướng dẫn LLM vận dụng tri thức học thuật sẵn có, triệt tiêu hoàn toàn sự cố đứt gãy luồng ReAct và bế tắc ngắt mạch.
+- **Tác phẩm mẫu hoàn thành**:
+  - Bộ *Vùng Xám: Giải Mã Ranh Giới Thiện - Ác* (`output/novel-20261008-1006`) đã hoàn thành trọn vẹn cả 3 tập (phase: complete), bản thảo 1.901 từ nhịp 1:1 Thoại - Hình.
 
 ---
 
-## Recent Milestones & Commits (2026-10-07)
+## Recent Milestones & Commits (2026-10-08)
 
-0. **Branch `route` — 4 AI Working Modes (`/mode`)**:
-   - Xây dựng lệnh `/mode` (alias: `/topic`, `/topics`) trong TUI hiển thị bảng chọn modal overlay trực quan:
-     1. `[1] Tiểu thuyết / Manga` (Style key: `"novel-manga"`): Sáng tác tiểu thuyết dài tập, manga, thế giới quan đa tầng, chiều sâu tâm lý nhân vật và quy tắc thế giới chuyên sâu (tiểu thuyết văn xuôi 2.000 - 4.000 từ/chương).
-     2. `[2] Doodle Explainer` (Style key: `"doodle-explainer"`): Biên kịch video người que đồ đá 5+ phút, nhịp 1:1 Thoại - Hình, phong cách dí dỏm viral TikTok / YouTube Shorts.
-     3. `[3] Tâm lý học hành vi` (Style key: `"behavioral-psychology"`): Biên kịch video giải mã bẫy nhận thức, cơ chế não bộ (Não Bò Sát vs Não Lý Trí), thí nghiệm khoa học chuẩn xác và Cú hích hành vi (Nudge) thực chiến. Đã tích hợp hướng dẫn **chiều sâu cảm xúc & chạm đến trái tim (Heart-touching Resonance)**: Soi chiếu nỗi đau thầm kín (họ thấy chính mình trong đó: people-pleaser, imposter syndrome, tội lỗi khi nghỉ ngơi, cô đơn sau cánh cửa), chuyển tiếp từ giải mã cơ chế sang vỗ về đứa trẻ bên trong (Inner-Child Self-Compassion), và hệ thống biểu cảm Doodle lay động lòng người.
-     4. `[4] Tiểu thuyết Lịch sử Việt Nam` (Style key: `"vietnamese-history"`): Sáng tác tiểu thuyết và dã sử hào sảng về các nhân vật lịch sử Việt Nam (2.000 - 4.000 từ/chương), đáp ứng 4 yêu cầu cốt lõi:
-        - **Tra cứu Tavily Search**: Tích hợp tra cứu internet/sử liệu để thu thập thông tin về nhân vật, trận đánh, triều đại và niên biểu.
-        - **Khai phá chân dung nhân vật toàn diện**: Tài năng, phẩm cách, lý tưởng, chiều sâu tâm can, góc khuất nội tâm và trăn trở của một con người thật trước vận mệnh dân tộc.
-        - **Khai phá bối cảnh lịch sử đa tầng**: Bối cảnh triều chính, phong tục, bá tánh trong nước và bàn cờ địa chính trị bang giao quốc tế phương Bắc & Đông Nam Á.
-        - **Khai phá nghịch cảnh sinh tử bi tráng**: Tương quan lực lượng chênh lệch, thù trong giặc ngoài, hiểm nguy ngàn cân treo sợi tóc và các quyết định chiến lược cân não.
-        - **Chuẩn mực giọng văn Đại Việt**: Giọng sử thi hào sảng, xưng hô chuẩn mực điển chế, tuyệt đối cấm từ ngữ convert kiếm hiệp Trung Quốc, 100% tiếng Việt sạch chữ Hán.
-   - Toàn bộ 4 style đều có tên định danh rõ ràng, không phụ thuộc vào `style == "default"`.
-   - Phân tách và nạp tài nguyên độc lập 100% cho cả 4 chế độ trong `assets/load.go`:
-     - Prompts: `assets/prompts/modes/{novel-manga, doodle-explainer, behavioral-psychology, vietnamese-history}/` (Writer, Architect-Short, Architect-Long, Editor).
-     - Voices: `assets/voices/{novel-manga, doodle-explainer, behavioral-psychology, vietnamese-history}.md`.
-     - References: `assets/references/modes/{novel-manga, doodle-explainer, behavioral-psychology, vietnamese-history}/` (đầy đủ các tài liệu tham khảo chuyên biệt cho từng mode).
-     - Styles & Genres: `assets/styles/` và `assets/references/genres/` riêng biệt.
-   - Gated validation: `lintScript` trong `internal/tools/commit_chapter.go` chỉ áp dụng cho 2 mode video (`doodle-explainer` và `behavioral-psychology`), giải phóng hoàn toàn các mode tiểu thuyết văn xuôi (`novel-manga` và `vietnamese-history`).
-   - Điều hướng mượt mà: phím mũi tên `↑`/`↓` hoặc `j`/`k`, phím số `1`-`4` để chọn nhanh, `Enter` để kích hoạt và ghi nhớ vào cấu hình dự án (`h.SetStyle(...)` -> `.ainovel/config.json`), `Esc`/`q` để đóng modal.
-   - Toàn bộ unit tests và full repo tests 36 packages pass 100%. Đã tạo PR #8 trên GitHub.
+1. **`34a3302` — TUI Dashboard (`/dash`) & Tavily Graceful Fallback**:
+   - **Lệnh `/dash` (Dashboard)**:
+     - Tạo `internal/entry/tui/command_dash.go` và `command_dash_test.go`.
+     - Quét động toàn bộ thư mục `output/`, trích xuất Title, Style, Progress, ModTime.
+     - Hàm `detectStyleBadge`: gán tag mode trực quan cho từng thể loại.
+     - Hàm `dashModalSize`: căn chỉnh kích thước modal tối ưu, bố cục 2 dòng/dự án chống tràn chữ trên mọi kích thước terminal.
+     - Hỗ trợ di chuyển phím `↑`/`↓`/`j`/`k`, phím `Enter` kích hoạt `m.switchOutputDir` và gửi `tea.Quit` để vòng lặp `Run` trong `app.go` nạp lại đúng bundle và mở dự án.
+     - Đăng ký lệnh `/dash` (AutoExecute: true, aliases: `dashboard`, `projects`, `history`).
+   - **Tavily Graceful Fallback**:
+     - Gỡ bỏ key dev ảo khỏi `internal/bootstrap/config.go` và `.env`.
+     - Cập nhật `TavilySearchTool.Execute` và `TavilyCrawlTool.Execute`: khi API key rỗng hoặc gọi Tavily gặp lỗi HTTP 401/400/429/timeout, trả về JSON fallback hướng dẫn LLM sử dụng tri thức khoa học sẵn có để tiếp tục sáng tác mà không ngắt luồng.
+     - Bổ sung unit test bao phủ toàn diện cho fallback.
 
-1. **`942b895` — Integrate Tavily Search & Crawl for Scientific Grounding and Fact Verification**:
-   - Tích hợp Tavily Search & Crawl API làm nền tảng kiểm chứng khoa học.
-   - Tạo package `internal/tavily/` với client đầy đủ (Search, Crawl, Extract, SearchAndBuildSourcePack).
-   - Bổ sung 2 công cụ LLM: `tavily_search` và `tavily_crawl` cho Architect và Writer.
-   - Tự động tìm kiếm tài liệu từ nguồn uy tín (VietnamPlus, Dân trí, KhoaHoc.tv, Nature...) và nạp `source_pack` khi khởi tạo chủ đề mới.
-   - Bắt buộc trích dẫn bài báo/URL vào thẻ `NGUỒN:` và các giả thuyết/luận điểm tranh luận vào thẻ `CẦN KIỂM CHỨNG:`.
+2. **`91344d5` — Behavioral Psychology 8-Step Blueprint & Prompt Overhaul**:
+   - Tinh chỉnh toàn bộ hệ thống prompt của mode `behavioral-psychology` theo hướng dẫn cấu trúc 8 phần chuẩn mực:
+     1. Mở bài: Trải nghiệm quen thuộc / nghịch lý (3-5 câu).
+     2. Nêu vấn đề và lời hứa ngắn gọn.
+     3. Đặt tên hiện tượng & định nghĩa bằng lời thường (1 ví dụ thực tế).
+     4. Cơ chế & bằng chứng khoa học (phân biệt tương quan vs nhân quả, thí nghiệm vs khảo sát, lưu ý khủng hoảng tái lập).
+     5. Giới hạn, ngoại lệ, phản biện (mẫu WEIRD, hiệu ứng lớn/nhỏ).
+     6. Ứng dụng: 1-3 việc nhỏ làm thử trong vài ngày.
+     7. Kết bài: nhìn lại tình huống ban đầu bằng góc nhìn mới, chốt thông điệp 1 câu.
+     8. Nguồn và lưu ý: tuyệt đối không chẩn đoán người đọc, một bài một ý lớn.
+   - Cập nhật đồng bộ các file prompt Architect, Writer, Editor và Reference guides trong `assets/`.
 
-2. **`93d868a` — Enforce 1:1 Alternating Voice-Visual Pairs Per Scene**:
-   - Khắc phục lỗi đoạn thoại dài 40–60 giây nhưng chỉ có 1 mô tả hình ảnh.
-   - Bắt buộc chia nhỏ thành các beat 3–6 giây: mỗi câu thoại `LỜI:` có ngay một thẻ `HÌNH:` tương ứng mô tả hành động, biểu cảm que, đạo cụ.
-   - Cập nhật đồng bộ: `docs/script-format.md`, `assets/prompts/writer.md`, `assets/prompts/editor.md`, `assets/references/chapter-guide.md`, `assets/references/chapter-template.md`, `assets/references/doodle-visual-language.md`, `assets/testdata/writer-golden.md`.
+3. **Cứu vãn & Hoàn thành Tập 3 bộ *Vùng Xám: Giải Mã Ranh Giới Thiện - Ác***:
+   - Sửa lỗi LLM lặp lặp `draft_chapter` do bế tắc hoặc token context.
+   - Hoàn thiện bản thảo Tập 3 (1.901 từ, nhịp Thoại - Hình 1:1, thẻ NGUỒN và CẦN KIỂM CHỨNG đầy đủ).
+   - Lưu trữ checkpoint, summaries, chuyển trạng thái tiến độ sang `phase: complete` (3/3 tập hoàn tất).
 
-2. **`bc2230c` — Default 3-Episode Deep Dive Series Per Topic**:
-   - Khi nhận một chủ đề từ người dùng, hệ thống mặc định tạo series 3 tập (>5 phút/tập) đào sâu 3 góc nhìn khác nhau của cùng chủ đề (Nghịch lý ban đầu -> So sánh & Thực chiến -> Tranh luận khoa học & Bài học hiện đại).
-   - Ngăn chặn Architect tự ý chuyển chủ đề sang các khía cạnh tiến hóa khác không liên quan.
-
-3. **`dd1b500` — Fix `save_foundation` InputValidationError**:
-   - Sửa lỗi LLM gọi tool `save_foundation` thiếu trường `type` hoặc truyền dưới dạng alias tiếng Việt/cú pháp Markdown.
-   - Nới lỏng schema bắt buộc, bổ sung bộ suy luận tham số (infer type/content), hỗ trợ các alias "dàn ý", "nhân vật", "tiền đề", "quy tắc".
-   - Bổ sung 7 unit test bao phủ toàn diện các trường hợp lỗi (`29/29` tests pass).
-
-4. **`9e1c1d6` — Enforce Core Topic Fidelity & Anti-Drift**:
-   - Thắt chặt prompt Architect và Writer: 100% bám sát chủ đề yêu cầu, kết luận cuối cùng của kịch bản phải giải thích trọn vẹn chủ đề đã đặt ra.
-
-5. **`e21740a` — 5-Minute+ Doodle Explainer Standard**:
-   - Nâng chuẩn thời lượng kịch bản từ 1–3 phút lên 5+ phút (300–600s, 700–1500 từ LỜI).
-   - Bổ sung kỹ thuật Tái Hook (Re-hooking) mỗi 60–90 giây.
-   - Điều chỉnh validator `internal/tools/script_format.go` (`scriptMinWords=700`, `scriptMaxWords=1500`, `scriptMinSeconds=300`, `scriptMaxSeconds=600`).
-
-6. **`e81b404` — Dynamic Timestamped Output Folders on `/new`**:
-   - Lệnh `/new` tự động tạo thư mục cách ly `output/novel-YYYYMMDD-HHMM` thay vì ghi đè lên thư mục cũ `output/novel`.
-
-7. **`f022efa` — Humor Specialist & Relatability Archetypes**:
-   - Bổ sung `assets/references/humor-relatability.md`, nối dây qua `novel_context.go`, `load.go`.
-   - Thiết lập các hình mẫu nhân vật que linh hoạt (Que Lanh, Que Bự, Cục Đá Im Lặng...) gắn với tâm lý con người hiện đại.
-
-8. **`5eb93fc` — Loại bỏ hoàn toàn thẻ `CHỮ:`**:
-   - Dọn sạch thẻ `CHỮ:` khỏi prompt, validator và tài liệu. Text hiển thị trên video được mô tả trực tiếp trong thẻ `HÌNH:`.
+4. **Triển khai `/new` mở phiên làm việc mới tức thì**:
+   - Cho phép người dùng gõ `/new` -> Enter để bắt đầu ngay một session mới trong thư mục output timestamp riêng biệt `output/novel-YYYYMMDD-HHMM` mà không cần nhập thêm bất kỳ tham số nào.
 
 ---
 
 ## Active Architecture & Key Patterns
 
-- **Series Bible**: Lưu trong `premise.md`, `outline.json`, `characters.json`, `world_rules.json` tại thư mục output của phiên.
-- **Workflow Pipeline**:
-  - `Architect`: Lập dàn ý 3 tập chuyên sâu dựa trên chủ đề người dùng đưa vào.
-  - `Writer`: Viết kịch bản chi tiết từng tập theo format 1:1 `LỜI:` - `HÌNH:`, đảm bảo độ dài 5+ phút.
-  - `Editor`: Thẩm định chất lượng theo rubric (nhất quán, nhịp điệu, visual beats, an toàn nội dung, không lặp lại).
-  - `Exporter`: Xuất trọn bộ package video TikTok (`scripts/`, `voiceover/`, `shotlist.csv`, `publish.csv`).
-- **Prompt Testing Invariant**:
-  - Khi chỉnh sửa `assets/prompts/writer.md` hoặc `assets/voice.md`, bắt buộc tái tạo `assets/testdata/writer-golden.md` chính xác từng byte để vượt qua `TestBuildWriterPrompt_ByteIdenticalToPreSplit`.
-- **Git Commit on Windows**:
-  - Chạy `git commit` / `git push` ngoài sandbox (`BypassSandbox: true`) để tránh lỗi khóa index `.git/index.lock`.
+- **TUI Dashboard Pattern (`/dash`)**:
+  - Struct `dashState`, `dashProjectItem`.
+  - Quét thư mục `output/`, tự động nhận diện style và tiến độ qua `meta/run.json`, `meta/book.json`, `meta/progress.json`, `chapters/`.
+  - Kênh chuyển đổi dự án `m.switchOutputDir` điều phối Bubbletea app loop khởi động lại mượt mà.
+- **Graceful Tool Degradation Pattern**:
+  - Các công cụ tra cứu bên ngoài (như Tavily Search/Crawl) áp dụng cơ chế fallback mềm: trả về dữ liệu hướng dẫn thay vì trả về lỗi để tránh kích hoạt vòng lặp bế tắc trong ReAct agent.
+- **Multi-Mode AI Architecture (4 Modes)**:
+  - Phân tách độc lập kho prompt, voice, style, reference trong `assets/`.
+  - Bộ kiểm tra kịch bản `lintScript` chỉ áp dụng cho 2 mode video.
 
 ---
 
 ## Current Workspace State
 
-- **Branch**: `doodle-explainer` trên repo `https://github.com/vinh-gogo/aidoodle-cli.git`.
-- **Binary**: `ainovel-cli.exe` đã được build và sẵn sàng sử dụng.
-- **Tests**: Toàn bộ unit tests và integration tests đều pass green.
-- **Memory Bank**: Tất cả 6 tài liệu trong `memory-bank/` đã được đồng bộ đầy đủ và nhất quán với kiến trúc mới nhất.
-
----
-
-## Next Steps
-
-1. Commit các thay đổi cập nhật Memory Bank vào git branch `doodle-explainer`.
-2. Sẵn sàng nhận lệnh từ người dùng: chạy `/new` để tạo kịch bản mới, tinh chỉnh prompt nếu có phản hồi thêm, hoặc xuất bản video kịch bản.
+- **Branch**: `tam-ly-hoc` trên repo `https://github.com/vinh-gogo/aidoodle-cli.git`.
+- **Remote**: Đã push và đồng bộ hoàn toàn với `origin/tam-ly-hoc`.
+- **Binary**: `ainovel-cli.exe` đã được biên dịch thành công từ commit mới nhất.
+- **Tests**: 100% unit tests và full test suite toàn bộ repo pass green.
