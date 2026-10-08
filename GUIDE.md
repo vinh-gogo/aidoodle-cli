@@ -8,8 +8,8 @@
 
 1. [Tổng Quan & Giá Trị Cốt Lõi](#1-tổng-quan--giá-trị-cốt-lõi)
 2. [Yêu Cầu Hệ Thống (Prerequisites)](#2-yêu-cầu-hệ-thống-prerequisites)
-3. [Bước 1: Clone Mã Nguồn & Chọn Nhánh](#bước-1-clone-mã-nguồn--chọn-nhánh)
-4. [Bước 2: Biên Dịch Chương Trình](#bước-2-biên-dịch-chương-trình)
+3. [Cách 1: Tải Bản Cài Đặt Windows Portable (Nhanh Nhất)](#3-cách-1-tải-bản-cài-đặt-windows-portable-nhanh-nhất)
+4. [Cách 2: Cài Đặt & Biên Dịch Từ Mã Nguồn (Linux, macOS, Dev)](#4-cách-2-cài-đặt--biên-dịch-từ-mã-nguồn-linux-macos-dev)
 5. [Bước 3: Thiết Lập Cấu Hình (LLM & Tavily API)](#bước-3-thiết-lập-cấu-hình-llm--tavily-api)
 6. [Bước 4: Trải Nghiệm Thực Chiến Trong Giao Diện TUI](#bước-4-trải-nghiệm-thực-chiến-trong-giao-diện-tui)
    - [Chọn Chế độ AI (/mode)](#chọn-chế-độ-ai-mode)
@@ -37,50 +37,53 @@ Khác với các công cụ tạo nội dung bằng một câu lệnh prompt đ�
 
 ## 2. Yêu Cầu Hệ Thống (Prerequisites)
 
-Trước khi bắt đầu, máy tính của bạn cần có:
+Tùy theo nhu cầu sử dụng của bạn:
 
-1. **Git**: Dùng để tải và cập nhật mã nguồn ([Tải Git tại đây](https://git-scm.com/)).
-2. **Go (Golang) >= 1.25**: Dùng để biên dịch chương trình ([Tải Go tại đây](https://go.dev/dl/)).
-   - Kiểm tra bằng lệnh: `go version` (kết quả hiển thị `go version go1.25...` trở lên).
-3. **API Key của một nhà cung cấp LLM**:
-   - Khuyên dùng: **OpenRouter** (nạp được Gemini 2.5 Flash, Claude 3.5 Sonnet, DeepSeek V3 với chi phí cực rẻ).
-   - Hoặc: **Google Gemini API**, **OpenAI**, **Anthropic**, hoặc chạy offline bằng **Ollama**.
-4. *(Tùy chọn)* **Tavily Search API Key**:
-   - Dùng để tra cứu internet thời gian thực và xác thực dữ liệu lịch sử/khoa học ([Đăng ký miễn phí 1.000 lượt/tháng tại tavily.com](https://tavily.com)).
+- **Nếu dùng bản Windows Portable (Khuyên dùng)**:
+  - Chỉ cần máy tính chạy **Windows 10 hoặc Windows 11 (64-bit)**.
+  - **Không cần cài đặt Go hay Git!**
+- **Nếu biên dịch từ mã nguồn (Linux, macOS hoặc Developer)**:
+  - **Git**: Kiểm tra bằng `git --version` ([Tải Git](https://git-scm.com/)).
+  - **Go >= 1.25**: Kiểm tra bằng `go version` ([Tải Go](https://go.dev/dl/)).
+- **Tài khoản / API Key LLM**: OpenRouter (khuyên dùng), Gemini, OpenAI, Anthropic hoặc Ollama.
+- *(Tùy chọn)* **Tavily Search API Key**: Đăng ký miễn phí 1.000 request/tháng tại [tavily.com](https://tavily.com).
 
 ---
 
-## 3. Bước 1: Clone Mã Nguồn & Chọn Nhánh
+## 3. Cách 1: Tải Bản Cài Đặt Windows Portable (Nhanh Nhất)
 
-Mở Terminal (macOS/Linux) hoặc PowerShell (Windows) và chạy:
+Đây là phương thức tiện lợi nhất cho người dùng phổ thông trên Windows:
+
+1. **Tải gói phần mềm**:
+   - Truy cập trang **[GitHub Releases](https://github.com/vinh-gogo/aidoodle-cli/releases)**.
+   - Tải file nén **`ainovel-cli-windows-amd64.zip`**.
+2. **Giải nén**:
+   - Nhấp chuột phải vào file `.zip` vừa tải về, chọn **Extract All...** (Giải nén toàn bộ) vào một thư mục (ví dụ `D:\aidoodle-cli` hoặc `C:\Tools\aidoodle-cli`).
+3. **Khởi chạy ứng dụng**:
+   - Mở thư mục vừa giải nén, nhấp đúp chuột vào file **`Chay-AiNovel.bat`**.
+   - Cửa sổ dòng lệnh TUI với giao diện tiếng Việt UTF-8 chuẩn xác sẽ tự động xuất hiện!
+
+---
+
+## 4. Cách 2: Cài Đặt & Biên Dịch Từ Mã Nguồn (Linux, macOS, Dev)
+
+Dành cho lập trình viên muốn tùy biến hoặc người dùng Linux / macOS:
 
 ```bash
-# 1. Clone kho lưu trữ về máy
+# 1. Clone mã nguồn
 git clone https://github.com/vinh-gogo/aidoodle-cli.git
-
-# 2. Di chuyển vào thư mục dự án
 cd aidoodle-cli
 
-# 3. Chuyển sang nhánh mới nhất (history-vietnam)
-git checkout history-vietnam
-```
+# 2. Chuyển sang nhánh doodle-explainer (hoặc history-vietnam)
+git checkout doodle-explainer
 
----
+# 3. Biên dịch chương trình
+go build -o ainovel-cli.exe ./cmd/ainovel-cli   # Trên Windows
+# go build -o ainovel-cli ./cmd/ainovel-cli     # Trên Linux / macOS
+# chmod +x ainovel-cli
 
-## 4. Bước 2: Biên Dịch Chương Trình
-
-Hệ thống được viết hoàn toàn bằng Go thuần, không phụ thuộc CGO, biên dịch cực nhanh thành 1 file nhị phân duy nhất:
-
-### Trên Windows:
-```powershell
-go build -o ainovel-cli.exe ./cmd/ainovel-cli
-```
-*(Bạn sẽ nhận được file thực thi `ainovel-cli.exe` ngay trong thư mục).*
-
-### Trên Linux / macOS:
-```bash
-go build -o ainovel-cli ./cmd/ainovel-cli
-chmod +x ainovel-cli
+# 4. Khởi chạy
+.\ainovel-cli.exe   # Hoặc ./ainovel-cli
 ```
 
 ---
