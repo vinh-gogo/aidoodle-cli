@@ -1,7 +1,7 @@
 # 🚀 ainovel-cli — Hệ Thống AI Đa Chế Độ & Xưởng Sáng Tác Tự Động Hóa
 
 <p align="center">
-  <a href="https://github.com/vinh-gogo/aidoodle-cli/actions/workflows/build-windows.yml"><img src="https://github.com/vinh-gogo/aidoodle-cli/actions/workflows/build-windows.yml/badge.svg" alt="Build & Package Windows"></a>
+  <a href="https://github.com/vinh-gogo/aidoodle-cli/releases"><img src="https://img.shields.io/github/v/release/vinh-gogo/aidoodle-cli?style=for-the-badge&color=blue" alt="GitHub Release"></a>
   <img src="https://img.shields.io/badge/Go-1.25+-00ADD8?style=for-the-badge&logo=go&logoColor=white" alt="Go Version">
   <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License">
   <img src="https://img.shields.io/badge/Architecture-Deterministic_Engine-blueviolet?style=for-the-badge" alt="Architecture">
@@ -169,7 +169,7 @@ CẦN KIỂM CHỨNG: Số liệu ước đoán về quân số cần đối chi
 
 Dành cho người dùng Windows muốn sử dụng ngay lập tức mà không cần cài đặt môi trường lập trình Go:
 
-1. Truy cập mục **[Artifacts mới nhất](https://github.com/vinh-gogo/aidoodle-cli/actions/workflows/build-windows.yml)** hoặc **[Releases](https://github.com/vinh-gogo/aidoodle-cli/releases)** để tải file **`ainovel-cli-windows-amd64.zip`**.
+1. Truy cập trang **[GitHub Releases](https://github.com/vinh-gogo/aidoodle-cli/releases)** để tải file **`ainovel-cli-windows-amd64.zip`**.
 2. Giải nén file `.zip` vào bất kỳ thư mục nào trên máy tính.
 3. Click đúp chuột vào file **`Chay-AiNovel.bat`** để khởi chạy giao diện TUI ngay lập tức!
 

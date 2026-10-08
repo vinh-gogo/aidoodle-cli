@@ -55,7 +55,7 @@ Tùy theo nhu cầu sử dụng của bạn:
 Đây là phương thức tiện lợi nhất cho người dùng phổ thông trên Windows:
 
 1. **Tải gói phần mềm**:
-   - Truy cập **[GitHub Actions Artifacts](https://github.com/vinh-gogo/aidoodle-cli/actions/workflows/build-windows.yml)** hoặc **[GitHub Releases](https://github.com/vinh-gogo/aidoodle-cli/releases)**.
+   - Truy cập trang **[GitHub Releases](https://github.com/vinh-gogo/aidoodle-cli/releases)**.
    - Tải file nén **`ainovel-cli-windows-amd64.zip`**.
 2. **Giải nén**:
    - Nhấp chuột phải vào file `.zip` vừa tải về, chọn **Extract All...** (Giải nén toàn bộ) vào một thư mục (ví dụ `D:\aidoodle-cli` hoặc `C:\Tools\aidoodle-cli`).
