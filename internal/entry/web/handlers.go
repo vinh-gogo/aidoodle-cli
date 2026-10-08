@@ -4,7 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"path/filepath"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/voocel/ainovel-cli/internal/host"
@@ -17,6 +19,7 @@ func (s *Server) registerRoutes(mux *http.ServeMux) {
 	mux.HandleFunc("/api/chapters", s.handleChapters)
 	mux.HandleFunc("/api/chapter", s.handleChapter)
 	mux.HandleFunc("/api/projects", s.handleProjects)
+	mux.HandleFunc("/api/export", s.handleExport)
 	mux.HandleFunc("/api/action", s.handleAction)
 }
 
@@ -187,6 +190,55 @@ type actionRequest struct {
 	Style   string `json:"style"`
 	Dir     string `json:"dir"`
 	Message string `json:"message"`
+	Format  string `json:"format"`
+}
+
+func (s *Server) handleExport(w http.ResponseWriter, r *http.Request) {
+	format := r.URL.Query().Get("format")
+	if format == "" {
+		format = "word"
+	}
+	dir := r.URL.Query().Get("dir")
+	if dir == "" {
+		s.mu.RLock()
+		dir = s.cfg.OutputDir
+		s.mu.RUnlock()
+	}
+
+	res, err := s.Export(format, dir)
+	if err != nil {
+		writeJSON(w, http.StatusBadRequest, map[string]interface{}{
+			"ok":    false,
+			"error": "Xuất file thất bại: " + err.Error(),
+		})
+		return
+	}
+
+	// Nếu client yêu cầu tải trực tiếp file (download=1 hoặc không yêu cầu application/json)
+	if r.URL.Query().Get("download") == "1" || !strings.Contains(r.Header.Get("Accept"), "application/json") {
+		fileName := filepath.Base(res.Path)
+		contentType := "application/octet-stream"
+		switch strings.ToLower(format) {
+		case "word", "docx":
+			contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+		case "epub":
+			contentType = "application/epub+zip"
+		case "txt":
+			contentType = "text/plain; charset=utf-8"
+		}
+		w.Header().Set("Content-Type", contentType)
+		w.Header().Set("Content-Disposition", fmt.Sprintf("attachment; filename=%q", fileName))
+		http.ServeFile(w, r, res.Path)
+		return
+	}
+
+	writeJSON(w, http.StatusOK, map[string]interface{}{
+		"ok":           true,
+		"path":         res.Path,
+		"chapters":     res.Chapters,
+		"bytes":        res.Bytes,
+		"download_url": fmt.Sprintf("/api/export?format=%s&dir=%s&download=1", format, dir),
+	})
 }
 
 func (s *Server) handleAction(w http.ResponseWriter, r *http.Request) {
@@ -222,6 +274,8 @@ func (s *Server) handleAction(w http.ResponseWriter, r *http.Request) {
 		actionErr = s.SwitchProject(req.Dir)
 	case "set_style":
 		actionErr = s.SetStyle(req.Style)
+	case "export":
+		_, actionErr = s.Export(req.Format, req.Dir)
 	default:
 		actionErr = fmt.Errorf("hành động không xác định: %s", req.Action)
 	}

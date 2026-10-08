@@ -34,8 +34,11 @@ func Run(ctx context.Context, deps Deps, opts Options) (*Result, error) {
 		}
 		opts.Format = f
 	}
-	if opts.Format != FormatTXT && opts.Format != FormatEPUB && opts.Format != FormatVideo {
-		return nil, fmt.Errorf("exp: định dạng chưa được hỗ trợ %q (hỗ trợ: txt, epub, video)", opts.Format)
+	if opts.Format == "docx" {
+		opts.Format = FormatWord
+	}
+	if opts.Format != FormatTXT && opts.Format != FormatEPUB && opts.Format != FormatVideo && opts.Format != FormatWord {
+		return nil, fmt.Errorf("exp: định dạng chưa được hỗ trợ %q (hỗ trợ: txt, epub, word/docx, video)", opts.Format)
 	}
 
 	progress, err := deps.Store.Progress.Load()
@@ -108,6 +111,8 @@ func Run(ctx context.Context, deps Deps, opts Options) (*Result, error) {
 	if outPath == "" {
 		if opts.Format == FormatVideo {
 			outPath = filepath.Join(deps.Store.Dir(), sanitizeFileName(book.Title)+"-video")
+		} else if opts.Format == FormatWord {
+			outPath = filepath.Join(deps.Store.Dir(), sanitizeFileName(book.Title)+".docx")
 		} else {
 			outPath = filepath.Join(deps.Store.Dir(), sanitizeFileName(book.Title)+"."+string(opts.Format))
 		}
@@ -160,6 +165,12 @@ func Run(ctx context.Context, deps Deps, opts Options) (*Result, error) {
 			return nil, fmt.Errorf("kết xuất EPUB thất bại: %w", err)
 		}
 		data = buf
+	case FormatWord:
+		buf, err := renderDOCX(*book, chapters, titleIdx, locations, bodies)
+		if err != nil {
+			return nil, fmt.Errorf("kết xuất Word (.docx) thất bại: %w", err)
+		}
+		data = buf
 	}
 
 	if err := atomicWrite(outPath, data); err != nil {
@@ -188,10 +199,12 @@ func inferFormat(path string) (Format, error) {
 		return FormatTXT, nil
 	case ".epub":
 		return FormatEPUB, nil
+	case ".docx", ".doc":
+		return FormatWord, nil
 	case ".csv":
 		return FormatVideo, nil
 	default:
-		return "", fmt.Errorf("không thể suy luận định dạng từ phần mở rộng %q (hỗ trợ .txt / .epub / video)", filepath.Ext(path))
+		return "", fmt.Errorf("không thể suy luận định dạng từ phần mở rộng %q (hỗ trợ .txt / .epub / .docx / video)", filepath.Ext(path))
 	}
 }
 

@@ -16,6 +16,8 @@ const (
 	FormatTXT Format = "txt"
 	// FormatEPUB 标准 EPUB 3 容器（zip + xhtml）。
 	FormatEPUB Format = "epub"
+	// FormatWord Tài liệu Microsoft Word (.docx).
+	FormatWord Format = "word"
 	// FormatVideo Gói kịch bản video TikTok: scripts/, voiceover/, shotlist.csv, publish.csv.
 	FormatVideo Format = "video"
 )

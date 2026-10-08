@@ -276,6 +276,20 @@
       font-size: 0.86rem;
       color: #ffd875;
     }
+    /* Complete Celebration Box */
+    .complete-box {
+      background: rgba(46, 160, 67, 0.15);
+      border: 1px solid var(--term-green);
+      border-radius: 6px;
+      padding: 10px 14px;
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 8px;
+      font-size: 0.86rem;
+      color: #7ee787;
+    }
     .btn-term {
       background: #222222;
       border: 1px solid #444;
@@ -700,6 +714,7 @@
       <div class="tui-panel-header">
         <span>╭─ BẢN THẢO TRỰC TIẾP (STREAM) ─╮</span>
         <div style="display: flex; gap: 6px;">
+          <button class="btn-term btn-term-primary" onclick="exportWord()" title="Xuất toàn bộ tác phẩm thành file Word (.docx)">📄 Xuất Word</button>
           <button class="btn-term" onclick="copyStreamContent()">📋 Sao chép</button>
           <button class="btn-term" onclick="toggleStreamMode()" id="btn-stream-toggle">🔴 Xem live</button>
         </div>
@@ -714,6 +729,21 @@
           <button class="btn-term btn-term-primary" onclick="executeCommand('/next')">
             ▶️ Duyệt & Viết tiếp (/next) ➔
           </button>
+        </div>
+
+        <!-- Complete Celebration Box (when novel finished) -->
+        <div class="complete-box" id="complete-alert-box">
+          <div>
+            <strong>🎉 Tác phẩm đã hoàn thành!</strong> Bản thảo đã sẵn sàng để xuất file.
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button class="btn-term btn-term-primary" onclick="exportWord()" title="Tải xuống tài liệu Microsoft Word (.docx)">
+              📄 Xuất file Word (.docx)
+            </button>
+            <button class="btn-term" onclick="exportVideo()" title="Xuất kịch bản, lời đọc và shotlist video">
+              📦 Gói Video
+            </button>
+          </div>
         </div>
 
         <!-- Realtime Streaming Output Viewport -->
@@ -785,6 +815,9 @@ Hướng dẫn nhanh:
       <button class="btn-term" id="btn-toolbar-pause" onclick="togglePauseResume()" title="Tạm dừng hoặc tiếp tục">
         ⏸️ Tạm dừng
       </button>
+      <button class="btn-term btn-term-primary" onclick="exportWord()" title="Xuất toàn bộ tác phẩm thành file Word (.docx)">
+        📄 Xuất Word (/export)
+      </button>
       <button class="btn-term" onclick="copyStreamContent()" title="Sao chép toàn bộ văn bản hiện tại">
         📋 Sao chép
       </button>
@@ -813,6 +846,8 @@ Hướng dẫn nhanh:
       <span class="hk-item" onclick="executeCommand('/new')"><span class="hk-key">[/new]</span> Dự án mới</span>
       <span>│</span>
       <span class="hk-item" onclick="executeCommand('/next')"><span class="hk-key">[/next]</span> Duyệt tiếp</span>
+      <span>│</span>
+      <span class="hk-item" onclick="exportWord()"><span class="hk-key">[/export]</span> Xuất Word</span>
       <span>│</span>
       <span class="hk-item" onclick="togglePauseResume()"><span class="hk-key">[Ctrl+C]</span> Tạm dừng</span>
       <span>│</span>
@@ -890,6 +925,7 @@ Hướng dẫn nhanh:
       { name: '/pause', usage: '', desc: 'Tạm dừng quá trình sáng tác', auto: true },
       { name: '/resume', usage: '', desc: 'Tiếp tục sáng tác từ trạng thái tạm dừng', auto: true },
       { name: '/clear', usage: '', desc: 'Xóa màn hình hiển thị trực tiếp', auto: true },
+      { name: '/export', usage: '[--word]', desc: 'Xuất toàn bộ tác phẩm thành file Word (.docx) hoặc video', auto: true },
       { name: '/help', usage: '', desc: 'Xem danh sách và mô tả các lệnh TUI', auto: true }
     ];
 
@@ -1252,8 +1288,15 @@ Hướng dẫn nhanh:
           case '/clear':
             document.getElementById('stream-text').innerText = '';
             break;
+          case '/export':
+            if (arg.includes('--video')) {
+              await exportVideo();
+            } else {
+              await exportWord();
+            }
+            break;
           case '/help':
-            alert("Các lệnh khả dụng:\n/mode - Đổi chế độ sáng tác\n/dash - Danh sách các outputs cũ\n/next - Duyệt viết chương tiếp\n/new - Tạo tác phẩm mới\n/pause - Tạm dừng\n/resume - Tiếp tục\n/clear - Xóa màn hình");
+            alert("Các lệnh khả dụng:\n/mode - Đổi chế độ sáng tác\n/dash - Danh sách các outputs cũ\n/next - Duyệt viết chương tiếp\n/new - Tạo tác phẩm mới\n/export - Xuất file Word (.docx)\n/pause - Tạm dừng\n/resume - Tiếp tục\n/clear - Xóa màn hình");
             break;
           default:
             alert("Lệnh không xác định: " + cmd + ". Gõ /help để xem danh sách lệnh.");
@@ -1355,6 +1398,34 @@ Hướng dẫn nhanh:
       navigator.clipboard.writeText(text).then(() => {
         alert("Đã sao chép nội dung bản thảo vào khay nhớ tạm!");
       });
+    }
+
+    async function exportWord() {
+      addEventLog({ Category: 'SYSTEM', Summary: 'Đang kết xuất và tải xuống file Word (.docx)...', Time: new Date() });
+      const downloadUrl = `/api/export?format=word&dir=${encodeURIComponent(cliState.dir || '')}&download=1&t=${Date.now()}`;
+      const a = document.createElement('a');
+      a.href = downloadUrl;
+      a.style.display = 'none';
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(() => {
+        if (a.parentNode) a.parentNode.removeChild(a);
+      }, 1000);
+
+      try {
+        await sendAction('export', { format: 'word', dir: cliState.dir });
+      } catch (err) {
+        console.error("send export action error:", err);
+      }
+    }
+
+    async function exportVideo() {
+      addEventLog({ Category: 'SYSTEM', Summary: 'Đang kết xuất gói kịch bản video TikTok (scripts, voiceover, csv)...', Time: new Date() });
+      try {
+        await sendAction('export', { format: 'video', dir: cliState.dir });
+      } catch (err) {
+        console.error("send export video action error:", err);
+      }
     }
 
     function toggleStreamMode() {
@@ -1511,6 +1582,7 @@ Hướng dẫn nhanh:
       document.getElementById('val-cost').innerText = snap.TotalCostUSD ? `$${snap.TotalCostUSD.toFixed(4)}` : '$0.0000';
 
       const reviewBox = document.getElementById('review-alert-box');
+      const completeBox = document.getElementById('complete-alert-box');
       const btnToolbarNext = document.getElementById('btn-toolbar-next');
       if (snap.HasAdvanceHold || label === 'REVIEW') {
         reviewBox.style.display = 'flex';
@@ -1521,6 +1593,12 @@ Hướng dẫn nhanh:
         if (!snap.IsRunning && snap.CompletedCount > 0 && label !== 'COMPLETE') {
           btnToolbarNext.style.display = 'inline-flex';
         }
+      }
+
+      if (label === 'COMPLETE' || (snap.TotalChapters > 0 && snap.CompletedCount >= snap.TotalChapters)) {
+        if (completeBox) completeBox.style.display = 'flex';
+      } else {
+        if (completeBox) completeBox.style.display = 'none';
       }
 
       const btnPause = document.getElementById('btn-toolbar-pause');

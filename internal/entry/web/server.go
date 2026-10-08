@@ -13,6 +13,8 @@ import (
 	"github.com/voocel/ainovel-cli/internal/bootstrap"
 	"github.com/voocel/ainovel-cli/internal/entry/startup"
 	"github.com/voocel/ainovel-cli/internal/host"
+	"github.com/voocel/ainovel-cli/internal/host/exp"
+	"github.com/voocel/ainovel-cli/internal/store"
 	buildversion "github.com/voocel/ainovel-cli/internal/version"
 )
 
@@ -398,6 +400,44 @@ func (s *Server) SetStyle(style string) error {
 	s.cfg.Style = style
 	s.bundle = assets.Load(s.cfg.Style, assets.DefaultLoadOptions(s.cfg.OutputDir))
 	return nil
+}
+
+// Export xuất bản thảo sang định dạng chỉ định (word, docx, txt, epub, video).
+func (s *Server) Export(format, dir string) (*exp.Result, error) {
+	s.mu.RLock()
+	if dir == "" {
+		dir = s.cfg.OutputDir
+	}
+	s.mu.RUnlock()
+
+	st := store.NewStore(dir)
+	f := exp.Format(strings.ToLower(format))
+	if f == "" || f == "word" || f == "docx" {
+		f = exp.FormatWord
+	}
+
+	res, err := exp.Run(context.Background(), exp.Deps{Store: st}, exp.Options{
+		Format:    f,
+		Overwrite: true,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	// Phát log sự kiện ra web
+	ev := host.Event{
+		Time:     time.Now(),
+		Category: "SYSTEM",
+		Summary:  fmt.Sprintf("✓ Đã xuất %s (%d chương) đến %s", string(f), res.Chapters, res.Path),
+		Level:    "info",
+	}
+	s.recordEvent(ev)
+	s.broadcast(SSEEvent{
+		Type: "event",
+		Data: ev,
+	})
+
+	return res, nil
 }
 
 // Close giải phóng tài nguyên server và host.
