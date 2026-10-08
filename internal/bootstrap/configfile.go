@@ -45,9 +45,13 @@ func configDir() (string, error) {
 	return dir, nil
 }
 
-// projectConfigPath 返回项目级配置文件的相对路径 ./.ainovel/config.json。
-// 项目级 dotdir 镜像全局 ~/.ainovel/，复用同一个 configDirName；相对 cwd 解析。
+// projectConfigPath 返回项目级配置文件的相对路径。
+// 优先检查 ./config/config.json，其次检查 ./.ainovel/config.json（镜像全局 ~/.ainovel/）。
 func projectConfigPath() string {
+	custom := filepath.Join("config", "config.json")
+	if _, err := os.Stat(custom); err == nil {
+		return custom
+	}
 	return filepath.Join(configDirName, "config.json")
 }
 
@@ -111,9 +115,10 @@ func LoadConfig() (Config, error) {
 
 	// 2. 项目级覆盖。坏文件 fail loud：用户在当前目录主动放的配置，静默吞掉会让
 	//    "配了不生效"无从排查（issue #37）。
-	project, found, err := loadOptionalJSON(projectConfigPath())
+	pPath := projectConfigPath()
+	project, found, err := loadOptionalJSON(pPath)
 	if err != nil {
-		return cfg, fmt.Errorf("项目级配置 ./.ainovel/config.json 解析失败（请检查 JSON 语法）: %w", err)
+		return cfg, fmt.Errorf("项目级配置 %s 解析失败（请检查 JSON 语法）: %w", pPath, err)
 	}
 	if found {
 		cfg = mergeConfig(cfg, project)

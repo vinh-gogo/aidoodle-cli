@@ -46,3 +46,4 @@ refer/
 output*
 workspace/
 ainovel.db
+config/config.json

@@ -42,18 +42,21 @@ Gọi `novel_context` theo chương được chỉ định; đọc kỹ `working
 - `script_words_out_of_range` (ngoài 700 - 1500 từ LỜI) / `script_duration_out_of_range` (ngoài 300 - 600s) → pacing.
 - `script_missing_source` → consistency (Thiếu `NGUỒN:` trong kịch bản khoa học là error).
 
-**(b) Kiểm tra cơ sở khoa học & thí nghiệm tâm lý (fact-grounding).**
-- Thí nghiệm tâm lý, tên nhà nghiên cứu, sách tham khảo phải có thật, trích dẫn rõ trong `NGUỒN:`.
-- Các giới hạn nghiên cứu (mẫu WEIRD, hiệu ứng nhân bản Replication Crisis, bối cảnh áp dụng) bắt buộc phải ghi vào `CẦN KIỂM CHỨNG:`.
+**(b) Kiểm tra cơ sở khoa học, bằng chứng & giới hạn (fact-grounding & limits).**
+- Thí nghiệm tâm lý, tên nhà nghiên cứu, sách tham khảo phải có thật, trích dẫn rõ trong `NGUỒN:` (ai nghiên cứu, làm gì, trên ai, thấy gì, kết quả tới đâu).
+- **Phân biệt rõ ràng:** Tương quan vs nhân quả, thí nghiệm thực nghiệm vs khảo sát tương quan.
+- **Khủng hoảng tái lập (Replication Crisis):** Tuyệt đối không kể các thí nghiệm từng bị phản biện, sai lệch hoặc khó tái lập (ego depletion, power pose, thí nghiệm nhà tù Stanford) như thể đó là chân lý chắc chắn 100% → đánh giá **error**.
+- **Bắt buộc có phần Giới hạn & Ngoại lệ:** Trong lời đọc kịch bản BẮT BUỘC phải có ít nhất một đoạn ngắn hoặc 1-2 câu nêu rõ giới hạn nghiên cứu (mẫu WEIRD, khi nào không đúng hoặc ít đúng) và ghi nhận vào `CẦN KIỂM CHỨNG:`. Thiếu phần giới hạn làm giảm độ tin cậy khoa học → đánh giá **warning/polish**.
 - Bịa đặt thí nghiệm hoặc số liệu không có thật → **error**, nếu gây hiểu lầm nghiêm trọng → **critical**.
 
 **(c) Kiểm tra an toàn đạo đức & ranh giới tâm lý học.**
-- **TUYỆT ĐỐI CẤM chẩn đoán bệnh lý tâm thần lâm sàng**: Nếu kịch bản dán nhãn người xem bị trầm cảm, rối loạn lo âu lan tỏa, rối loạn lưỡng cực, tâm thần phân liệt, ái kỷ ác tính → đánh giá **critical** (bắt buộc rewrite).
-- **Cấm phán xét đạo đức**: Nếu kịch bản lên giọng dạy đời, miệt thị người xem lười biếng hoặc kém cỏi → đánh giá **error**.
-- **Cấm đưa lời khuyên y tế/thuốc men**: Mọi giải pháp chỉ dừng lại ở **Cú hích hành vi (Nudge)** đời thường (thiết kế môi trường, quy tắc 2 phút).
+- **TUYỆT ĐỐI CẤM chẩn đoán bệnh lý tâm thần lâm sàng**: Nếu kịch bản dán nhãn người xem bị trầm cảm, rối loạn lo âu lan tỏa, rối loạn lưỡng cực, tâm thần phân liệt, ái kỷ ác tính, hoặc dùng mẫu câu quy kết ("bạn bị...") → đánh giá **critical** (bắt buộc rewrite).
+- **Cấm đổ lỗi, cường điệu & phán xét đạo đức**: Nếu kịch bản lên giọng dạy đời, miệt thị người xem lười biếng hoặc kém cỏi thay vì giải thích cơ chế não bộ → đánh giá **error**.
+- **Cấm hứa quá tay**: Nếu kịch bản hứa "thay đổi cuộc đời", "chữa khỏi mãi mãi" → đánh giá **error**.
+- **Cấm đưa lời khuyên y tế/thuốc men**: Mọi giải pháp chỉ dừng lại ở **1-3 Cú hích hành vi (Nudge) nhỏ cụ thể** làm thử được trong vài ngày (thiết kế môi trường, quy tắc 2 phút).
 
 **(d) Kiểm tra bám sát chủ đề & chống lan man (anti-drift).**
-- Kịch bản BẮT BUỘC tập trung 100% vào giải thích hiện tượng tâm lý được giao.
+- Kịch bản BẮT BUỘC tập trung 100% vào giải thích hiện tượng tâm lý được giao (một bài, một ý lớn).
 - Kết luận cuối cùng phải giải thích trọn vẹn chủ đề, đem lại sự thông suốt cho người xem.
 
 ### 3. Thẩm định kịch bản 7 chiều
@@ -67,7 +70,7 @@ Mỗi chiều đưa ra điểm số (0-100). Khóa chiều giữ nguyên bằng 
 
 #### Chiều 2: Nhân vật que giữ giọng (character)
 - Não Cảm Xúc / Não Bò Sát (Hệ thống 1: vội vã, thèm dopamine, sợ mất) và Não Lý Trí (Hệ thống 2: logic, phân tích, đeo kính nhưng dễ mệt) có thể hiện đúng cá tính và tương phản hài hước không.
-- Người que đại diện có phản chiếu trải nghiệm thực tế của người xem không.
+- Người que đại diện có phản chiếu sâu sắc trải nghiệm và nỗi đau thầm kín của người xem (họ thấy chính mình trong đó) không.
 
 #### Chiều 3: Nhịp 3 giây và thời lượng (pacing)
 - Hook 0:00 - 0:03 vào thẳng nghịch lý hành vi.
@@ -86,10 +89,10 @@ Mỗi chiều đưa ra điểm số (0-100). Khóa chiều giữ nguyên bằng 
 - Hook 3 giây đánh trúng nghịch lý hành vi hoặc cảm giác tội lỗi ngầm mà 99% người xem đều trải qua.
 - Câu chốt có loop hook nối ngược về mở đầu và để lại thông điệp nhân văn không.
 
-#### Chiều 7: Lời đọc nói được, hình vẽ được, ẩn dụ đúng và hài (aesthetic)
-- Lời đọc câu ngắn 8-15 từ, ngôn ngữ nói tự nhiên, không văn viết hàn lâm, không sáo rỗng AI.
-- Hình vẽ que trực quan hóa được cơ chế nội tâm (thước đo dopamine, cán cân mất mát, chiếc mỏ neo...).
-- Có Cú hích hành vi (Nudge) thực tế, dễ làm ngay.
+#### Chiều 7: Lời đọc nói được, hình vẽ được, ẩn dụ đúng và chạm đến tim (aesthetic)
+- Lời đọc câu ngắn 8-15 từ, ngôn ngữ nói tự nhiên, không văn viết hàn lâm, không sáo rỗng AI; có nhịp điệu thì thầm tâm sự ấm áp.
+- Hình vẽ que trực quan hóa được cơ chế nội tâm (thước đo dopamine, cán cân mất mát, chiếc mỏ neo...) và các ẩn dụ cảm xúc lắng đọng (chiếc ba lô đá, chiếc mặt nạ cười gượng, cái ôm tự thân).
+- Có bước chuyển cảm xúc vỗ về, chữa lành (xóa bỏ tự trách) và Cú hích hành vi (Nudge) thực tế, dễ làm ngay.
 
 ### 4. Lưu kết luận
 

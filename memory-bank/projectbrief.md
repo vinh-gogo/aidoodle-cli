@@ -9,7 +9,7 @@
 3. **Tâm lý học hành vi (`behavioral-psychology`)**: Biên kịch video giải mã bẫy nhận thức, cơ chế Não Bò Sát vs Não Lý Trí, thí nghiệm khoa học chuẩn xác và Cú hích hành vi (Nudge) thực chiến.
 4. **Tiểu thuyết Lịch sử Việt Nam (`vietnamese-history`)**: Sáng tác tiểu thuyết và dã sử hào sảng về các nhân vật lịch sử Việt Nam (2.000 – 4.000 từ/chương), tích hợp tra cứu Tavily Search, khắc họa chân dung con người thật đa chiều, bối cảnh lịch sử đa tầng và những nghịch cảnh sinh tử bi tráng.
 
-- Module: `github.com/voocel/ainovel-cli` (Fork repo: `aidoodle-cli`, branch `route` / `doodle-explainer`)
+- Module: `github.com/voocel/ainovel-cli` (Fork repo: `aidoodle-cli`, branch `tam-ly-hoc`)
 - Go `1.25.5` in `go.mod` (local toolchain: go 1.27.0 windows/amd64)
 - Entrypoint: `cmd/ainovel-cli/main.go`
 
@@ -18,7 +18,8 @@
 - Successfully expanded into an extensible multi-mode engine with 4 dedicated modes:
   - **Video Script modes** (`doodle-explainer`, `behavioral-psychology`): 1 video = 1 "chapter" (thời lượng 5+ phút: 300–600s, ~700–1500 từ lời đọc, nhịp LỜI-HÌNH xen kẽ 1:1, chạy bộ kiểm tra kịch bản `lintScript`).
   - **Novel modes** (`novel-manga`, `vietnamese-history`): 1 chapter = 2.000 – 4.000 từ văn xuôi tiểu thuyết, kết cấu chương hồi, không áp dụng ràng buộc kịch bản video.
-  - **Tích hợp Tavily Search & Crawl**: Nạp `source_pack` tự động, kiểm chứng dữ liệu thực tế và tài liệu lịch sử, tự động nạp file `.env` cục bộ.
+  - **Tích hợp Tavily Search & Crawl (Graceful Fallback)**: Nạp `source_pack` tự động, kiểm chứng dữ liệu thực tế và tài liệu lịch sử, tự động nạp file `.env` cục bộ; cơ chế suy giảm chức năng an toàn tự động vận dụng tri thức sẵn có khi API bên ngoài gặp sự cố.
+  - **TUI Dashboard (`/dash`) & Khởi tạo phiên mới (`/new`)**: Xem lại toàn bộ outputs, quản lý theo Tag Mode trực quan và chuyển đổi dự án không ngắt quãng.
 
 ## Core requirements (from upstream design, still binding)
 1. **Stability first** — one sentence in → whole book out, no architectural self-interruption.

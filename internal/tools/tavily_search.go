@@ -55,6 +55,26 @@ func (t *TavilySearchTool) Execute(ctx context.Context, args json.RawMessage) (j
 		return nil, fmt.Errorf("query không được để trống")
 	}
 
+	type searchItem struct {
+		Title   string `json:"title"`
+		URL     string `json:"url"`
+		Content string `json:"content"`
+	}
+
+	// Nếu client chưa có API key hoặc client nil, phản hồi mềm để LLM dùng tri thức có sẵn thay vì báo lỗi đứt luồng.
+	if t.client == nil || strings.TrimSpace(t.client.APIKey) == "" {
+		resultMap := map[string]any{
+			"query":       query,
+			"answer":      "Dịch vụ Tavily chưa được cấu hình API key (hoặc không kích hoạt). Hãy vận dụng trực tiếp nguồn tri thức khoa học, tâm lý học và học thuật sâu rộng sẵn có của bạn để giải thích cơ chế, trích dẫn tác giả nghiên cứu kinh điển và hoàn thành kịch bản mà KHÔNG CẦN gọi lại tavily_search.",
+			"results":     []searchItem{},
+			"total_found": 0,
+			"warning":     "Chưa cấu hình TAVILY_API_KEY. Tiếp tục sáng tác dựa trên tri thức sẵn có.",
+			"instruction": "Không gọi lại tavily_search. Hãy tiến hành viết nội dung ngay dựa trên cơ sở kiến thức học thuật sẵn có.",
+		}
+		data, _ := json.Marshal(resultMap)
+		return data, nil
+	}
+
 	depth := a.SearchDepth
 	if depth == "" {
 		depth = "advanced"
@@ -71,13 +91,18 @@ func (t *TavilySearchTool) Execute(ctx context.Context, args json.RawMessage) (j
 		IncludeAnswer: true,
 	})
 	if err != nil {
-		return nil, fmt.Errorf("tra cứu Tavily thất bại: %w", err)
-	}
-
-	type searchItem struct {
-		Title   string `json:"title"`
-		URL     string `json:"url"`
-		Content string `json:"content"`
+		// Thay vì báo lỗi làm đứt gãy luồng ReAct (khiến LLM thử lại liên tục dẫn tới bế tắc),
+		// trả về kết quả dự phòng hướng dẫn LLM tiếp tục sáng tác dựa trên tri thức sẵn có.
+		fallbackMap := map[string]any{
+			"query":       query,
+			"answer":      fmt.Sprintf("Dịch vụ tra cứu Tavily hiện không khả dụng (%v). Bạn hãy sử dụng nguồn tri thức khoa học, tâm lý học và học thuật sâu rộng sẵn có của bạn để giải thích các cơ chế, trích dẫn tác giả nghiên cứu kinh điển và hoàn thành kịch bản mà KHÔNG CẦN gọi lại tavily_search.", err),
+			"results":     []searchItem{},
+			"total_found": 0,
+			"warning":     fmt.Sprintf("Tra cứu Tavily không thành công: %v. Hãy tiếp tục sáng tác dựa trên tri thức sẵn có.", err),
+			"instruction": "Không gọi lại tavily_search. Hãy tiến hành viết nội dung ngay dựa trên cơ sở kiến thức học thuật sẵn có.",
+		}
+		data, _ := json.Marshal(fallbackMap)
+		return data, nil
 	}
 
 	var items []searchItem

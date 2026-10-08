@@ -188,7 +188,10 @@ func loadReferences(style string, opts LoadOptions) tools.References {
 		if data, err := referencesFS.ReadFile(refPrefix + name); err == nil {
 			return string(data)
 		}
-		return mustRead(referencesFS, "references/"+name)
+		if data, err := referencesFS.ReadFile("references/" + name); err == nil {
+			return string(data)
+		}
+		return ""
 	}
 
 	refs := tools.References{
@@ -208,6 +211,8 @@ func loadReferences(style string, opts LoadOptions) tools.References {
 		FactGrounding:     readModeRef("fact-grounding.md"),
 		TiktokSafety:      readModeRef("tiktok-content-safety.md"),
 		HumorRelatability: readModeRef("humor-relatability.md"),
+		CharacterBuilding: readModeRef("character-building.md"),
+		AdversityConflict: readModeRef("adversity-conflict.md"),
 	}
 	if style != "" && style != "default" {
 		genreDir := "references/genres/" + style + "/"
