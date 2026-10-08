@@ -1,8 +1,17 @@
-# ainovel-cli — Máy sáng tác AI đa chế độ & Biên kịch video Doodle Explainer
+# 🚀 ainovel-cli — Hệ Thống AI Đa Chế Độ & Xưởng Sáng Tác Tự Động Hóa
 
-Hệ thống AI tự động hóa quy trình sáng tác nội dung chuyên sâu bằng **100% Tiếng Việt**, hỗ trợ **4 Chế độ làm việc chuyên biệt** (chuyển đổi tức thì qua lệnh `/mode`): từ kịch bản video TikTok **Doodle Explainer** (nhân vật que đồ đá), video **Tâm lý học hành vi**, cho đến **Tiểu thuyết / Manga** và **Tiểu thuyết Nhân vật Lịch sử Việt Nam**.
+<p align="center">
+  <img src="https://img.shields.io/badge/Go-1.25+-00ADD8?style=for-the-badge&logo=go&logoColor=white" alt="Go Version">
+  <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License">
+  <img src="https://img.shields.io/badge/Architecture-Deterministic_Engine-blueviolet?style=for-the-badge" alt="Architecture">
+  <img src="https://img.shields.io/badge/AI_Modes-4_Specialized-orange?style=for-the-badge" alt="AI Modes">
+  <img src="https://img.shields.io/badge/Platform-Windows_|_macOS_|_Linux-lightgrey?style=for-the-badge" alt="Platform">
+</p>
 
-Kiến trúc lõi là một **Engine xác định (Deterministic Engine)** điều phối 3 tác tử sáng tác độc lập (**Architect / Writer / Editor**) cùng trọng tài ngữ nghĩa (**Arbiter**). Hệ thống tích hợp tra cứu internet thời gian thực (**Tavily Search**), tự động lấy tin xu hướng (Google Trends VN, VnExpress), bám nguồn dữ kiện (Fact-grounding), kiểm soát an toàn nội dung (Luật An ninh mạng VN & Tiêu chuẩn TikTok), và xuất trọn gói dữ liệu sản xuất.
+<p align="center">
+  <strong>Bộ công cụ dòng lệnh (CLI) tự động hóa quy trình sáng tác nội dung chuyên sâu bằng 100% Tiếng Việt.</strong><br>
+  Từ kịch bản video TikTok <strong>Doodle Explainer</strong> (nhân vật que đồ đá) triệu view, video <strong>Tâm lý học hành vi</strong> sâu sắc, cho đến <strong>Tiểu thuyết Lịch sử Việt Nam</strong> hào sảng và <strong>Tiểu thuyết / Manga</strong> kỳ ảo đa tầng.
+</p>
 
 <p align="center">
   <img src="scripts/demo_mode.png" alt="Bộ chọn chế độ AI /mode" width="850">
@@ -16,323 +25,248 @@ Kiến trúc lõi là một **Engine xác định (Deterministic Engine)** đi�
 
 ---
 
-## Mục lục
+## 🌟 Điểm Nổi Bật Vượt Trội
 
-1. [Điểm nổi bật](#điểm-nổi-bật)
-2. [4 Chế độ làm việc AI chuyên biệt (/mode)](#4-chế-độ-làm-việc-ai-chuyên-biệt-mode)
-3. [Định dạng kịch bản chuẩn TikTok](#định-dạng-kịch-bản-chuẩn-tiktok)
-4. [Kiến trúc hệ thống](#kiến-trúc-hệ-thống)
-5. [Cài đặt & Khởi động nhanh](#cài-đặt--khởi-động-nhanh)
-6. [Tích hợp Tavily Search & Tra cứu thông tin](#tích-hợp-tavily-search--tra-cứu-thông-tin)
-7. [Tự động hóa xu hướng thời sự (--trends)](#tự-động-hóa-xu-hướng-thời-sự---trends)
-8. [An toàn nội dung & Cổng duyệt người (--review / --next)](#an-toàn-nội-dung--cổng-duyệt-người---review----next)
-9. [Xuất gói dữ liệu sản xuất video (/export --video)](#xuất-gói-dữ-liệu-sản-xuất-video-export---video)
-10. [Cấu hình hệ thống & Mô hình LLM](#cấu-hình-hệ-thống--mô-hình-llm)
-11. [Các lệnh TUI & Điều khiển thời gian thực](#các-lệnh-tui--điều-khiển-thời-gian-thực)
-12. [Giấy phép](#giấy-phép)
+- 🎯 **4 Chế độ làm việc AI chuyên biệt (`/mode`)**: Phân tách độc lập 100% kho tài nguyên prompt, voice, style, reference và gated validator; chuyển đổi tức thì chỉ bằng một phím bấm.
+- 🗂️ **Dashboard Quản lý Tác phẩm Trực quan (`/dash`)**: Gõ `/dash` để mở giao diện quản lý toàn bộ outputs trong `output/`, tự động gắn **Tag Mode** (`[🧠 Tâm lý học]`, `[⚔️ Lịch sử VN]`, `[🦴 Video TikTok]`, `[📖 Tiểu thuyết]`), hiển thị tiến độ và chuyển đổi dự án lập tức.
+- ✨ **Khởi tạo Phiên mới Siêu Tốc (`/new`)**: Gõ `/new` -> Enter để bắt đầu ngay session mới trong thư mục output timestamp riêng mà không cần nhập thêm tham số.
+- 🏛️ **Tiểu thuyết Lịch sử Việt Nam Chuẩn mực**: Quán triệt tôn chỉ *"Đúng đủ để người đọc tin, sống đủ để người đọc quan tâm"*. Khung phương pháp luận gồm **Bảng bất biến lịch sử**, **Bảng vùng tự do**, **Xung đột kép** (đời tư va đập thời cuộc), **12 Kỹ thuật hook lịch sử sắc bén** và **Bộ kiểm tra nhanh 5 câu hỏi vàng**.
+- 🧠 **Tâm lý học Hành vi Chuẩn Khoa học**: Cấu trúc 8 bước kết hợp kể chuyện cuốn hút: mở đầu từ trải nghiệm người đọc, phân biệt rạch ròi tương quan vs nhân quả, cảnh báo khủng hoảng tái lập, mẫu nghiên cứu WEIRD và Cú hích hành vi (Nudge) thực chiến.
+- 🦴 **Quy cách Doodle Explainer 5+ Phút Chuẩn Viral**: Kịch bản video người que tiền sử (5–8 phút, 700–1500 từ LỜI), nhịp 1:1 Thoại - Hình xen kẽ liên tục (đổi nét vẽ mỗi 3–6s), cấu trúc 5 giai đoạn có Tái Hook mỗi 60–90s.
+- 🌐 **Tra cứu Thời gian thực & Tavily Graceful Fallback**: Tích hợp Tavily Search & Crawl tra cứu sử liệu và kiến thức học thuật. Khi mất mạng hoặc chưa có key, hệ thống tự động suy giảm chức năng an toàn (Graceful Fallback) để LLM vận dụng tri thức sẵn có mà không bao giờ bị đứt gãy luồng ReAct.
+- ⚙️ **Deterministic Engine & Checkpoint Saga**: Kiến trúc xác định độc quyền điều phối 3 tác tử (**Architect / Writer / Editor**) cùng trọng tài ngữ nghĩa (**Arbiter**). Lưu vết trạng thái từng bước (Step-level atomic IO), tự phục hồi khi tắt máy ngang.
+- 📦 **Xuất Trọn Gói Sản Xuất Video (`/export --video`)**: Kết xuất đồng bộ `scripts/` (kịch bản hoàn chỉnh), `voiceover/` (lời đọc sạch cho thu âm/TTS), `shotlist.csv` (bảng phân cảnh kèm UTF-8 BOM cho Excel) và `publish.csv` (tiêu đề, caption, hashtag, nguồn).
 
 ---
 
-## Điểm nổi bật
+## 📑 Mục Lục
 
-- **Chuyên biệt hóa Doodle Explainer Tiếng Việt**: Nhân vật que thời đồ đá (Gù, Tộc trưởng, Sói Đá...) dùng góc nhìn tiền sử để ẩn dụ hài hước và mổ xẻ những vấn đề thời sự hiện đại (AI, lạm phát, chứng khoán, thuật toán, áp lực đồng trang lứa...).
-- **Quy cách kịch bản chuẩn Doodle Explainer từ 5 phút**: Mỗi tập là 1 video thời lượng từ 5 phút trở lên (khoảng 5-8 phút / 300–480s, ~750–1200 từ LỜI đọc), phân chia 5 giai đoạn mạch lạc (Hook 3s, Đặt vấn đề & kết nối đời thực, Thân bài 3 chặng có Tái Hook mỗi 60-90s, Reframe & hành động nhỏ, Chốt loop đúc kết), phân tách rõ ràng các trường: `LỜI:`, `HÌNH:`, `ÂM:` (bỏ hẳn phần `CHỮ:`, mọi thông điệp thể hiện qua lời đọc và hình vẽ), kết thúc bằng hook loop và chân kịch bản metadata.
-- **Tự động thu nạp xu hướng (Trend Intake)**: Tích hợp sẵn bộ thu nạp RSS từ Google Trends Việt Nam và VnExpress. Cơ chế khử trùng lặp và Arbiter tự động lọc các chủ đề rác, nhạy cảm, chỉ giữ lại những chủ đề có tính thảo luận cao và phù hợp với góc nhìn đồ đá viral.
-- **Bám nguồn dữ kiện (Fact-grounding) & An toàn nội dung**: Tuân thủ nghiêm ngặt Luật An ninh mạng 2018, Nghị định 15/2020/NĐ-CP (Điều 101) và Tiêu chuẩn cộng đồng TikTok. Dữ liệu chưa đủ căn cứ bắt buộc phải liệt kê trong thẻ `CẦN KIỂM CHỨNG:`.
-- **Cổng duyệt người (Human Gate)**: Mặc định series theo xu hướng khởi chạy ở chế độ `review`. Chỉ khi người sáng tạo duyệt qua `/next` (hoặc `--next` ở headless), kịch bản tiếp theo mới được tiến hành sản xuất.
-- **Xuất trọn gói dữ liệu sản xuất (Video Package Export)**: Tự động kết xuất thư mục `scripts/` (kịch bản hoàn chỉnh), `voiceover/` (chỉ có lời đọc sạch cho TTS hoặc thu âm), `shotlist.csv` (bảng phân cảnh kèm UTF-8 BOM cho Excel) và `publish.csv` (tiêu đề, caption, hashtag, nguồn).
-- **Phục hồi từng bước (Step-level Checkpoint)**: Lưu trữ trạng thái sau từng công cụ (`plan`, `draft`, `check`, `commit`). Nếu gặp sự cố mạng hoặc tắt ngang máy, hệ thống tự động nối tiếp từ bước dở dang mà không mất dữ liệu.
-- **Đa dạng LLM**: Hỗ trợ OpenRouter, Anthropic, Gemini, OpenAI, DeepSeek, Qwen, và các mô hình cục bộ qua Ollama.
+1. [4 Chế Độ Làm Việc AI Chuyên Biệt (/mode)](#4-chế-độ-làm-việc-ai-chuyên-biệt-mode)
+2. [Dashboard Quản Lý Outputs (/dash) & Khởi Tạo Mới (/new)](#dashboard-quản-lý-outputs-dash--khởi-tạo-mới-new)
+3. [Kiến Trúc Hệ Thống (Deterministic Engine)](#kiến-trúc-hệ-thống-deterministic-engine)
+4. [Định Dạng Kịch Bản Video Chuẩn TikTok](#định-dạng-kịch-bản-video-chuẩn-tiktok)
+5. [Cài Đặt & Khởi Động Nhanh Trong 60 Giây](#cài-đặt--khởi-động-nhanh-trong-60-giây)
+6. [Tích Hợp Tavily Search & Graceful Fallback](#tích-hợp-tavily-search--graceful-fallback)
+7. [An Toàn Nội Dung & Cổng Duyệt Người (/review)](#an-toàn-nội-dung--cổng-duyệt-người-review)
+8. [Xuất Gói Dữ Liệu Sản Xuất Video (/export)](#xuất-gói-dữ-liệu-sản-xuất-video-export)
+9. [Bảng Tra Cứu Lệnh TUI Thời Gian Thực](#bảng-tra-cứu-lệnh-tui-thời-gian-thực)
+10. [Giấy Phép & Đóng Góp](#giấy-phép--đóng-góp)
 
 ---
 
-## 4 Chế độ làm việc AI chuyên biệt (/mode)
+## 🎭 4 Chế Độ Làm Việc AI Chuyên Biệt (/mode)
 
-Khi nhập lệnh `/mode` (hoặc alias `/topic`, `/topics`) trong giao diện TUI, một bảng chọn modal overlay sẽ hiển thị cho phép bạn chọn chế độ làm việc tối ưu nhất:
+Khi nhập lệnh `/mode` (hoặc alias `/topic`, `/topics`) trong TUI, bảng chọn trực quan cho phép bạn chuyển đổi linh hoạt:
 
-| Phím | Chế độ làm việc | Định dạng cốt lõi | Quy cách & Trọng tâm |
+| Phím | Chế độ | Định dạng | Quy cách & Trọng tâm nghiệp vụ |
 | :---: | :--- | :--- | :--- |
-| **`1`** | **Tiểu thuyết / Manga**<br>`novel-manga` | Tiểu thuyết văn xuôi | 2.000 – 4.000 từ/chương, kết cấu chương hồi, thế giới quan đa tầng, chiều sâu tâm lý nhân vật và quy tắc thế giới chặt chẽ. |
+| **`1`** | **Tiểu thuyết / Manga**<br>`novel-manga` | Tiểu thuyết văn xuôi | 2.000 – 4.000 từ/chương, cấu trúc chương hồi, thế giới quan đa tầng, chiều sâu nội tâm nhân vật và quy tắc ma pháp/hệ thống chặt chẽ. |
 | **`2`** | **Doodle Explainer**<br>`doodle-explainer` | Kịch bản video người que | 5+ phút (300–600s, 700–1500 từ LỜI), nhịp 1:1 Thoại - Hình (đổi hình mỗi 3–6s), cấu trúc 5 giai đoạn, Tái Hook mỗi 60–90s, dí dỏm viral TikTok/Shorts. |
-| **`3`** | **Tâm lý học hành vi**<br>`behavioral-psychology` | Kịch bản video tâm lý | 5+ phút, cơ chế Não Bò Sát vs Não Lý Trí, giải mã bẫy nhận thức, dẫn chứng thí nghiệm khoa học chuẩn xác có nguồn và Cú hích hành vi (Nudge) thực chiến. |
-| **`4`** | **Tiểu thuyết Lịch sử Việt Nam**<br>`vietnamese-history` | Tiểu thuyết sử thi dã sử | 2.000 – 4.000 từ/chương, tích hợp **Tavily Search** tìm kiếm sử liệu, khắc họa con người thật đa chiều (tài năng & trăn trở nội tâm), bối cảnh lịch sử đa tầng (triều chính, phong tục, địa chính trị quốc tế), nghịch cảnh sinh tử bi tráng. Xưng hô chuẩn mực Đại Việt, cấm từ convert kiếm hiệp, 100% tiếng Việt sạch chữ Hán. |
+| **`3`** | **Tâm lý học hành vi**<br>`behavioral-psychology` | Kịch bản video tâm lý | 5+ phút, chuẩn mực 8 bước khoa học kết hợp nghệ thuật kể chuyện cuốn hút. Phân biệt tương quan vs nhân quả, cảnh báo khủng hoảng tái lập, Cú hích hành vi (Nudge) và tự trắc ẩn vỗ về đứa trẻ bên trong. |
+| **`4`** | **Tiểu thuyết Lịch sử Việt Nam**<br>`vietnamese-history` | Tiểu thuyết sử thi dã sử | 2.000 – 4.000 từ/chương. Tôn chỉ *"Đúng đủ để người đọc tin, sống đủ để người đọc quan tâm"*. Lập Bảng bất biến & Bảng vùng tự do, Xung đột kép (đời tư chạm thời cuộc), 12 Kỹ thuật hook lịch sử, 5 câu hỏi vàng kiểm tra nhanh. Xưng hô Đại Việt, sạch chữ Hán 100%. |
 
 > [!TIP]
-> **Thao tác nhanh trong TUI**:
-> - Nhấn phím số **`1`**, **`2`**, **`3`**, **`4`** để chọn và kích hoạt chế độ tức thì.
-> - Hoặc dùng mũi tên **`↑`** / **`↓`** (hoặc **`k`** / **`j`**) để di chuyển và nhấn **`Enter`**.
-> - Nhấn **`Esc`** hoặc **`q`** để đóng bảng chọn.
-> - Chế độ được chọn sẽ tự động lưu vào `.ainovel/config.json` của dự án.
-> - Bộ kiểm tra định dạng kịch bản video (`lintScript`) chỉ kích hoạt cho mode `2` và `3`, hoàn toàn giải phóng cho các mode tiểu thuyết `1` và `4`.
+> **Thao tác nhanh**: Nhấn trực tiếp các phím số `1`, `2`, `3`, `4` để chuyển đổi tức thì. Bộ kiểm tra kịch bản video (`lintScript`) chỉ kích hoạt ở mode `2` và `3`, hoàn toàn giải phóng độ dài cho các mode tiểu thuyết `1` và `4`.
 
 ---
 
-## Định dạng kịch bản chuẩn TikTok
+## 🗂️ Dashboard Quản Lý Outputs (/dash) & Khởi Tạo Mới (/new)
 
-Mỗi tập video (`chapter`) được viết theo chuẩn định dạng nghiêm ngặt tại [`docs/script-format.md`](docs/script-format.md):
+### 1. Dashboard `/dash` (hoặc `/dashboard`, `/projects`, `/history`)
+Chỉ cần gõ `/dash` -> Enter, bạn sẽ thấy giao diện quản lý toàn bộ tác phẩm:
+- **Tự động gắn Tag Mode**: `[🧠 Tâm lý học hành vi]`, `[⚔️ Lịch sử Việt Nam]`, `[🦴 Video TikTok]`, `[📖 Tiểu thuyết / Manga]`.
+- **Hiển thị tiến độ rõ ràng**: `✓ Đã xong (3/3)`, `⏳ Đang viết (1/3)`, `🌱 Khởi tạo`, kèm đường dẫn thư mục và timestamp sửa đổi.
+- **Đánh dấu dự án hiện tại**: Ký hiệu `⭐ [Đang mở]` giúp định vị nhanh.
+- **Chuyển đổi tức thì**: Dùng mũi tên `↑`/`↓` hoặc `j`/`k`, nhấn `Enter` để chuyển đổi dự án, hệ thống sẽ tự động nạp đúng bundle chế độ và khôi phục tiến trình làm việc.
+
+### 2. Lệnh khởi tạo nhanh `/new`
+- Gõ `/new` -> Enter để bắt đầu ngay một phiên làm việc mới tinh tươm trong thư mục phân lập `output/novel-YYYYMMDD-HHMM` mà không cần nhập thêm bất kỳ tham số phức tạp nào.
+
+---
+
+## 🏛️ Kiến Trúc Hệ Thống (Deterministic Engine)
+
+Hệ thống tuân thủ nguyên lý: **Tầng sự thật xác định, Tầng ngữ nghĩa tự chủ** (*Fact layer deterministic, Semantic layer autonomous*).
+
+```mermaid
+flowchart TD
+    Host["Engine / Host (Bộ điều phối xác định)"]
+    Store[("Store (Atomic IO + Saga Checkpoints)")]
+    Arbiter["Arbiter (Trọng tài ngữ nghĩa LLM)"]
+    Architect["Architect (Kiến trúc sư Series)"]
+    Writer["Writer (Biên kịch / Cây bút chính)"]
+    Editor["Editor (Biên tập viên 7 chiều)"]
+
+    Host -->|1. Đọc tiến độ & Tra bảng Route| Store
+    Host -->|2. Phân loại can thiệp & Đánh giá đề tài| Arbiter
+    Host -->|3. Lập đề cương & Worldbuilding| Architect
+    Host -->|4. Viết kịch bản theo nhịp 1:1| Writer
+    Host -->|5. Thẩm định chất lượng & Kiểm chứng| Editor
+
+    Architect -->|Gọi Context & Lưu Foundation| Store
+    Writer -->|novel_context, draft_chapter, commit| Store
+    Editor -->|save_review, checkpoint| Store
+```
+
+### Phân công tác tử chuyên biệt
+
+| Tác tử | Nhiệm vụ chính trong quy trình | Công cụ sử dụng |
+|---|---|---|
+| **Arbiter** | Trọng tài ngữ nghĩa: Lọc đề tài xu hướng, phân loại can thiệp của người dùng, phá vỡ bế tắc ReAct | Gọi LLM có cấu trúc chặt chẽ (Structured function call) |
+| **Architect** | Kiến trúc sư: Đọc dữ liệu, lập Series Bible, quy tắc thế giới, lập Bảng bất biến / Vùng tự do, phân bổ dàn ý các tập | `novel_context`, `save_book`, `save_foundation` |
+| **Writer** | Ngòi bút sáng tác: Nhận `source_pack`, nạp đầy đủ kỹ thuật hook và cẩm nang qua `novel_context`, triển khai bản thảo 2.000–4.000 từ (tiểu thuyết) hoặc nhịp 1:1 Thoại - Hình (video), nộp qua `commit_chapter` | `novel_context`, `plan_chapter`, `draft_chapter`, `check_consistency`, `commit_chapter` |
+| **Editor** | Biên tập viên: Thẩm định 7 chiều (nhất quán, nhân vật, nhịp độ, liên kết tập, chi tiết cài cắm, hook, mỹ cảm/sử liệu), đối soát nguồn và cảnh báo vi phạm | `novel_context`, `read_chapter`, `save_review`, `save_arc_summary`, `save_volume_summary` |
+
+---
+
+## 🎬 Định Dạng Kịch Bản Video Chuẩn TikTok
+
+Mỗi tập video ở chế độ Doodle Explainer hoặc Tâm lý học hành vi tuân thủ nhịp 1:1 Thoại - Hình:
 
 ```markdown
 # Tiêu đề video hấp dẫn (Không clickbait lừa dối)
 
 HOOK 0:00-0:03
-LỜI: [Lời đọc mở đầu giật hook giữ chân người xem]
-HÌNH: [Mô tả nét vẽ que đơn giản, biểu cảm phóng đại]
+LỜI: Người lính chèo thuyền đêm ấy chỉ lo một chuyện: nước triều lên chậm quá.
+HÌNH: Bàn tay que run rẩy cắm mái chèo xuống dòng nước sông Bạch Đằng cuộn sóng dữ.
 
 CẢNH 1 0:03-0:45
-LỜI: [Phần đầu: Đặt vấn đề đời thực quen thuộc, tạo lời hứa hẹn/tiền đề ẩn dụ]
-HÌNH: [Nhân vật que trong tình huống đời thường dở khóc dở cười]
-ÂM: [Nhạc nền hoặc tiếng động nhẹ]
+LỜI: Ai đọc sử cũng biết trận này quân ta sẽ đại thắng. Nhưng người lính ấy thì không biết...
+HÌNH: Nhân vật que ngồi co ro nơi mạn thuyền, ánh mắt đăm đăm nhìn vào màn đêm mù sương.
+ÂM: Tiếng gió bấc rít từng cơn buốt giá.
 
 CẢNH 2 0:45-1:45
-LỜI: [Phần thân Chặng 1: Thiết lập ẩn dụ cốt lõi, mâu thuẫn ban đầu]
-HÌNH: [Hành động hài hước của nhân vật đồ đá]
+LỜI: [Chặng 1: Thiết lập mâu thuẫn đời thường, dẫn nhập cơ chế phản trực giác]
+HÌNH: [Minh họa sơ đồ que đơn giản, biểu cảm phóng đại]
 
 CẢNH 3 1:45-2:45
-LỜI: [Phần thân Chặng 2: Tái Hook 1, đào sâu cơ chế, phản trực giác]
-HÌNH: [Sơ đồ que hoặc cú lật tình huống]
-ÂM: [Hiệu ứng âm thanh kịch tính]
+LỜI: [Chặng 2: Tái Hook 1, đào sâu bằng chứng khoa học hoặc thế trận lịch sử]
+HÌNH: [Cú lật tình huống hài hước hoặc kịch tính]
+ÂM: [Hiệu ứng âm thanh nhấn mạnh]
 
 CẢNH 4 2:45-3:45
-LỜI: [Phần thân Chặng 3: Tái Hook 2, cao trào, liên hệ thực tế hiện đại]
-HÌNH: [Tương phản giữa người đá và công sở/điện thoại]
+LỜI: [Chặng 3: Tái Hook 2, cao trào, liên hệ thực tế nhân sinh hiện đại]
+HÌNH: [Soi chiếu tâm lý, chuyển đổi góc nhìn]
 
 CẢNH 5 3:45-4:30
-LỜI: [Phần Reframe & Hành động: Đổi góc nhìn nhận thức + việc nhỏ làm được ngay]
-HÌNH: [Nhân vật ngộ ra, hành động tự tin nhẹ nhõm]
+LỜI: [Reframe & Hành động nhỏ: Đổi góc nhìn nhận thức, việc làm thử được ngay]
+HÌNH: [Nhân vật que ngộ ra, hành động nhẹ nhõm tự tin]
 
 CHỐT 4:30-5:15
-LỜI: [Đúc kết bất ngờ, Loop Hook về đầu video hoặc câu hỏi mở kêu gọi bình luận]
-HÌNH: [Cảnh kết tương tác với người xem, nút theo dõi và hộp bình luận]
+LỜI: [Đúc kết bất ngờ, Loop Hook quay lại đầu video hoặc câu hỏi gợi mở thảo luận]
+HÌNH: [Cảnh kết tương tác, icon theo dõi và khung bình luận]
 
-CAPTION: [Mô tả ngắn gọn thu hút người xem đọc thêm]
-HASHTAG: #doodle #explainer #trend #xuhuong #kienthuc
-NGUỒN: [Link bài viết hoặc nguồn dữ kiện gốc]
-CẦN KIỂM CHỨNG: [Các thông tin ước đoán hoặc số liệu cần đối soát]
+CAPTION: Tóm tắt 1-2 câu súc tích mở rộng giá trị bài học.
+HASHTAG: #doodle #explainer #lichsu #tamly #kienthuc
+NGUỒN: Đại Việt Sử Ký Toàn Thư / Nghiên cứu Kahneman (2011)
+CẦN KIỂM CHỨNG: Số liệu ước đoán về quân số cần đối chiếu thêm với tài liệu khảo cổ.
 ```
 
 ---
 
-## Kiến trúc hệ thống
+## ⚡ Cài Đặt & Khởi Động Nhanh Trong 60 Giây
 
-Hệ thống tuân thủ nguyên lý: **Tầng sự thật xác định, Tầng ngữ nghĩa tự chủ** (Fact layer deterministic, Semantic layer autonomous).
+### Yêu cầu hệ thống
+- **Git** (tải tại [git-scm.com](https://git-scm.com/)).
+- **Go >= 1.25** (tải tại [go.dev/dl](https://go.dev/dl/)).
+- **API Key LLM**: Hỗ trợ OpenRouter, Gemini, OpenAI, Anthropic, DeepSeek hoặc Ollama cục bộ.
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                   Host / Engine (Xác định)                   │
-│  Đọc Store → Tra bảng Route → Gọi Worker trực tiếp → Lặp   │
-│  Chọn đề tài / Phân xử can thiệp / Cứu kẹt → Gọi Arbiter    │
-└────────────┬─────────────┬─────────────┬─────────────┬──────┘
-             │             │             │             │
-        ┌────▼────┐   ┌────▼────┐   ┌────▼────┐   ┌────▼────┐
-        │Architect│   │ Writer  │   │ Editor  │   │ Arbiter │
-        │(LLM)    │   │(LLM)    │   │(LLM)    │   │(LLM func│
-        └────┬────┘   └────┬────┘   └────┬────┘   └─────────┘
-             └─────────────┼─────────────┘
-                           │ Tool calls (Atomic IO + Saga + Checkpoint)
-        ┌──────────────────▼──────────────────────────────────┐
-        │                      Store                          │
-        │  Progress / Checkpoints / Outline / Drafts / Trends │
-        └─────────────────────────────────────────────────────┘
-```
+### Các bước thực hiện:
 
-### Phân công tác tử
+```bash
+# 1. Clone kho lưu trữ
+git clone https://github.com/vinh-gogo/aidoodle-cli.git
+cd aidoodle-cli
 
-| Tác tử | Vai trò trong hệ thống Doodle Explainer | Công cụ sử dụng |
-|---|---|---|
-| **Arbiter** | Trọng tài ngữ nghĩa: Lọc & chấm điểm đề tài xu hướng, phân loại can thiệp của người dùng, quyết định hướng xử lý khi bế tắc | Không có (Gọi LLM dạng function có cấu trúc chặt chẽ) |
-| **Architect** | Kiến trúc sư series: Đọc tóm tắt xu hướng (`trend_brief`), lập Series Bible, quy tắc vũ trụ đồ đá, danh sách tập và phân bổ ẩn dụ | `novel_context`, `save_book`, `save_foundation` |
-| **Writer** | Biên kịch: Nhận dữ liệu nguồn (`source_pack`), triển khai kịch bản chi tiết theo nhịp 3s, kiểm tra tính nhất quán và nộp bản thảo | `novel_context`, `read_chapter`, `plan_chapter`, `draft_chapter`, `check_consistency`, `commit_chapter` |
-| **Editor** | Biên tập viên: Thẩm định 7 chiều chất lượng (nhất quán, nhân vật, nhịp độ, liên kết tập, chi tiết cài cắm, chất lượng hook, tính mỹ cảm & khả thi hoạt họa), đối soát nguồn dữ kiện và cảnh báo nhạy cảm | `novel_context`, `read_chapter`, `save_review`, `save_arc_summary`, `save_volume_summary` |
+# 2. Chuyển sang nhánh mới nhất (history-vietnam)
+git checkout history-vietnam
 
----
+# 3. Biên dịch chương trình
+go build -o ainovel-cli.exe ./cmd/ainovel-cli   # Trên Windows
+# go build -o ainovel-cli ./cmd/ainovel-cli     # Trên Linux / macOS
 
-## Cài đặt & Khởi động nhanh
-
-### 1. Cài đặt từ mã nguồn (Yêu cầu Go >= 1.25)
-
-```powershell
-# Clone kho lưu trữ
-git clone -b doodle-explainer https://github.com/voocel/ainovel-cli.git
-cd ainovel-cli
-
-# Biên dịch chương trình
-go build -o ainovel-cli.exe ./cmd/ainovel-cli
-```
-
-### 2. Khởi chạy TUI (Giao diện dòng lệnh tương tác)
-
-```powershell
+# 4. Khởi chạy giao diện TUI
 .\ainovel-cli.exe
 ```
 
-Lần đầu khởi chạy, chương trình sẽ tự động kích hoạt **Thuật sĩ cấu hình (Bootstrap Wizard)** để hướng dẫn bạn nhập Provider (OpenRouter, Gemini, Anthropic, Ollama...), API Key, Base URL và chọn Model. Toàn bộ cấu hình được lưu tại `~/.ainovel/config.json`.
-
-Tại màn hình chính, bạn có thể:
-- **Khởi đầu nhanh (Quick Start)**: Gõ 1 câu yêu cầu (ví dụ: *"Giải thích việc giá vàng nhảy múa bằng ẩn dụ hòn đá thần của người tiền sử"*).
-- **Đồng sáng tạo (Co-create)**: Trao đổi nhiều lượt với AI để hoàn thiện đề cương, sau đó nhấn `Ctrl+S` để bắt đầu sinh kịch bản.
-- **Chọn chế độ (/mode)**: Gõ `/mode` rồi chọn 1 trong 4 chế độ chuyên biệt (Tiểu thuyết / Manga, Doodle Explainer, Tâm lý học hành vi, Tiểu thuyết Lịch sử Việt Nam).
+> [!NOTE]
+> Lần đầu khởi chạy, **Thuật sĩ cấu hình (Bootstrap Wizard)** sẽ tự động hướng dẫn bạn thiết lập Provider, API Key, Base URL và Model. Cấu hình được lưu an toàn tại `~/.ainovel/config.json`.
 
 ---
 
-## Tích hợp Tavily Search & Tra cứu thông tin
+## 🔍 Tích Hợp Tavily Search & Graceful Fallback
 
-Hệ thống tích hợp trực tiếp **Tavily Search & Crawl API** để tự động kiểm chứng dữ kiện và nạp nguồn tài liệu thời gian thực:
-- **Tự động nhận diện `.env`**: Bạn chỉ cần tạo file `.env` tại thư mục làm việc của dự án và khai báo khóa API:
+- **Cấu hình đơn giản**: Tạo file `.env` tại thư mục dự án:
   ```env
   TAVILY_API_KEY=tvly-xxxxxxxxxxxxxxxxxxxxxxxx
   ```
-  Hệ thống sẽ tự động nạp biến môi trường này khi khởi động mà không cần can thiệp thủ công.
-- **Công cụ cho LLM**: Các tác tử **Architect** và **Writer** được trang bị 2 công cụ chuyên dụng:
-  - `tavily_search`: Tra cứu nhanh sử liệu, các bài báo khoa học, tin tức kinh tế – xã hội và trích xuất tóm tắt thông tin quan trọng.
-  - `tavily_crawl`: Đọc sâu nội dung chi tiết của trang web nguồn để trích xuất số liệu, danh ngôn và luận điểm đối trọng.
-- **Tự động lập Source Pack**: Dữ liệu tra cứu được tổng hợp thành `source_pack` đưa vào ngữ cảnh của kịch bản/chương truyện và lưu trữ tại `output/trends/sources/`.
-- **Minh bạch nguồn tin**: Mọi kịch bản video hoặc tiểu thuyết đều trích dẫn URL vào thẻ `NGUỒN:` và đánh dấu các luận điểm cần kiểm tra thêm vào thẻ `CẦN KIỂM CHỨNG:`.
+- **Tự động suy giảm chức năng an toàn (Graceful Fallback)**:
+  - Nếu chưa có key Tavily hoặc gặp sự cố mạng (HTTP 40x/50x), công cụ `tavily_search` tự động chuyển sang phản hồi mềm, hướng dẫn LLM khai thác tri thức học thuật sẵn có.
+  - **Triệt tiêu 100% sự cố đứt gãy luồng ReAct** hay bế tắc *"Chỉ lệnh liên tiếp 5 lần không có tiến triển"*.
 
 ---
 
-## Tự động hóa xu hướng thời sự (--trends)
+## 🛡️ An Toàn Nội Dung & Cổng Duyệt Người (/review)
 
-Chương trình tích hợp sẵn hệ thống quét xu hướng thời sự Việt Nam:
-
-```powershell
-# Quét xu hướng tự động và chạy chế độ không giao diện (Headless)
-.\ainovel-cli.exe --headless --trends
-```
-
-### Luồng xử lý xu hướng:
-1. **Thu thập tin tức**: Tự động lấy các bài viết nóng từ Google Trends VN RSS và VnExpress RSS.
-2. **Khử trùng lặp & Lưu trữ**: Trích xuất nội dung bài viết, tính toán băm SHA-256 lưu vào `output/trends/articles/`.
-3. **Arbiter thẩm định đề tài**:
-   - Loại bỏ rác tìm kiếm (kết quả xổ số, lịch bóng đá thuần túy...).
-   - Loại bỏ chủ đề nhạy cảm chính trị, vi phạm pháp luật hoặc tin đồn vô căn cứ.
-   - Ưu tiên chủ đề khoa học, công nghệ, kinh tế, đời sống xã hội có thể ẩn dụ hóa bằng góc nhìn đồ đá.
-4. **Bơm dữ liệu nguồn vào kịch bản**:
-   - `trend_brief` được nạp cho **Architect** để lập đề cương series.
-   - `source_pack` (tiêu đề, tóm tắt, luận điểm chính, số liệu có căn cứ) được chuyển cho **Writer** để viết kịch bản bám sát sự thật.
-
----
-
-## An toàn nội dung & Cổng duyệt người (--review / --next)
-
-Để đảm bảo video đăng tải lên TikTok không bị quét vi phạm tiêu chuẩn cộng đồng hoặc vi phạm pháp luật Việt Nam (Luật An ninh mạng 2018, Nghị định 15/2020/NĐ-CP Điều 101), hệ thống áp dụng cơ chế bảo vệ 3 lớp:
-
-1. **Bộ quy tắc cấm kỵ mặc định (`SystemDefaults.Preferences`)**: Tự động tích hợp trong `internal/rules/snapshot.go`:
-   - Nghiêm cấm thông tin sai sự thật về chính trị, an ninh quốc phòng, lãnh thổ chủ quyền.
-   - Nghiêm cấm tin đồn giật gân, xúc phạm danh dự cá nhân, tổ chức.
-   - Nghiêm cấm tư vấn y tế/tài chính cam kết sai lệch, mê tín dị đoan.
-2. **Thẻ `CẦN KIỂM CHỨNG:` bắt buộc**: Validator [`internal/tools/script_format.go`](internal/tools/script_format.go) sẽ phát cảnh báo nếu kịch bản thiếu thẻ này hoặc đưa ra số liệu suy đoán không có trong nguồn.
-3. **Cổng duyệt người (Human-in-the-loop Gate)**:
-   - Khi chạy với `--trends`, hệ thống mặc định kích hoạt chế độ `review`.
-   - Sau khi hoàn thành một tập, hệ thống tạm dừng và chờ lệnh của bạn:
-   ```powershell
-   # Trong TUI:
+1. **Bộ quy tắc an toàn mặc định**: Tuân thủ Luật An ninh mạng Việt Nam 2018, Nghị định 15/2020/NĐ-CP (Điều 101) và Tiêu chuẩn cộng đồng TikTok.
+2. **Cổng duyệt người (Human-in-the-loop Gate)**:
+   - Khi chạy ở chế độ review, hệ thống sẽ tạm dừng sau mỗi tập để bạn thẩm định:
+   ```text
    /review on    # Bật chế độ duyệt từng tập
-   /next         # Cấp phép sản xuất tiếp tập sau
-   /review off   # Tắt chế độ duyệt, cho phép máy chạy tự động liên tục
-
-   # Trong chế độ Headless:
-   .\ainovel-cli.exe --headless --next   # Cấp phép cho tập tiếp theo tiếp tục chạy
+   /next         # Cấp phép cho máy sản xuất tập tiếp theo
+   /review off   # Tắt chế độ duyệt, cho phép máy chạy tự động
    ```
 
 ---
 
-## Xuất gói dữ liệu sản xuất video (/export --video)
+## 📦 Xuất Gói Dữ Liệu Sản Xuất Video (/export)
 
-Sau khi hoàn thành các tập kịch bản, bạn có thể xuất toàn bộ tài nguyên để chuyển cho bộ phận sản xuất hình ảnh / âm thanh:
+Sau khi hoàn thành các tập kịch bản, bạn chỉ cần gõ:
 
-### Sử dụng lệnh trong TUI:
 ```text
 /export --video
 ```
 
-Hoặc xuất định dạng cụ thể ra thư mục chỉ định:
-```text
-/export format=video ./ban-giao-video/
-```
+Hệ thống sẽ tạo ngay thư mục bàn giao sản xuất chuyên nghiệp:
 
-### Cấu trúc thư mục xuất ra:
 ```
-ban-giao-video/
-├── scripts/                    # Toàn bộ kịch bản chi tiết chuẩn Markdown
-│   ├── 01-vi-sao-gia-vang-tang.md
-│   └── 02-thuat-toan-tiktok-la-gi.md
-├── voiceover/                  # File text chứa lời đọc sạch (chỉ gồm các dòng LỜI:)
-│   ├── 01-vi-sao-gia-vang-tang.txt
-│   └── 02-thuat-toan-tiktok-la-gi.txt
-├── shotlist.csv                # Bảng phân cảnh chi tiết (Tập, Khối, Mốc thời gian, LỜI, HÌNH, CHỮ, ÂM)
-└── publish.csv                 # Bảng dữ liệu đăng tải TikTok (Tập, Tiêu đề, Thời lượng, CAPTION, HASHTAG, NGUỒN)
+output/novel-YYYYMMDD-HHMM/export/
+├── scripts/                    # Kịch bản hoàn chỉnh chuẩn Markdown
+│   ├── 01-dem-dien-hong.md
+│   └── 02-khoi-lo-ren-van-kiep.md
+├── voiceover/                  # Lời đọc sạch 100% dành cho thu âm / Voice AI (TTS)
+│   ├── 01-dem-dien-hong.txt
+│   └── 02-khoi-lo-ren-van-kiep.txt
+├── shotlist.csv                # Bảng phân cảnh chi tiết (Tập, Cảnh, Thời gian, LỜI, HÌNH, ÂM)
+└── publish.csv                 # Bảng metadata đăng bài TikTok (Tiêu đề, Caption, Hashtag, Nguồn)
 ```
 
 > [!TIP]
-> Các file `.csv` được xuất kèm **UTF-8 BOM** (`\xef\xbb\xbf`), giúp hiển thị tiếng Việt có dấu chuẩn xác 100% khi mở trực tiếp bằng Microsoft Excel trên Windows.
+> Tất cả file `.csv` được xuất kèm **UTF-8 BOM** (`\xef\xbb\xbf`), đảm bảo mở bằng **Microsoft Excel** trên Windows hiển thị tiếng Việt có dấu chuẩn xác 100% không bị lỗi font.
 
 ---
 
-## Cấu hình hệ thống & Mô hình LLM
+## ⌨️ Bảng Tra Cứu Lệnh TUI Thời Gian Thực
 
-Tệp cấu hình mẫu được đặt tại [`config.example.jsonc`](config.example.jsonc). Bạn có thể cấu hình nhà cung cấp LLM, mô hình và các tham số vận hành:
-
-```jsonc
-{
-  "provider": "openrouter",
-  "model": "google/gemini-2.5-flash",
-  "reasoning_effort": "medium",
-  "providers": {
-    "openrouter": {
-      "api_key": "sk-or-v1-xxxxxxxxxxxx",
-      "base_url": "https://openrouter.ai/api/v1",
-      "models": [
-        { "name": "google/gemini-2.5-flash", "context_window": 200000 },
-        { "name": "anthropic/claude-3.5-sonnet", "context_window": 200000 }
-      ]
-    },
-    "ollama": {
-      "base_url": "http://localhost:11434/v1"
-    }
-  },
-  "roles": {
-    "architect": { "model": "google/gemini-2.5-flash" },
-    "writer": { "model": "google/gemini-2.5-flash" },
-    "editor": { "model": "google/gemini-2.5-flash" }
-  },
-  "style": "doodle-explainer",
-  "advance_mode": "review",
-  "trends": {
-    "enabled": true,
-    "max_topics": 5,
-    "sources": ["google_trends_vn", "vnexpress"]
-  }
-}
-```
+| Lệnh | Phím tắt / Alias | Chức năng chi tiết |
+|---|---|---|
+| `/dash` | `/dashboard`, `/projects`, `/history` | Mở Dashboard trực quan quản lý toàn bộ tác phẩm, hiển thị tag mode và chuyển đổi dự án lập tức |
+| `/new` | — | Khởi tạo phiên sáng tác mới sạch trong thư mục timestamp riêng |
+| `/mode` | `/topic`, `/topics` (Phím `1`-`4`) | Mở modal chọn 1 trong 4 chế độ AI chuyên biệt |
+| `/review` | `on` / `off` | Bật / tắt chế độ duyệt kịch bản từng tập |
+| `/next` | — | Cấp phép sản xuất tập tiếp theo khi đang ở chế độ duyệt |
+| `/export` | `--video`, `format=video` | Xuất trọn gói dữ liệu sản xuất video (scripts, voiceover, shotlist, publish) |
+| `/config` | — | Mở màn hình cấu hình Provider, API Key, Base URL |
+| `/model` | — | Đổi nhanh Model LLM hoặc tinh chỉnh Reasoning Effort |
+| `/sync` | — | Đồng bộ hóa các chỉnh sửa thủ công từ file `.md` vào Store |
+| `/diag` | — | Chạy báo cáo chẩn đoán chất lượng nội dung, tiến độ và cấu trúc kịch bản |
+| `/help` | — | Xem danh sách tất cả các lệnh khả dụng |
+| *(Gõ tự do)* | Steer | Can thiệp trực tiếp ý kiến vào thanh lệnh để Arbiter điều phối áp dụng ngay |
 
 ---
 
-## Các lệnh TUI & Điều khiển thời gian thực
+## 📄 Giấy Phép & Lời Cảm Ơn
 
-Trong quá trình hệ thống đang hoạt động trong TUI, bạn có thể gõ các lệnh sau vào ô nhập liệu:
-
-- `/help`: Xem danh sách tất cả các lệnh khả dụng.
-- `/mode` (alias: `/topic`, `/topics`): Mở bảng chọn modal chuyển đổi tức thì giữa 4 chế độ làm việc AI (Tiểu thuyết / Manga, Doodle Explainer, Tâm lý học hành vi, Tiểu thuyết Lịch sử Việt Nam). Hỗ trợ phím tắt số `1` - `4`.
-- `/new`: Khởi tạo phiên sáng tác mới và tự động phân lập thư mục theo mốc thời gian (`output/novel-YYYYMMDD-HHMM`).
-- `/review on|off`: Bật / tắt chế độ duyệt kịch bản từng tập.
-- `/next`: Cấp phép sản xuất tập tiếp theo khi đang ở chế độ duyệt.
-- `/export [--video] [đường_dẫn]`: Xuất toàn bộ kịch bản ra định dạng TXT, EPUB hoặc trọn bộ Video Package.
-- `/config`: Mở màn hình chỉnh sửa Provider, API Key, Base URL.
-- `/model`: Chuyển đổi nhanh mô hình LLM hoặc độ sâu suy luận (reasoning effort).
-- `/sync`: Đồng bộ và chấp nhận các chỉnh sửa thủ công mà bạn đã sửa trực tiếp trong các file kịch bản `output/{tên_series}/chapters/*.md`.
-- `/diag`: Chạy báo cáo chẩn đoán chất lượng nội dung, tiến độ và cấu trúc kịch bản.
-- **Can thiệp trực tiếp (Steer)**: Gõ trực tiếp ý kiến vào thanh lệnh mà không cần gõ dấu `/` (Ví dụ: *"Đổi nhân vật người que chính sang tên Tộc trưởng Gồ và tăng thêm yếu tố hài hước"*), hệ thống Arbiter sẽ tự động điều phối để áp dụng ngay vào tập tiếp theo.
-
----
-
-## Lời cảm ơn & Nguồn tham khảo
-
-Dự án này được kế thừa, tùy biến và phát triển dựa trên nền tảng kiến trúc Deterministic Engine mã nguồn mở từ dự án gốc [ainovel-cli](https://github.com/voocel/ainovel-cli) của tác giả [voocel](https://github.com/voocel). Xin chân thành cảm ơn tác giả và cộng đồng [linux.do](https://linux.do/) đã xây dựng nền tảng kiến trúc tuyệt vời này.
-
----
-
-## Giấy phép
-
-Phần mềm phát hành theo giấy phép [MIT License](LICENSE).
-Tương thích hoàn toàn trên Windows, Linux và macOS.
-
+- Phần mềm được phát hành theo giấy phép mã nguồn mở **[MIT License](LICENSE)**.
+- Kế thừa và phát triển từ nền tảng kiến trúc Deterministic Engine của dự án gốc [ainovel-cli](https://github.com/voocel/ainovel-cli) bởi tác giả [voocel](https://github.com/voocel) và cộng đồng [linux.do](https://linux.do/).
+- Bản quyền thuộc về cộng đồng sáng tạo nội dung Tiếng Việt. Chúc bạn tạo nên những tác phẩm xuất sắc! 🇻🇳
