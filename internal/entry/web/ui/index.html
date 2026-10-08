@@ -719,11 +719,11 @@
         <!-- Realtime Streaming Output Viewport -->
         <div class="stream-viewport" id="stream-viewport">
           <span id="stream-text">Chào mừng bạn đến với aiNovel-CLI (Web Studio Terminal).
-Bạn có thể:
-  1. Gõ đề tài vào ô bên dưới rồi nhấn [🚀 Bắt đầu] hoặc Enter.
-  2. Bấm vào các nút chức năng nhanh phía dưới để chọn chế độ, duyệt tiếp, hoặc đổi sách.
-  3. Gõ dấu "/" để tra cứu nhanh toàn bộ danh sách lệnh TUI.
-================================================================================</span><span class="term-cursor" id="term-cursor"></span>
+
+Hướng dẫn nhanh:
+  1. Gõ đề tài vào ô bên dưới rồi nhấn [🚀 Bắt đầu] hoặc nhấn phím Enter.
+  2. Bấm các nút chức năng nhanh phía dưới để chọn chế độ, duyệt tiếp, hoặc đổi sách.
+  3. Gõ dấu "/" để tra cứu nhanh toàn bộ danh sách lệnh TUI.</span><span class="term-cursor" id="term-cursor"></span>
         </div>
 
       </div>
@@ -1403,7 +1403,7 @@ Bạn có thể:
         const res = await fetch(`/api/chapter?ch=${chNum}`);
         const data = await res.json();
         if (data.ok && data.content) {
-          document.getElementById('stream-text').innerText = `=== CHƯƠNG ${chNum}: ${title} ===\n\n${data.content}`;
+          document.getElementById('stream-text').innerText = `# Chương ${chNum}: ${title}\n\n${data.content}`;
         } else {
           document.getElementById('stream-text').innerText = `Lỗi: ${data.error || "Không có nội dung"}`;
         }
