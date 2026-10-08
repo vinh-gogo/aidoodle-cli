@@ -72,13 +72,20 @@ Dựa trên yêu cầu của người dùng, soạn series bible (định dạng
 Sử dụng các tiêu đề cấp hai `## Tên tiêu đề` với đúng các tên dưới đây, chính xác từng chữ, đủ cả 11 tiêu đề:
 
 - `## Kênh và khán giả`: kênh giải mã tâm lý học hành vi đời thường, khán giả là người trẻ, nhân viên văn phòng, người muốn thấu hiểu bản thân và ra quyết định thông thái hơn.
-- `## Giọng kể và nhân vật dẫn chuyện`: giọng đọc ấm áp, đồng cảm, hóm hỉnh như một người bạn thông thái giải mã bí mật não bộ; không lên lớp dạy đời.
+- `## Giọng kể và nhân vật dẫn chuyện`: giọng đọc ấm áp, đồng cảm, hóm hỉnh như một người bạn thông thái giải mã bí mật não bộ; không lên lớp dạy đời, không chẩn đoán người đọc ("bạn bị..."), không đổ lỗi hay cường điệu.
 - `## Câu hỏi cốt lõi của series`: nghịch lý hành vi xuyên suốt mà series đi tìm câu trả lời.
-- `## Công thức video`: khung chuẩn 5 giai đoạn (Hook 3 giây → Tình huống đời thực → Thí nghiệm & Cơ chế não bộ 3 chặng có Tái Hook → Cú hích hành vi Nudge → Chốt loop), thời lượng từ 5 phút trở lên.
+- `## Công thức video`: khung chuẩn kết hợp hai yếu tố cốt lõi: **đọc cuốn như một câu chuyện** và **không nói sai về khoa học**:
+  1. Hook trải nghiệm (0:00-0:03): bắt đầu từ tình huống cụ thể, quen thuộc hoặc nghịch lý, đặt câu hỏi muốn có đáp án, ngắn 3-5 câu, không mở bằng định nghĩa sách giáo khoa.
+  2. Nêu vấn đề, lời hứa lộ trình ngắn & đặt tên hiện tượng bằng lời thường (0:03-0:45): nói rõ trả lời câu hỏi nào, 1 ví dụ đời thường, thuật ngữ xuất hiện sau khi thấy hiện tượng.
+  3. Cơ chế và bằng chứng (0:45-3:45): ai nghiên cứu, làm gì, trên ai, thấy gì, kết quả tới đâu; phân biệt tương quan vs nhân quả, thí nghiệm vs khảo sát; 1 đoạn 1 cơ chế bằng ẩn dụ người que (Não Bò Sát vs Não Lý Trí); dẫn nguồn kiểm tra được; không khẳng định các thí nghiệm từng bị phản biện hay khó tái lập.
+  4. Giới hạn, ngoại lệ, phản biện: nêu rõ mẫu nghiên cứu (sinh viên phương Tây WEIRD), khi nào không đúng hoặc ít đúng để người xem hoàn toàn tin tưởng.
+  5. Ứng dụng & Cú hích hành vi (3:45-4:30): biến hiểu thành hành động nhỏ với 1-3 việc cụ thể làm thử được trong vài ngày, dựa trên mức độ bằng chứng + vỗ về đứa trẻ bên trong (xóa bỏ tự trách).
+  6. Kết bài & Loop Hook (4:30-5:15+): quay lại tình huống mở bài bằng góc nhìn mới, tóm thông điệp trong một câu, loop hook nối về đầu video.
+  7. Nguồn và lưu ý: trích dẫn NGUỒN và CẦN KIỂM CHỨNG; lưu ý sức khỏe tâm thần không chẩn đoán thay chuyên gia.
 - `## Công thức hook`: các kiểu hook tâm lý (nghịch lý hành vi, đánh trúng cảm giác tội lỗi ngầm, câu hỏi lật ngược niềm tin thông thường...).
 - `## Luật vũ trụ doodle`: quy tắc trực quan hóa thế giới nội tâm (Não Bò Sát vs Não Lý Trí, thước đo dopamine, chiếc cân mất mát...).
 - `## Chuẩn nguồn và kiểm chứng`: trích dẫn chính xác thí nghiệm tâm lý, nhà nghiên cứu kinh điển, sách uy tín; ghi nhận giới hạn thí nghiệm (Replication Crisis, mẫu WEIRD) vào CẦN KIỂM CHỨNG; tra cứu bằng Tavily.
-- `## Vùng cấm kỵ khi viết`: tuyệt đối không chẩn đoán bệnh tâm thần lâm sàng, không kê đơn y tế, không phán xét đạo đức, không bịa thí nghiệm khoa học.
+- `## Vùng cấm kỵ khi viết`: tuyệt đối không chẩn đoán bệnh tâm thần lâm sàng, không kê đơn y tế, không phán xét đạo đức, không bịa thí nghiệm khoa học, không dùng từ tuyệt đối ("luôn luôn", "chắc chắn 100%").
 - `## Điểm khác biệt của kênh`: giải mã tâm lý học bằng hình vẽ que trực quan sinh động + luôn kết thúc bằng Cú hích hành vi (Nudge) thực tế có thể làm ngay.
 - `## Cam kết với người xem`: sau mỗi tập người xem thấu hiểu hành vi của mình, không còn tự trách bản thân yếu kém, mà biết cách thiết kế lại môi trường sống.
 - `## Kế hoạch mùa`: số tập dự kiến (mặc định 3 tập chuyên sâu, hoặc theo yêu cầu), phân bổ mạch giải thích mổ xẻ trọn vẹn chủ đề.

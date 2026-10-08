@@ -211,6 +211,19 @@ func commandRegistryInstance() commandRegistry {
 			},
 		},
 		{
+			Name:        "dash",
+			Aliases:     []string{"dashboard", "projects", "history"},
+			Group:       "system",
+			Usage:       "/dash",
+			Description: "Mở danh sách các outputs đã làm (kèm tag mode) để xem và mở lại",
+			AutoExecute: true,
+			Run: func(m Model, _ []string) (tea.Model, tea.Cmd) {
+				m.dashSelect = newDashState(m.runtime, m.width, m.height)
+				m.textarea.Blur()
+				return m, nil
+			},
+		},
+		{
 			Name:        "import",
 			Group:       "writing",
 			Usage:       "/import <path> [--yes] [--story=open|closed] [--continue] [--guide=<hướng dẫn phân đoạn>]",

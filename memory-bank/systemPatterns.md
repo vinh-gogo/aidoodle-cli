@@ -97,3 +97,26 @@ Two override dirs: `<outputDir>/style/` (per book) > `~/.ainovel/style/` (global
    - Chuẩn mực xưng hô điển chế Đại Việt (Trẫm - khanh, Thần - Bệ hạ, Bản tướng - Chúa công).
    - Nghiêm cấm từ ngữ convert kiếm hiệp Trung Quốc; 100% tiếng Việt sạch chữ Hán.
    - 4 trụ cột: Tra cứu sử liệu Tavily, nhân vật con người thật đa chiều, bối cảnh lịch sử trong/ngoài nước, và nghịch cảnh sinh tử bi tráng.
+
+6. **TUI Dashboard Pattern (`/dash`)**:
+   - **Quét động & Nhận diện siêu dữ liệu**: `scanOutputProjects(currentDir)` duyệt toàn bộ thư mục trong `output/`, tự động đọc `meta/run.json`, `meta/book.json`, `meta/progress.json` hoặc đếm chương từ `chapters/*.md`.
+   - **Badge Mapping Trực quan (`detectStyleBadge`)**: Ánh xạ style sang nhãn phân loại rõ ràng (`[🧠 Tâm lý học hành vi]`, `[🦴 Video TikTok]`, `[⚔️ Lịch sử Việt Nam]`, `[📖 Tiểu thuyết / Manga]`).
+   - **Bố cục 2 dòng & Tự động điều chỉnh kích thước (`dashModalSize`)**: Đảm bảo hiển thị đầy đủ tiêu đề, tag mode, thư mục, tiến độ và thời gian cập nhật mà không bị viewport cắt xén chữ.
+   - **Cơ chế chuyển đổi dự án không gián đoạn**: Nhấn `Enter` gán `m.switchOutputDir` và gửi `tea.Quit`. Vòng lặp `Run` trong `internal/entry/tui/app.go` nhận diện đường dẫn đích, nạp lại bundle tương ứng (`detectProjectStyle`) và khởi tạo session mới, tự động khôi phục tiến trình thông qua `bootstrapRuntime`.
+
+7. **Tavily Graceful Fallback Pattern**:
+   - **Nguyên tắc "Bổ trợ không chặn đứng"**: Tra cứu internet là tính năng tăng cường, không được phép làm tê liệt quy trình sáng tác khi gặp sự cố bên ngoài.
+   - **Xử lý mềm**: `TavilySearchTool` và `TavilyCrawlTool` không trả về error cứng (`return nil, fmt.Errorf(...)`) khi thiếu API key hoặc API trả về mã HTTP 40x/50x/mạng. Thay vào đó, trả về JSON hướng dẫn mềm để LLM vận dụng tri thức học thuật sâu rộng sẵn có tiếp tục viết.
+   - **Triệt tiêu bế tắc (Anti-Impasse)**: Ngăn chặn triệt để hành vi LLM cố gắng gọi lại tool lỗi nhiều lần dẫn đến kích hoạt bộ ngắt mạch bế tắc 5 lần liên tiếp.
+
+8. **Behavioral Psychology 8-Step Blueprint Pattern**:
+   - **Đọc cuốn như câu chuyện + Không nói sai về khoa học**:
+     1. Mở bài: Trải nghiệm quen thuộc / nghịch lý (3-5 câu).
+     2. Nêu vấn đề và lời hứa ngắn gọn (lộ trình ngắn, không hứa quá tay).
+     3. Đặt tên hiện tượng & định nghĩa bằng lời thường (1 ví dụ thực tế).
+     4. Cơ chế & bằng chứng khoa học (phân biệt tương quan vs nhân quả, thí nghiệm vs khảo sát, khủng hoảng tái lập).
+     5. Giới hạn, ngoại lệ, phản biện (mẫu WEIRD, hiệu ứng lớn/nhỏ).
+     6. Ứng dụng: 1-3 việc nhỏ làm thử trong vài ngày.
+     7. Kết bài: nhìn lại tình huống ban đầu bằng góc nhìn mới, chốt thông điệp 1 câu.
+     8. Nguồn và lưu ý: tuyệt đối không chẩn đoán người đọc, một bài một ý lớn.
+

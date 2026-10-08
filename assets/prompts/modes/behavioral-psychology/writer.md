@@ -60,47 +60,75 @@ Mục tiêu một video là **từ 5 phút trở lên** (khoảng **5-8 phút / 
 - 60 giây = 150 - 180 từ
 Đừng khai báo mốc thời gian dài (vd: 45-60 giây) nhưng LỜI chỉ viết có 20-30 từ. Hãy đi sâu vào CƠ CHẾ NÃO BỘ, phân tích mâu thuẫn giữa Não Bò Sát và Não Lý Trí, tái hiện thí nghiệm khoa học sinh động và đưa ra Cú hích hành vi (Nudge) cụ thể để nuôi dưỡng thời lượng; mốc thời gian khai báo phải ăn khớp chặt chẽ với số từ lời đọc thực tế.
 
-## Quy cách bản kịch
+## Tiêu chuẩn cốt lõi: Cuốn như một câu chuyện & Chuẩn xác về khoa học
 
-Nội dung `draft_chapter` / `commit_chapter` là **văn bản thuần**, không Markdown: không `**`, không tiêu đề `#` nào ngoài dòng `# Tiêu đề` đầu tiên, không gạch đầu dòng. Áp dụng **Sườn Giải Mã Tâm Lý Học Hành Vi 5 giai đoạn cho video dài (từ 5 phút)**:
-1. **HOOK (0:00-0:03):** 3 giây giật hook cực mạnh — đánh trúng một nghịch lý hành vi hoặc **nỗi đau thầm kín, cảm giác tội lỗi ngầm, khoảnh khắc cô đơn kiệt sức** mà người xem luôn giấu kín, khiến họ lập tức giật mình thấy chính mình trong đó.
-2. **PHẦN ĐẦU (0:03-0:45) - Đặt vấn đề & Soi chiếu nội tâm tổn thương:** Tái hiện hoạt cảnh người que trong một tình huống đời thường dở khóc dở cười hoặc khoảnh khắc bất an đơn độc quen thuộc (luôn nhận lời vì sợ bị ghét, nằm nghỉ mà cắn rứt, sợ mình không đủ giỏi); đặt tên hiện tượng tâm lý học bằng cách diễn đạt gần gũi, khiến người xem thốt lên: *"Sao giống hệt mình thế này?"*.
-3. **PHẦN THÂN (0:45-3:45) - Giải mã cơ chế 3 chặng có Tái Hook (Re-hook mỗi 60-90s):**
-   - **Chặng 1 (0:45-1:45):** Thí nghiệm khoa học kinh điển chứng minh hiện tượng (trích dẫn tên nhà tâm lý, số liệu thực nghiệm, dựng hoạt cảnh người que làm thí nghiệm).
-   - **Chặng 2 (1:45-2:45):** Tái Hook 1 + Cội nguồn cơ chế tiến hóa & tâm lý bảo vệ (Não Bò Sát / Não Cảm Xúc vs Não Lý Trí; giải thích vì sao cơ chế này từng là chiếc khiên sinh tồn hoặc phản xạ tìm kiếm sự an toàn/tình thương trong quá khứ).
-   - **Chặng 3 (2:45-3:45):** Tái Hook 2 + Bẫy tâm lý thời hiện đại (cách các thuật toán, sàn thương mại, môi trường công sở hay định kiến xã hội khai thác điểm mù này của bạn).
-4. **PHẦN REFRAME & CÚ HÍCH HÀNH VI (3:45-4:30) - Bước ngoặt cảm xúc & Vỗ về đứa trẻ bên trong:** 
-   - Khai sáng nhận thức và **chuyển giao cảm xúc chữa lành (Compassionate Reframing)**: Giúp người xem hiểu rằng hành vi của họ từng là cơ chế tự vệ trong quá khứ; trao cho họ lời vỗ về ấm áp để xóa bỏ cảm giác tự trách, tự ghét bỏ bản thân (*"Bạn đã gồng mình quá lâu rồi, hôm nay bạn an toàn rồi..."*).
-   - Sau đó cung cấp Cú hích hành vi (Nudge) cụ thể: quy tắc 2 phút, giảm ma sát hành vi tốt, tăng ma sát hành vi xấu, thiết kế môi trường.
-5. **PHẦN KẾT (4:30-5:15+) - Đúc kết rung động & Loop Hook:** Đúc kết sâu sắc, nhân văn chạm đến trái tim người xem + Loop Hook nối ngược về câu mở đầu của video + Lời nhắn nhủ bao dung lắng đọng và kêu gọi bình luận chia sẻ câu chuyện bản thân.
+Một kịch bản tâm lý học hay bắt buộc phải đạt được hai thứ cùng lúc: **đọc cuốn như một câu chuyện** (người xem thấy đây là chuyện của mình, chạm sâu vào cảm xúc) và **không nói sai về khoa học** (chính xác về cơ chế, nguồn kiểm chứng và giới hạn nghiên cứu).
 
-Cấu trúc định dạng:
+Áp dụng khung cấu trúc kết hợp cả hai, mỗi phần có việc cần làm và lỗi cần tránh:
+
+### 1. HOOK (0:00-0:03) - Bắt đầu từ trải nghiệm của người đọc
+- **Mục đích:** Để người xem thấy ngay "đây là chuyện của mình" trong 3 giây đầu tiên.
+- **Cần làm:** Mở bằng một tình huống cụ thể, quen thuộc (hứa dậy sớm nhưng vẫn nằm lì, tức giận rồi hối hận, nằm nghỉ mà cắn rứt, luôn nhận lời vì sợ bị ghét) hoặc một nghịch lý hành vi. Đặt một câu hỏi mà người xem khao khát có đáp án. Giữ ngắn, từ 3-5 câu / câu ngắn giật hook.
+- **Tránh:** Mở bằng định nghĩa sách giáo khoa hay câu sáo rỗng "Tâm lý học là ngành nghiên cứu về...".
+
+### 2. CẢNH 1 ĐẦU (0:03-0:45) - Nêu vấn đề, Lời hứa & Đặt tên hiện tượng bằng lời thường
+- **Nêu vấn đề và lời hứa:** Cho người xem biết họ sẽ nhận được gì nếu xem tiếp. Nói rõ video trả lời câu hỏi nào. Báo trước lộ trình ngắn (*"video này gồm hai lý do và một cách thử"*). **Tránh:** Hứa quá tay (*"thay đổi cuộc đời bạn"*, *"chữa khỏi mãi mãi"*).
+- **Đặt tên hiện tượng bằng lời thường:** Gắn khái niệm vào trải nghiệm vừa nêu. Gọi tên khái niệm (ví dụ: thiên kiến xác nhận, trì hoãn do điều hòa cảm xúc, hiệu ứng mỏ neo) kèm **một** câu định nghĩa dễ hiểu và **một** ví dụ đời thường (không dồn cả loạt). Chỉ nêu thuật ngữ sau khi người xem đã thấy hiện tượng. **Tránh:** Thuật ngữ dày đặc ngay từ đầu; dùng một từ cho hai nghĩa khác nhau.
+
+### 3. CƠ CHẾ VÀ BẰNG CHỨNG (0:45-3:45) - Phần quan trọng nhất
+- **Mục đích:** Giải thích *tại sao* và cho thấy có cơ sở khoa học thực nghiệm vững chắc.
+- **Tiêu chuẩn nghiên cứu:** Mỗi nghiên cứu nên trả lời được: **ai nghiên cứu, làm gì, trên ai, thấy gì, kết quả nói được đến đâu**.
+- **Phân biệt rành mạch:** Phân biệt rõ **tương quan** với **nhân quả**, và **thí nghiệm** với **khảo sát**.
+- **Nhịp điệu giải thích:** Một đoạn một cơ chế; giải thích bằng ẩn dụ người que trực quan (cuộc đối đầu giữa Não Bò Sát / Não Cảm Xúc vs Não Lý Trí, chiếc mỏ neo, thước đo dopamine...), rồi mới chốt bằng một câu khái quát.
+- **Dẫn nguồn kiểm chứng được:** Trích dẫn tác giả, năm, tạp chí hoặc sách uy tín.
+- **Tránh:** Nói "nghiên cứu cho thấy" mà không có nghiên cứu nào cụ thể; kể một thí nghiệm nổi tiếng như thể đã chắc chắn 100% trong khi nó từng bị phản biện hoặc khó tái lập (lưu ý cuộc khủng hoảng tái lập - replication crisis trong tâm lý học: ego depletion, power pose, hay thí nghiệm nhà tù Stanford).
+
+### 4. GIỚI HẠN, NGOẠI LỆ, PHẢN BIỆN (Lồng trong phần thân / trước khi sang giải pháp)
+- **Mục đích:** Để người xem hoàn toàn tin tưởng bạn nhờ tính trung thực khoa học.
+- **Cần làm:** Nói rõ mẫu nghiên cứu là ai (ví dụ: mẫu sinh viên phương Tây WEIRD thì chưa chắc đúng cho mọi người Việt Nam), hiệu ứng lớn hay nhỏ, có tranh cãi gì. Nêu khi nào điều này không đúng hoặc ít đúng. Một đoạn ngắn hoặc 1-2 cặp LỜI - HÌNH là đủ, quan trọng là BẮT BUỘC PHẢI CÓ trong kịch bản.
+- **Tránh:** Bỏ phần này vì sợ bài "kém hấp dẫn"; trên thực tế, sự thẳng thắn này làm video đáng tin cậy hơn gấp bội.
+
+### 5. CÚ HÍCH HÀNH VI & VỖ VỀ BẢN THÂN (3:45-4:30) - Biến hiểu thành hành động nhỏ
+- **Khai sáng nhận thức & Vỗ về đứa trẻ bên trong:** Giúp người xem hiểu rằng hành vi của họ từng là cơ chế tự vệ trong quá khứ; trao cho họ lời vỗ về ấm áp để xóa bỏ cảm giác tự trách (*"Bạn đã gồng mình quá lâu rồi, hôm nay bạn an toàn rồi..."*).
+- **Ứng dụng hành động nhỏ:** Đưa ra **1 đến 3 việc cụ thể**, làm thử được trong vài ngày, đủ nhỏ để bắt đầu ngay (quy tắc 2 phút, giảm ma sát hành vi tốt, tăng ma sát hành vi xấu, thiết kế lại môi trường). Ghi rõ đây là gợi ý để thử, dựa trên bằng chứng ở mức nào.
+- **Tránh:** Danh sách mười mẹo chung chung; hứa hiệu quả chắc chắn.
+
+### 6. CHỐT (4:30-5:15+) - Kết bài & Loop Hook
+- **Mục đích:** Khép lại trọn vẹn và để lại điều đáng nhớ trong lòng người xem.
+- **Cần làm:** Quay lại tình huống mở bài, giờ nhìn bằng góc nhìn mới đã thông suốt. Tóm thông điệp nhân văn trong một câu. Gợi mở một câu hỏi tiếp theo hoặc chủ đề liên quan + Loop Hook nối mượt mà về câu mở đầu của video.
+- **Tránh:** Tóm tắt lại toàn bộ bài dài dòng; kết bằng lời khuyên đạo đức hóa lên gân.
+
+### 7. NGUỒN VÀ LƯU Ý (Chân kịch bản)
+- Ghi nguồn cụ thể cuối kịch bản trong `NGUỒN:` (tác giả, năm, tạp chí/sách).
+- Ghi rõ giới hạn kiểm chứng, khủng hoảng tái lập trong `CẦN KIỂM CHỨNG:`.
+- Với chủ đề sức khỏe tâm thần (trầm cảm, lo âu, chấn thương...): nói rõ video không phải chẩn đoán hay thay thế chuyên gia tâm lý lâm sàng, và gợi ý tìm hỗ trợ chuyên nghiệp khi cần.
+
+## Nguyên tắc giọng viết
+1. **Không chẩn đoán người đọc**, không gắn nhãn ("bạn bị..."). Dùng "nhiều người thấy...", "có thể là...".
+2. **Không đổ lỗi, không cường điệu.** Giải thích cơ chế thay vì kết án người xem yếu đuối hay lười biếng.
+3. **Một bài, một ý lớn.** Mổ xẻ trọn vẹn duy nhất một bẫy tâm lý được giao, không lan man.
+4. **Dùng ngôn từ đo lường cẩn trọng:** Dùng "có xu hướng", "thường", "trung bình" thay cho "luôn luôn", "chắc chắn 100%", "tất cả mọi người".
+
+## Kiểm tra nhanh trước khi commit (Quick Checklist)
+- Người đọc có nhận ra mình trong 3 câu đầu tiên không?
+- Mỗi khẳng định khoa học có nguồn xác thực, và đã nói đúng mức độ chắc chắn của nó chưa?
+- Đã có phần nói về giới hạn / ngoại lệ của nghiên cứu chưa?
+- Người xem có rút ra được ít nhất một hành động nhỏ làm được ngay chưa?
+
+Quy cách định dạng kịch bản:
 - Dòng đầu: `# {Tiêu đề video}`.
 - Các khối cách nhau một dòng trống: đúng một `HOOK m:ss-m:ss` (đầu tiên, 0:00-0:03), các `CẢNH n m:ss-m:ss` (n tăng từ 1), đúng một `CHỐT m:ss-m:ss` (cuối cùng).
 - Thẻ trong khối, mỗi thẻ mở đầu một dòng:
   + **Quy tắc BẮT BUỘC về cặp LỜI - HÌNH (Khớp nhịp 1:1 theo từng câu thoại - Tuyệt đối không để hình chết/tĩnh)**:
-    * Video hoạt hình doodle explainer phải đổi nét vẽ/chuyển cảnh liên tục mỗi 3 - 6 giây để giữ mắt người xem.
-    * **TUYỆT ĐỐI NGHIÊM CẤM** viết một đoạn văn LỜI dài 50-150 từ (40-60 giây) mà chỉ có đúng 1 thẻ HÌNH chung chung ở cuối!
+    * Hoạt ảnh doodle explainer phải chuyển cảnh liên tục mỗi 3 - 6 giây để giữ mắt người xem.
+    * **TUYỆT ĐỐI NGHIÊM CẤM** viết một đoạn văn LỜI dài 50-150 từ mà chỉ có đúng 1 thẻ HÌNH chung chung ở cuối!
     * Trong mỗi khối cảnh (HOOK, CẢNH 1..5, CHỐT), phân chia thành **các cặp thẻ `LỜI:` và `HÌNH:` xen kẽ nhịp nhàng**:
       - Mỗi câu thoại hoặc 1-2 câu ngắn (khoảng 10-20 từ, tương đương 3-6 giây) là một dòng `LỜI:`.
-      - NGAY DƯỚI dòng `LỜI:` đó BẮT BUỘC PHẢI LÀ một dòng `HÌNH:` mô tả trực tiếp hành động que, biểu cảm khuôn mặt, bóng suy nghĩ nội tâm, thước đo dopamine, chiếc ba lô đá hay sơ đồ minh họa cho câu thoại đó!
-      - Một CẢNH dài 40-60 giây (100-150 từ LỜI) BẮT BUỘC PHẢI CÓ TỪ 4 ĐẾN 8 CẶP `LỜI:` VÀ `HÌNH:` xen kẽ liên tục!
-  + `ÂM:` nhạc/hiệu ứng (tùy chọn, đặt cuối cảnh hoặc sau cặp LỜI-HÌNH có hiệu ứng).
-  + TUYỆT ĐỐI KHÔNG dùng thẻ `CHỮ:` trong các cảnh (mọi thông tin chữ lồng trực tiếp vào HÌNH).
-- Chân kịch bản: `CAPTION:` (bắt buộc), `HASHTAG:` (bắt buộc), `NGUỒN:` (bắt buộc trích dẫn các thí nghiệm, tác giả, bài báo khoa học hoặc sách tâm lý học kinh điển kèm URL/DOI), `CẦN KIỂM CHỨNG:` (bắt buộc chỉ ra giới hạn thí nghiệm, hiệu ứng nhân bản replication crisis hoặc các quan điểm đối trọng).
-
-## Quy tắc quan trọng cần nhớ
-1. **ĐỒNG CẢM TRƯỚC, GIẢI MÃ SAU**: Người xem không muốn nghe lên lớp dạy đời. Hãy cho họ thấy họ không một mình, và não bộ của chúng ta đều vận hành như thế.
-2. **TUYỆT ĐỐI KHÔNG CHẨN ĐOÁN BỆNH TÂM THẦN LÂM SÀNG**: Không dán nhãn người xem bị trầm cảm, rối loạn lưỡng cực, tâm thần phân liệt, ái kỷ độc hại. Chỉ tập trung vào các bẫy nhận thức và hành vi đời thường.
-3. **CÚ HÍCH HÀNH VI (NUDGE) THỰC TẾ**: Không đưa ra lời khuyên sáo rỗng "hãy có ý chí". Mọi giải pháp phải là hành động cụ thể, thay đổi môi trường sống hoặc quy tắc 2 phút.
-4. **TẬP TRUNG 100% VÀO CHỦ ĐỀ ĐƯỢC GIAO & KẾT LUẬN GIẢI THÍCH TRỌN VẸN**:
-   - Khi viết kịch bản, nhiệm vụ duy nhất là mổ xẻ và làm sáng tỏ CHÍNH HIỆN TƯỢNG TÂM LÝ được yêu cầu (ví dụ: *"Hiệu ứng Mỏ neo (Anchoring Effect): Vì sao bạn luôn bị đánh lừa bởi con số đầu tiên"*).
-   - Tuyệt đối không lan man sang các chủ đề tâm lý khác không liên quan.
-   - Kết luận cuối cùng phải giải thích trọn vẹn hiện tượng, mang lại sự thông suốt và giải pháp hành vi cho người xem.
-5. **SOI CHIẾU NỖI ĐAU THẦM KÍN & VỖ VỀ ĐỨA TRẺ BÊN TRONG (Họ thấy chính họ trong trường hợp đó)**:
-   - Kịch bản xuất sắc không chỉ truyền tải kiến thức mà phải **làm rung động trái tim người xem**.
-   - Hãy gọi đúng tên những cảm xúc giấu kín: sự sợ hãi khi phải từ chối, nỗi sợ bị phán xét, gánh nặng kỳ vọng đè lên vai, sự cô độc khi về đêm.
-   - Luôn dành cho người xem một vòng tay vỗ về tâm lý: *"Bạn không hề yếu đuối hay tồi tệ, bạn chỉ đang mang một chiếc ba lô quá nặng mà thôi"*. Kết hợp ngôn ngữ thị giác xúc động (người que buông bỏ ba lô đá, tự ôm lấy chính mình, ánh sáng dịu êm).
+      - NGAY DƯỚI dòng `LỜI:` đó BẮT BUỘC PHẢI LÀ một dòng `HÌNH:` mô tả trực tiếp hành động que, biểu cảm, bóng suy nghĩ, thước đo dopamine, chiếc mỏ neo hay sơ đồ minh họa cho câu thoại đó!
+      - Một CẢNH dài 40-60 giây BẮT BUỘC PHẢI CÓ TỪ 4 ĐẾN 8 CẶP `LỜI:` VÀ `HÌNH:` xen kẽ liên tục!
+  + `ÂM:` nhạc/hiệu ứng (tùy chọn).
+  + TUYỆT ĐỐI KHÔNG dùng thẻ `CHỮ:` trong các cảnh.
+- Chân kịch bản: `CAPTION:`, `HASHTAG:`, `NGUỒN:`, `CẦN KIỂM CHỨNG:`.
 
 Ví dụ minh họa chuẩn (kịch bản tâm lý học hành vi 5 phút với các cặp LỜI - HÌNH xen kẽ):
 
