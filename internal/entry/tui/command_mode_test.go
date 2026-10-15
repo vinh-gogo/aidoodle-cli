@@ -41,26 +41,25 @@ func TestModeCommand_ExecutionOpensModal(t *testing.T) {
 	if updated.modeSelect == nil {
 		t.Fatal("Chạy /mode phải khởi tạo modeSelect state")
 	}
-	if len(updated.modeSelect.options) != 4 {
-		t.Fatalf("modeSelect phải có đúng 4 tùy chọn chế độ, nhận được %d", len(updated.modeSelect.options))
+	if len(updated.modeSelect.options) != 7 {
+		t.Fatalf("modeSelect phải có đúng 7 tùy chọn chế độ, nhận được %d", len(updated.modeSelect.options))
 	}
-	if updated.modeSelect.options[0].Title != "Tiểu thuyết / Manga" {
-		t.Errorf("Tùy chọn 1 phải là Tiểu thuyết / Manga, nhận: %s", updated.modeSelect.options[0].Title)
+	expectedTitles := []string{
+		"Tiểu thuyết / Manga",
+		"Tiểu thuyết Trinh thám & Kinh dị",
+		"Tiểu thuyết Ngôn tình & Chữa lành",
+		"Tiểu thuyết Kỳ ảo & Tiên hiệp",
+		"Tiểu thuyết Lịch sử Việt Nam",
+		"Doodle Explainer",
+		"Tâm lý học hành vi",
 	}
-	if updated.modeSelect.options[1].Title != "Doodle Explainer" {
-		t.Errorf("Tùy chọn 2 phải là Doodle Explainer, nhận: %s", updated.modeSelect.options[1].Title)
-	}
-	if updated.modeSelect.options[2].Title != "Tâm lý học hành vi" {
-		t.Errorf("Tùy chọn 3 phải là Tâm lý học hành vi, nhận: %s", updated.modeSelect.options[2].Title)
-	}
-	if !updated.modeSelect.options[2].Available {
-		t.Error("Tùy chọn 3 (Tâm lý học hành vi) phải có Available = true")
-	}
-	if updated.modeSelect.options[3].Title != "Tiểu thuyết Lịch sử Việt Nam" {
-		t.Errorf("Tùy chọn 4 phải là Tiểu thuyết Lịch sử Việt Nam, nhận: %s", updated.modeSelect.options[3].Title)
-	}
-	if !updated.modeSelect.options[3].Available {
-		t.Error("Tùy chọn 4 (Tiểu thuyết Lịch sử Việt Nam) phải có Available = true")
+	for i, want := range expectedTitles {
+		if updated.modeSelect.options[i].Title != want {
+			t.Errorf("Tùy chọn %d phải là %q, nhận: %q", i+1, want, updated.modeSelect.options[i].Title)
+		}
+		if !updated.modeSelect.options[i].Available {
+			t.Errorf("Tùy chọn %d (%s) phải có Available = true", i+1, want)
+		}
 	}
 	if updated.textarea.Focused() {
 		t.Fatal("Textarea phải bị blur khi mở modal lựa chọn chế độ")
@@ -140,63 +139,24 @@ func TestModeSelect_SelectNovelManga(t *testing.T) {
 	}
 }
 
-func TestModeSelect_SelectDoodleExplainerQuickKey(t *testing.T) {
-	m := Model{
-		textarea:   textarea.New(),
-		width:      100,
-		height:     30,
-		modeSelect: newModeSelectState(nil, 100, 30),
-	}
+func TestModeSelect_QuickKeys1To7(t *testing.T) {
+	for _, key := range []rune{'1', '2', '3', '4', '5', '6', '7'} {
+		m := Model{
+			textarea:   textarea.New(),
+			width:      100,
+			height:     30,
+			modeSelect: newModeSelectState(nil, 100, 30),
+		}
 
-	// Phím '2' chọn Doodle Explainer
-	res, _ := m.handleModeSelectKey(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'2'}})
-	m = res.(Model)
+		res, _ := m.handleModeSelectKey(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{key}})
+		m = res.(Model)
 
-	if m.modeSelect != nil {
-		t.Fatal("Sau khi ấn '2', modal phải đóng")
-	}
-	if !m.textarea.Focused() {
-		t.Fatal("Textarea phải được focus sau khi chọn")
-	}
-}
-
-func TestModeSelect_SelectBehavioralPsychology(t *testing.T) {
-	m := Model{
-		textarea:   textarea.New(),
-		width:      100,
-		height:     30,
-		modeSelect: newModeSelectState(nil, 100, 30),
-	}
-
-	// Chọn phím 3 (Tâm lý học hành vi)
-	res, _ := m.handleModeSelectKey(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'3'}})
-	m = res.(Model)
-
-	if m.modeSelect != nil {
-		t.Fatal("Sau khi ấn '3', modal phải đóng")
-	}
-	if !m.textarea.Focused() {
-		t.Fatal("Textarea phải được focus sau khi chọn")
-	}
-}
-
-func TestModeSelect_SelectVietnameseHistory(t *testing.T) {
-	m := Model{
-		textarea:   textarea.New(),
-		width:      100,
-		height:     30,
-		modeSelect: newModeSelectState(nil, 100, 30),
-	}
-
-	// Chọn phím 4 (Tiểu thuyết Lịch sử Việt Nam)
-	res, _ := m.handleModeSelectKey(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'4'}})
-	m = res.(Model)
-
-	if m.modeSelect != nil {
-		t.Fatal("Sau khi ấn '4', modal phải đóng")
-	}
-	if !m.textarea.Focused() {
-		t.Fatal("Textarea phải được focus sau khi chọn")
+		if m.modeSelect != nil {
+			t.Fatalf("Sau khi ấn %q, modal phải đóng", string(key))
+		}
+		if !m.textarea.Focused() {
+			t.Fatalf("Textarea phải được focus sau khi ấn %q", string(key))
+		}
 	}
 }
 

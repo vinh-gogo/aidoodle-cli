@@ -17,15 +17,15 @@ import (
 
 // dashProjectItem lưu trữ thông tin tóm tắt của một dự án trong thư mục output.
 type dashProjectItem struct {
-	DirName      string    // e.g. "novel-20261008-1006"
-	RelPath      string    // e.g. "output\novel-20261008-1006"
-	FullPath     string    // đường dẫn đầy đủ
-	Title        string    // Tiêu đề sách/kịch bản
-	Prompt       string    // StartPrompt dự phòng nếu chưa có tiêu đề
-	Style        string    // "behavioral-psychology", "doodle-explainer", ...
-	StyleBadge   string    // "[🧠 Tâm lý học hành vi]", "[🦴 Video TikTok]", ...
-	ProgressText string    // "✓ Đã xong (3/3)", "⏳ Đang viết (1/3)", ...
-	Phase        string    // "complete", "writing", "init"
+	DirName      string // e.g. "novel-20261008-1006"
+	RelPath      string // e.g. "output\novel-20261008-1006"
+	FullPath     string // đường dẫn đầy đủ
+	Title        string // Tiêu đề sách/kịch bản
+	Prompt       string // StartPrompt dự phòng nếu chưa có tiêu đề
+	Style        string // "behavioral-psychology", "doodle-explainer", ...
+	StyleBadge   string // "[🧠 Tâm lý học hành vi]", "[🦴 Video TikTok]", ...
+	ProgressText string // "✓ Đã xong (3/3)", "⏳ Đang viết (1/3)", ...
+	Phase        string // "complete", "writing", "init"
 	TotalCh      int
 	CompletedCh  int
 	ModTime      time.Time
@@ -42,13 +42,19 @@ type dashState struct {
 
 // detectStyleBadge tạo tag hiển thị phong cách trực quan cho từng mode.
 func detectStyleBadge(style string) string {
-	switch strings.ToLower(style) {
+	switch strings.ToLower(strings.TrimSpace(style)) {
 	case "behavioral-psychology", "psychology":
 		return "[🧠 Tâm lý học hành vi]"
 	case "doodle-explainer":
 		return "[🦴 Video TikTok]"
-	case "vietnamese-history":
+	case "vietnamese-history", "history", "lich-su":
 		return "[⚔️ Lịch sử Việt Nam]"
+	case "suspense", "trinh-tham", "mystery", "thriller", "horror":
+		return "[🕵️ Trinh thám & Kinh dị]"
+	case "romance", "ngon-tinh", "healing":
+		return "[🌸 Ngôn tình & Chữa lành]"
+	case "fantasy", "ky-ao", "tien-hiep", "xianxia":
+		return "[🐉 Kỳ ảo & Tiên hiệp]"
 	case "novel-manga", "novel", "manga", "default", "":
 		return "[📖 Tiểu thuyết / Manga]"
 	default:

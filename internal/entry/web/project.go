@@ -73,13 +73,19 @@ func NextOutputDir(currentDir string, now time.Time) string {
 
 // DetectStyleBadge tạo nhãn hiển thị phong cách trực quan cho từng mode.
 func DetectStyleBadge(style string) string {
-	switch strings.ToLower(style) {
+	switch strings.ToLower(strings.TrimSpace(style)) {
 	case "behavioral-psychology", "psychology":
 		return "[🧠 Tâm lý học hành vi]"
 	case "doodle-explainer":
 		return "[🦴 Video TikTok]"
-	case "vietnamese-history":
+	case "vietnamese-history", "history", "lich-su":
 		return "[⚔️ Lịch sử Việt Nam]"
+	case "suspense", "trinh-tham", "mystery", "thriller", "horror":
+		return "[🕵️ Trinh thám & Kinh dị]"
+	case "romance", "ngon-tinh", "healing":
+		return "[🌸 Ngôn tình & Chữa lành]"
+	case "fantasy", "ky-ao", "tien-hiep", "xianxia":
+		return "[🐉 Kỳ ảo & Tiên hiệp]"
 	case "novel-manga", "novel", "manga", "default", "":
 		return "[📖 Tiểu thuyết / Manga]"
 	default:

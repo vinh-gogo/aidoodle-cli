@@ -70,17 +70,20 @@ Summaries: Volume → Arc → Chapter (sliding window of last 3 chapter summarie
 ## Voice / rules customization
 Two override dirs: `<outputDir>/style/` (per book) > `~/.ainovel/style/` (global). **Guidance text (voice.md, anti-ai-tone.md) is appended; style presets (styles/, genres/) are replaced whole-file.** Execution-protocol prompts are not overridable. Mechanical constraints belong in `rules/`.
 
-## Multi-Mode AI Architecture Patterns (4 Specialized Modes)
-1. **Mode Separation & Asset Routing (`assets/load.go`)**:
+## Multi-Mode AI Architecture Patterns (7 Specialized Modes)
+1. **Mode Separation & Asset Routing (`assets/load.go`, `internal/tools/novel_context.go`)**:
    - `novel-manga`: Nạp `assets/prompts/modes/novel-manga/`, `assets/voices/novel-manga.md`, `assets/references/modes/novel-manga/`.
+   - `suspense` (alias: `trinh-tham`, `mystery`, `thriller`, `horror`): Nạp `assets/prompts/modes/suspense/`, `assets/voices/suspense.md`, base `assets/references/modes/novel-manga/` + chuyên biệt `assets/references/genres/suspense/{style-references,arc-templates}.md`.
+   - `romance` (alias: `ngon-tinh`, `healing`): Nạp `assets/prompts/modes/romance/`, `assets/voices/romance.md`, base `assets/references/modes/novel-manga/` + chuyên biệt `assets/references/genres/romance/{style-references,arc-templates}.md`.
+   - `fantasy` (alias: `ky-ao`, `tien-hiep`, `xianxia`): Nạp `assets/prompts/modes/fantasy/`, `assets/voices/fantasy.md`, base `assets/references/modes/novel-manga/` + chuyên biệt `assets/references/genres/fantasy/{style-references,arc-templates}.md`.
+   - `vietnamese-history` (alias: `history`, `lich-su`): Nạp `assets/prompts/modes/vietnamese-history/`, `assets/voices/vietnamese-history.md`, `assets/references/modes/vietnamese-history/`.
    - `doodle-explainer`: Nạp `assets/prompts/modes/doodle-explainer/`, `assets/voices/doodle-explainer.md`, `assets/references/modes/doodle-explainer/`.
-   - `behavioral-psychology`: Nạp `assets/prompts/modes/behavioral-psychology/`, `assets/voices/behavioral-psychology.md`, `assets/references/modes/behavioral-psychology/`.
-   - `vietnamese-history`: Nạp `assets/prompts/modes/vietnamese-history/`, `assets/voices/vietnamese-history.md`, `assets/references/modes/vietnamese-history/`.
-   - Tất cả 4 style đều là first-class identifier, tuyệt đối không phụ thuộc vào `style == "default"`.
+   - `behavioral-psychology` (alias: `psychology`): Nạp `assets/prompts/modes/behavioral-psychology/`, `assets/voices/behavioral-psychology.md`, `assets/references/modes/behavioral-psychology/`.
+   - Trong `internal/tools/novel_context.go`: `isNovelOrHistoryStyle` lọc bỏ hoàn toàn các tài liệu video doodle (`doodle_visual_language`, `tiktok_content_safety`, `humor_relatability`, `fact_grounding`) cho cả 5 chế độ tiểu thuyết, và `isSpecializedNovelGenre` giữ `style_reference` xuyên suốt các chương.
 
 2. **Gated Script Validation (`internal/tools/commit_chapter.go`)**:
    - `lintScript` (kiểm tra cấu trúc video HOOK/CẢNH/CHỐT, LỜI/HÌNH) **chỉ kích hoạt cho các chế độ video** (`doodle-explainer`, `behavioral-psychology`).
-   - Các chế độ tiểu thuyết văn xuôi (`novel-manga`, `vietnamese-history`) được giải phóng hoàn toàn khỏi các cảnh báo định dạng kịch bản video để tự do viết văn xuôi 2.000 – 4.000 từ.
+   - Các chế độ tiểu thuyết văn xuôi (`novel-manga`, `suspense`, `romance`, `fantasy`, `vietnamese-history`) được giải phóng hoàn toàn khỏi các cảnh báo định dạng kịch bản video để tự do viết văn xuôi 2.000 – 4.500 từ.
 
 3. **Tavily Search & Fact-Grounding Pattern**:
    - Client trung tâm: `internal/tavily` (`Search`, `Crawl`, `Extract`, `SearchAndBuildSourcePack`).
@@ -93,14 +96,15 @@ Two override dirs: `<outputDir>/style/` (per book) > `~/.ainovel/style/` (global
    - **1:1 Alternating Voice-Visual Beats Pattern**: Xen kẽ liên tục cặp `LỜI:` (10-20 từ / 3-6s) và `HÌNH:` tương ứng; không để hình tĩnh kéo dài; loại bỏ hoàn toàn thẻ `CHỮ:`.
    - **Dynamic Output Isolation**: Khi gõ `/new`, tự động tạo thư mục output theo thời gian thực `output/novel-YYYYMMDD-HHMM`.
 
-5. **Vietnamese History Novel Patterns**:
-   - Chuẩn mực xưng hô điển chế Đại Việt (Trẫm - khanh, Thần - Bệ hạ, Bản tướng - Chúa công).
-   - Nghiêm cấm từ ngữ convert kiếm hiệp Trung Quốc; 100% tiếng Việt sạch chữ Hán.
-   - 4 trụ cột: Tra cứu sử liệu Tavily, nhân vật con người thật đa chiều, bối cảnh lịch sử trong/ngoài nước, và nghịch cảnh sinh tử bi tráng.
+5. **Specialized Novel Genre Patterns (`vietnamese-history`, `suspense`, `romance`, `fantasy`)**:
+   - **Lịch sử Việt Nam (`vietnamese-history`)**: Bảng Bất biến & Vùng Tự do, Xung đột Kép, tra cứu sử liệu Tavily, chuẩn xưng hô điển chế Đại Việt.
+   - **Trinh thám & Kinh dị (`suspense`)**: Ma trận Chân tướng Kép, Sổ cái Manh mối Công bằng 3:2 (`foreshadow_ledger`), Đồng hồ Đếm ngược Sinh tử & Kinh dị Dân gian Việt Nam.
+   - **Ngôn tình & Chữa lành (`romance`)**: Hồ sơ Vết thương Tâm lý (`Lie`/`Ghost`/`Need`), Cân bằng Sức hút Kép, Thang đo Cảm xúc 6 Cấp độ, Đối thoại Subtext & Cấm văn mẫu tổng tài bá đạo.
+   - **Kỳ ảo & Tiên hiệp (`fantasy`)**: Hệ thống Sức mạnh Quy tắc Cứng (Định luật Sanderson: Nguồn lực – Cấp bậc – Chi phí – Điểm mù), Bản đồ Thế giới Đa tầng, Chiến đấu 3 Pha & Bộ lọc Chống văn dịch máy (Convert).
 
-6. **TUI Dashboard Pattern (`/dash`)**:
-   - **Quét động & Nhận diện siêu dữ liệu**: `scanOutputProjects(currentDir)` duyệt toàn bộ thư mục trong `output/`, tự động đọc `meta/run.json`, `meta/book.json`, `meta/progress.json` hoặc đếm chương từ `chapters/*.md`.
-   - **Badge Mapping Trực quan (`detectStyleBadge`)**: Ánh xạ style sang nhãn phân loại rõ ràng (`[🧠 Tâm lý học hành vi]`, `[🦴 Video TikTok]`, `[⚔️ Lịch sử Việt Nam]`, `[📖 Tiểu thuyết / Manga]`).
+6. **TUI & Web Dashboard Pattern (`/dash` & `/mode` 1–7)**:
+   - **Quét động & Nhận diện siêu dữ liệu**: `scanOutputProjects(currentDir)` (TUI) và `ScanProjects` (Web) duyệt toàn bộ thư mục trong `output/`, tự động đọc `meta/run.json`, `meta/book.json`, `meta/progress.json` hoặc đếm chương từ `chapters/*.md`.
+   - **Badge Mapping Trực quan (`detectStyleBadge` / `DetectStyleBadge`)**: Ánh xạ style sang 7 nhãn phân loại rõ ràng (`[📖 Tiểu thuyết / Manga]`, `[🕵️ Trinh thám & Kinh dị]`, `[🌸 Ngôn tình & Chữa lành]`, `[🐉 Kỳ ảo & Tiên hiệp]`, `[⚔️ Lịch sử Việt Nam]`, `[🦴 Video TikTok]`, `[🧠 Tâm lý học hành vi]`).
    - **Bố cục 2 dòng & Tự động điều chỉnh kích thước (`dashModalSize`)**: Đảm bảo hiển thị đầy đủ tiêu đề, tag mode, thư mục, tiến độ và thời gian cập nhật mà không bị viewport cắt xén chữ.
    - **Cơ chế chuyển đổi dự án không gián đoạn**: Nhấn `Enter` gán `m.switchOutputDir` và gửi `tea.Quit`. Vòng lặp `Run` trong `internal/entry/tui/app.go` nhận diện đường dẫn đích, nạp lại bundle tương ứng (`detectProjectStyle`) và khởi tạo session mới, tự động khôi phục tiến trình thông qua `bootstrapRuntime`.
 

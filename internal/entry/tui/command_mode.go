@@ -32,7 +32,7 @@ type modeSelectState struct {
 	message      string
 }
 
-// defaultAIModeOptions trả về 3 chế độ làm việc của AI theo yêu cầu hệ thống.
+// defaultAIModeOptions trả về 7 chế độ làm việc của AI (5 chế độ Tiểu thuyết chuyên sâu + 2 chế độ Video).
 func defaultAIModeOptions() []aiModeOption {
 	return []aiModeOption{
 		{
@@ -42,7 +42,7 @@ func defaultAIModeOptions() []aiModeOption {
 			Badge:       "📖 Tiểu thuyết & Truyện tranh",
 			StyleKey:    "novel-manga",
 			Available:   true,
-			Description: "Sáng tác tiểu thuyết dài kỳ, truyện tranh (Manga/Webtoon) với phân chia hồi/chương chặt chẽ, phát triển tâm lý nhân vật và quy tắc thế giới chuyên sâu.",
+			Description: "Sáng tác tiểu thuyết dài kỳ, Light Novel, Manga/Webtoon đa thể loại với phân chia hồi/chương chặt chẽ và tâm lý nhân vật sâu sắc.",
 			Features: []string{
 				"Dàn ý phân hồi & quyển",
 				"Quy tắc thế giới đa tầng & nhất quán dài hạn",
@@ -50,13 +50,69 @@ func defaultAIModeOptions() []aiModeOption {
 			},
 		},
 		{
-			ID:          "doodle-explainer",
+			ID:          "suspense",
 			Number:      2,
+			Title:       "Tiểu thuyết Trinh thám & Kinh dị",
+			Badge:       "🕵️ Trinh thám & Kinh dị",
+			StyleKey:    "suspense",
+			Available:   true,
+			Description: "Sáng tác tiểu thuyết trinh thám suy luận công bằng (Fair-Play), tâm lý tội phạm đen tối và kinh dị tâm linh mang bản sắc dân gian.",
+			Features: []string{
+				"Ma trận Chân tướng Kép & Sổ cái Manh mối (3 manh mối thật : 2 nghi binh)",
+				"Đồng hồ đếm ngược sinh tử & Nhịp điệu căng thẳng từng chương",
+				"Không khí rùng rợn 5 giác quan & Cấm tuyệt đối sáo ngữ hù dọa",
+			},
+		},
+		{
+			ID:          "romance",
+			Number:      3,
+			Title:       "Tiểu thuyết Ngôn tình & Chữa lành",
+			Badge:       "🌸 Ngôn tình & Chữa lành",
+			StyleKey:    "romance",
+			Available:   true,
+			Description: "Sáng tác tiểu thuyết ngôn tình hiện đại, tâm lý tình cảm sâu sắc (Slow-burn) và chữa lành tâm hồn với chất văn tinh tế giàu cảm xúc.",
+			Features: []string{
+				"Hồ sơ Vết thương Tâm lý (Lie/Ghost) & Cân bằng Sức hút Kép",
+				"Thang đo Tiến triển Cảm xúc 6 Cấp độ & Xung đột có lý do chính đáng",
+				"Đối thoại giàu ẩn ý (Subtext) & Thanh lọc 100% văn mẫu tổng tài bá đạo",
+			},
+		},
+		{
+			ID:          "fantasy",
+			Number:      4,
+			Title:       "Tiểu thuyết Kỳ ảo & Tiên hiệp",
+			Badge:       "🐉 Kỳ ảo & Tiên hiệp",
+			StyleKey:    "fantasy",
+			Available:   true,
+			Description: "Sáng tác tiểu thuyết kỳ ảo sử thi, tiên hiệp tu chân và thăng cấp sức mạnh (Progression) với hệ thống quy tắc cứng và thế giới đa tầng.",
+			Features: []string{
+				"Hệ thống Phép thuật / Tu luyện Cứng (Quy tắc - Chi phí - Giới hạn)",
+				"Bản đồ Thế giới Đa tầng & Sinh thái Thế lực sống động",
+				"Chiến đấu chiến thuật 3 pha & Thanh lọc 100% văn phong dịch máy (Convert)",
+			},
+		},
+		{
+			ID:          "vietnamese-history",
+			Number:      5,
+			Title:       "Tiểu thuyết Lịch sử Việt Nam",
+			Badge:       "⚔️ Nhân vật Lịch sử",
+			StyleKey:    "vietnamese-history",
+			Available:   true,
+			Description: "Sáng tác tiểu thuyết tái hiện hào khí nhân vật lịch sử Việt Nam, tra cứu chính sử qua Tavily Search và khắc họa nghịch cảnh sinh tử.",
+			Features: []string{
+				"Khai phá toàn diện chân dung & nội tâm nhân vật lịch sử",
+				"Tái hiện bối cảnh trong nước & quốc tế đa tầng",
+				"Tra cứu & kiểm chứng dữ liệu sử học qua Tavily Search",
+			},
+		},
+		{
+			ID:          "doodle-explainer",
+			Number:      6,
 			Title:       "Doodle Explainer",
 			Badge:       "🦴 Video ngắn TikTok / Shorts",
 			StyleKey:    "doodle-explainer",
 			Available:   true,
-			Description: "Biên kịch video người que đồ đá giải thích kiến thức, thời lượng 5+ phút, nhịp hình ảnh 1:1, giọng kể dí dỏm, phản trực giác, tối ưu cho nền tảng video ngắn.",
+			Description: "Biên kịch video người que đồ đá giải thích kiến thức, thời lượng 5+ phút, nhịp hình ảnh 1:1, giọng kể dí dỏm, tối ưu cho nền tảng video ngắn.",
 			Features: []string{
 				"Hook 3s giữ chân & Tái Hook 60-90s",
 				"Nhịp 1:1 Thoại (LỜI:) và Hình (HÌNH:)",
@@ -65,31 +121,16 @@ func defaultAIModeOptions() []aiModeOption {
 		},
 		{
 			ID:          "behavioral-psychology",
-			Number:      3,
+			Number:      7,
 			Title:       "Tâm lý học hành vi",
 			Badge:       "🧠 Video Tâm lý học",
 			StyleKey:    "behavioral-psychology",
 			Available:   true,
-			Description: "Biên kịch video giải mã tâm lý học hành vi & bẫy nhận thức (5+ phút, nhịp 1:1 Thoại - Hình), giải mã sự phi lý trí đời thường, thí nghiệm khoa học chuẩn xác và cú hích thực chiến (Nudge).",
+			Description: "Biên kịch video giải mã tâm lý học hành vi & bẫy nhận thức (5+ phút, nhịp 1:1 Thoại - Hình), thí nghiệm khoa học và cú hích thực chiến (Nudge).",
 			Features: []string{
 				"Giải mã nghịch lý & bẫy nhận thức đời thường",
 				"Minh họa Não lý trí vs Não cảm xúc trực quan 1:1",
 				"Thí nghiệm khoa học có nguồn & Cú hích thực chiến (Nudge)",
-			},
-		},
-		{
-			ID:          "vietnamese-history",
-			Number:      4,
-			Title:       "Tiểu thuyết Lịch sử Việt Nam",
-			Badge:       "⚔️ Nhân vật Lịch sử",
-			StyleKey:    "vietnamese-history",
-			Available:   true,
-			Description: "Sáng tác tiểu thuyết tái hiện hào khí nhân vật lịch sử Việt Nam, tra cứu chính sử qua Tavily Search, khai phá toàn diện chân dung nhân vật, bối cảnh trong nước & quốc tế, và những nghịch cảnh sinh tử.",
-			Features: []string{
-				"Khai phá toàn diện chân dung & nội tâm nhân vật",
-				"Tái hiện bối cảnh trong nước & quốc tế đa tầng",
-				"Đối diện hiểm nguy & quyết định sinh tử bi tráng",
-				"Tra cứu & kiểm chứng dữ liệu sử học qua Tavily Search",
 			},
 		},
 	}
@@ -107,25 +148,17 @@ func newModeSelectState(rt *host.Host, width, height int) *modeSelectState {
 	contentW := paddedModalContentWidth(boxW)
 	vp := viewport.New(contentW, boxH-4)
 
-	// Đặt cursor mặc định vào chế độ hiện tại
-	initialCursor := 0
-	for i, opt := range opts {
-		if opt.Available {
-			if opt.StyleKey == curStyle || 
-			   (opt.StyleKey == "novel-manga" && isNovelMode(curStyle)) ||
-			   (opt.StyleKey == "behavioral-psychology" && isPsychologyMode(curStyle)) ||
-			   (opt.StyleKey == "vietnamese-history" && isVietnameseHistoryMode(curStyle)) {
-				initialCursor = i
-				break
-			}
-		}
-	}
-
 	state := &modeSelectState{
-		cursor:       initialCursor,
+		cursor:       0,
 		options:      opts,
 		currentStyle: curStyle,
 		viewport:     vp,
+	}
+	for i, opt := range opts {
+		if state.isOptionActive(opt) {
+			state.cursor = i
+			break
+		}
 	}
 	state.refreshViewport(contentW)
 	return state
@@ -133,7 +166,22 @@ func newModeSelectState(rt *host.Host, width, height int) *modeSelectState {
 
 func isNovelMode(style string) bool {
 	style = strings.ToLower(strings.TrimSpace(style))
-	return style == "novel-manga" || style == "novel" || style == "manga" || style == "fantasy" || style == "romance" || style == "suspense" || style == "default"
+	return style == "novel-manga" || style == "novel" || style == "manga" || style == "default"
+}
+
+func isSuspenseMode(style string) bool {
+	style = strings.ToLower(strings.TrimSpace(style))
+	return style == "suspense" || style == "trinh-tham" || style == "mystery" || style == "thriller" || style == "horror"
+}
+
+func isRomanceMode(style string) bool {
+	style = strings.ToLower(strings.TrimSpace(style))
+	return style == "romance" || style == "ngon-tinh" || style == "healing"
+}
+
+func isFantasyMode(style string) bool {
+	style = strings.ToLower(strings.TrimSpace(style))
+	return style == "fantasy" || style == "ky-ao" || style == "tien-hiep" || style == "xianxia"
 }
 
 func isPsychologyMode(style string) bool {
@@ -150,16 +198,22 @@ func (s *modeSelectState) isOptionActive(opt aiModeOption) bool {
 	if !opt.Available {
 		return false
 	}
-	if opt.StyleKey == "novel-manga" {
+	switch opt.StyleKey {
+	case "novel-manga":
 		return isNovelMode(s.currentStyle)
-	}
-	if opt.StyleKey == "behavioral-psychology" {
+	case "suspense":
+		return isSuspenseMode(s.currentStyle)
+	case "romance":
+		return isRomanceMode(s.currentStyle)
+	case "fantasy":
+		return isFantasyMode(s.currentStyle)
+	case "behavioral-psychology":
 		return isPsychologyMode(s.currentStyle)
-	}
-	if opt.StyleKey == "vietnamese-history" {
+	case "vietnamese-history":
 		return isVietnameseHistoryMode(s.currentStyle)
+	default:
+		return s.currentStyle == opt.StyleKey
 	}
-	return s.currentStyle == opt.StyleKey
 }
 
 func (s *modeSelectState) refreshViewport(contentW int) {
@@ -177,8 +231,8 @@ func (s *modeSelectState) refreshViewport(contentW int) {
 	var b strings.Builder
 	b.WriteString(titleStyle.Render("CHỌN CHẾ ĐỘ LÀM VIỆC CỦA AI (/mode)"))
 	b.WriteString("\n")
-	b.WriteString(lipgloss.NewStyle().Foreground(colorDim).Render("Dùng ↑/↓ hoặc j/k để chọn · Phím 1-3 chọn nhanh · Enter để kích hoạt · Esc để đóng"))
-	b.WriteString("\n\n")
+	b.WriteString(lipgloss.NewStyle().Foreground(colorDim).Render("Dùng ↑/↓ hoặc j/k để chọn · Phím 1-7 chọn nhanh · Enter để kích hoạt · Esc để đóng"))
+	b.WriteString("\n")
 
 	for i, opt := range s.options {
 		isSelected := i == s.cursor
@@ -197,13 +251,14 @@ func (s *modeSelectState) refreshViewport(contentW int) {
 			b.WriteString("    " + badgeStyle.Render(opt.Badge) + "  ·  " + descStyle.Render(opt.Description))
 			b.WriteString("\n")
 			b.WriteString("    " + featStyle.Render("Tính năng: "+strings.Join(opt.Features, "  •  ")))
+			b.WriteString("\n")
 		} else {
 			dimTitleStyle := lipgloss.NewStyle().Foreground(colorMuted).Bold(true)
 			b.WriteString(lipgloss.NewStyle().Foreground(colorDim).Render("  ") + featStyle.Render(fmt.Sprintf("[%d] ", opt.Number)) + dimTitleStyle.Render(opt.Title) + statusText)
 			b.WriteString("\n")
 			b.WriteString("    " + featStyle.Render(opt.Badge+" · "+opt.Description))
+			b.WriteString("\n")
 		}
-		b.WriteString("\n\n")
 	}
 
 	if s.message != "" {
@@ -215,8 +270,8 @@ func (s *modeSelectState) refreshViewport(contentW int) {
 
 	// Tự động cuộn viewport để mục đang chọn luôn hiển thị đầy đủ
 	if s.viewport.Height > 0 {
-		itemTop := 3 + s.cursor*3
-		itemBottom := itemTop + 1
+		itemTop := 2 + s.cursor*2
+		itemBottom := itemTop + 2
 		if s.cursor == 0 {
 			s.viewport.GotoTop()
 		} else if itemTop < s.viewport.YOffset {
@@ -248,7 +303,7 @@ func renderModeSelectModal(width, height int, state *modeSelectState) string {
 		boxW,
 		boxH,
 		"Chế độ làm việc AI (/mode)",
-		"  ↑↓/jk Chọn · 1-3 Chọn nhanh · Enter Kích hoạt · Esc Đóng",
+		"  ↑↓/jk Chọn · 1-7 Chọn nhanh · Enter Kích hoạt · Esc Đóng",
 		strings.Split(state.viewport.View(), "\n"),
 	)
 	return lipgloss.Place(width, height, lipgloss.Center, lipgloss.Center, modal)
@@ -285,7 +340,7 @@ func (m Model) handleModeSelectKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 		if state.cursor >= 0 && state.cursor < numOpts {
 			chosen := state.options[state.cursor]
 			if !chosen.Available {
-				state.message = fmt.Sprintf("Chế độ [%d] %s đang được nghiên cứu ở bước tiếp theo, vui lòng chọn chế độ 1 hoặc 2!", chosen.Number, chosen.Title)
+				state.message = fmt.Sprintf("Chế độ [%d] %s đang được nghiên cứu ở bước tiếp theo!", chosen.Number, chosen.Title)
 				boxW, _ := reportModalSize(m.width, m.height)
 				state.refreshViewport(paddedModalContentWidth(boxW))
 				return m, nil
@@ -334,8 +389,8 @@ func (m Model) handleModeSelectKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 			m.modeSelect = nil
 			return m, m.textarea.Focus()
 		default:
-			// Phím số 1-4 để chọn nhanh
-			if r >= '1' && r <= '4' {
+			// Phím số 1-7 để chọn nhanh
+			if r >= '1' && r <= '7' {
 				idx := int(r - '1')
 				if idx < numOpts {
 					chosen := state.options[idx]

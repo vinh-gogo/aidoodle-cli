@@ -96,9 +96,9 @@ func (t *TavilyCrawlTool) Execute(ctx context.Context, args json.RawMessage) (js
 	words := domain.WordCount(content)
 
 	resultMap := map[string]any{
-		"url":        targetURL,
-		"content":    content,
-		"word_count": words,
+		"url":         targetURL,
+		"content":     content,
+		"word_count":  words,
 		"instruction": "Hãy sử dụng thông tin chi tiết này để làm sáng tỏ các cơ chế khoa học trong kịch bản và trích dẫn URL vào 'NGUỒN:'.",
 	}
 

@@ -126,10 +126,10 @@ func (t *TavilySearchTool) Execute(ctx context.Context, args json.RawMessage) (j
 	}
 
 	resultMap := map[string]any{
-		"query":        resp.Query,
-		"answer":       resp.Answer,
-		"results":      items,
-		"total_found":  len(items),
+		"query":       resp.Query,
+		"answer":      resp.Answer,
+		"results":     items,
+		"total_found": len(items),
 		"instruction": "HÃY DÙNG CÁC KẾT QUẢ NÀY ĐỂ: (1) Trích dẫn cụ thể tên bài báo, tác giả/tổ chức và đường link URL vào thẻ 'NGUỒN:' ở cuối kịch bản; (2) Trích xuất các số liệu thực tế và luận điểm khoa học vào nội dung kịch bản; (3) Liệt kê các giả thuyết đối lập hoặc điểm còn đang tranh luận vào thẻ 'CẦN KIỂM CHỨNG:'.",
 	}
 

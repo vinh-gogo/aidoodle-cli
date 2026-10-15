@@ -162,4 +162,3 @@ func TestTavilyCrawlTool_GracefulFallback(t *testing.T) {
 		t.Errorf("expected word_count 0 on error, got %v", res["word_count"])
 	}
 }
-

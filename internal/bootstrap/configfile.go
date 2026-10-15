@@ -209,6 +209,9 @@ func mergeConfig(base, overlay Config) Config {
 			if len(v.Extra) > 0 {
 				existing.Extra = cloneMap(v.Extra)
 			}
+			if v.StreamIdleTimeout != "" {
+				existing.StreamIdleTimeout = v.StreamIdleTimeout
+			}
 			base.Providers[k] = existing
 		}
 	}

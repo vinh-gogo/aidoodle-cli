@@ -346,6 +346,7 @@ func BuildWorkers(
 				// 提交投影，避免后续轮次反复改写请求前缀。
 				CommitProjected: true,
 				ToolMicrocompact: &corecontext.ToolResultMicrocompactConfig{
+					KeepRecent:      2,
 					MinResultTokens: 200,
 				},
 				ExtraStrategies: []corecontext.Strategy{

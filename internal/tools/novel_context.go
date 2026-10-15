@@ -461,58 +461,119 @@ func (t *ContextTool) loadLayeredCharacters(result map[string]any, chapter int, 
 	t.loadFilteredCharacters(result, chapter, reads)
 }
 
+func isNovelOrHistoryStyle(style string) bool {
+	s := strings.ToLower(strings.TrimSpace(style))
+	switch s {
+	case "novel-manga", "novel", "manga",
+		"vietnamese-history", "history", "lich-su",
+		"suspense", "trinh-tham", "mystery", "thriller", "horror",
+		"romance", "ngon-tinh", "healing",
+		"fantasy", "ky-ao", "tien-hiep", "xianxia":
+		return true
+	default:
+		return false
+	}
+}
+
+func isSpecializedNovelGenre(style string) bool {
+	s := strings.ToLower(strings.TrimSpace(style))
+	switch s {
+	case "vietnamese-history", "history", "lich-su",
+		"suspense", "trinh-tham", "mystery", "thriller", "horror",
+		"romance", "ngon-tinh", "healing",
+		"fantasy", "ky-ao", "tien-hiep", "xianxia":
+		return true
+	default:
+		return false
+	}
+}
+
+// compactReference cắt bỏ các khối ví dụ kịch bản mẫu quá dài (vốn đã có trong system prompt)
+// và giới hạn độ dài mỗi tài liệu tham khảo để novel_context không vượt ngưỡng 32K token.
+func compactReference(raw string, maxRunes int) string {
+	raw = strings.TrimSpace(raw)
+	if raw == "" || maxRunes <= 0 {
+		return raw
+	}
+	for _, marker := range []string{
+		"\n## Ví dụ hoàn chỉnh",
+		"\n## Ví dụ kịch bản",
+		"\n## Bản mẫu hoàn chỉnh",
+		"\n## Ví dụ thực chiến hoàn chỉnh",
+	} {
+		if idx := strings.Index(raw, marker); idx > 0 {
+			raw = strings.TrimSpace(raw[:idx])
+		}
+	}
+	runes := []rune(raw)
+	if len(runes) <= maxRunes {
+		return raw
+	}
+	clipped := string(runes[:maxRunes])
+	if lastNL := strings.LastIndexByte(clipped, '\n'); lastNL > len(clipped)/2 {
+		clipped = clipped[:lastNL]
+	}
+	return strings.TrimSpace(clipped) + "\n...(đã rút gọn tham khảo)"
+}
+
 // writerReferences 返回写作参考资料。章节 1 返回全量，后续章节裁剪掉不再需要的模板。
 func (t *ContextTool) writerReferences(chapter int) map[string]string {
 	refs := map[string]string{}
-	add := func(k, v string) {
+	add := func(k, v string, maxRunes int) {
 		if v != "" {
-			refs[k] = v
+			refs[k] = compactReference(v, maxRunes)
 		}
 	}
 	// 渐进式加载：始终保留核心参考，前 3 章额外加载完整写作指南
-	add("consistency", t.refs.Consistency)
-	add("hook_techniques", t.refs.HookTechniques)
-	add("quality_checklist", t.refs.QualityChecklist)
-	add("anti_ai_tone", t.refs.AntiAITone) // 去 AI 味判据全程注入，不随章节裁剪
-	add("doodle_visual_language", t.refs.DoodleVisual)
-	add("fact_grounding", t.refs.FactGrounding)
-	add("tiktok_content_safety", t.refs.TiktokSafety)
-	add("humor_relatability", t.refs.HumorRelatability)
-	add("character_building", t.refs.CharacterBuilding)
-	add("adversity_conflict", t.refs.AdversityConflict)
+	add("consistency", t.refs.Consistency, 1200)
+	add("hook_techniques", t.refs.HookTechniques, 1200)
+	add("quality_checklist", t.refs.QualityChecklist, 1200)
+	add("anti_ai_tone", t.refs.AntiAITone, 1200) // 去 AI 味判据全程注入，不随章节裁剪
+	add("character_building", t.refs.CharacterBuilding, 1200)
+	add("adversity_conflict", t.refs.AdversityConflict, 1200)
+	if !isNovelOrHistoryStyle(t.style) {
+		add("doodle_visual_language", t.refs.DoodleVisual, 1000)
+		add("fact_grounding", t.refs.FactGrounding, 1000)
+		add("tiktok_content_safety", t.refs.TiktokSafety, 1000)
+		add("humor_relatability", t.refs.HumorRelatability, 1000)
+	}
 	if chapter <= 3 {
-		add("chapter_guide", t.refs.ChapterGuide)
-		add("dialogue_writing", t.refs.DialogueWriting)
-		add("style_reference", t.refs.StyleReference)
+		add("chapter_guide", t.refs.ChapterGuide, 1000)
+		add("dialogue_writing", t.refs.DialogueWriting, 1000)
+	}
+	if chapter <= 3 || isSpecializedNovelGenre(t.style) {
+		add("style_reference", t.refs.StyleReference, 1000)
 	}
 
 	// 仅首章加载的补充参考
 	if chapter <= 1 {
-		add("chapter_template", t.refs.ChapterTemplate)
-		add("content_expansion", t.refs.ContentExpansion)
+		add("chapter_template", t.refs.ChapterTemplate, 1000)
+		add("content_expansion", t.refs.ContentExpansion, 900)
 	}
 	return refs
 }
 
 func (t *ContextTool) architectReferences() map[string]string {
 	refs := map[string]string{}
-	add := func(k, v string) {
+	add := func(k, v string, maxRunes int) {
 		if v != "" {
-			refs[k] = v
+			refs[k] = compactReference(v, maxRunes)
 		}
 	}
-	add("outline_template", t.refs.OutlineTemplate)
-	add("character_template", t.refs.CharacterTemplate)
-	add("longform_planning", t.refs.LongformPlanning)
-	add("differentiation", t.refs.Differentiation)
-	add("character_building", t.refs.CharacterBuilding)
-	add("adversity_conflict", t.refs.AdversityConflict)
-	add("style_reference", t.refs.StyleReference)
-	add("arc_templates", t.refs.ArcTemplates)
-	add("anti_ai_tone", t.refs.AntiAITone) // architect 大纲去 AI 腔；亦兜 editor 走 Chapter=0 路径
-	add("fact_grounding", t.refs.FactGrounding)
-	add("tiktok_content_safety", t.refs.TiktokSafety)
-	add("humor_relatability", t.refs.HumorRelatability)
+	add("outline_template", t.refs.OutlineTemplate, 1200)
+	add("character_template", t.refs.CharacterTemplate, 1000)
+	add("longform_planning", t.refs.LongformPlanning, 1000)
+	add("differentiation", t.refs.Differentiation, 1000)
+	add("character_building", t.refs.CharacterBuilding, 1000)
+	add("adversity_conflict", t.refs.AdversityConflict, 1000)
+	add("style_reference", t.refs.StyleReference, 1000)
+	add("arc_templates", t.refs.ArcTemplates, 1000)
+	add("anti_ai_tone", t.refs.AntiAITone, 1200) // architect 大纲去 AI 腔；亦兜 editor 走 Chapter=0 路径
+	if !isNovelOrHistoryStyle(t.style) {
+		add("fact_grounding", t.refs.FactGrounding, 1000)
+		add("tiktok_content_safety", t.refs.TiktokSafety, 1000)
+		add("humor_relatability", t.refs.HumorRelatability, 1000)
+	}
 	return refs
 }
 

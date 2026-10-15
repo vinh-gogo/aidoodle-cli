@@ -1,24 +1,29 @@
 {
   "provider": "kaggle-llama",
-  "model": "gemma-4-26b",
+  "model": "main-llm",
   "reasoning_effort": "off",
   "providers": {
     "kaggle-llama": {
       "type": "openai",
       "api_key": "kaggle-key",
-      "base_url": "https://snowcapped-denice-unprudent.ngrok-free.dev/v1",
+      "base_url": "https://api.gloryvocab.com/v1",
       "models": [
+        {
+          "name": "main-llm",
+          "context_window": 65536
+        },
+        {
+          "name": "gemma-4-26B-A4B-it-Q4_K_M.gguf",
+          "context_window": 65536
+        },
         {
           "name": "gemma-4-26b",
           "context_window": 65536
         }
       ],
-      "extra": {
-        "headers": {
-          "ngrok-skip-browser-warning": "true"
-        }
-      }
+      "stream_idle_timeout": "15m"
     }
   },
-  "style": "doodle-explainer"
+  "style": "behavioral-psychology",
+  "context_window": 65536
 }

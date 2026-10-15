@@ -1269,3 +1269,55 @@ func TestContextToolComputesRuleViolationsFromAcceptedContent(t *testing.T) {
 		t.Fatal("规则更新后不应残留旧的 rule_violations")
 	}
 }
+
+func TestWriterAndArchitectReferencesFilterDoodleInNovelModeAndCompact(t *testing.T) {
+	st := store.NewStore(t.TempDir())
+	if err := st.Init(); err != nil {
+		t.Fatal(err)
+	}
+	longRef := strings.Repeat("Quy tắc quan trọng.\n", 200) + "\n## Ví dụ hoàn chỉnh\n" + strings.Repeat("Kịch bản mẫu rất dài.\n", 300)
+	refs := References{
+		Consistency:       longRef,
+		DoodleVisual:      "Ngôn ngữ doodle người que",
+		FactGrounding:     "Chuẩn nguồn dữ kiện",
+		TiktokSafety:      "An toàn nội dung TikTok",
+		HumorRelatability: "Hài hước đời thường",
+		OutlineTemplate:   longRef,
+		StyleReference:    "Tham chiếu phong cách thể loại",
+	}
+
+	for _, style := range []string{"novel-manga", "vietnamese-history", "suspense", "romance", "fantasy"} {
+		novelTool := newTestContextTool(st, refs, style)
+		wRefsNovel := novelTool.writerReferences(1)
+		for _, forbidden := range []string{"doodle_visual_language", "fact_grounding", "tiktok_content_safety", "humor_relatability"} {
+			if _, exists := wRefsNovel[forbidden]; exists {
+				t.Fatalf("%s writerReferences must not include doodle reference %q", style, forbidden)
+			}
+		}
+		if strings.Contains(wRefsNovel["consistency"], "Kịch bản mẫu rất dài") {
+			t.Fatalf("%s: compactReference must strip full sample section from consistency reference", style)
+		}
+		if len([]rune(wRefsNovel["consistency"])) > 1300 {
+			t.Fatalf("%s: compactReference exceeded rune budget: got %d runes", style, len([]rune(wRefsNovel["consistency"])))
+		}
+
+		aRefsNovel := novelTool.architectReferences()
+		for _, forbidden := range []string{"fact_grounding", "tiktok_content_safety", "humor_relatability"} {
+			if _, exists := aRefsNovel[forbidden]; exists {
+				t.Fatalf("%s architectReferences must not include doodle reference %q", style, forbidden)
+			}
+		}
+		if style != "novel-manga" {
+			wRefsCh5 := novelTool.writerReferences(5)
+			if _, exists := wRefsCh5["style_reference"]; !exists {
+				t.Fatalf("%s writerReferences at chapter 5 must retain style_reference", style)
+			}
+		}
+	}
+
+	doodleTool := newTestContextTool(st, refs, "doodle-explainer")
+	wRefsDoodle := doodleTool.writerReferences(1)
+	if _, exists := wRefsDoodle["doodle_visual_language"]; !exists {
+		t.Fatal("doodle-explainer writerReferences must include doodle_visual_language")
+	}
+}

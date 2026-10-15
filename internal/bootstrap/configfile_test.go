@@ -407,4 +407,3 @@ func TestSaveConfigAndReload(t *testing.T) {
 		t.Fatalf("got style %q, want %q", loaded.Style, "behavioral-psychology")
 	}
 }
-

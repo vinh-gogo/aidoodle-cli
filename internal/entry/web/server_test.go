@@ -199,3 +199,20 @@ func TestExportProject(t *testing.T) {
 		t.Errorf("expected COMPLETE status, got %s", statusResp.Snapshot.StatusLabel)
 	}
 }
+
+func TestDetectStyleBadge_Web(t *testing.T) {
+	cases := map[string]string{
+		"suspense":              "[🕵️ Trinh thám & Kinh dị]",
+		"romance":               "[🌸 Ngôn tình & Chữa lành]",
+		"fantasy":               "[🐉 Kỳ ảo & Tiên hiệp]",
+		"vietnamese-history":    "[⚔️ Lịch sử Việt Nam]",
+		"novel-manga":           "[📖 Tiểu thuyết / Manga]",
+		"doodle-explainer":      "[🦴 Video TikTok]",
+		"behavioral-psychology": "[🧠 Tâm lý học hành vi]",
+	}
+	for style, want := range cases {
+		if got := DetectStyleBadge(style); got != want {
+			t.Errorf("DetectStyleBadge(%q) = %q, want %q", style, got, want)
+		}
+	}
+}

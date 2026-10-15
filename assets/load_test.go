@@ -49,7 +49,7 @@ func TestLoad_NoOverrides(t *testing.T) {
 	if _, ok := b.Styles["default"]; !ok {
 		t.Fatal("内置风格集应含 default")
 	}
-	for _, style := range []string{"psychological", "stone-age-doodle", "vietnamese-history", "stone-age-doodle-explain", "doodle-explainer", "novel-manga", "behavioral-psychology"} {
+	for _, style := range []string{"psychological", "stone-age-doodle", "vietnamese-history", "stone-age-doodle-explain", "doodle-explainer", "novel-manga", "behavioral-psychology", "suspense", "romance", "fantasy"} {
 		if _, ok := b.Styles[style]; !ok {
 			t.Fatalf("phong cách %s chưa có trong b.Styles", style)
 		}
@@ -107,6 +107,30 @@ func TestLoad_DistinctModesNovelAndDoodle(t *testing.T) {
 	if !strings.Contains(bHistory.Voice, "nhà chép sử đầy tâm huyết") {
 		t.Fatalf("Chế độ vietnamese-history phải nạp voice tiểu thuyết lịch sử, nhận được: %s", bHistory.Voice[:100])
 	}
+
+	bSuspense := Load("suspense", LoadOptions{})
+	if !strings.Contains(bSuspense.Prompts.Writer, "Trinh thám – Tâm lý Tội phạm & Kinh dị Tâm linh") {
+		t.Fatalf("Chế độ suspense phải nạp prompt tác giả trinh thám & kinh dị, nhận được: %s", bSuspense.Prompts.Writer[:100])
+	}
+	if !strings.Contains(bSuspense.Voice, "Giọng văn Trinh thám – Tâm lý Tội phạm & Kinh dị Tâm linh") {
+		t.Fatalf("Chế độ suspense phải nạp voice trinh thám & kinh dị, nhận được: %s", bSuspense.Voice[:100])
+	}
+
+	bRomance := Load("romance", LoadOptions{})
+	if !strings.Contains(bRomance.Prompts.Writer, "Ngôn tình – Chữa lành & Tâm lý Tình cảm Hiện đại") {
+		t.Fatalf("Chế độ romance phải nạp prompt tác giả ngôn tình & chữa lành, nhận được: %s", bRomance.Prompts.Writer[:100])
+	}
+	if !strings.Contains(bRomance.Voice, "Giọng văn Ngôn tình – Chữa lành & Tâm lý Tình cảm Hiện đại") {
+		t.Fatalf("Chế độ romance phải nạp voice ngôn tình & chữa lành, nhận được: %s", bRomance.Voice[:100])
+	}
+
+	bFantasy := Load("fantasy", LoadOptions{})
+	if !strings.Contains(bFantasy.Prompts.Writer, "Kỳ ảo – Tiên hiệp / Thăng cấp & Thế giới Đa tầng") {
+		t.Fatalf("Chế độ fantasy phải nạp prompt tác giả kỳ ảo & tiên hiệp, nhận được: %s", bFantasy.Prompts.Writer[:100])
+	}
+	if !strings.Contains(bFantasy.Voice, "Hào sảng, Kỳ vĩ, Trọng Quy tắc") {
+		t.Fatalf("Chế độ fantasy phải nạp voice kỳ ảo & tiên hiệp, nhận được: %s", bFantasy.Voice[:100])
+	}
 }
 
 func TestInterventionPromptsKeepScopeContract(t *testing.T) {
@@ -116,9 +140,12 @@ func TestInterventionPromptsKeepScopeContract(t *testing.T) {
 			t.Fatalf("Arbiter can thiệp thiếu khế ước phạm vi %q", phrase)
 		}
 	}
-	for _, phrase := range []string{"can thiệp ban đầu của người dùng", "phạm vi phân tích không đồng nghĩa với phạm vi sửa đổi", "tập hợp chương tối thiểu thỏa đáng"} {
-		if !strings.Contains(prompts.Editor, phrase) {
-			t.Fatalf("Editor thiếu khế ước phạm vi %q", phrase)
+	for _, style := range []string{"", "novel-manga", "vietnamese-history", "suspense", "romance", "fantasy", "behavioral-psychology"} {
+		modePrompts := loadPrompts(style)
+		for _, phrase := range []string{"can thiệp ban đầu của người dùng", "phạm vi phân tích không đồng nghĩa với phạm vi sửa đổi", "tập hợp chương tối thiểu thỏa đáng"} {
+			if !strings.Contains(modePrompts.Editor, phrase) {
+				t.Fatalf("Editor (%s) thiếu khế ước phạm vi %q", style, phrase)
+			}
 		}
 	}
 }
@@ -170,7 +197,7 @@ func TestLoad_ThreeTierAppendAndReplace(t *testing.T) {
 
 	b := Load("fantasy", opts)
 
-	builtinVoice := mustRead(voiceFS, "voice.md")
+	builtinVoice := mustRead(voiceFS, "voices/fantasy.md")
 	if !strings.HasPrefix(b.Voice, builtinVoice) {
 		t.Fatal("追加语义必须保留内置原文为前缀")
 	}
