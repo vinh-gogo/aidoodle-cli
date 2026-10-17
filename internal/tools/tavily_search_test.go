@@ -11,7 +11,7 @@ import (
 )
 
 func TestTavilySearchTool(t *testing.T) {
-	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	client := mockTavilyClient(func(w http.ResponseWriter, r *http.Request) {
 		if r.URL.Path != "/search" {
 			http.NotFound(w, r)
 			return
@@ -29,10 +29,7 @@ func TestTavilySearchTool(t *testing.T) {
 		}
 		w.Header().Set("Content-Type", "application/json")
 		_ = json.NewEncoder(w).Encode(resp)
-	}))
-	defer server.Close()
-
-	client := tavily.NewClient("test-key", server.URL)
+	})
 	tool := NewTavilySearchTool(client)
 
 	if tool.Name() != "tavily_search" {
@@ -62,7 +59,7 @@ func TestTavilySearchTool(t *testing.T) {
 }
 
 func TestTavilyCrawlTool(t *testing.T) {
-	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	client := mockTavilyClient(func(w http.ResponseWriter, r *http.Request) {
 		if r.URL.Path == "/extract" {
 			resp := tavily.ExtractResponse{
 				Results: []tavily.ExtractResult{
@@ -77,10 +74,7 @@ func TestTavilyCrawlTool(t *testing.T) {
 			return
 		}
 		http.NotFound(w, r)
-	}))
-	defer server.Close()
-
-	client := tavily.NewClient("test-key", server.URL)
+	})
 	tool := NewTavilyCrawlTool(client)
 
 	if tool.Name() != "tavily_crawl" {
@@ -162,4 +156,3 @@ func TestTavilyCrawlTool_GracefulFallback(t *testing.T) {
 		t.Errorf("expected word_count 0 on error, got %v", res["word_count"])
 	}
 }
-

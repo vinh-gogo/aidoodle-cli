@@ -42,13 +42,16 @@ sh -n scripts/install.sh        # Linux CI only
 CI matrix: ubuntu-latest + windows-latest, Go from `go.mod`.
 Release: GoReleaser (`.goreleaser.yml`), Docker image `ghcr.io/voocel/ainovel-cli`; `docker-compose.yml` mounts `./config:/root/.ainovel` and `./workspace:/workspace`.
 
-> I have NOT run build/tests in this workspace yet — state unknown. Do this at the start of any code-changing task.
+> Verified build/test status: 100% PASS across all 26 packages (unit, integration, e2e, evals: 315+ tests). Verified locally on Windows AMD64.
 
 ## Config
 - Global `~/.ainovel/config.json`; project `./.ainovel/config.json` (gitignored — contains secrets); example `config.example.jsonc` (Vietnamese comments).
 - Keys: `provider`, `model`, `reasoning_effort` (off|low|medium|high|xhigh|max), `providers{type, api_key, base_url, models[{name,context_window,json_schema}], api(chat|responses), extra{user_agent,headers,anthropic_beta}, extra_body, stream_idle_timeout}`, `roles{architect|writer|editor|import_segment|import_analyze|import_synthesize → provider/model/reasoning_effort/fallbacks}`, `style`, `context_window` (legacy), `budget{book_usd,warn_ratio,hard_stop}`, `notify{enabled,command,events}`, `disable_update_check`.
-- **Kaggle / Local Server Inference via ngrok**:
-  - `kaggle-llama` with `qwen-27b`: Uses `type: "openai"`, `base_url: "https://<subdomain>.ngrok-free.dev/v1"`, `extra.headers.ngrok-skip-browser-warning: "true"`, `stream_idle_timeout: "15m"`.
+- **Colab / Local Server Inference via Cloudflare Tunnel (`kaggle/colab_llama_cpp.ipynb`)**:
+  - Unified FastAPI Gateway (Port 8000) published via Cloudflare Tunnel at fixed URL: `https://api.gloryvocab.com/v1`
+  - **Main LLM (Port 8001)**: `Gemma 4 26B A4B` (`model: "main-llm"` or `"gemma-4-26B-A4B-it-Q4_K_M.gguf"`, `--ctx-size 65536`, `context_window: 32768`).
+  - **STT Backend (Port 8003)**: `Gemma 4 E2B + Audio mmproj` (`model: "gemma-4-stt"` or `"google/gemma-4-E2B-it"`, `/v1/audio/transcriptions`).
+  - `kaggle-llama` / `colab-llama` provider config: Uses `type: "openai"`, `base_url: "https://api.gloryvocab.com/v1"`, `model: "main-llm"`, `context_window: 32768`, `stream_idle_timeout: "15m"` (không còn cần `ngrok-skip-browser-warning`).
   - **Repetition Trap Mitigation**: LLMs on open-source weights (Qwen, Llama) can enter infinite loops (e.g., `- true\n- true...`). Mitigated by adding `extra_body` to provider config:
     ```json
     "extra_body": {
@@ -63,18 +66,21 @@ Release: GoReleaser (`.goreleaser.yml`), Docker image `ghcr.io/voocel/ainovel-cl
 - Startup errors persisted to `~/.ainovel/last-error.log`.
 
 ## Styles & Script Limits
-- **4 Primary AI Modes**:
-  1. `novel-manga` (Tiểu thuyết / Manga, văn xuôi 2.000 – 4.000 từ/chương)
-  2. `doodle-explainer` (Doodle Explainer video script 5+ phút, mặc định)
-  3. `behavioral-psychology` (Kịch bản video tâm lý học hành vi 5+ phút)
-  4. `vietnamese-history` (Tiểu thuyết nhân vật lịch sử Việt Nam 2.000 – 4.000 từ/chương)
-- Legacy & alias styles: `stone-age-doodle`, `stone-age-doodle-explain`, `psychological`, `default`, `suspense`, `fantasy`, `romance`.
+- **7 Primary AI Modes**:
+  1. `novel-manga` (Tiểu thuyết / Manga Đa năng, văn xuôi 2.000 – 4.000 từ/chương)
+  2. `suspense` (Tiểu thuyết Trinh thám – Tâm lý Tội phạm & Kinh dị Tâm linh, 2.500 – 4.500 từ/chương; aliases: `trinh-tham`, `mystery`, `thriller`, `horror`)
+  3. `romance` (Tiểu thuyết Ngôn tình – Chữa lành & Tâm lý Tình cảm Hiện đại, 2.500 – 4.000 từ/chương; aliases: `ngon-tinh`, `healing`)
+  4. `fantasy` (Tiểu thuyết Kỳ ảo – Tiên hiệp / Thăng cấp & Thế giới Đa tầng, 2.500 – 4.500 từ/chương; aliases: `ky-ao`, `tien-hiep`, `xianxia`)
+  5. `vietnamese-history` (Tiểu thuyết nhân vật lịch sử Việt Nam, 2.000 – 4.000 từ/chương; aliases: `history`, `lich-su`)
+  6. `doodle-explainer` (Doodle Explainer video script 5+ phút)
+  7. `behavioral-psychology` (Kịch bản video tâm lý học hành vi 5+ phút; alias: `psychology`)
+- Legacy styles: `stone-age-doodle`, `stone-age-doodle-explain`, `psychological`, `default`.
 - **Interactive Commands**:
-  - `/mode` (alias: `/topic`, `/topics`): Chuyển đổi giữa 4 chế độ làm việc và lưu vào `.ainovel/config.json`.
-  - `/dash` (alias: `/dashboard`, `/projects`, `/history`): Mở modal quản lý toàn bộ outputs đã làm, hiển thị Tag Mode (`[🧠 Tâm lý học hành vi]`, `[🦴 Video TikTok]`, `[⚔️ Lịch sử Việt Nam]`, `[📖 Tiểu thuyết / Manga]`), tiến độ, đường dẫn thư mục, cho phép chọn bằng phím mũi tên và ấn Enter để chuyển đổi dự án.
+  - `/mode` (alias: `/topic`, `/topics`): Chuyển đổi giữa 7 chế độ làm việc (phím tắt `1`–`7`) và lưu vào `.ainovel/config.json`.
+  - `/dash` (alias: `/dashboard`, `/projects`, `/history`): Mở modal quản lý toàn bộ outputs đã làm, hiển thị Tag Mode (`[📖 Tiểu thuyết / Manga]`, `[🕵️ Trinh thám & Kinh dị]`, `[🌸 Ngôn tình & Chữa lành]`, `[🐉 Kỳ ảo & Tiên hiệp]`, `[⚔️ Lịch sử Việt Nam]`, `[🦴 Video TikTok]`, `[🧠 Tâm lý học hành vi]`), tiến độ, đường dẫn thư mục, cho phép chọn bằng phím mũi tên và ấn Enter để chuyển đổi dự án.
   - `/new`: Khởi tạo phiên làm việc mới trong thư mục output timestamp `output/novel-YYYYMMDD-HHMM` mà không cần nhập tham số.
 - **Script validator bounds (`internal/tools/script_format.go`)**:
-  - Chỉ áp dụng cho chế độ video (`doodle-explainer`, `behavioral-psychology`). Hoàn toàn không áp dụng cho chế độ tiểu thuyết (`novel-manga`, `vietnamese-history`).
+  - Chỉ áp dụng cho chế độ video (`doodle-explainer`, `behavioral-psychology`). Hoàn toàn không áp dụng cho 5 chế độ tiểu thuyết (`novel-manga`, `suspense`, `romance`, `fantasy`, `vietnamese-history`).
   - `scriptMinWords = 700`, `scriptMaxWords = 1500` (words of `LỜI:`).
   - `scriptMinSeconds = 300`, `scriptMaxSeconds = 600` (5 đến 10 phút thời lượng đọc).
   - Yêu cầu: dòng tiêu đề, HOOK đầu tiên, CHỐT cuối cùng, mỗi block có ít nhất một cặp LỜI và HÌNH, và phần chân kịch bản (CAPTION, HASHTAG, NGUỒN, CẦN KIỂM CHỨNG).

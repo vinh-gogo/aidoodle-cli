@@ -1,0 +1,20 @@
+{
+  "id": "vietnamese_history_rubric",
+  "category": "quality",
+  "role": "editor",
+  "style": "vietnamese-history",
+  "description": "Rubric thẩm định tiểu thuyết lịch sử: Bảng bất biến lịch sử, tính chính xác niên đại sự kiện, xưng hô Đại Việt, không dùng từ ngữ lai căng, có mục Hậu ký và Ghi chú lịch sử của tác giả.",
+  "prompt": "Thẩm định chương tiểu thuyết lịch sử Việt Nam: đối chiếu sự kiện với Bảng bất biến, kiểm tra xưng hô chuẩn thời Trần, kiểm tra tính tôn nghiêm lịch sử và sự hiện diện của phần Ghi chú lịch sử.",
+  "max_chapters": 1,
+  "target_prompts": ["editor.md"],
+  "rubric": "evals/rubrics/vietnamese_history.json",
+  "expect": {
+    "phase": "writing",
+    "min_completed_chapters": 1,
+    "required_checkpoints": ["chapter:1:commit"],
+    "no_pending": ["pending_commit", "pending_steer"]
+  },
+  "gate": {
+    "max_severity": "warning"
+  }
+}

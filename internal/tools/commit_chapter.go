@@ -518,16 +518,34 @@ func (t *CommitChapterTool) appendCommitCheckpoint(chapter int) error {
 // + 用户规则 Check（读本书快照的 structured；快照缺失退到内置默认，保证机械底线始终在）。
 func (t *CommitChapterTool) checkRules(text string) []rules.Violation {
 	violations := rules.Lint(text)
+	style := ""
+	if snap, err := t.store.RunMeta.Load(); err == nil && snap != nil {
+		style = snap.Style
+	}
 	// Validator định dạng kịch bản (docs/script-format.md): chỉ cảnh báo cho các chế độ video (doodle-explainer, behavioral-psychology).
 	// Chế độ novel-manga không bị cảnh báo thiếu thẻ HOOK/CẢNH/CHỐT.
-	if snap, err := t.store.RunMeta.Load(); err == nil && snap != nil && (snap.Style == "doodle-explainer" || snap.Style == "behavioral-psychology" || snap.Style == "psychology") {
+	if style == "doodle-explainer" || style == "behavioral-psychology" || style == "psychology" {
 		violations = append(violations, lintScript(text)...)
 	}
+	// Bổ sung bộ kiểm tra cơ học xác định VAL-01..06 (CJK, word bounds, repetition loop, truncated ending, banned clichés, leaked script tags)
+	violations = append(violations, rules.ValidateMechanicalRules(style, "", text)...)
+
 	structured := rules.SystemDefaults().Structured
 	if snap, err := t.store.UserRules.Load(); err == nil && snap != nil {
 		structured = snap.Structured
 	}
-	return append(violations, rules.Check(text, structured)...)
+	violations = append(violations, rules.Check(text, structured)...)
+
+	seen := make(map[string]struct{})
+	deduped := make([]rules.Violation, 0, len(violations))
+	for _, v := range violations {
+		key := fmt.Sprintf("%s:%v", v.Rule, v.Target)
+		if _, ok := seen[key]; !ok {
+			seen[key] = struct{}{}
+			deduped = append(deduped, v)
+		}
+	}
+	return deduped
 }
 
 // executeRewriteCommit 处理打磨/重写章节的提交：覆盖终稿与摘要、更新字数、drain 队列。

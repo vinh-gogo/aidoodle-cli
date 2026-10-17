@@ -1,39 +1,28 @@
-## Tài liệu tham khảo dạng Hồi (Arc) Ngôn tình / Tình cảm
+## Mẫu cấu trúc Hồi (Arc Templates) Ngôn tình – Chữa lành & Tâm lý Tình cảm
 
-Các dạng hồi dưới đây áp dụng cho trường thiên ngôn tình, tâm lý tình cảm, thanh xuân vườn trường, đô thị tình duyên. Có thể tùy ý kết hợp theo thiết lập cụ thể, không nhất thiết phải dùng hết.
+Các dạng hồi dưới đây áp dụng cho cả đoản thiên một quyển và trường thiên nhiều quyển (ngôn tình hiện đại, chữa lành đô thị, gương vỡ lại lành, thanh xuân trưởng thành).
 
-### Hồi Sơ ngộ / Tái ngộ (8-12 chương)
-2-3 chương thường nhật riêng rẽ (thiết lập tính độc lập của nhân vật) → 3-5 chương tương ngộ then chốt + buộc phải tiếp xúc (tạo ma sát và ấn tượng ban đầu) → 2-3 chương bước đầu tìm hiểu + chuyển biến vi tế
-- Ấn tượng ban đầu tốt nhất không nên là tiếng sét ái tình, mà nên bắt đầu từ hiểu lầm hoặc xung đột.
-- Tình huống buộc phải tiếp xúc phải tự nhiên (hợp tác làm việc, hàng xóm láng giềng, đồng nghiệp), không sắp đặt trùng hợp khiên cưỡng.
-- Cuối hồi thiết lập chuyển biến nhận thức: "Người này không hề giống như mình từng nghĩ".
+### 1. Hồi Sơ ngộ / Phá băng Giữa Hai Thế giới (8-12 chương)
+- **Chương 1-3 (Hai quỹ đạo độc lập & Va chạm đầu tiên)**: Thiết lập cuộc sống, nghề nghiệp và lớp vỏ phòng vệ của từng nhân vật → Cuộc chạm trán không hoàn hảo (hiểu lầm công việc, đối đầu quan điểm, tình huống dở khóc dở cười).
+- **Chương 4-8 (Buộc phải đồng hành & Góc nhìn mới)**: Cùng tham gia một dự án, trở thành hàng xóm hoặc đối tác bất đắc dĩ → Qua công việc thực tế, phát hiện sự tử tế và tài năng ẩn sau vẻ ngoài gai góc của đối phương.
+- **Chương 9-12 (Khoảnh khắc Phá băng)**: Một biến cố nhỏ (cơn mưa đêm, sự cố nghề nghiệp, một lần ốm đau) làm rơi lớp mặt nạ phòng vệ đầu tiên → Chuyển biến nhận thức: *"Người này hoàn toàn khác với những gì mình từng nghĩ"*.
 
-### Hồi Mập mờ ấm áp (Nhen nhóm tình cảm) (10-15 chương)
-3-4 chương tương tác thường nhật ngày một sâu sắc (cùng trải qua biến cố, âm thầm giúp đỡ) → 3-5 chương sự kiện chất xúc tác then chốt (nguy cơ, hiểu lầm nhỏ, tác động từ bên thứ ba) → 2-3 chương đỉnh điểm mập mờ (suýt tỏ tình / khoảnh khắc thân mật nghẹt thở / bị ngắt lời) → 1-2 chương xác nhận tình cảm hoặc lùi bước do dự
-- Đây là dạng hồi đòi hỏi trau chuốt chi tiết nhất: vi biểu cảm, cử chỉ vô thức, sự quan tâm bất chợt sẽ hiệu quả hơn ngàn lời độc thoại nội tâm.
-- Tình cảm ấm dần lên không đi theo đường thẳng, xen kẽ phải có sự e dè, lùi bước và thăm dò.
-- Sự can thiệp của nhân vật thứ ba (người yêu cũ, người theo đuổi, kẻ gây hiểu lầm) phải có động cơ độc lập, hợp lý.
+### 2. Hồi Mập mờ Ấm áp & Rung động Ngầm (Slow-Burn & Healing) (10-15 chương)
+- **Chương 1-4 (Thói quen hiện diện)**: Những tương tác thường nhật dần trở thành thói quen không thể thiếu; sự quan tâm thể hiện qua hành động nhỏ không lời.
+- **Chương 5-9 (Chất xúc tác & Ghen tuông vi tế)**: Xuất hiện thử thách bên ngoài hoặc đối tượng theo đuổi khác → Nhân vật nhận ra sự chiếm hữu và nỗi sợ mất đi vị trí đặc biệt trong lòng đối phương.
+- **Chương 10-13 (Đỉnh điểm Mập mờ & Chạm vết thương)**: Một đêm tâm sự sâu lắng chạm vào vết thương quá khứ; khoảng cách vật lý thu hẹp đến nghẹt thở.
+- **Chương 14-15 (Xác nhận hoặc Bước lùi trước Ngưỡng cửa)**: Lời tỏ tình chân thành hoặc một bước lùi do nỗi sợ tổn thương cũ trỗi dậy, đẩy lực căng lên đỉnh điểm.
 
-### Hồi Hiểu lầm / Xung đột (8-12 chương)
-2-3 chương mầm mống mâu thuẫn (khác biệt giá trị quan / bí mật che giấu / áp lực bên ngoài) → 2-3 chương xung đột bùng nổ (không phải loại hiểu lầm kiểu "chỉ cần mở lời giải thích là xong") → 2-3 chương tự gặm nhấm tổn thương + sự kiện bên ngoài thúc đẩy → 1-2 chương cơ hội hòa giải (nhưng chưa hoàn toàn khôi phục nguyên trạng)
-- Xung đột bắt buộc phải chạm đến khác biệt giá trị quan cốt lõi, không chơi trò "tại sao anh không chịu nghe máy của em".
-- Hòa giải không phải là một bên nhận sai hoàn toàn, mà cả hai phía đều có sự trưởng thành và nhượng bộ lẫn nhau.
-- Sau xung đột, mối quan hệ bước sang giai đoạn mới có chiều sâu hơn, không đơn giản là quay về như trước lúc cãi vã.
+### 3. Hồi Gương Vỡ Lại Lành / Tái Ngộ Sau Chia Xa (Second-Chance Romance) (10-16 chương)
+- **Chương 1-3 (Trùng phùng trong Vị thế Mới)**: Gặp lại sau nhiều năm xa cách; bề ngoài lạnh nhạt, khách sáo nhưng từng ánh mắt, thói quen cũ vẫn âm ỉ nhức nhối.
+- **Chương 4-8 (Đan xen Hiện tại & Ký ức)**: Buộc phải làm việc cùng nhau ở hiện tại, từng mảnh ghép ký ức hé lộ nguyên nhân chia tay năm xưa không phải vì hết yêu mà vì biến cố bất khả kháng.
+- **Chương 9-13 (Bóc trần Sự thật & Giằng xé)**: Sự thật về những hy sinh thầm lặng trong suốt những năm xa cách bị phơi bày; đối diện với vết thương chưa từng lành.
+- **Chương 14-16 (Tha thứ & Lựa chọn Lại từ Đầu)**: Hai con người đã trưởng thành dũng cảm tháo bỏ nút thắt quá khứ, bước về phía nhau vững vàng hơn xưa.
 
-### Hồi Chia xa / Thử thách nghiệt ngã (10-15 chương)
-2-3 chương nguyên nhân buộc phải chia cắt (cách trở địa lý, gia đình phản đối, lựa chọn ngã rẽ sự nghiệp) → 5-8 chương mỗi người đối mặt với thử thách riêng (tuyến trưởng thành độc lập đan xen với nỗi nhớ nhung) → 2-3 chương tương phùng + tái định nghĩa lại mối quan hệ
-- Trong thời gian chia xa, cả hai đều phải có tuyến trưởng thành độc lập, không thể suốt ngày chỉ ngồi "nhớ nhung người kia".
-- Biểu đạt nỗi nhớ phải tiết chế, thông qua hành vi cụ thể (giữ gìn thói quen cũ, đối chiếu quan hệ mới - cũ) thay vì độc thoại tâm sự dài dòng.
-- Trùng phùng không phải là quay lại quá khứ mù quáng, mà là hai con người đã chín chắn, trưởng thành lựa chọn lại một lần nữa.
+### 4. Hồi Xung đột Giá trị quan & Hoạn nạn Có nhau (8-12 chương)
+- **Chương 1-3 (Áp lực Thực tại ập đến)**: Khủng hoảng sự nghiệp, biến cố gia đình hoặc sự khác biệt trong lựa chọn tương lai đặt mối quan hệ lên bàn cân.
+- **Chương 4-8 (Rạn nứt & Thử lửa)**: Không phải cãi vã trẻ con, mà là sự giằng xé đau đớn giữa tình yêu và trách nhiệm; trong lúc khó khăn nhất, đối phương vẫn âm thầm đứng ra bảo vệ.
+- **Chương 9-12 (Đồng cam cộng khổ & Thăng hoa)**: Cùng nhau vượt qua giông bão bằng sự tôn trọng và nhượng bộ trưởng thành; tình cảm bước sang tầng gắn kết sâu sắc không thể tách rời.
 
-### Hồi Hoạn nạn có nhau (Đồng cam cộng khổ) (8-12 chương)
-2-3 chương khủng hoảng bên ngoài ập đến (biến cố gia đình, đổ vỡ sự nghiệp, hiểm họa sức khỏe) → 3-5 chương kề vai sát cánh đối mặt (khắc họa chiều sâu và độ bền bỉ của tình cảm) → 2-3 chương khủng hoảng được hóa giải + tình cảm thăng hoa
-- Khủng hoảng phải chân thực và có sức nặng, tuyệt đối không tạo drama rẻ tiền (cẩu huyết vô lý).
-- Trong quá trình cùng đối mặt khó khăn, bộc lộ những khía cạnh chân thực, trần trụi nhất của đối phương.
-- Thích hợp đặt vào giai đoạn giữa của mối quan hệ, dùng áp lực ngoại cảnh để thử thách độ bền chặt bên trong.
-
-### Hồi Thường nhật / Ngọt ngào (5-8 chương)
-Gắn bó thường nhật / tương tác với bạn bè chung / những niềm vui bất ngờ nho nhỏ / gài cắm phục bút
-- Ngọt ngào không có nghĩa là phẳng lặng không chút xung đột, mà là xung đột nhỏ và được tháo gỡ nhanh chóng, dễ thương.
-- Dùng các chi tiết đời thường để củng cố sự gắn bó cảm xúc của người đọc vào mối quan hệ này.
-- Tích lũy năng lượng cho hồi xung đột lớn tiếp theo——càng ngọt ngào sâu đậm bao nhiêu, sự xé rách về sau càng đau đớn bấy nhiêu.
+### 5. Hồi Chữa lành Phố nhỏ / Hạnh phúc Thường nhật (Cozy Healing Arc) (6-10 chương)
+- Nhịp điệu chậm rãi, ấm áp: cùng nấu những bữa cơm chiều, chăm sóc một góc vườn, giải quyết những câu chuyện nhân sinh nhẹ nhàng của những người xung quanh và gài cắm bước đệm cho tương lai viên mãn.

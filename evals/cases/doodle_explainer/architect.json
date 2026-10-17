@@ -1,0 +1,19 @@
+{
+  "id": "doodle_explainer_architect",
+  "category": "workflow",
+  "role": "architect",
+  "style": "doodle-explainer",
+  "description": "Lập kế hoạch series video giải thích bằng hình que người tiền sử (Doodle Explainer 5-8 phút), cấu trúc 5 giai đoạn, Tái Hook mỗi 60-90s.",
+  "prompt": "Lập kế hoạch series video 5 tập giải thích các hiện tượng khoa học thường ngày (vì sao trời mưa, cầu vồng, sấm sét, thủy triều, nhật thực) qua góc nhìn hài hước của Người Que thời đồ đá.",
+  "max_chapters": 0,
+  "target_prompts": ["architect-short.md"],
+  "rubric": "evals/rubrics/doodle_explainer.json",
+  "expect": {
+    "phase": "writing",
+    "required_checkpoints": ["global:outline", "global:characters"],
+    "no_pending": ["pending_commit", "pending_steer"]
+  },
+  "gate": {
+    "max_severity": "warning"
+  }
+}

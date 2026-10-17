@@ -3,6 +3,7 @@ package web
 import (
 	"encoding/json"
 	"fmt"
+	"net/url"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -43,6 +44,108 @@ type ChapterItem struct {
 
 var timestampSuffixRe = regexp.MustCompile(`^(.+)-\d{8}-\d{4}(?:-\d+)?$`)
 
+// SafeProjectDir kiểm tra và làm sạch requestedDir để đảm bảo nó nằm hoàn toàn trong baseDir.
+// Chặn triệt để path traversal qua "..", URL percent-encoding (%2e%2e), null-byte, UNC path,
+// và root path trên Windows (/ hoặc \) không thuộc baseDir.
+func SafeProjectDir(baseDir, requestedDir string) (string, error) {
+	if strings.TrimSpace(baseDir) == "" {
+		baseDir = "output"
+	}
+	if baseDir == "output" {
+		if _, err := os.Stat("output"); os.IsNotExist(err) {
+			for _, candidate := range []string{filepath.Join("..", "..", "output"), filepath.Join("..", "output")} {
+				if fi, err := os.Stat(candidate); err == nil && fi.IsDir() {
+					baseDir = candidate
+					break
+				}
+			}
+		}
+	}
+	baseAbs, err := filepath.Abs(filepath.Clean(baseDir))
+	if err != nil {
+		return "", fmt.Errorf("không thể xác định thư mục gốc: %w", err)
+	}
+
+	trimmedReq := strings.TrimSpace(requestedDir)
+	if trimmedReq == "" || trimmedReq == "." {
+		return baseAbs, nil
+	}
+
+	// 1. Recursive URL unescaping to catch single (%2e%2e) and double (%252e%252e) encoding
+	decoded := trimmedReq
+	for i := 0; i < 3; i++ {
+		if unescaped, err := url.QueryUnescape(decoded); err == nil && unescaped != decoded {
+			decoded = unescaped
+		} else {
+			break
+		}
+	}
+
+	// 2. Reject null byte injection
+	if strings.Contains(decoded, "\x00") {
+		return "", fmt.Errorf("truy cập bị từ chối: phát hiện ký tự null byte trong đường dẫn %q", requestedDir)
+	}
+
+	// 3. Reject relative traversal patterns
+	if strings.Contains(decoded, "..") {
+		cleanDecoded := filepath.Clean(decoded)
+		if cleanDecoded == ".." || strings.HasPrefix(cleanDecoded, ".."+string(filepath.Separator)) ||
+			strings.HasPrefix(cleanDecoded, "../") || strings.HasPrefix(cleanDecoded, `..\`) {
+			return "", fmt.Errorf("truy cập bị từ chối: đường dẫn %q cố gắng thoát khỏi thư mục cơ sở", requestedDir)
+		}
+	}
+
+	// 4. Reject UNC network shares (\\server\share, //server/share)
+	if strings.HasPrefix(decoded, `\\`) || strings.HasPrefix(decoded, `//`) {
+		return "", fmt.Errorf("truy cập bị từ chối: không hỗ trợ đường dẫn mạng UNC %q", requestedDir)
+	}
+
+	// 5. Windows root-relative bypass check:
+	// A path starting with '/' or '\' without a matching drive volume is root-relative (e.g. /etc/passwd or \Windows).
+	// It is NEVER relative to baseDir.
+	if strings.HasPrefix(decoded, "/") || strings.HasPrefix(decoded, "\\") {
+		if !filepath.IsAbs(decoded) || filepath.VolumeName(decoded) != filepath.VolumeName(baseAbs) {
+			return "", fmt.Errorf("truy cập bị từ chối: đường dẫn gốc %q không hợp lệ ngoài thư mục cơ sở", requestedDir)
+		}
+	}
+
+	cleanReq := filepath.Clean(decoded)
+
+	// Helper to check if a candidate absolute path is strictly inside baseAbs (or equals baseAbs).
+	isWithin := func(targetAbs string) bool {
+		rel, err := filepath.Rel(baseAbs, targetAbs)
+		if err != nil {
+			return false
+		}
+		if rel == ".." || strings.HasPrefix(rel, ".."+string(filepath.Separator)) {
+			return false
+		}
+		return true
+	}
+
+	// 6. Absolute path verification
+	if filepath.IsAbs(cleanReq) {
+		absCandidate, err := filepath.Abs(cleanReq)
+		if err != nil || !isWithin(absCandidate) {
+			return "", fmt.Errorf("truy cập bị từ chối: đường dẫn tuyệt đối %q nằm ngoài thư mục cho phép %q", requestedDir, baseDir)
+		}
+		return absCandidate, nil
+	}
+
+	// If cleanReq is relative to CWD and inside baseAbs (e.g. "output/novel-1")
+	if absFromCWD, err := filepath.Abs(cleanReq); err == nil && isWithin(absFromCWD) {
+		return absFromCWD, nil
+	}
+
+	// 7. Relative path resolution inside baseAbs
+	absFromBase, err := filepath.Abs(filepath.Join(baseAbs, cleanReq))
+	if err != nil || !isWithin(absFromBase) {
+		return "", fmt.Errorf("truy cập bị từ chối: đường dẫn %q nằm ngoài thư mục cho phép %q", requestedDir, baseDir)
+	}
+
+	return absFromBase, nil
+}
+
 // NextOutputDir tạo đường dẫn thư mục mới theo kiểu output/novel-YYYYMMDD-HHMM.
 func NextOutputDir(currentDir string, now time.Time) string {
 	if currentDir == "" {
@@ -73,13 +176,19 @@ func NextOutputDir(currentDir string, now time.Time) string {
 
 // DetectStyleBadge tạo nhãn hiển thị phong cách trực quan cho từng mode.
 func DetectStyleBadge(style string) string {
-	switch strings.ToLower(style) {
+	switch strings.ToLower(strings.TrimSpace(style)) {
 	case "behavioral-psychology", "psychology":
 		return "[🧠 Tâm lý học hành vi]"
 	case "doodle-explainer":
 		return "[🦴 Video TikTok]"
-	case "vietnamese-history":
+	case "vietnamese-history", "history", "lich-su":
 		return "[⚔️ Lịch sử Việt Nam]"
+	case "suspense", "trinh-tham", "mystery", "thriller", "horror":
+		return "[🕵️ Trinh thám & Kinh dị]"
+	case "romance", "ngon-tinh", "healing":
+		return "[🌸 Ngôn tình & Chữa lành]"
+	case "fantasy", "ky-ao", "tien-hiep", "xianxia":
+		return "[🐉 Kỳ ảo & Tiên hiệp]"
 	case "novel-manga", "novel", "manga", "default", "":
 		return "[📖 Tiểu thuyết / Manga]"
 	default:

@@ -46,10 +46,11 @@ type References struct {
 
 // ContextTool 组装当前章节所需上下文。
 type ContextTool struct {
-	store      *store.Store
-	refs       References
-	style      string
-	styleStats *StyleStatsIndex
+	store        *store.Store
+	refs         References
+	style        string
+	styleStats   *StyleStatsIndex
+	promptTokens int
 }
 
 type contextReads struct {
@@ -182,8 +183,89 @@ func (t *ContextTool) Execute(_ context.Context, args json.RawMessage) (json.Raw
 		result["_warnings"] = reads.warnings
 	}
 
+	promptTokens := t.PromptTokens()
+	availableTokens := MaxContextBudgetTokens - promptTokens
+	if availableTokens < 500 {
+		availableTokens = 500
+	}
+
+	if a.Chapter > 0 {
+		// Target story budget: at most 55% of availableTokens when tight
+		maxStoryBudget := int(float64(availableTokens) * 0.55)
+		if maxStoryBudget < 1500 {
+			maxStoryBudget = 1500
+		}
+		if availableTokens >= 8000 && maxStoryBudget < 4000 {
+			maxStoryBudget = 4000
+		}
+
+		// Remove uncalibrated references to measure actual story tokens
+		if refPack, ok := result["reference_pack"].(map[string]any); ok {
+			delete(refPack, "references")
+		}
+
+		// Measure story context tokens before reference pack
+		previewData, _ := json.Marshal(result)
+		storyTokens := EstimateTokens(string(previewData))
+
+		if storyTokens > maxStoryBudget {
+			t.clampStoryContext(result, maxStoryBudget, a.Chapter)
+			previewData, _ = json.Marshal(result)
+			storyTokens = EstimateTokens(string(previewData))
+		}
+
+		// If still over budget, clamp more aggressively
+		if storyTokens > maxStoryBudget {
+			t.clampStoryContext(result, 1200, a.Chapter)
+			previewData, _ = json.Marshal(result)
+			storyTokens = EstimateTokens(string(previewData))
+		}
+
+		refBudget := availableTokens - storyTokens - 250
+		if refBudget < 100 {
+			refBudget = 100
+		}
+
+		// Inject references with dynamic budget
+		t.injectWriterReferences(result, a.Chapter, refBudget)
+	}
+
 	// 工具层只做与任务相关的语义选择；上下文体积由各 Worker 按实际模型窗口管理。
 	result["_loading_summary"] = buildLoadingSummary(result, a.Chapter)
+
+	// Final Safety Check: Guarantee total tokens <= MaxContextBudgetTokens across all 7 modes
+	finalData, _ := json.Marshal(result)
+	totalTokens := promptTokens + EstimateTokens(string(finalData))
+	if totalTokens > MaxContextBudgetTokens {
+		excess := totalTokens - MaxContextBudgetTokens + 25
+		excessRunes := int(float64(excess)/0.8) + 1
+		if refPack, ok := result["reference_pack"].(map[string]any); ok {
+			if refs, ok := refPack["references"].(map[string]string); ok {
+				keys := make([]string, 0, len(refs))
+				for k := range refs {
+					keys = append(keys, k)
+				}
+				sort.Strings(keys)
+				for _, k := range keys {
+					if excessRunes <= 0 {
+						break
+					}
+					v := refs[k]
+					vRunes := []rune(v)
+					if len(vRunes) > excessRunes+20 {
+						refs[k] = string(vRunes[:len(vRunes)-excessRunes]) + "..."
+						excessRunes = 0
+						break
+					} else if len(vRunes) > 20 {
+						cut := len(vRunes) - 20
+						refs[k] = string(vRunes[:20]) + "..."
+						excessRunes -= cut
+					}
+				}
+			}
+		}
+		result["_loading_summary"] = buildLoadingSummary(result, a.Chapter)
+	}
 
 	data, err := json.Marshal(result)
 	if err != nil {
@@ -461,58 +543,382 @@ func (t *ContextTool) loadLayeredCharacters(result map[string]any, chapter int, 
 	t.loadFilteredCharacters(result, chapter, reads)
 }
 
+func isNovelOrHistoryStyle(style string) bool {
+	s := strings.ToLower(strings.TrimSpace(style))
+	switch s {
+	case "novel-manga", "novel", "manga",
+		"vietnamese-history", "history", "lich-su",
+		"suspense", "trinh-tham", "mystery", "thriller", "horror",
+		"romance", "ngon-tinh", "healing",
+		"fantasy", "ky-ao", "tien-hiep", "xianxia":
+		return true
+	default:
+		return false
+	}
+}
+
+func isSpecializedNovelGenre(style string) bool {
+	s := strings.ToLower(strings.TrimSpace(style))
+	switch s {
+	case "vietnamese-history", "history", "lich-su",
+		"suspense", "trinh-tham", "mystery", "thriller", "horror",
+		"romance", "ngon-tinh", "healing",
+		"fantasy", "ky-ao", "tien-hiep", "xianxia":
+		return true
+	default:
+		return false
+	}
+}
+
+// compactReference cắt bỏ các khối ví dụ kịch bản mẫu quá dài (vốn đã có trong system prompt)
+// và giới hạn độ dài mỗi tài liệu tham khảo để novel_context không vượt ngưỡng 32K token.
+func compactReference(raw string, maxRunes int) string {
+	raw = strings.TrimSpace(raw)
+	if raw == "" || maxRunes <= 0 {
+		return raw
+	}
+	for _, marker := range []string{
+		"\n## Ví dụ hoàn chỉnh",
+		"\n## Ví dụ kịch bản",
+		"\n## Bản mẫu hoàn chỉnh",
+		"\n## Ví dụ thực chiến hoàn chỉnh",
+	} {
+		if idx := strings.Index(raw, marker); idx > 0 {
+			raw = strings.TrimSpace(raw[:idx])
+		}
+	}
+	runes := []rune(raw)
+	if len(runes) <= maxRunes {
+		return raw
+	}
+	const suffix = "\n...(đã rút gọn tham khảo)"
+	suffixRunes := len([]rune(suffix))
+	targetRunes := maxRunes - suffixRunes
+	if targetRunes < 20 {
+		targetRunes = maxRunes
+		if len(runes) <= targetRunes {
+			return raw
+		}
+		return string(runes[:targetRunes])
+	}
+	clipped := string(runes[:targetRunes])
+	if lastNL := strings.LastIndexByte(clipped, '\n'); lastNL > len(clipped)/2 {
+		clipped = clipped[:lastNL]
+	}
+	return strings.TrimSpace(clipped) + suffix
+}
+
+// MaxContextBudgetTokens là giới hạn tổng token tối đa cho SystemPrompt + novel_context (60% của 32,768 = 19,660).
+const MaxContextBudgetTokens = 19660
+
+// EstimateTokens ước tính số token cho văn bản tiếng Việt/tiếng Anh (khoảng 0.8 token/rune).
+func EstimateTokens(s string) int {
+	return int(float64(len([]rune(s))) * 0.8)
+}
+
+func (t *ContextTool) SetPromptTokens(tokens int) {
+	t.promptTokens = tokens
+}
+
+func (t *ContextTool) PromptTokens() int {
+	if t.promptTokens > 0 {
+		return t.promptTokens
+	}
+	s := strings.ToLower(strings.TrimSpace(t.style))
+	switch {
+	case strings.Contains(s, "psychology"):
+		return 7500
+	case strings.Contains(s, "doodle"):
+		return 7000
+	case strings.Contains(s, "history"):
+		return 6000
+	default:
+		return 5800
+	}
+}
+
+type refEntry struct {
+	key      string
+	content  string
+	maxRunes int
+}
+
+// clampStoryContext dynamically trims characters and state when remaining context budget is constrained.
+func (t *ContextTool) clampStoryContext(result map[string]any, maxStoryTokens int, chapter int) {
+	if maxStoryTokens <= 0 {
+		return
+	}
+
+	// 1. Clamp characters in episodic_memory
+	if episodic, ok := result["episodic_memory"].(map[string]any); ok {
+		sceneText := ""
+		if working, ok := result["working_memory"].(map[string]any); ok {
+			switch entry := working["current_chapter_outline"].(type) {
+			case *domain.OutlineEntry:
+				if entry != nil {
+					sceneText = strings.Join(entry.Scenes, " ") + " " + entry.CoreEvent + " " + entry.Title
+				}
+			case domain.OutlineEntry:
+				sceneText = strings.Join(entry.Scenes, " ") + " " + entry.CoreEvent + " " + entry.Title
+			}
+		}
+
+		if rawChars, exists := episodic["characters"]; exists {
+			var chars []domain.Character
+			switch v := rawChars.(type) {
+			case []domain.Character:
+				chars = v
+			}
+
+			if len(chars) > 0 {
+				var active []domain.Character
+				var inactive []domain.Character
+				for _, c := range chars {
+					if sceneText != "" && matchCharacter(sceneText, c) {
+						active = append(active, c)
+					} else {
+						inactive = append(inactive, c)
+					}
+				}
+
+				maxAllowedChars := 6
+				if maxStoryTokens < 2000 {
+					maxAllowedChars = 3
+				} else if maxStoryTokens < 3000 {
+					maxAllowedChars = 4
+				}
+
+				var retained []domain.Character
+				retained = append(retained, active...)
+				for _, c := range inactive {
+					if len(retained) >= maxAllowedChars {
+						break
+					}
+					retained = append(retained, c)
+				}
+				if len(retained) > maxAllowedChars {
+					retained = retained[:maxAllowedChars]
+				}
+
+				maxDescRunes := 120
+				if maxStoryTokens < 2000 {
+					maxDescRunes = 60
+				} else if maxStoryTokens < 3000 {
+					maxDescRunes = 80
+				}
+
+				for i := range retained {
+					c := retained[i]
+					runes := []rune(c.Description)
+					if len(runes) > maxDescRunes {
+						c.Description = string(runes[:maxDescRunes]) + "..."
+					}
+					if len(c.Traits) > 3 {
+						c.Traits = c.Traits[:3]
+					}
+					retained[i] = c
+				}
+				episodic["characters"] = retained
+			}
+		}
+
+		if rawSnaps, exists := episodic["character_snapshots"]; exists {
+			if snaps, ok := rawSnaps.([]domain.CharacterSnapshot); ok && len(snaps) > 4 {
+				maxSnaps := 4
+				if maxStoryTokens < 2500 {
+					maxSnaps = 2
+				}
+				if len(snaps) > maxSnaps {
+					episodic["character_snapshots"] = snaps[:maxSnaps]
+				}
+			}
+		}
+
+		if rawCast, exists := episodic["recent_cast"]; exists {
+			if cast, ok := rawCast.([]map[string]any); ok && len(cast) > 3 {
+				maxCast := 3
+				if maxStoryTokens < 2500 {
+					maxCast = 1
+				}
+				episodic["recent_cast"] = cast[:maxCast]
+			}
+		}
+
+		if rawRel, exists := episodic["related_chapters"]; exists {
+			if rels, ok := rawRel.([]domain.RelatedChapter); ok && len(rels) > 2 {
+				episodic["related_chapters"] = rels[:2]
+			}
+		}
+	}
+
+	// 2. Clamp outline window and summaries in working_memory
+	if working, ok := result["working_memory"].(map[string]any); ok {
+		if rawOutline, exists := working["outline_window"]; exists {
+			if entries, ok := rawOutline.([]domain.OutlineEntry); ok && len(entries) > 3 {
+				maxOutline := 3
+				if maxStoryTokens < 2500 {
+					maxOutline = 2
+				}
+				start := max(0, len(entries)-maxOutline)
+				working["outline_window"] = entries[start:]
+			}
+		}
+		if rawSummaries, exists := working["recent_summaries"]; exists {
+			if summaries, ok := rawSummaries.([]domain.ChapterSummary); ok && len(summaries) > 2 {
+				maxSummaries := 2
+				if maxStoryTokens < 2500 {
+					maxSummaries = 1
+				}
+				start := max(0, len(summaries)-maxSummaries)
+				working["recent_summaries"] = summaries[start:]
+			}
+		}
+		if rawTimeline, exists := working["timeline"]; exists {
+			if events, ok := rawTimeline.([]domain.TimelineEvent); ok && len(events) > 3 {
+				working["timeline"] = events[len(events)-2:]
+			}
+		}
+		if prevTail, exists := working["previous_tail"].(string); exists {
+			runes := []rune(prevTail)
+			maxTail := 400
+			if maxStoryTokens < 2500 {
+				maxTail = 200
+			}
+			if len(runes) > maxTail {
+				working["previous_tail"] = string(runes[len(runes)-maxTail:])
+			}
+		}
+	}
+
+	// 3. Clamp foundation_memory (for architect path or if present)
+	if foundation, ok := result["foundation_memory"].(map[string]any); ok {
+		if rawChars, exists := foundation["characters"]; exists {
+			if chars, ok := rawChars.([]domain.Character); ok && len(chars) > 6 {
+				maxChars := 6
+				if maxStoryTokens < 3000 {
+					maxChars = 4
+				}
+				foundation["characters"] = chars[:maxChars]
+			}
+		}
+	}
+}
+
+// injectWriterReferences chèn hoặc cập nhật references vào reference_pack theo ngân sách token thực tế.
+func (t *ContextTool) injectWriterReferences(result map[string]any, chapter int, refBudgetTokens int) {
+	refPack, ok := result["reference_pack"].(map[string]any)
+	if !ok {
+		refPack = make(map[string]any)
+		result["reference_pack"] = refPack
+	}
+	refPack["references"] = t.writerReferencesWithBudget(chapter, refBudgetTokens)
+}
+
 // writerReferences 返回写作参考资料。章节 1 返回全量，后续章节裁剪掉不再需要的模板。
+// Áp dụng dynamic reference budget clamping để bảo đảm SystemPrompt + novel_context <= 19,660 tokens.
 func (t *ContextTool) writerReferences(chapter int) map[string]string {
-	refs := map[string]string{}
-	add := func(k, v string) {
+	promptTokens := t.PromptTokens()
+	remainingTokens := MaxContextBudgetTokens - promptTokens
+	refBudgetTokens := remainingTokens - 2600
+	if refBudgetTokens < 200 {
+		refBudgetTokens = 200
+	}
+	return t.writerReferencesWithBudget(chapter, refBudgetTokens)
+}
+
+// writerReferencesWithBudget scales reference materials to strictly fit within refBudgetTokens.
+func (t *ContextTool) writerReferencesWithBudget(chapter int, refBudgetTokens int) map[string]string {
+	var entries []refEntry
+	add := func(k, v string, maxRunes int) {
 		if v != "" {
-			refs[k] = v
+			entries = append(entries, refEntry{key: k, content: v, maxRunes: maxRunes})
 		}
 	}
 	// 渐进式加载：始终保留核心参考，前 3 章额外加载完整写作指南
-	add("consistency", t.refs.Consistency)
-	add("hook_techniques", t.refs.HookTechniques)
-	add("quality_checklist", t.refs.QualityChecklist)
-	add("anti_ai_tone", t.refs.AntiAITone) // 去 AI 味判据全程注入，不随章节裁剪
-	add("doodle_visual_language", t.refs.DoodleVisual)
-	add("fact_grounding", t.refs.FactGrounding)
-	add("tiktok_content_safety", t.refs.TiktokSafety)
-	add("humor_relatability", t.refs.HumorRelatability)
-	add("character_building", t.refs.CharacterBuilding)
-	add("adversity_conflict", t.refs.AdversityConflict)
+	add("consistency", t.refs.Consistency, 1200)
+	add("hook_techniques", t.refs.HookTechniques, 1200)
+	add("quality_checklist", t.refs.QualityChecklist, 1200)
+	add("anti_ai_tone", t.refs.AntiAITone, 1200) // 去 AI 味判据全程注入，不随章节裁剪
+	add("character_building", t.refs.CharacterBuilding, 1200)
+	add("adversity_conflict", t.refs.AdversityConflict, 1200)
+	if !isNovelOrHistoryStyle(t.style) {
+		add("doodle_visual_language", t.refs.DoodleVisual, 1000)
+		add("fact_grounding", t.refs.FactGrounding, 1000)
+		add("tiktok_content_safety", t.refs.TiktokSafety, 1000)
+		add("humor_relatability", t.refs.HumorRelatability, 1000)
+	}
 	if chapter <= 3 {
-		add("chapter_guide", t.refs.ChapterGuide)
-		add("dialogue_writing", t.refs.DialogueWriting)
-		add("style_reference", t.refs.StyleReference)
+		add("chapter_guide", t.refs.ChapterGuide, 1000)
+		add("dialogue_writing", t.refs.DialogueWriting, 1000)
+	}
+	if chapter <= 3 || isSpecializedNovelGenre(t.style) {
+		add("style_reference", t.refs.StyleReference, 1000)
 	}
 
 	// 仅首章加载的补充参考
 	if chapter <= 1 {
-		add("chapter_template", t.refs.ChapterTemplate)
-		add("content_expansion", t.refs.ContentExpansion)
+		add("chapter_template", t.refs.ChapterTemplate, 1000)
+		add("content_expansion", t.refs.ContentExpansion, 900)
+	}
+
+	if refBudgetTokens < 100 {
+		refBudgetTokens = 100
+	}
+	refBudgetRunes := int(float64(refBudgetTokens) / 0.8)
+
+	totalRequestedRunes := 0
+	for _, e := range entries {
+		totalRequestedRunes += e.maxRunes
+	}
+
+	scale := 1.0
+	if totalRequestedRunes > refBudgetRunes && totalRequestedRunes > 0 {
+		scale = float64(refBudgetRunes) / float64(totalRequestedRunes)
+	}
+
+	minLimit := 100
+	if len(entries) > 0 && refBudgetRunes < len(entries)*minLimit {
+		minLimit = refBudgetRunes / len(entries)
+		if minLimit < 25 {
+			minLimit = 25
+		}
+	}
+
+	refs := make(map[string]string, len(entries))
+	for _, e := range entries {
+		limit := e.maxRunes
+		if scale < 1.0 {
+			limit = int(float64(e.maxRunes) * scale)
+			if limit < minLimit {
+				limit = minLimit
+			}
+		}
+		refs[e.key] = compactReference(e.content, limit)
 	}
 	return refs
 }
 
 func (t *ContextTool) architectReferences() map[string]string {
 	refs := map[string]string{}
-	add := func(k, v string) {
+	add := func(k, v string, maxRunes int) {
 		if v != "" {
-			refs[k] = v
+			refs[k] = compactReference(v, maxRunes)
 		}
 	}
-	add("outline_template", t.refs.OutlineTemplate)
-	add("character_template", t.refs.CharacterTemplate)
-	add("longform_planning", t.refs.LongformPlanning)
-	add("differentiation", t.refs.Differentiation)
-	add("character_building", t.refs.CharacterBuilding)
-	add("adversity_conflict", t.refs.AdversityConflict)
-	add("style_reference", t.refs.StyleReference)
-	add("arc_templates", t.refs.ArcTemplates)
-	add("anti_ai_tone", t.refs.AntiAITone) // architect 大纲去 AI 腔；亦兜 editor 走 Chapter=0 路径
-	add("fact_grounding", t.refs.FactGrounding)
-	add("tiktok_content_safety", t.refs.TiktokSafety)
-	add("humor_relatability", t.refs.HumorRelatability)
+	add("outline_template", t.refs.OutlineTemplate, 1200)
+	add("character_template", t.refs.CharacterTemplate, 1000)
+	add("longform_planning", t.refs.LongformPlanning, 1000)
+	add("differentiation", t.refs.Differentiation, 1000)
+	add("character_building", t.refs.CharacterBuilding, 1000)
+	add("adversity_conflict", t.refs.AdversityConflict, 1000)
+	add("style_reference", t.refs.StyleReference, 1000)
+	add("arc_templates", t.refs.ArcTemplates, 1000)
+	add("anti_ai_tone", t.refs.AntiAITone, 1200) // architect 大纲去 AI 腔；亦兜 editor 走 Chapter=0 路径
+	if !isNovelOrHistoryStyle(t.style) {
+		add("fact_grounding", t.refs.FactGrounding, 1000)
+		add("tiktok_content_safety", t.refs.TiktokSafety, 1000)
+		add("humor_relatability", t.refs.HumorRelatability, 1000)
+	}
 	return refs
 }
 

@@ -1,0 +1,20 @@
+{
+  "id": "romance_rubric",
+  "category": "quality",
+  "role": "editor",
+  "style": "romance",
+  "description": "Rubric thẩm định ngôn tình & chữa lành: chiều sâu tâm lý Lie/Ghost/Need, đối thoại subtext giàu cảm xúc, chuyển biến bậc cảm xúc tự nhiên, cấm sáo ngữ áp đặt.",
+  "prompt": "Thẩm định chất lượng chương ngôn tình: kiểm tra tính chân thực của vết thương tâm lý nhân vật, chất thơ trong đối thoại subtext và sự tinh tế trong nhịp điệu cảm xúc chậm rãi (slow-burn).",
+  "max_chapters": 1,
+  "target_prompts": ["editor.md"],
+  "rubric": "evals/rubrics/romance.json",
+  "expect": {
+    "phase": "writing",
+    "min_completed_chapters": 1,
+    "required_checkpoints": ["chapter:1:commit"],
+    "no_pending": ["pending_commit", "pending_steer"]
+  },
+  "gate": {
+    "max_severity": "warning"
+  }
+}

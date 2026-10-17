@@ -64,3 +64,40 @@ func TestParseCLIOptions_Flags(t *testing.T) {
 		})
 	}
 }
+
+func TestParseCLIOptions_WebSecurityFlags(t *testing.T) {
+	args := []string{"web", "--host", "0.0.0.0", "--port", "9090", "--token", "mysecrettoken", "--external"}
+	opts, _, err := parseCLIOptions(args)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if !opts.Web {
+		t.Errorf("expected Web=true")
+	}
+	if opts.Host != "0.0.0.0" {
+		t.Errorf("expected Host=0.0.0.0, got %s", opts.Host)
+	}
+	if opts.Port != 9090 {
+		t.Errorf("expected Port=9090, got %d", opts.Port)
+	}
+	if opts.Token != "mysecrettoken" {
+		t.Errorf("expected Token=mysecrettoken, got %s", opts.Token)
+	}
+	if !opts.External {
+		t.Errorf("expected External=true")
+	}
+}
+
+func TestParseCLIOptions_HelpFlags(t *testing.T) {
+	for _, flag := range []string{"--help", "-h", "help"} {
+		t.Run("Flag_"+flag, func(t *testing.T) {
+			opts, _, err := parseCLIOptions([]string{flag})
+			if err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+			if !opts.Help {
+				t.Fatalf("expected Help=true for flag %s", flag)
+			}
+		})
+	}
+}

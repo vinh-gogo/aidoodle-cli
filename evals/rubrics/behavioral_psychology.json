@@ -1,0 +1,44 @@
+{
+  "id": "behavioral_psychology_scientific_v1",
+  "version": "1.0.0",
+  "mode": "behavioral-psychology",
+  "title": "Behavioral Psychology 8-Step Scientific Framework & Ethics Rubric",
+  "description": "Tiêu chuẩn đánh giá kịch bản video tâm lý học hành vi: Khung khoa học não bộ 8 bước chuẩn mực, phân biệt Tương quan vs Nhân quả, cảnh báo mẫu WEIRD / Khủng hoảng tái lập, Cú hích hành vi (Nudge) và Rào chắn đạo đức (tuyệt đối không chẩn đoán y tế).",
+  "invariants": [
+    "Cấu trúc 8 bước hoàn chỉnh: Trải nghiệm người xem -> Đặt tên hiện tượng -> Cơ chế não bộ -> Thí nghiệm kinh điển -> Khủng hoảng tái lập/WEIRD -> Góc nhìn đa chiều -> Cú hích hành vi (Nudge) -> Tự trắc ẩn.",
+    "Rào chắn đạo đức tối thượng: Tuyệt đối không đưa ra chẩn đoán tâm thần, không kê đơn hay can thiệp điều trị y khoa.",
+    "Rạch ròi giữa tương quan thống kê (correlation) và quan hệ nhân quả (causation).",
+    "Cảnh báo giới hạn mẫu nghiên cứu WEIRD (Western, Educated, Industrialized, Rich, Democratic).",
+    "Dung lượng từ LỜI thoại đạt chuẩn 700–1.500 từ và nhịp 1:1 Thoại - Hình."
+  ],
+  "dimensions": {
+    "consistency": {
+      "weight": 0.30,
+      "description": "Tính chuẩn xác của cơ chế thần kinh (neuroscience), trích dẫn nghiên cứu khoa học có bình duyệt."
+    },
+    "character": {
+      "weight": 0.15,
+      "description": "Giọng điệu thấu cảm, không phán xét, tôn trọng trải nghiệm cá nhân của người xem."
+    },
+    "pacing": {
+      "weight": 0.15,
+      "description": "Dẫn dắt tự nhiên từ cảm xúc đồng cảm đến giải thích khoa học và kết thúc bằng hành động thực tiễn."
+    },
+    "continuity": {
+      "weight": 0.10,
+      "description": "Các thuật ngữ tâm lý học được thống nhất và giải nghĩa tường minh xuyên suốt kịch bản."
+    },
+    "foreshadow": {
+      "weight": 0.05,
+      "description": "Khéo léo báo trước các ngộ nhận phổ biến để người xem tự nhìn nhận lại hành vi."
+    },
+    "hook": {
+      "weight": 0.15,
+      "description": "Mở đầu chạm đúng xung đột tâm lý nội tâm hàng ngày; kích thích khao khát thấu hiểu bản thân."
+    },
+    "aesthetic": {
+      "weight": 0.10,
+      "description": "Diễn đạt khoa học trong sáng, dễ hiểu, ẩn dụ thị giác sinh động hỗ trợ cho giải thích não bộ."
+    }
+  }
+}

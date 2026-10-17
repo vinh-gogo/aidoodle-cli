@@ -528,6 +528,26 @@ func (t *ContextTool) buildChapterWorkingMemory(envelope *chapterContextEnvelope
 	}
 }
 
+func compactSourcePack(sp *trend.SourcePack) *trend.SourcePack {
+	if sp == nil {
+		return nil
+	}
+	cp := *sp
+	if runes := []rune(cp.Summary); len(runes) > 1200 {
+		cp.Summary = string(runes[:1200]) + "..."
+	}
+	maxArticles := min(len(sp.Articles), 4)
+	cp.Articles = make([]trend.SourceArticle, maxArticles)
+	for i := 0; i < maxArticles; i++ {
+		art := sp.Articles[i]
+		if runes := []rune(art.Content); len(runes) > 1200 {
+			art.Content = string(runes[:1200]) + "..."
+		}
+		cp.Articles[i] = art
+	}
+	return &cp
+}
+
 // loadSourcePack nạp tài liệu nguồn nếu có cho tập này để Writer bám dữ kiện.
 func (t *ContextTool) loadSourcePack(working map[string]any, entry *domain.OutlineEntry) {
 	if entry == nil {
@@ -535,12 +555,12 @@ func (t *ContextTool) loadSourcePack(working map[string]any, entry *domain.Outli
 	}
 	// 1. Thử nạp theo ch<N>
 	if sp, err := trend.LoadSourcePack(t.store.Dir(), fmt.Sprintf("ch%d", entry.Chapter)); err == nil && sp != nil {
-		working["source_pack"] = sp
+		working["source_pack"] = compactSourcePack(sp)
 		return
 	}
 	// 2. Thử nạp theo tiêu đề
 	if sp, err := trend.LoadSourcePack(t.store.Dir(), entry.Title); err == nil && sp != nil {
-		working["source_pack"] = sp
+		working["source_pack"] = compactSourcePack(sp)
 		return
 	}
 	// 3. Nếu CoreEvent có chứa 'Trend: ...'
@@ -552,7 +572,7 @@ func (t *ContextTool) loadSourcePack(working map[string]any, entry *domain.Outli
 		sub = strings.TrimSpace(sub)
 		if sub != "" {
 			if sp, err := trend.LoadSourcePack(t.store.Dir(), sub); err == nil && sp != nil {
-				working["source_pack"] = sp
+				working["source_pack"] = compactSourcePack(sp)
 				return
 			}
 		}
@@ -560,13 +580,13 @@ func (t *ContextTool) loadSourcePack(working map[string]any, entry *domain.Outli
 	// 4. Thử nạp theo StartPrompt của sách
 	if runMeta, err := t.store.RunMeta.Load(); err == nil && runMeta != nil && runMeta.StartPrompt != "" {
 		if sp, err := trend.LoadSourcePack(t.store.Dir(), runMeta.StartPrompt); err == nil && sp != nil {
-			working["source_pack"] = sp
+			working["source_pack"] = compactSourcePack(sp)
 			return
 		}
 	}
 	// 5. Thử nạp theo "default"
 	if sp, err := trend.LoadSourcePack(t.store.Dir(), "default"); err == nil && sp != nil {
-		working["source_pack"] = sp
+		working["source_pack"] = compactSourcePack(sp)
 		return
 	}
 }
@@ -847,9 +867,9 @@ func (t *ContextTool) buildArchitectPlanning(envelope *architectContextEnvelope,
 	// source_pack: nạp tài liệu khoa học/nguồn tin cậy nếu có cho Architect tham khảo khi lập series bible
 	if runMeta != nil && runMeta.StartPrompt != "" {
 		if sp, err := trend.LoadSourcePack(t.store.Dir(), runMeta.StartPrompt); err == nil && sp != nil {
-			envelope.Planning["source_pack"] = sp
+			envelope.Planning["source_pack"] = compactSourcePack(sp)
 		} else if sp, err := trend.LoadSourcePack(t.store.Dir(), "default"); err == nil && sp != nil {
-			envelope.Planning["source_pack"] = sp
+			envelope.Planning["source_pack"] = compactSourcePack(sp)
 		}
 	}
 }

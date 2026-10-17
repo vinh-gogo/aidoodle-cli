@@ -598,9 +598,87 @@
     ::-webkit-scrollbar-track { background: #0c0c0c; }
     ::-webkit-scrollbar-thumb { background: #2e2e2e; border-radius: 3px; }
     ::-webkit-scrollbar-thumb:hover { background: #444; }
+
+    /* Toast Container & Notification System (SEC-04-03) */
+    .toast-container {
+      position: fixed;
+      top: 45px;
+      right: 20px;
+      z-index: 99999;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-width: 440px;
+      pointer-events: none;
+    }
+    .toast {
+      background: #1c1c1c;
+      border: 1px solid #333;
+      border-left: 4px solid var(--term-blue);
+      color: #f0f0f0;
+      padding: 10px 14px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.7);
+      pointer-events: auto;
+      animation: toast-in 0.2s ease-out;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      word-break: break-word;
+      white-space: pre-wrap;
+      line-height: 1.4;
+    }
+    .toast.success { border-left-color: var(--term-green); }
+    .toast.error { border-left-color: var(--term-red); }
+    .toast.warning { border-left-color: var(--term-yellow); }
+    .toast.info { border-left-color: var(--term-blue); }
+    @keyframes toast-in {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* SSE Connection Status Indicator (SEC-04-04) */
+    .sse-status {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.72rem;
+      padding: 2px 8px;
+      border-radius: 12px;
+      background: #222222;
+      border: 1px solid #444444;
+      user-select: none;
+    }
+    .sse-pulse-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .sse-status.sse-connecting .sse-pulse-dot {
+      background-color: var(--term-yellow);
+      box-shadow: 0 0 5px var(--term-yellow);
+      animation: pulse-dot 1s infinite alternate;
+    }
+    .sse-status.sse-connected .sse-pulse-dot {
+      background-color: var(--term-green);
+      box-shadow: 0 0 5px var(--term-green);
+    }
+    .sse-status.sse-offline .sse-pulse-dot {
+      background-color: var(--term-red);
+      box-shadow: 0 0 5px var(--term-red);
+    }
+    @keyframes pulse-dot {
+      0% { opacity: 0.4; }
+      100% { opacity: 1; }
+    }
   </style>
 </head>
 <body>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="toast-container"></div>
 
   <!-- Windows Terminal Title Bar -->
   <div class="win-titlebar">
@@ -610,10 +688,17 @@
         <span>Windows PowerShell - ainovel-cli</span>
       </div>
     </div>
-    <div class="win-controls">
-      <span class="win-control-btn" title="Thu nhỏ">─</span>
-      <span class="win-control-btn" title="Phóng to">□</span>
-      <span class="win-control-btn" title="Đóng">✕</span>
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <!-- SSE Status Badge (SEC-04-04) -->
+      <div id="sse-status" class="sse-status sse-connecting" title="Trạng thái kết nối Server-Sent Events">
+        <span class="sse-pulse-dot"></span>
+        <span id="sse-status-label">Đang kết nối</span>
+      </div>
+      <div class="win-controls">
+        <span class="win-control-btn" title="Thu nhỏ">─</span>
+        <span class="win-control-btn" title="Phóng to">□</span>
+        <span class="win-control-btn" title="Đóng">✕</span>
+      </div>
     </div>
   </div>
 
@@ -701,6 +786,7 @@
         <span>╭─ STREAM ─╮</span>
         <div style="display: flex; gap: 6px;">
           <button class="btn-term btn-term-primary" onclick="exportWord()" title="Xuất toàn bộ tác phẩm thành file Word (.docx)">📄 Xuất Word</button>
+          <button class="btn-term btn-term-primary" onclick="exportEPUB()" title="Xuất sách điện tử chuẩn W3C EPUB 3.3">📚 Xuất EPUB</button>
           <button class="btn-term" onclick="exportVideo()" title="Xuất kịch bản, lời đọc và shotlist video">📦 Gói Video</button>
           <button class="btn-term" onclick="copyStreamContent()">📋 Sao chép</button>
           <button class="btn-term" onclick="toggleStreamMode()" id="btn-stream-toggle">🔴 Xem live</button>
@@ -764,8 +850,10 @@ Hướng dẫn nhanh:
     <!-- Quick Suggestion Chips (Gợi ý đề tài 1-chạm cho non-tech) -->
     <div class="suggestion-chips-bar" id="suggestion-chips">
       <span>💡 Gợi ý nhanh:</span>
+      <span class="chip-item" onclick="fillSuggestion('Án mạng phòng kín tại dinh thự cổ Đà Lạt đêm mưa bão, nơi 7 người khách đều giấu một tội lỗi quá khứ')">🕵️ Án mạng dinh thự cổ</span>
+      <span class="chip-item" onclick="fillSuggestion('Chuyện tình chữa lành tại tiệm phục chế sách cổ giữa một kiến trúc sư mất ngủ và cô gái giữ ký ức bằng mùi hương')">🌸 Tiệm sách cổ chữa lành</span>
+      <span class="chip-item" onclick="fillSuggestion('Thiếu niên phế mạch nơi biên ải giải mã cổ bia trọng lực, từng bước tu luyện phá vỡ quy tắc Cửu Trọng Thiên')">🐉 Cổ bia Cửu Trọng Thiên</span>
       <span class="chip-item" onclick="fillSuggestion('Chiến dịch Rạch Gầm - Xoài Mút năm 1785 của vua Quang Trung')">⚔️ Trận Rạch Gầm - Xoài Mút 1785</span>
-      <span class="chip-item" onclick="fillSuggestion('Trận Bạch Đằng năm 938 của Ngô Quyền đại phá quân Nam Hán')">⚔️ Trận Bạch Đằng 938</span>
       <span class="chip-item" onclick="fillSuggestion('Giải thích hiệu ứng Dunning-Kruger và tại sao người dốt lại tự tin')">🦴 Hiệu ứng Dunning-Kruger</span>
       <span class="chip-item" onclick="fillSuggestion('Tại sao con người có xu hướng trì hoãn và cách khắc phục bằng Cú hích Nudge')">🧠 Tâm lý học trì hoãn</span>
     </div>
@@ -789,6 +877,9 @@ Hướng dẫn nhanh:
       </button>
       <button class="btn-term btn-term-primary" onclick="exportWord()" title="Xuất toàn bộ tác phẩm thành file Word (.docx)">
         📄 Xuất Word (/export)
+      </button>
+      <button class="btn-term btn-term-primary" onclick="exportEPUB()" title="Xuất sách điện tử chuẩn W3C EPUB 3.3">
+        📚 Xuất EPUB
       </button>
       <button class="btn-term" onclick="exportVideo()" title="Xuất kịch bản, lời đọc và shotlist video">
         📦 Gói Video
@@ -832,42 +923,63 @@ Hướng dẫn nhanh:
 
   <!-- Modal /dialog /mode -->
   <div class="tui-modal-overlay" id="modal-mode" onclick="if (event.target === this) closeModal('modal-mode')">
-    <div class="tui-dialog">
+    <div class="tui-dialog" style="width: 660px;">
       <div class="tui-dialog-header">
         <span>╭─── CHỌN CHẾ ĐỘ SÁNG TÁC (/mode) ───╮</span>
         <button class="btn-term" style="padding: 2px 8px;" onclick="closeModal('modal-mode')">✕ Đóng</button>
       </div>
-      <div class="tui-dialog-body" id="mode-dialog-body">
+      <div class="tui-dialog-body" id="mode-dialog-body" style="max-height: 75vh; overflow-y: auto;">
         <div class="dialog-item selected" data-style="novel-manga" onclick="selectStyleMode('novel-manga')">
           <span class="dialog-num">[1]</span>
           <div>
-            <strong>📖 Tiểu thuyết / Manga (novel-manga)</strong>
-            <div style="color: var(--term-dim); font-size: 0.76rem;">Cốt truyện trường thiên, nhân vật đa tầng, ma pháp chặt chẽ</div>
+            <strong>📖 Tiểu thuyết / Manga Đa năng (novel-manga)</strong>
+            <div style="color: var(--term-dim); font-size: 0.76rem;">Cốt truyện trường thiên, Light Novel, Manga/Webtoon đa thể loại</div>
+          </div>
+        </div>
+        <div class="dialog-item" data-style="suspense" onclick="selectStyleMode('suspense')">
+          <span class="dialog-num">[2]</span>
+          <div>
+            <strong>🕵️ Tiểu thuyết Trinh thám & Kinh dị (suspense)</strong>
+            <div style="color: var(--term-dim); font-size: 0.76rem;">Suy luận công bằng (Fair-Play), tâm lý tội phạm đen tối & kinh dị tâm linh dân gian</div>
+          </div>
+        </div>
+        <div class="dialog-item" data-style="romance" onclick="selectStyleMode('romance')">
+          <span class="dialog-num">[3]</span>
+          <div>
+            <strong>🌸 Tiểu thuyết Ngôn tình & Chữa lành (romance)</strong>
+            <div style="color: var(--term-dim); font-size: 0.76rem;">Tâm lý tình cảm hiện đại sâu sắc (Slow-burn), chữa lành vết thương nội tâm</div>
+          </div>
+        </div>
+        <div class="dialog-item" data-style="fantasy" onclick="selectStyleMode('fantasy')">
+          <span class="dialog-num">[4]</span>
+          <div>
+            <strong>🐉 Tiểu thuyết Kỳ ảo & Tiên hiệp (fantasy)</strong>
+            <div style="color: var(--term-dim); font-size: 0.76rem;">Hệ thống phép thuật/tu luyện quy tắc cứng, thế giới đa tầng & chiến đấu chiến thuật</div>
+          </div>
+        </div>
+        <div class="dialog-item" data-style="vietnamese-history" onclick="selectStyleMode('vietnamese-history')">
+          <span class="dialog-num">[5]</span>
+          <div>
+            <strong>⚔️ Tiểu thuyết Lịch sử Việt Nam (vietnamese-history)</strong>
+            <div style="color: var(--term-dim); font-size: 0.76rem;">Tra cứu Tavily tự động, chuẩn niên biểu, phong vị hào sảng Đại Việt</div>
           </div>
         </div>
         <div class="dialog-item" data-style="doodle-explainer" onclick="selectStyleMode('doodle-explainer')">
-          <span class="dialog-num">[2]</span>
+          <span class="dialog-num">[6]</span>
           <div>
             <strong>🦴 Doodle TikTok Video (doodle-explainer)</strong>
             <div style="color: var(--term-dim); font-size: 0.76rem;">Kịch bản người que đồ đá 5+ phút viral, nhịp 1:1 Thoại - Hình</div>
           </div>
         </div>
         <div class="dialog-item" data-style="behavioral-psychology" onclick="selectStyleMode('behavioral-psychology')">
-          <span class="dialog-num">[3]</span>
+          <span class="dialog-num">[7]</span>
           <div>
             <strong>🧠 Tâm lý học hành vi (behavioral-psychology)</strong>
             <div style="color: var(--term-dim); font-size: 0.76rem;">Chuẩn 8 bước khoa học, giải mã tâm lý, Cú hích Nudge</div>
           </div>
         </div>
-        <div class="dialog-item" data-style="vietnamese-history" onclick="selectStyleMode('vietnamese-history')">
-          <span class="dialog-num">[4]</span>
-          <div>
-            <strong>⚔️ Lịch sử Việt Nam (vietnamese-history)</strong>
-            <div style="color: var(--term-dim); font-size: 0.76rem;">Tra cứu Tavily tự động, chuẩn niên biểu, phong vị hào sảng Đại Việt</div>
-          </div>
-        </div>
         <div style="font-size: 0.75rem; color: var(--term-dim); text-align: center; margin-top: 6px;">
-          Bấm trực tiếp bằng chuột hoặc dùng phím số 1-4 / phím ↑↓ và Enter
+          Bấm trực tiếp bằng chuột hoặc dùng phím số 1-7 / phím ↑↓ và Enter
         </div>
       </div>
     </div>
@@ -891,8 +1003,90 @@ Hướng dẫn nhanh:
   </div>
 
   <script>
+    function escapeHtml(text) {
+      if (text === null || text === undefined) return '';
+      const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+      return String(text).replace(/[&<>"']/g, m => map[m]);
+    }
+
+    function showToast(message, type = 'info', duration = 4000) {
+      const container = document.getElementById('toast-container');
+      if (!container) return;
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      const iconMap = {
+        success: '✓',
+        error: '❌',
+        warning: '⚠️',
+        info: 'ℹ️'
+      };
+      const icon = iconMap[type] || 'ℹ️';
+      toast.innerHTML = `<span style="font-size: 1.1em; flex-shrink: 0;">${icon}</span><div style="flex: 1;">${escapeHtml(message)}</div>`;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transition = 'opacity 0.3s ease-out';
+        setTimeout(() => { if (toast.parentNode) toast.parentNode.removeChild(toast); }, 300);
+      }, duration);
+    }
+
+    async function exportEPUB() {
+      addEventLog({ Category: 'SYSTEM', Summary: 'Đang kết xuất và tạo sách điện tử EPUB 3.3...', Time: new Date() });
+      try {
+        const targetDir = cliState.dir || '';
+        const apiUrl = `/api/export?format=epub&dir=${encodeURIComponent(targetDir)}&t=${Date.now()}`;
+        const res = await fetch(apiUrl, {
+          headers: { 'X-Requested-With': 'ainovel-web' }
+        });
+        if (!res.ok) {
+          let errMsg = `Mã lỗi HTTP ${res.status}`;
+          try {
+            const errData = await res.json();
+            if (errData && errData.error) errMsg = errData.error;
+          } catch (e) {
+            errMsg = res.statusText || errMsg;
+          }
+          showToast("Lỗi xuất file EPUB: " + errMsg, "error");
+          addEventLog({ Category: 'SYSTEM', Summary: '❌ Lỗi xuất EPUB: ' + errMsg, Level: 'error', Time: new Date() });
+          return;
+        }
+        const data = await res.json();
+        if (!data.ok) {
+          const errMsg = data.error || 'Xuất file EPUB thất bại';
+          showToast("Lỗi xuất file EPUB: " + errMsg, "error");
+          addEventLog({ Category: 'SYSTEM', Summary: '❌ Lỗi xuất EPUB: ' + errMsg, Level: 'error', Time: new Date() });
+          return;
+        }
+        const sizeKb = (data.bytes / 1024).toFixed(1);
+        const fileName = data.filename || 'tac-pham.epub';
+        const filePath = data.path || fileName;
+        const chaptersCount = data.chapters || 0;
+
+        addEventLog({
+          Category: 'SYSTEM',
+          Summary: `✓ Đã tạo xong file EPUB: ${fileName} (${chaptersCount} chương, ${sizeKb} KB)`,
+          Time: new Date()
+        });
+
+        const downloadUrl = data.download_url ? `${data.download_url}&t=${Date.now()}` : `/api/export?format=epub&dir=${encodeURIComponent(targetDir)}&download=1&t=${Date.now()}`;
+        const a = document.createElement('a');
+        a.href = downloadUrl;
+        a.download = fileName;
+        a.style.display = 'none';
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(() => { if (a.parentNode) a.parentNode.removeChild(a); }, 2000);
+
+        showToast(`✓ ĐÃ XUẤT SÁCH EPUB THÀNH CÔNG!\n\n📚 ${fileName} (${chaptersCount} chương, ${sizeKb} KB)\n📂 ${filePath}`, "success", 6000);
+      } catch (err) {
+        console.error("exportEPUB error:", err);
+        showToast("Lỗi kết nối khi xuất EPUB: " + err.message, "error");
+        addEventLog({ Category: 'SYSTEM', Summary: '❌ Lỗi tải EPUB: ' + err.message, Level: 'error', Time: new Date() });
+      }
+    }
+
     const SLASH_COMMANDS = [
-      { name: '/mode', usage: '', desc: 'Chọn 1 trong 4 chế độ AI (/mode 1-4)', auto: true },
+      { name: '/mode', usage: '', desc: 'Chọn 1 trong 7 chế độ AI (/mode 1-7)', auto: true },
       { name: '/dash', usage: '', desc: 'Mở danh sách các tác phẩm trong output/ (/dash)', auto: true },
       { name: '/next', usage: '', desc: 'Duyệt để tiến hành viết một chương mới (/next)', auto: true },
       { name: '/new', usage: '[prompt]', desc: 'Tạo dự án mới trong thư mục output riêng (/new)', auto: false },
@@ -1112,9 +1306,12 @@ Hướng dẫn nhanh:
           e.preventDefault();
           if (items[modeCursor]) items[modeCursor].click();
         } else if (e.key === '1') selectStyleMode('novel-manga');
-        else if (e.key === '2') selectStyleMode('doodle-explainer');
-        else if (e.key === '3') selectStyleMode('behavioral-psychology');
-        else if (e.key === '4') selectStyleMode('vietnamese-history');
+        else if (e.key === '2') selectStyleMode('suspense');
+        else if (e.key === '3') selectStyleMode('romance');
+        else if (e.key === '4') selectStyleMode('fantasy');
+        else if (e.key === '5') selectStyleMode('vietnamese-history');
+        else if (e.key === '6') selectStyleMode('doodle-explainer');
+        else if (e.key === '7') selectStyleMode('behavioral-psychology');
         return;
       }
 
@@ -1266,15 +1463,17 @@ Hướng dẫn nhanh:
           case '/export':
             if (arg.includes('--video')) {
               await exportVideo();
+            } else if (arg.includes('--epub')) {
+              await exportEPUB();
             } else {
               await exportWord();
             }
             break;
           case '/help':
-            alert("Các lệnh khả dụng:\n/mode - Đổi chế độ sáng tác\n/dash - Danh sách các outputs cũ\n/next - Duyệt viết chương tiếp\n/new - Tạo tác phẩm mới\n/export - Xuất file Word (.docx)\n/pause - Tạm dừng\n/resume - Tiếp tục\n/clear - Xóa màn hình");
+            showToast("Các lệnh khả dụng:\n/mode - Đổi chế độ sáng tác\n/dash - Danh sách các outputs cũ\n/next - Duyệt viết chương tiếp\n/new - Tạo tác phẩm mới\n/export - Xuất file Word/EPUB\n/pause - Tạm dừng\n/resume - Tiếp tục\n/clear - Xóa màn hình", "info", 6000);
             break;
           default:
-            alert("Lệnh không xác định: " + cmd + ". Gõ /help để xem danh sách lệnh.");
+            showToast("Lệnh không xác định: " + cmd + ". Gõ /help để xem danh sách lệnh.", "warning");
             break;
         }
         return;
@@ -1320,6 +1519,11 @@ Hướng dẫn nhanh:
       if (document.activeElement) document.activeElement.blur();
       document.getElementById('modal-mode').classList.add('open');
       const items = document.querySelectorAll('#mode-dialog-body .dialog-item');
+      items.forEach((it, idx) => {
+        if (it.getAttribute('data-style') === cliState.style) {
+          modeCursor = idx;
+        }
+      });
       highlightModeCursor(items);
     }
 
@@ -1359,10 +1563,13 @@ Hướng dẫn nhanh:
 
     function updateStyleLabels(style) {
       const names = {
+        'novel-manga': '📖 Tiểu thuyết / Manga',
+        'suspense': '🕵️ Trinh thám & Kinh dị',
+        'romance': '🌸 Ngôn tình & Chữa lành',
+        'fantasy': '🐉 Kỳ ảo & Tiên hiệp',
         'vietnamese-history': '⚔️ Lịch sử Việt Nam',
         'doodle-explainer': '🦴 Video TikTok',
-        'behavioral-psychology': '🧠 Tâm lý học hành vi',
-        'novel-manga': '📖 Tiểu thuyết / Manga'
+        'behavioral-psychology': '🧠 Tâm lý học hành vi'
       };
       const text = names[style] || style;
       document.getElementById('top-style').innerHTML = `<span>${text}</span> <span style="font-size: 0.65rem;">▾</span>`;
@@ -1371,7 +1578,7 @@ Hướng dẫn nhanh:
     function copyStreamContent() {
       const text = document.getElementById('stream-text').innerText;
       navigator.clipboard.writeText(text).then(() => {
-        alert("Đã sao chép nội dung bản thảo vào khay nhớ tạm!");
+        showToast("Đã sao chép nội dung bản thảo vào khay nhớ tạm!", "success");
       });
     }
 
@@ -1389,7 +1596,9 @@ Hướng dẫn nhanh:
       try {
         const targetDir = cliState.dir || '';
         const apiUrl = `/api/export?format=word&dir=${encodeURIComponent(targetDir)}&t=${Date.now()}`;
-        const res = await fetch(apiUrl);
+        const res = await fetch(apiUrl, {
+          headers: { 'X-Requested-With': 'ainovel-web' }
+        });
         
         if (!res.ok) {
           let errMsg = `Mã lỗi HTTP ${res.status}`;
@@ -1399,7 +1608,7 @@ Hướng dẫn nhanh:
           } catch (e) {
             errMsg = res.statusText || errMsg;
           }
-          alert("Lỗi xuất file Word: " + errMsg);
+          showToast("Lỗi xuất file Word: " + errMsg, "error");
           addEventLog({ Category: 'SYSTEM', Summary: '❌ Lỗi xuất Word: ' + errMsg, Level: 'error', Time: new Date() });
           return;
         }
@@ -1407,7 +1616,7 @@ Hướng dẫn nhanh:
         const data = await res.json();
         if (!data.ok) {
           const errMsg = data.error || 'Xuất file Word thất bại';
-          alert("Lỗi xuất file Word: " + errMsg);
+          showToast("Lỗi xuất file Word: " + errMsg, "error");
           addEventLog({ Category: 'SYSTEM', Summary: '❌ Lỗi xuất Word: ' + errMsg, Level: 'error', Time: new Date() });
           return;
         }
@@ -1444,11 +1653,11 @@ Hướng dẫn nhanh:
         a.click();
         setTimeout(() => { if (a.parentNode) a.parentNode.removeChild(a); }, 2000);
 
-        // 3. Hiển thị thông báo Popup xác nhận thành công rõ ràng
-        alert(`✓ ĐÃ XUẤT FILE WORD (.DOCX) THÀNH CÔNG!\n\n📄 Tên tệp: ${fileName}\n📊 Quy mô: ${chaptersCount} chương (${sizeKb} KB)\n📂 Đã lưu tại: ${filePath}\n\nFile đang được tự động tải về thư mục Downloads của bạn.`);
+        // 3. Hiển thị thông báo Toast xác nhận thành công rõ ràng
+        showToast(`✓ ĐÃ XUẤT FILE WORD (.DOCX) THÀNH CÔNG!\n\n📄 Tên tệp: ${fileName}\n📊 Quy mô: ${chaptersCount} chương (${sizeKb} KB)\n📂 Đã lưu tại: ${filePath}\n\nFile đang được tự động tải về thư mục Downloads của bạn.`, "success", 6000);
       } catch (err) {
         console.error("exportWord error:", err);
-        alert("Lỗi kết nối khi xuất Word: " + err.message);
+        showToast("Lỗi kết nối khi xuất Word: " + err.message, "error");
         addEventLog({ Category: 'SYSTEM', Summary: '❌ Lỗi tải Word: ' + err.message, Level: 'error', Time: new Date() });
       } finally {
         exportBtns.forEach(b => {
@@ -1463,20 +1672,23 @@ Hướng dẫn nhanh:
       try {
         const res = await fetch('/api/action', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'ainovel-web'
+          },
           body: JSON.stringify({ action: 'export', format: 'video', dir: cliState.dir })
         });
         const data = await res.json();
         if (data.ok) {
           addEventLog({ Category: 'SYSTEM', Summary: '✓ Đã xuất gói kịch bản video thành công!', Time: new Date() });
-          alert("✓ Đã xuất gói kịch bản video thành công!");
+          showToast("✓ Đã xuất gói kịch bản video thành công!", "success");
         } else {
-          alert("Lỗi xuất video: " + (data.error || "Thất bại"));
+          showToast("Lỗi xuất video: " + (data.error || "Thất bại"), "error");
           addEventLog({ Category: 'SYSTEM', Summary: '❌ Lỗi xuất video: ' + data.error, Level: 'error', Time: new Date() });
         }
       } catch (err) {
         console.error("send export video action error:", err);
-        alert("Lỗi kết nối khi xuất video: " + err.message);
+        showToast("Lỗi kết nối khi xuất video: " + err.message, "error");
       }
     }
 
@@ -1549,7 +1761,7 @@ Hướng dẫn nhanh:
         };
         div.innerHTML = `
           <span style="color: var(--term-blue); font-weight: bold;">[${ch.chapter < 10 ? '0' + ch.chapter : ch.chapter}]</span>
-          <span class="chapter-title-text" title="${ch.title}">${ch.title}</span>
+          <span class="chapter-title-text" title="${escapeHtml(ch.title)}">${escapeHtml(ch.title)}</span>
           <span style="font-size: 0.7rem; color: var(--term-dim);">${ch.completed ? '✓ ' : ''}${ch.word_count > 0 ? ch.word_count.toLocaleString() + 'c' : ''}</span>
         `;
         container.appendChild(div);
@@ -1607,10 +1819,10 @@ Hướng dẫn nhanh:
         div.innerHTML = `
           <span style="color: var(--term-yellow); font-size: 1.1rem;">${p.is_current ? '⭐' : '📁'}</span>
           <div style="flex: 1; min-width: 0;">
-            <div style="font-weight: bold; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${p.title}</div>
+            <div style="font-weight: bold; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHtml(p.title)}</div>
             <div style="font-size: 0.74rem; color: var(--term-dim); display: flex; justify-content: space-between; margin-top: 2px;">
-              <span style="color: var(--term-cyan);">${p.style_badge || ''}</span>
-              <span>${p.progress_text} (${p.dir_name})</span>
+              <span style="color: var(--term-cyan);">${escapeHtml(p.style_badge || '')}</span>
+              <span>${escapeHtml(p.progress_text)} (${escapeHtml(p.dir_name)})</span>
             </div>
           </div>
         `;
@@ -1709,33 +1921,47 @@ Hướng dẫn nhanh:
       }
     }
 
-    function escapeHtml(text) {
-      const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
-      return text.replace(/[&<>"']/g, m => map[m]);
-    }
-
     async function sendAction(action, extraData = {}) {
       try {
         const payload = Object.assign({ action: action }, extraData);
         const res = await fetch('/api/action', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'ainovel-web'
+          },
           body: JSON.stringify(payload)
         });
         const data = await res.json();
         if (!data.ok) {
-          alert("Lỗi: " + (data.error || "Không thể thực hiện"));
+          showToast("Lỗi: " + (data.error || "Không thể thực hiện"), "error");
         } else {
           setTimeout(fetchStatus, 300);
         }
       } catch (err) {
         console.error("sendAction error:", err);
+        showToast("Lỗi kết nối khi gửi thao tác: " + err.message, "error");
       }
+    }
+
+    let sseErrorCount = 0;
+    function setSSEStatus(status, label) {
+      const el = document.getElementById('sse-status');
+      const lbl = document.getElementById('sse-status-label');
+      if (!el || !lbl) return;
+      el.className = `sse-status sse-${status}`;
+      lbl.innerText = label;
     }
 
     function initSSE() {
       if (eventSource) eventSource.close();
+      setSSEStatus('connecting', 'Đang kết nối...');
       eventSource = new EventSource('/api/stream');
+
+      eventSource.onopen = () => {
+        sseErrorCount = 0;
+        setSSEStatus('connected', 'Trực tuyến');
+      };
 
       eventSource.addEventListener('delta', (e) => {
         cliState.streamingText += e.data;
@@ -1770,6 +1996,12 @@ Hướng dẫn nhanh:
       });
 
       eventSource.onerror = () => {
+        sseErrorCount++;
+        if (sseErrorCount > 3) {
+          setSSEStatus('offline', 'Ngoại tuyến');
+        } else {
+          setSSEStatus('connecting', 'Đang nối lại...');
+        }
         setTimeout(initSSE, 3000);
       };
     }

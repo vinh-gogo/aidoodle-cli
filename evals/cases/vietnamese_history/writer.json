@@ -1,0 +1,20 @@
+{
+  "id": "vietnamese_history_writer",
+  "category": "quality",
+  "role": "writer",
+  "style": "vietnamese-history",
+  "description": "Biên soạn chương 1 tiểu thuyết lịch sử: khoảnh khắc sống động của thời đại, xưng hô Đại Việt chuẩn mực, tôn trọng sự thật lịch sử, kèm phần Hậu ký sử liệu tác giả.",
+  "prompt": "Viết chương 1: Khói Lò Rèn Bên Bến Vạn Kiếp. Tiết chế Quốc công Trần Hưng Đạo thị sát xưởng rèn vũ khí ven sông Lục Đầu, chứng kiến người thợ rèn già dốc hết tâm can rèn những lưỡi gươm chuẩn bị cho đại chiến chống Nguyên Mông.",
+  "max_chapters": 1,
+  "target_prompts": ["writer.md"],
+  "rubric": "evals/rubrics/vietnamese_history.json",
+  "expect": {
+    "phase": "writing",
+    "min_completed_chapters": 1,
+    "required_checkpoints": ["chapter:1:commit"],
+    "no_pending": ["pending_commit", "pending_steer"]
+  },
+  "gate": {
+    "max_severity": "warning"
+  }
+}

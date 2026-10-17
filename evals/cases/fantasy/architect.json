@@ -1,0 +1,19 @@
+{
+  "id": "fantasy_architect",
+  "category": "workflow",
+  "role": "architect",
+  "style": "fantasy",
+  "description": "Lập kế hoạch thế giới kỳ ảo - tiên hiệp tuân thủ 3 Định luật Sanderson về ma thuật cứng (Hard Magic), Bản đồ Thế giới Đa tầng, Hệ thống Giới hạn và Cái giá Đánh đổi.",
+  "prompt": "Lập dàn ý thế giới kỳ ảo Cửu Châu Linh Giới: Hệ thống ma thuật dựa trên Khí Phách Hồn Nguyên, tuân thủ 3 Định luật Sanderson (khả năng giải quyết vấn đề tỷ lệ thuận với mức độ hiểu quy tắc ma thuật của độc giả). Thiết lập giới hạn, điểm yếu và cái giá của từng cảnh giới.",
+  "max_chapters": 0,
+  "target_prompts": ["architect-long.md"],
+  "rubric": "evals/rubrics/fantasy.json",
+  "expect": {
+    "phase": "writing",
+    "required_checkpoints": ["global:outline", "global:characters"],
+    "no_pending": ["pending_commit", "pending_steer"]
+  },
+  "gate": {
+    "max_severity": "warning"
+  }
+}

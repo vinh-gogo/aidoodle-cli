@@ -1,0 +1,20 @@
+{
+  "id": "suspense_writer",
+  "category": "quality",
+  "role": "writer",
+  "style": "suspense",
+  "description": "Biên soạn chương 1 trinh thám kịch tính: hiện trường án mạng, hé lộ 2 manh mối đầu tiên (1 thật, 1 giả), tạo bầu không khí ngột ngạt và mở đồng hồ đếm ngược sinh tử.",
+  "prompt": "Viết chương 1: Tiếng Chuông Báo Tử Lúc Nửa Đêm. Thám tử Trần Nam đến biệt thự Mây Ngàn đúng lúc phát hiện xác nạn nhân, cửa phòng kín khóa trong với chiếc chìa khóa duy nhất trên bàn trà cạnh xác.",
+  "max_chapters": 1,
+  "target_prompts": ["writer.md"],
+  "rubric": "evals/rubrics/suspense.json",
+  "expect": {
+    "phase": "writing",
+    "min_completed_chapters": 1,
+    "required_checkpoints": ["chapter:1:commit"],
+    "no_pending": ["pending_commit", "pending_steer"]
+  },
+  "gate": {
+    "max_severity": "warning"
+  }
+}

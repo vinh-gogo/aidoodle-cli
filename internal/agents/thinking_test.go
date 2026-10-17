@@ -46,6 +46,18 @@ func TestModelSupportsThinking_OpenAIModels(t *testing.T) {
 		want      bool
 	}{
 		{
+			name:      "main-llm on openai",
+			provider:  "openai",
+			modelName: "main-llm",
+			want:      false,
+		},
+		{
+			name:      "gemma-4-26B-A4B-it-Q4_K_M.gguf on openai",
+			provider:  "openai",
+			modelName: "gemma-4-26B-A4B-it-Q4_K_M.gguf",
+			want:      false,
+		},
+		{
 			name:      "gemma-4-26b on openai",
 			provider:  "openai",
 			modelName: "gemma-4-26b",

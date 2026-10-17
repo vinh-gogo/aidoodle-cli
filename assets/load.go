@@ -95,10 +95,53 @@ func isVietnameseHistoryMode(style string) bool {
 	return style == "vietnamese-history" || style == "history" || style == "lich-su"
 }
 
+// isSuspenseMode kiểm tra xem một style có thuộc về chế độ Tiểu thuyết Trinh thám / Kinh dị hay không.
+func isSuspenseMode(style string) bool {
+	style = strings.ToLower(strings.TrimSpace(style))
+	return style == "suspense" || style == "trinh-tham" || style == "mystery" || style == "thriller" || style == "horror"
+}
+
+// isRomanceMode kiểm tra xem một style có thuộc về chế độ Tiểu thuyết Ngôn tình / Chữa lành hay không.
+func isRomanceMode(style string) bool {
+	style = strings.ToLower(strings.TrimSpace(style))
+	return style == "romance" || style == "ngon-tinh" || style == "healing"
+}
+
+// isFantasyMode kiểm tra xem một style có thuộc về chế độ Tiểu thuyết Kỳ ảo / Tiên hiệp hay không.
+func isFantasyMode(style string) bool {
+	style = strings.ToLower(strings.TrimSpace(style))
+	return style == "fantasy" || style == "ky-ao" || style == "tien-hiep" || style == "xianxia"
+}
+
+func canonicalGenreStyle(style string) string {
+	switch {
+	case isSuspenseMode(style):
+		return "suspense"
+	case isRomanceMode(style):
+		return "romance"
+	case isFantasyMode(style):
+		return "fantasy"
+	case isVietnameseHistoryMode(style):
+		return "vietnamese-history"
+	case isNovelMode(style):
+		return "novel-manga"
+	case isPsychologyMode(style):
+		return "behavioral-psychology"
+	default:
+		return strings.ToLower(strings.TrimSpace(style))
+	}
+}
+
 func loadVoice(style string, opts LoadOptions) string {
 	voiceFile := "voice.md"
 	if isVietnameseHistoryMode(style) {
 		voiceFile = "voices/vietnamese-history.md"
+	} else if isSuspenseMode(style) {
+		voiceFile = "voices/suspense.md"
+	} else if isRomanceMode(style) {
+		voiceFile = "voices/romance.md"
+	} else if isFantasyMode(style) {
+		voiceFile = "voices/fantasy.md"
 	} else if isNovelMode(style) {
 		voiceFile = "voices/novel-manga.md"
 	} else if isPsychologyMode(style) {
@@ -178,7 +221,7 @@ func loadReferences(style string, opts LoadOptions) tools.References {
 	refPrefix := "references/modes/doodle-explainer/"
 	if isVietnameseHistoryMode(style) {
 		refPrefix = "references/modes/vietnamese-history/"
-	} else if isNovelMode(style) {
+	} else if isNovelMode(style) || isSuspenseMode(style) || isRomanceMode(style) || isFantasyMode(style) {
 		refPrefix = "references/modes/novel-manga/"
 	} else if isPsychologyMode(style) {
 		refPrefix = "references/modes/behavioral-psychology/"
@@ -215,7 +258,8 @@ func loadReferences(style string, opts LoadOptions) tools.References {
 		AdversityConflict: readModeRef("adversity-conflict.md"),
 	}
 	if style != "" && style != "default" {
-		genreDir := "references/genres/" + style + "/"
+		canonical := canonicalGenreStyle(style)
+		genreDir := "references/genres/" + canonical + "/"
 		if data, err := referencesFS.ReadFile(genreDir + "style-references.md"); err == nil {
 			refs.StyleReference = string(data)
 		}
@@ -224,10 +268,12 @@ func loadReferences(style string, opts LoadOptions) tools.References {
 		}
 		// 题材风格参考:同名整文件替换(本书 > 全局);自定义 style 无内置参考时
 		// 允许仅由覆盖提供,不回退 default(错误的参照比没有更糟)。
-		relPath := filepath.Join("genres", style, "style-references.md")
-		for _, dir := range []string{opts.HomeStyleDir, opts.BookStyleDir} {
-			if s := readOverride(dir, relPath); s != "" {
-				refs.StyleReference = s
+		for _, candidate := range []string{canonical, style} {
+			relPath := filepath.Join("genres", candidate, "style-references.md")
+			for _, dir := range []string{opts.HomeStyleDir, opts.BookStyleDir} {
+				if s := readOverride(dir, relPath); s != "" {
+					refs.StyleReference = s
+				}
 			}
 		}
 	}
@@ -243,6 +289,12 @@ func loadPrompts(styles ...string) Prompts {
 	modeSubdir := "modes/doodle-explainer"
 	if isVietnameseHistoryMode(style) {
 		modeSubdir = "modes/vietnamese-history"
+	} else if isSuspenseMode(style) {
+		modeSubdir = "modes/suspense"
+	} else if isRomanceMode(style) {
+		modeSubdir = "modes/romance"
+	} else if isFantasyMode(style) {
+		modeSubdir = "modes/fantasy"
 	} else if isNovelMode(style) {
 		modeSubdir = "modes/novel-manga"
 	} else if isPsychologyMode(style) {
