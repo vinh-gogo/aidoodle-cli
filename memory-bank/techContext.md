@@ -42,14 +42,14 @@ sh -n scripts/install.sh        # Linux CI only
 CI matrix: ubuntu-latest + windows-latest, Go from `go.mod`.
 Release: GoReleaser (`.goreleaser.yml`), Docker image `ghcr.io/voocel/ainovel-cli`; `docker-compose.yml` mounts `./config:/root/.ainovel` and `./workspace:/workspace`.
 
-> I have NOT run build/tests in this workspace yet — state unknown. Do this at the start of any code-changing task.
+> Verified build/test status: 100% PASS across all 26 packages (unit, integration, e2e, evals: 315+ tests). Verified locally on Windows AMD64.
 
 ## Config
 - Global `~/.ainovel/config.json`; project `./.ainovel/config.json` (gitignored — contains secrets); example `config.example.jsonc` (Vietnamese comments).
 - Keys: `provider`, `model`, `reasoning_effort` (off|low|medium|high|xhigh|max), `providers{type, api_key, base_url, models[{name,context_window,json_schema}], api(chat|responses), extra{user_agent,headers,anthropic_beta}, extra_body, stream_idle_timeout}`, `roles{architect|writer|editor|import_segment|import_analyze|import_synthesize → provider/model/reasoning_effort/fallbacks}`, `style`, `context_window` (legacy), `budget{book_usd,warn_ratio,hard_stop}`, `notify{enabled,command,events}`, `disable_update_check`.
 - **Colab / Local Server Inference via Cloudflare Tunnel (`kaggle/colab_llama_cpp.ipynb`)**:
   - Unified FastAPI Gateway (Port 8000) published via Cloudflare Tunnel at fixed URL: `https://api.gloryvocab.com/v1`
-  - **Main LLM (Port 8001)**: `Gemma 4 26B A4B` (`model: "main-llm"` or `"gemma-4-26B-A4B-it-Q4_K_M.gguf"`, `--ctx-size 32768`, `context_window: 32768`).
+  - **Main LLM (Port 8001)**: `Gemma 4 26B A4B` (`model: "main-llm"` or `"gemma-4-26B-A4B-it-Q4_K_M.gguf"`, `--ctx-size 65536`, `context_window: 32768`).
   - **STT Backend (Port 8003)**: `Gemma 4 E2B + Audio mmproj` (`model: "gemma-4-stt"` or `"google/gemma-4-E2B-it"`, `/v1/audio/transcriptions`).
   - `kaggle-llama` / `colab-llama` provider config: Uses `type: "openai"`, `base_url: "https://api.gloryvocab.com/v1"`, `model: "main-llm"`, `context_window: 32768`, `stream_idle_timeout: "15m"` (không còn cần `ngrok-skip-browser-warning`).
   - **Repetition Trap Mitigation**: LLMs on open-source weights (Qwen, Llama) can enter infinite loops (e.g., `- true\n- true...`). Mitigated by adding `extra_body` to provider config:

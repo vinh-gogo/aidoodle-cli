@@ -1,0 +1,20 @@
+{
+  "id": "doodle_explainer_rubric",
+  "category": "quality",
+  "role": "editor",
+  "style": "doodle-explainer",
+  "description": "Rubric thẩm định kịch bản video giáo dục: chuẩn 700-1500 từ LỜI, thời lượng 300-600s, tỷ lệ 1:1 LỜI và HÌNH, mật độ Tái Hook mỗi 60-90s, ngôn ngữ hình que sinh động dí dỏm.",
+  "prompt": "Thẩm định kịch bản video Doodle Explainer: kiểm tra số từ lời thoại, tỷ lệ tương ứng giữa mô tả hình ảnh và lời dẫn, các mốc thời gian chuyển cảnh và tính hấp dẫn thị giác.",
+  "max_chapters": 1,
+  "target_prompts": ["editor.md"],
+  "rubric": "evals/rubrics/doodle_explainer.json",
+  "expect": {
+    "phase": "writing",
+    "min_completed_chapters": 1,
+    "required_checkpoints": ["chapter:1:commit"],
+    "no_pending": ["pending_commit", "pending_steer"]
+  },
+  "gate": {
+    "max_severity": "warning"
+  }
+}

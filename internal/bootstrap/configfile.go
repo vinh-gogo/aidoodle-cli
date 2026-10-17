@@ -379,7 +379,8 @@ func WriteStartupError(msg string) string {
 		return ""
 	}
 	defer f.Close()
-	if _, err := fmt.Fprintf(f, "[%s] %s\n", time.Now().Format(time.RFC3339), msg); err != nil {
+	redactedMsg := RedactSecrets(msg)
+	if _, err := fmt.Fprintf(f, "[%s] %s\n", time.Now().Format(time.RFC3339), redactedMsg); err != nil {
 		return ""
 	}
 	return path

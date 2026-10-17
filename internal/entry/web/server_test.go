@@ -106,6 +106,7 @@ func TestWebEndpoints(t *testing.T) {
 
 	// 4. Test /api/action with invalid action
 	req = httptest.NewRequest("POST", "/api/action", strings.NewReader(`{"action": "unknown"}`))
+	req.Header.Set("X-Requested-With", "ainovel-web")
 	w = httptest.NewRecorder()
 	mux.ServeHTTP(w, req)
 	if w.Code != http.StatusBadRequest {
@@ -127,6 +128,13 @@ func TestExportProject(t *testing.T) {
 		Style:     "vietnamese-history",
 		Provider:  "mock",
 		ModelName: "test-model",
+		Providers: map[string]bootstrap.ProviderConfig{
+			"mock": {
+				Type:    "openai",
+				APIKey:  "mock-key",
+				BaseURL: "http://127.0.0.1:8000",
+			},
+		},
 	}
 	bundle := assets.Load("vietnamese-history", assets.DefaultLoadOptions(projDir))
 	buildInfo := buildversion.Info{Version: "test-v1"}

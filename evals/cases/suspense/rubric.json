@@ -1,0 +1,20 @@
+{
+  "id": "suspense_rubric",
+  "category": "quality",
+  "role": "editor",
+  "style": "suspense",
+  "description": "Rubric thẩm định trinh thám: Fair-Play 3:2 manh mối thật/giả, suy luận logic không dùng deus ex machina, tính chặt chẽ hiện trường phòng kín, nhịp độ căng thẳng và tiết lộ bất ngờ.",
+  "prompt": "Thẩm định tính công bằng Fair-Play của chương trinh thám: kiểm tra tỷ lệ manh mối thật và giả, tính logic của các quan sát hiện trường, cấm suy diễn chủ quan hoặc thế lực siêu nhiên can thiệp.",
+  "max_chapters": 1,
+  "target_prompts": ["editor.md"],
+  "rubric": "evals/rubrics/suspense.json",
+  "expect": {
+    "phase": "writing",
+    "min_completed_chapters": 1,
+    "required_checkpoints": ["chapter:1:commit"],
+    "no_pending": ["pending_commit", "pending_steer"]
+  },
+  "gate": {
+    "max_severity": "warning"
+  }
+}

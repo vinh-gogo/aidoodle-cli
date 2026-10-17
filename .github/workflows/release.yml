@@ -1,0 +1,119 @@
+name: Release Multi-Platform
+
+on:
+  push:
+    tags: [ "v*" ]
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: 'Tag name (e.g. v1.0.1)'
+        required: true
+        default: 'v1.0.1'
+
+permissions:
+  contents: write
+
+jobs:
+  build-release:
+    name: Build Multi-Arch Binary
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - os: linux
+            arch: amd64
+            ext: ""
+            archive_ext: ".tar.gz"
+          - os: linux
+            arch: arm64
+            ext: ""
+            archive_ext: ".tar.gz"
+          - os: darwin
+            arch: amd64
+            ext: ""
+            archive_ext: ".tar.gz"
+          - os: darwin
+            arch: arm64
+            ext: ""
+            archive_ext: ".tar.gz"
+          - os: windows
+            arch: amd64
+            ext: ".exe"
+            archive_ext: ".zip"
+          - os: windows
+            arch: arm64
+            ext: ".exe"
+            archive_ext: ".zip"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.25.x'
+          check-latest: true
+
+      - name: Set Release Version
+        run: |
+          if [ -n "${{ github.event.inputs.tag_name }}" ]; then
+            TAG="${{ github.event.inputs.tag_name }}"
+          else
+            TAG="${{ github.ref_name }}"
+          fi
+          echo "VERSION=$TAG" >> $GITHUB_ENV
+          echo "COMMIT=${{ github.sha }}" >> $GITHUB_ENV
+          echo "DATE=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> $GITHUB_ENV
+
+      - name: Compile Binary
+        run: |
+          TARGET_DIR="ainovel-cli_${VERSION}_${{ matrix.os }}_${{ matrix.arch }}"
+          mkdir -p "dist/$TARGET_DIR"
+          LDFLAGS="-s -w -X main.version=$VERSION -X main.commit=$COMMIT -X main.date=$DATE"
+          GOOS=${{ matrix.os }} GOARCH=${{ matrix.arch }} go build -trimpath -ldflags "$LDFLAGS" -o "dist/$TARGET_DIR/ainovel-cli${{ matrix.ext }}" ./cmd/ainovel-cli
+          cp README.md LICENSE "dist/$TARGET_DIR/" || true
+
+          cd dist
+          if [ "${{ matrix.archive_ext }}" = ".tar.gz" ]; then
+            tar -czvf "${TARGET_DIR}.tar.gz" "$TARGET_DIR"
+          else
+            zip -r "${TARGET_DIR}.zip" "$TARGET_DIR"
+          fi
+          cd ..
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: binary-${{ matrix.os }}-${{ matrix.arch }}
+          path: dist/*${{ matrix.archive_ext }}
+          retention-days: 1
+
+  publish-release:
+    name: Aggregate Checksums & Publish Release
+    needs: [build-release]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: release-assets
+          merge-multiple: true
+
+      - name: Generate Checksums
+        run: |
+          cd release-assets
+          sha256sum * > checksums.txt
+          cp checksums.txt ainovel-cli_checksums.txt
+          echo "Generated checksums:"
+          cat checksums.txt
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: release-assets/*
+          generate_release_notes: true
+          draft: false
+          prerelease: false

@@ -1,0 +1,19 @@
+{
+  "id": "novel_manga_architect",
+  "category": "workflow",
+  "role": "architect",
+  "style": "novel-manga",
+  "description": "Lập kế hoạch đại cương trường thiên tiểu thuyết/manga phân tầng Volume -> Arc -> Chapter, xây dựng hệ thống nhân vật và thế giới quan đa tầng.",
+  "prompt": "Lập kế hoạch trường thiên 300 chương cho tiểu thuyết kỳ ảo hành động: Một thợ rèn trẻ tuổi vô tình đánh thức thanh kiếm cổ chứa tàn hồn của kiếm thánh thời thượng cổ, cuốn vào cuộc chiến giữa ngũ đại môn phái và ma tộc.",
+  "max_chapters": 0,
+  "target_prompts": ["architect-long.md"],
+  "rubric": "evals/rubrics/novel_manga.json",
+  "expect": {
+    "phase": "writing",
+    "required_checkpoints": ["global:outline", "global:characters"],
+    "no_pending": ["pending_commit", "pending_steer"]
+  },
+  "gate": {
+    "max_severity": "warning"
+  }
+}

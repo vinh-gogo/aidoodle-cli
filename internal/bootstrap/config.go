@@ -17,7 +17,7 @@ import (
 )
 
 // DefaultContextWindow 模型未在 registry 登记时的兜底窗口大小。
-const DefaultContextWindow = 200000
+const DefaultContextWindow = 32768
 
 // CompactRatio 触发上下文压缩的相对阈值：tokens >= window * CompactRatio 时压缩。
 // 0.85 是经验值，给"下一轮 prompt + 大工具结果"留 15% 头部空间，同时让大窗口
@@ -283,13 +283,22 @@ func (t TrendsConfig) IsEnabled() bool { return t.Enabled }
 // BudgetConfig 是用户对单本书钱包的政策声明。越线停机等同于用户在那一刻
 // 手动 Abort——Host 只代为执行，不评估模型行为（架构 §10 合宪边界）。
 type BudgetConfig struct {
-	BookUSD   float64 `json:"book_usd,omitempty"`   // 必填才启用；0/缺省 = 不限
-	WarnRatio float64 `json:"warn_ratio,omitempty"` // 告警水位，默认 0.8
-	HardStop  bool    `json:"hard_stop,omitempty"`  // true=越线立即停；默认等当前子代理任务结束
+	BookUSD     float64 `json:"book_usd,omitempty"`     // 必填才启用；0/缺省 = 不限
+	WarnRatio   float64 `json:"warn_ratio,omitempty"`   // 告警水位，默认 0.8
+	HardStop    bool    `json:"hard_stop,omitempty"`    // true=越线立即停；默认等当前子代理任务结束
+	MaxCalls    int     `json:"max_calls,omitempty"`    // Tối đa số lượt gọi LLM (cầu chì tự ngắt cho model $0)
+	MaxTokens   int64   `json:"max_tokens,omitempty"`   // Tối đa tổng token tích lũy
+	MaxDuration string  `json:"max_duration,omitempty"` // Tối đa thời gian chạy (ví dụ: "4h", "30m")
 }
 
-// Enabled 返回预算政策是否启用。
-func (b BudgetConfig) Enabled() bool { return b.BookUSD > 0 }
+// Enabled trả về true nếu chính sách ngân sách được kích hoạt (bao gồm cầu chì ngắt mạch mặc định cho model $0).
+// Đặt MaxCalls < 0 để tắt hoàn toàn giới hạn ngân sách.
+func (b BudgetConfig) Enabled() bool {
+	if b.MaxCalls < 0 {
+		return false
+	}
+	return b.BookUSD > 0 || b.MaxCalls > 0 || b.MaxTokens > 0 || b.MaxDuration != "" || b.BookUSD == 0
+}
 
 // NotifyConfig 无人值守告警通道配置。
 type NotifyConfig struct {
@@ -386,7 +395,7 @@ func (c *Config) ValidateBase() error {
 	if c.Budget.BookUSD < 0 {
 		return fmt.Errorf("budget.book_usd must be >= 0: %w", errs.ErrConfig)
 	}
-	if c.Budget.Enabled() && (c.Budget.WarnRatio <= 0 || c.Budget.WarnRatio >= 1) {
+	if c.Budget.BookUSD > 0 && (c.Budget.WarnRatio <= 0 || c.Budget.WarnRatio >= 1) {
 		return fmt.Errorf("budget.warn_ratio must be in (0, 1): %w", errs.ErrConfig)
 	}
 

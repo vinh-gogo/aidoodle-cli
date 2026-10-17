@@ -2,6 +2,8 @@ package main
 
 import (
 	"context"
+	"crypto/rand"
+	"encoding/hex"
 	"fmt"
 	"io"
 	"os"
@@ -41,6 +43,10 @@ func main() {
 	opts, args, err := parseCLIOptions(os.Args[1:])
 	if err != nil {
 		die("flags: %v", err)
+	}
+	if opts.Help {
+		printUsage(os.Stdout)
+		return
 	}
 	if opts.Version {
 		buildversion.Print(os.Stdout, versionInfo())
@@ -83,7 +89,7 @@ func main() {
 // 立即关闭，不暂停的话错误一闪而过，正是 issue #37 里用户无从排查的根因。
 func die(format string, args ...any) {
 	msg := fmt.Sprintf(format, args...)
-	fmt.Fprintln(os.Stderr, msg)
+	fmt.Fprintln(os.Stderr, bootstrap.RedactSecrets(msg))
 	if path := bootstrap.WriteStartupError(msg); path != "" {
 		fmt.Fprintf(os.Stderr, "(Chi tiết lỗi đã được ghi vào %s)\n", path)
 	}
@@ -157,7 +163,31 @@ func runWithConfig(cfg bootstrap.Config, opts cliOptions, args []string) {
 		if port <= 0 {
 			port = 8080
 		}
-		if err := web.Run(cfg, bundle, port, versionInfo()); err != nil {
+		host := strings.TrimSpace(opts.Host)
+		if host == "" {
+			if opts.External {
+				host = "0.0.0.0"
+			} else {
+				host = "127.0.0.1"
+			}
+		}
+		token := strings.TrimSpace(opts.Token)
+		if token == "" {
+			token = strings.TrimSpace(os.Getenv("WEB_AUTH_TOKEN"))
+		}
+		// Nếu bật --external hoặc bind host công khai mà không có token: tự động sinh token 32-char hex bảo mật
+		if (opts.External || (host != "127.0.0.1" && host != "localhost" && host != "::1")) && token == "" {
+			b := make([]byte, 16)
+			if _, err := rand.Read(b); err == nil {
+				token = hex.EncodeToString(b)
+			}
+		}
+		webOpts := web.Options{
+			Host:      host,
+			Port:      port,
+			AuthToken: token,
+		}
+		if err := web.RunWithOptions(cfg, bundle, webOpts, versionInfo()); err != nil {
 			die("web error: %v", err)
 		}
 		return
@@ -217,9 +247,13 @@ func availableStyles(m map[string]string) string {
 }
 
 type cliOptions struct {
+	Help          bool
 	Headless      bool
 	Web           bool
 	Port          int
+	Host          string
+	Token         string
+	External      bool
 	Export        bool
 	ExportFormat  string
 	Trends        bool
@@ -240,6 +274,8 @@ func parseCLIOptions(argv []string) (cliOptions, []string, error) {
 	var args []string
 	for i := 0; i < len(argv); i++ {
 		switch argv[i] {
+		case "--help", "-h", "help":
+			opts.Help = true
 		case "--version", "-v":
 			opts.Version = true
 		case "version":
@@ -292,6 +328,20 @@ func parseCLIOptions(argv []string) (cliOptions, []string, error) {
 			}
 			opts.Port = p
 			i++
+		case "--host":
+			if i+1 >= len(argv) {
+				return opts, nil, fmt.Errorf("--host thiếu giá trị")
+			}
+			opts.Host = argv[i+1]
+			i++
+		case "--token":
+			if i+1 >= len(argv) {
+				return opts, nil, fmt.Errorf("--token thiếu giá trị")
+			}
+			opts.Token = argv[i+1]
+			i++
+		case "--external":
+			opts.External = true
 		case "--prompt":
 			if i+1 >= len(argv) {
 				return opts, nil, fmt.Errorf("--prompt thiếu giá trị")
@@ -392,4 +442,44 @@ func loadPromptFrom(opts cliOptions, stdin io.Reader) (string, error) {
 		return strings.TrimSpace(string(data)), nil
 	}
 	return startup.LoadPromptFile(opts.PromptFile)
+}
+
+func printUsage(w io.Writer) {
+	fmt.Fprintf(w, `ainovel-cli - Trợ lý AI sáng tác tiểu thuyết & kịch bản video tiếng Việt
+
+Cách sử dụng:
+  ainovel-cli [tùy chọn]
+  ainovel-cli web [tùy chọn]
+  ainovel-cli export [tùy chọn]
+  ainovel-cli eval [tùy chọn]
+
+Lệnh chính:
+  web                  Khởi chạy giao diện quản lý trên trình duyệt Web (mặc định 127.0.0.1:8080)
+  export               Xuất tác phẩm hiện tại (--word, --epub, --txt, --video)
+  eval                 Chạy bộ kiểm thử và đánh giá mô hình (harness)
+  update [phiên_bản]   Tự động cập nhật ainovel-cli lên phiên bản mới nhất hoặc chỉ định
+  version, -v          Hiển thị thông tin phiên bản
+
+Tùy chọn chung:
+  -h, --help           Hiển thị hướng dẫn này và thoát
+  -v, --version        Hiển thị phiên bản hiện tại
+  -s, --style <thể_loại> Chỉ định thể loại / phong cách sáng tác
+  -d, --dir <thư_mục>   Chỉ định thư mục lưu trữ sách (mặc định: output/<thể_loại>)
+  --headless           Chạy chế độ nền không có giao diện tương tác TUI
+  --next               Sáng tác tiếp 1 chương trong chế độ --headless
+  --prompt <văn_bản>   Nhu cầu sáng tác ban đầu (cho chế độ --headless)
+  --prompt-file <tệp>  Đường dẫn tệp chứa nhu cầu sáng tác ban đầu
+
+Tùy chọn Web Server:
+  -p, --port <cổng>    Cổng lắng nghe (mặc định: 8080)
+  --host <địa_chỉ>     Địa chỉ IP lắng nghe (mặc định: 127.0.0.1)
+  --external           Cho phép lắng nghe trên tất cả card mạng (0.0.0.0)
+  --token <khóa>       Bật xác thực Bearer token bảo vệ giao diện Web
+
+Tùy chọn Xuất file:
+  --epub               Xuất sách điện tử chuẩn W3C EPUB 3.3
+  --word               Xuất tài liệu Word (.docx)
+  --txt                Xuất tệp văn bản thuần (.txt)
+  --video              Xuất kịch bản video
+`)
 }

@@ -1,8 +1,10 @@
 package host
 
 import (
+	"errors"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/voocel/agentcore"
 	"github.com/voocel/ainovel-cli/internal/bootstrap"
@@ -28,7 +30,7 @@ func subagentEndEvent() agentcore.Event {
 
 func TestBudgetSentinelDisabled(t *testing.T) {
 	r := &budgetRecorder{}
-	if s := r.sentinel(bootstrap.BudgetConfig{}); s != nil {
+	if s := r.sentinel(bootstrap.BudgetConfig{MaxCalls: -1}); s != nil {
 		t.Fatal("disabled budget should return nil sentinel")
 	}
 	// nil 安全
@@ -40,6 +42,37 @@ func TestBudgetSentinelDisabled(t *testing.T) {
 	}
 	if s.Limit() != 0 {
 		t.Error("nil sentinel Limit should be 0")
+	}
+}
+
+func TestBudgetSentinelDefaultZeroDollar100Calls(t *testing.T) {
+	r := &budgetRecorder{}
+	s := r.sentinel(bootstrap.BudgetConfig{BookUSD: 0, MaxCalls: 0})
+	if s == nil {
+		t.Fatal("sentinel should be enabled by default for $0 models")
+	}
+	if s.MaxCalls() != 100 {
+		t.Fatalf("expected default MaxCalls=100, got %d", s.MaxCalls())
+	}
+
+	// 99 calls should pass
+	s.RecordUsage(99, 0)
+	if err := s.Refuse(); err != nil {
+		t.Fatalf("at 99 calls should pass: %v", err)
+	}
+
+	// 100th call should trigger circuit breaker with BudgetBreachedError
+	s.RecordUsage(100, 0)
+	err := s.Refuse()
+	if err == nil {
+		t.Fatal("at 100 calls Refuse should return BudgetBreachedError")
+	}
+	var bErr *BudgetBreachedError
+	if !errors.As(err, &bErr) {
+		t.Fatalf("expected *BudgetBreachedError, got %T (%v)", err, err)
+	}
+	if !strings.Contains(err.Error(), "100 lượt gọi LLM") {
+		t.Fatalf("expected error mentioning 100 calls, got: %v", err)
 	}
 }
 
@@ -171,5 +204,88 @@ func TestBudgetSentinelBlindWarningAfterModelSwitch(t *testing.T) {
 	}
 	if len(r.reports) != 1 || (!strings.Contains(r.reports[0], "Điểm mù") && !strings.Contains(r.reports[0], "盲区")) {
 		t.Fatalf("expected blind warning after switch to unpriced model, got %v", r.reports)
+	}
+}
+
+func TestBudgetSentinelCircuitBreakerMaxCalls(t *testing.T) {
+	r := &budgetRecorder{}
+	s := r.sentinel(bootstrap.BudgetConfig{BookUSD: 0, MaxCalls: 5, HardStop: false})
+	if s == nil {
+		t.Fatal("sentinel should be enabled for MaxCalls > 0")
+	}
+
+	for i := 0; i < 4; i++ {
+		s.OnCost(0)
+	}
+	if len(r.aborts) != 0 {
+		t.Fatalf("should not abort before MaxCalls, got %v", r.aborts)
+	}
+
+	// Lần gọi thứ 5 đạt giới hạn 5 calls
+	s.OnCost(0)
+	if len(r.reports) == 0 || !strings.Contains(r.reports[len(r.reports)-1], "Cầu chì tự ngắt") {
+		t.Fatalf("expected circuit breaker report, got %v", r.reports)
+	}
+	if len(r.aborts) != 0 {
+		t.Fatal("should wait for boundary when HardStop is false")
+	}
+
+	// Tại ranh giới subagent
+	if !s.HandleBoundary() {
+		t.Fatal("HandleBoundary should return true when stop is pending")
+	}
+	if len(r.aborts) != 1 || !strings.Contains(r.aborts[0], "5 lượt gọi LLM") {
+		t.Fatalf("expected abort with calls limit, got %v", r.aborts)
+	}
+}
+
+func TestBudgetSentinelCircuitBreakerMaxTokensHardStop(t *testing.T) {
+	r := &budgetRecorder{}
+	s := r.sentinel(bootstrap.BudgetConfig{BookUSD: 0, MaxTokens: 1000, HardStop: true})
+	if s == nil {
+		t.Fatal("sentinel should be enabled for MaxTokens > 0")
+	}
+
+	s.RecordUsage(1, 500)
+	if len(r.aborts) != 0 {
+		t.Fatal("should not abort below token limit")
+	}
+
+	// Vượt ngưỡng token với HardStop = true -> dừng ngay lập tức
+	s.RecordUsage(2, 1200)
+	if len(r.aborts) != 1 || !strings.Contains(r.aborts[0], "1000 tokens") {
+		t.Fatalf("expected immediate abort on tokens limit, got %v", r.aborts)
+	}
+}
+
+func TestBudgetSentinelCircuitBreakerMaxDuration(t *testing.T) {
+	r := &budgetRecorder{}
+	s := r.sentinel(bootstrap.BudgetConfig{BookUSD: 0, MaxDuration: "20ms", HardStop: true})
+	if s == nil {
+		t.Fatal("sentinel should be enabled for MaxDuration")
+	}
+
+	time.Sleep(30 * time.Millisecond)
+	s.OnCost(0)
+	if len(r.aborts) != 1 || !strings.Contains(r.aborts[0], "thời gian chạy") {
+		t.Fatalf("expected duration abort, got %v", r.aborts)
+	}
+}
+
+func TestBudgetSentinelRefuseCircuitBreakers(t *testing.T) {
+	r := &budgetRecorder{}
+	s := r.sentinel(bootstrap.BudgetConfig{BookUSD: 0, MaxCalls: 3})
+
+	if err := s.Refuse(); err != nil {
+		t.Fatalf("initial Refuse should pass: %v", err)
+	}
+	s.OnCost(0)
+	s.OnCost(0)
+	s.OnCost(0)
+
+	if err := s.Refuse(); err == nil {
+		t.Fatal("Refuse should fail once MaxCalls reached")
+	} else if !strings.Contains(err.Error(), "max_calls") {
+		t.Fatalf("expected refuse error to mention max_calls, got %v", err)
 	}
 }

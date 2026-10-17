@@ -1,0 +1,19 @@
+{
+  "id": "suspense_architect",
+  "category": "workflow",
+  "role": "architect",
+  "style": "suspense",
+  "description": "Lập kế hoạch vụ án trinh thám theo chuẩn Fair-Play Whodunit, thiết lập Ma trận Chân tướng Kép, Sổ cái Manh mối 3:2 (3 manh mối thật, 2 manh mối giả/red herring) và Đồng hồ Đếm ngược Sinh tử.",
+  "prompt": "Lập dàn ý vụ án mạng tại biệt thự cổ Mây Ngàn trong đêm bão tuyết cô lập: Nạn nhân là đại gia buôn đồ cổ Hoàng Khang bị sát hại trong phòng kín khóa trái. Lập bảng phân bổ manh mối Fair-Play 3:2, danh sách nghi phạm và động cơ tâm lý.",
+  "max_chapters": 0,
+  "target_prompts": ["architect-short.md"],
+  "rubric": "evals/rubrics/suspense.json",
+  "expect": {
+    "phase": "writing",
+    "required_checkpoints": ["global:outline", "global:characters"],
+    "no_pending": ["pending_commit", "pending_steer"]
+  },
+  "gate": {
+    "max_severity": "warning"
+  }
+}

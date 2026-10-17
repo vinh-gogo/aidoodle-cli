@@ -8,6 +8,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"strings"
 	"time"
 
 	"github.com/voocel/agentcore"
@@ -73,7 +74,154 @@ func Generate(ctx context.Context, model Generator, cfg Config, messages []agent
 	}
 }
 
+// NonRetryableError bọc lỗi LLM không thể thử lại (như HTTP 400 exceed_context_size_error, 401, 403, 404, 422),
+// triển khai agentcore.RetryableError với Retryable() == false để dừng ngay AgentLoop / subagentMaxRetries.
+type NonRetryableError struct {
+	Err error
+}
+
+func (e NonRetryableError) Error() string {
+	if e.Err != nil {
+		return e.Err.Error()
+	}
+	return "non-retryable error"
+}
+
+func (e NonRetryableError) Unwrap() error {
+	return e.Err
+}
+
+func (e NonRetryableError) Retryable() bool {
+	return false
+}
+
+func (e NonRetryableError) FailoverEligible() bool {
+	return false
+}
+
+// AsNonRetryable bọc err thành NonRetryableError nếu chưa bọc.
+func AsNonRetryable(err error) error {
+	if err == nil {
+		return nil
+	}
+	var nr NonRetryableError
+	if errors.As(err, &nr) {
+		return err
+	}
+	return NonRetryableError{Err: err}
+}
+
+type statusCodeGetter interface {
+	StatusCode() int
+}
+
+type httpStatusCodeGetter interface {
+	HTTPStatusCode() int
+}
+
+type statusGetter interface {
+	Status() int
+}
+
+// IsNonRetryable xác định một lỗi có phải là lỗi 4xx / tràn ngữ cảnh / xác thực không thể thử lại hay không.
+func IsNonRetryable(err error) bool {
+	if err == nil {
+		return false
+	}
+	var retryable agentcore.RetryableError
+	if errors.As(err, &retryable) && !retryable.Retryable() {
+		return true
+	}
+	if agentcore.IsContextOverflow(err) {
+		return true
+	}
+
+	var sc statusCodeGetter
+	if errors.As(err, &sc) {
+		code := sc.StatusCode()
+		if code >= 400 && code < 500 && code != 429 {
+			return true
+		}
+	}
+	var hsc httpStatusCodeGetter
+	if errors.As(err, &hsc) {
+		code := hsc.HTTPStatusCode()
+		if code >= 400 && code < 500 && code != 429 {
+			return true
+		}
+	}
+	var sg statusGetter
+	if errors.As(err, &sg) {
+		code := sg.Status()
+		if code >= 400 && code < 500 && code != 429 {
+			return true
+		}
+	}
+
+	msg := strings.ToLower(err.Error())
+	if strings.Contains(msg, "429") || strings.Contains(msg, "rate limit") {
+		return false
+	}
+
+	if strings.Contains(msg, "exceed_context_size_error") ||
+		strings.Contains(msg, "context_length_exceeded") ||
+		strings.Contains(msg, "maximum context length") ||
+		strings.Contains(msg, "context window") ||
+		strings.Contains(msg, "context_overflow") {
+		return true
+	}
+
+	if strings.Contains(msg, "400 bad request") ||
+		strings.Contains(msg, "status: 400") ||
+		strings.Contains(msg, "status code: 400") ||
+		strings.Contains(msg, "code: 400") ||
+		strings.Contains(msg, "http 400") ||
+		strings.Contains(msg, "invalid_request_error") {
+		return true
+	}
+
+	if strings.Contains(msg, "401 unauthorized") ||
+		strings.Contains(msg, "status: 401") ||
+		strings.Contains(msg, "status code: 401") ||
+		strings.Contains(msg, "code: 401") ||
+		strings.Contains(msg, "http 401") ||
+		strings.Contains(msg, "invalid api key") ||
+		strings.Contains(msg, "authentication_error") {
+		return true
+	}
+
+	if strings.Contains(msg, "403 forbidden") ||
+		strings.Contains(msg, "status: 403") ||
+		strings.Contains(msg, "status code: 403") ||
+		strings.Contains(msg, "code: 403") ||
+		strings.Contains(msg, "http 403") ||
+		strings.Contains(msg, "permission_denied") {
+		return true
+	}
+
+	if strings.Contains(msg, "404 not found") ||
+		strings.Contains(msg, "status: 404") ||
+		strings.Contains(msg, "status code: 404") ||
+		strings.Contains(msg, "code: 404") ||
+		strings.Contains(msg, "http 404") {
+		return true
+	}
+
+	if strings.Contains(msg, "422 unprocessable") ||
+		strings.Contains(msg, "status: 422") ||
+		strings.Contains(msg, "status code: 422") ||
+		strings.Contains(msg, "code: 422") ||
+		strings.Contains(msg, "http 422") {
+		return true
+	}
+
+	return false
+}
+
 func isRetryable(err error) bool {
+	if IsNonRetryable(err) {
+		return false
+	}
 	var retryable agentcore.RetryableError
 	return errors.As(err, &retryable) && retryable.Retryable()
 }

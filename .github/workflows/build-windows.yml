@@ -43,7 +43,7 @@ jobs:
             ${{ runner.os }}-go-
 
       - name: Run unit tests
-        run: go test -v ./...
+        run: go test -buildvcs=false -count=1 ./...
 
       - name: Prepare build metadata
         id: meta
@@ -85,6 +85,18 @@ jobs:
           Compress-Archive -Path "dist/ainovel-cli-windows-amd64/*" -DestinationPath "dist/ainovel-cli-windows-amd64.zip" -Force
           Compress-Archive -Path "dist/ainovel-cli-windows-arm64/*" -DestinationPath "dist/ainovel-cli-windows-arm64.zip" -Force
 
+      - name: Generate SHA-256 Checksums
+        shell: pwsh
+        run: |
+          $lines = @()
+          Get-ChildItem -Path "dist/*.zip", "dist/ainovel-cli-windows-*/*.exe" | ForEach-Object {
+            $h = (Get-FileHash -Algorithm SHA256 $_.FullName).Hash.ToLower()
+            $name = $_.Name
+            $lines += "$h  $name"
+          }
+          $lines | Set-Content -Path "dist/checksums.txt" -Encoding utf8
+          Copy-Item "dist/checksums.txt" "dist/ainovel-cli_checksums.txt"
+
       - name: Upload Windows x64 Artifact
         uses: actions/upload-artifact@v4
         with:
@@ -107,6 +119,8 @@ jobs:
             dist/ainovel-cli-windows-amd64.zip
             dist/ainovel-cli-windows-arm64.zip
             dist/ainovel-cli-windows-amd64/ainovel-cli.exe
+            dist/checksums.txt
+            dist/ainovel-cli_checksums.txt
           name: Release ${{ env.VERSION }}
           generate_release_notes: true
           draft: false

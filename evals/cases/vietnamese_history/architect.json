@@ -1,0 +1,19 @@
+{
+  "id": "vietnamese_history_architect",
+  "category": "workflow",
+  "role": "architect",
+  "style": "vietnamese-history",
+  "description": "Lập kế hoạch tiểu thuyết lịch sử Việt Nam với Bảng bất biến lịch sử (nhân vật, niên đại, trận đánh thực), Bảng vùng tự do (tâm lý, đời tư) và Xung đột kép.",
+  "prompt": "Lập dàn ý đoản thiên lịch sử về Trần Quốc Tuấn trước thềm Hội nghị Diên Hồng (năm 1284): Lập Bảng bất biến (Trần Hưng Đạo, vua Trần Nhân Tông, Thoát Hoan, địa danh Thăng Long - Vạn Kiếp), Bảng vùng tự do (nỗi dằn xé lời cha dặn thù nhà nợ nước) và Xung đột kép.",
+  "max_chapters": 0,
+  "target_prompts": ["architect-short.md"],
+  "rubric": "evals/rubrics/vietnamese_history.json",
+  "expect": {
+    "phase": "writing",
+    "required_checkpoints": ["global:outline", "global:characters"],
+    "no_pending": ["pending_commit", "pending_steer"]
+  },
+  "gate": {
+    "max_severity": "warning"
+  }
+}

@@ -57,19 +57,23 @@ func appendMarkdownResidue(vs []Violation, text string) []Violation {
 // hanRe khớp một chuỗi liên tiếp các chữ Hán.
 var hanRe = regexp.MustCompile(`\p{Han}+`)
 
-// appendHanResidue báo tổng số chữ Hán và vài đoạn ví dụ không trùng lặp.
-// Lời đọc bắt buộc 100% tiếng Việt nên mọi chữ Hán đều là sự cố ngôn ngữ; mức error là
+// appendHanResidue (cjk_residue) báo tổng số chữ CJK (Hán, Nhật, Hàn) và vài đoạn ví dụ không trùng lặp.
+// Lời đọc bắt buộc 100% tiếng Việt nên mọi chữ CJK đều là sự cố ngôn ngữ; mức error là
 // một sự thật để Editor/người dùng phán quyết, không chặn commit.
 func appendHanResidue(vs []Violation, text string) []Violation {
-	runs := hanRe.FindAllString(text, -1)
+	runs := cjkRegex.FindAllString(text, -1)
 	if len(runs) == 0 {
 		return vs
 	}
 	total := 0
+	hasHan := false
 	seen := make(map[string]struct{})
 	var examples []string
 	for _, run := range runs {
 		total += len([]rune(run))
+		if hanRe.MatchString(run) {
+			hasHan = true
+		}
 		if _, ok := seen[run]; ok {
 			continue
 		}
@@ -78,12 +82,22 @@ func appendHanResidue(vs []Violation, text string) []Violation {
 			examples = append(examples, truncateRunes(run, 12))
 		}
 	}
-	return append(vs, Violation{
-		Rule:     "han_residue",
-		Target:   strings.Join(examples, ", "),
+	target := strings.Join(examples, ", ")
+	vs = append(vs, Violation{
+		Rule:     "cjk_residue",
+		Target:   target,
 		Actual:   total,
 		Severity: SeverityError,
 	})
+	if hasHan {
+		vs = append(vs, Violation{
+			Rule:     "han_residue",
+			Target:   target,
+			Actual:   total,
+			Severity: SeverityError,
+		})
+	}
+	return vs
 }
 
 func truncateRunes(s string, n int) string {

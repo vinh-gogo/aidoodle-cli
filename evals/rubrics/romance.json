@@ -1,0 +1,43 @@
+{
+  "id": "romance_emotional_beats_v1",
+  "version": "1.0.0",
+  "mode": "romance",
+  "title": "Romance Lie/Ghost/Need & Emotional Beats Rubric",
+  "description": "Tiêu chuẩn đánh giá tiểu thuyết ngôn tình và chữa lành: Hồ sơ Vết thương Tâm lý (Lie/Ghost/Need), Thang đo Cảm xúc 6 Cấp độ, Đối thoại Subtext giàu chiều sâu và xóa bỏ cliché sáo ngữ tổng tài.",
+  "invariants": [
+    "Hồ sơ Lie/Ghost/Need: Nhân vật mang niềm tin sai lệch (Lie) bắt nguồn từ tổn thương quá khứ (Ghost) và cần sự thức tỉnh chân thật (Need).",
+    "Thang đo cảm xúc 6 cấp độ chuyển biến nhịp nhàng qua từng biến cố, không tăng vọt gượng ép.",
+    "Đối thoại chứa đựng ngụ ý (subtext), bộc lộ khoảng cách vô hình giữa điều muốn nói và điều thốt ra.",
+    "Tuyệt đối cấm các mô-típ tổng tài cưỡng ép, độc hại hoặc lạm dụng ngôn từ sáo rỗng."
+  ],
+  "dimensions": {
+    "consistency": {
+      "weight": 0.15,
+      "description": "Tính nhất quán của vết thương tâm lý và sự chuyển biến tính cách phù hợp với logic nội tâm."
+    },
+    "character": {
+      "weight": 0.25,
+      "description": "Chiều sâu tâm lý của hai nhân vật chính, sự tương phản bù trừ và sức hút nội tại chân thành."
+    },
+    "pacing": {
+      "weight": 0.15,
+      "description": "Nhịp điệu slow-burn tinh tế, cho phép cảm xúc nảy nở tự nhiên qua từng khoảnh khắc đời thường."
+    },
+    "continuity": {
+      "weight": 0.15,
+      "description": "Kế thừa các bước tiến triển tình cảm và sự thấu cảm lẫn nhau từ các chương trước."
+    },
+    "foreshadow": {
+      "weight": 0.10,
+      "description": "Những biểu hiện tinh tế hé lộ vết thương quá khứ trước khi nó bùng nổ thành khủng hoảng."
+    },
+    "hook": {
+      "weight": 0.10,
+      "description": "Va chạm cảm xúc đầu chương và những khoảng lặng chất chứa tâm sự ở cuối chương."
+    },
+    "aesthetic": {
+      "weight": 0.10,
+      "description": "Ngôn ngữ văn chương giàu chất thơ, tinh tế trong mô tả ánh mắt, hơi thở và không gian."
+    }
+  }
+}

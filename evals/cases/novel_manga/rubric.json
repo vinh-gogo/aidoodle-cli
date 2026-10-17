@@ -1,0 +1,20 @@
+{
+  "id": "novel_manga_rubric",
+  "category": "quality",
+  "role": "editor",
+  "style": "novel-manga",
+  "description": "Rubric thẩm định chất lượng tiểu thuyết/manga: cấu trúc phân tầng Volume/Arc/Chapter, chuẩn 2000-4000 từ, không rò rỉ video tags, nhịp độ và chiều sâu nhân vật.",
+  "prompt": "Thẩm định chất lượng chương 1 và cấu trúc phân tầng của tác phẩm novel-manga: kiểm tra dung lượng từ, tính mạch lạc thế giới quan, hành động giác quan và độ cuốn hút của hook mở đầu.",
+  "max_chapters": 1,
+  "target_prompts": ["editor.md"],
+  "rubric": "evals/rubrics/novel_manga.json",
+  "expect": {
+    "phase": "writing",
+    "min_completed_chapters": 1,
+    "required_checkpoints": ["chapter:1:commit"],
+    "no_pending": ["pending_commit", "pending_steer"]
+  },
+  "gate": {
+    "max_severity": "warning"
+  }
+}

@@ -1,6 +1,7 @@
 package exp
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"os"
@@ -93,10 +94,10 @@ func Run(ctx context.Context, deps Deps, opts Options) (*Result, error) {
 	for _, ch := range chapters {
 		text, err := deps.Store.Drafts.LoadChapterText(ch)
 		if err != nil || strings.TrimSpace(text) == "" {
-			if fbText := findChapterFallback(deps.Store.Dir(), ch); strings.TrimSpace(fbText) != "" {
-				text = fbText
-			} else if draft, draftErr := deps.Store.Drafts.LoadDraft(ch); draftErr == nil && strings.TrimSpace(draft) != "" {
+			if draft, draftErr := deps.Store.Drafts.LoadDraft(ch); draftErr == nil && strings.TrimSpace(draft) != "" {
 				text = draft
+			} else if fbText := findChapterFallback(deps.Store.Dir(), ch); strings.TrimSpace(fbText) != "" {
+				text = fbText
 			}
 		}
 		if strings.TrimSpace(text) == "" {
@@ -164,7 +165,14 @@ func Run(ctx context.Context, deps Deps, opts Options) (*Result, error) {
 	case FormatTXT:
 		data = []byte(renderTXT(book.Title, chapters, titleIdx, locations, bodies))
 	case FormatEPUB:
-		buf, err := renderEPUB(*book, chapters, titleIdx, locations, bodies)
+		var epubOpts []EPUBRenderOption
+		if len(volumes) > 0 {
+			epubOpts = append(epubOpts, WithVolumes(volumes))
+		}
+		if cover := findCoverImage(deps.Store.Dir(), opts.CoverPath); cover != nil {
+			epubOpts = append(epubOpts, WithCoverImage(cover))
+		}
+		buf, err := renderEPUB(*book, chapters, titleIdx, locations, bodies, epubOpts...)
 		if err != nil {
 			return nil, fmt.Errorf("kết xuất EPUB thất bại: %w", err)
 		}
@@ -265,11 +273,23 @@ func sanitizeFileName(name string) string {
 	return replacer.Replace(name)
 }
 
-// findChapterFallback tìm nội dung chương từ chapters/%02d.md hoặc các thư mục *-video/scripts/%02d-*.md.
+// findChapterFallback tìm nội dung chương theo thứ tự fallback:
+// 1. chapters/%02d.md (hoặc chapters/%d.md)
+// 2. drafts/%02d.draft.md, drafts/%d.draft.md, drafts/%02d.md, drafts/%d.md
+// 3. *-video/scripts/%02d-*.md
 func findChapterFallback(dir string, ch int) string {
-	chPath := filepath.Join(dir, "chapters", fmt.Sprintf("%02d.md", ch))
-	if data, err := os.ReadFile(chPath); err == nil && len(data) > 0 {
-		return string(data)
+	for _, pattern := range []string{"%02d.md", "%d.md"} {
+		chPath := filepath.Join(dir, "chapters", fmt.Sprintf(pattern, ch))
+		if data, err := os.ReadFile(chPath); err == nil && len(bytes.TrimSpace(data)) > 0 {
+			return string(data)
+		}
+	}
+
+	for _, pattern := range []string{"%02d.draft.md", "%d.draft.md", "%02d.md", "%d.md"} {
+		draftPath := filepath.Join(dir, "drafts", fmt.Sprintf(pattern, ch))
+		if data, err := os.ReadFile(draftPath); err == nil && len(bytes.TrimSpace(data)) > 0 {
+			return string(data)
+		}
 	}
 
 	entries, err := os.ReadDir(dir)
@@ -284,11 +304,13 @@ func findChapterFallback(dir string, ch int) string {
 			if sErr != nil {
 				continue
 			}
-			prefix := fmt.Sprintf("%02d-", ch)
+			prefixes := []string{fmt.Sprintf("%02d-", ch), fmt.Sprintf("%d-", ch)}
 			for _, sf := range sFiles {
-				if strings.HasPrefix(sf.Name(), prefix) && strings.HasSuffix(sf.Name(), ".md") {
-					if data, err := os.ReadFile(filepath.Join(scriptsDir, sf.Name())); err == nil {
-						return string(data)
+				for _, pfx := range prefixes {
+					if strings.HasPrefix(sf.Name(), pfx) && strings.HasSuffix(sf.Name(), ".md") {
+						if data, err := os.ReadFile(filepath.Join(scriptsDir, sf.Name())); err == nil && len(bytes.TrimSpace(data)) > 0 {
+							return string(data)
+						}
 					}
 				}
 			}
@@ -296,4 +318,51 @@ func findChapterFallback(dir string, ch int) string {
 	}
 
 	return ""
+}
+
+// findCoverImage tự động tìm hoặc đọc tệp ảnh bìa trong dự án.
+func findCoverImage(dir, explicitPath string) *CoverImage {
+	if explicitPath != "" {
+		if data, err := os.ReadFile(explicitPath); err == nil && len(data) > 0 {
+			ext := strings.ToLower(filepath.Ext(explicitPath))
+			mime := "image/jpeg"
+			switch ext {
+			case ".png":
+				mime = "image/png"
+			case ".webp":
+				mime = "image/webp"
+			}
+			return &CoverImage{
+				Data:      data,
+				Filename:  filepath.Base(explicitPath),
+				MediaType: mime,
+			}
+		}
+	}
+
+	candidates := []string{
+		"cover.jpg", "cover.jpeg", "cover.png", "cover.webp",
+		filepath.Join("meta", "cover.jpg"), filepath.Join("meta", "cover.jpeg"), filepath.Join("meta", "cover.png"),
+		filepath.Join("assets", "cover.jpg"), filepath.Join("assets", "cover.jpeg"), filepath.Join("assets", "cover.png"),
+	}
+	for _, rel := range candidates {
+		fullPath := filepath.Join(dir, rel)
+		data, err := os.ReadFile(fullPath)
+		if err == nil && len(data) > 0 {
+			ext := strings.ToLower(filepath.Ext(rel))
+			mime := "image/jpeg"
+			switch ext {
+			case ".png":
+				mime = "image/png"
+			case ".webp":
+				mime = "image/webp"
+			}
+			return &CoverImage{
+				Data:      data,
+				Filename:  "cover" + ext,
+				MediaType: mime,
+			}
+		}
+	}
+	return nil
 }

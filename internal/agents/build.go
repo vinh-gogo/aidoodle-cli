@@ -1,6 +1,7 @@
 package agents
 
 import (
+	"context"
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
@@ -16,6 +17,7 @@ import (
 	"github.com/voocel/ainovel-cli/internal/agents/ctxpack"
 	"github.com/voocel/ainovel-cli/internal/agents/guard"
 	"github.com/voocel/ainovel-cli/internal/bootstrap"
+	"github.com/voocel/ainovel-cli/internal/llmretry"
 	"github.com/voocel/ainovel-cli/internal/store"
 	"github.com/voocel/ainovel-cli/internal/tavily"
 	"github.com/voocel/ainovel-cli/internal/tools"
@@ -224,9 +226,9 @@ func BuildWorkers(
 		)
 	}
 
-	architectModel := models.ForRoleWithFailover("architect", reportFailover)
-	writerModel := models.ForRoleWithFailover("writer", reportFailover)
-	editorModel := models.ForRoleWithFailover("editor", reportFailover)
+	architectModel := wrapNonRetryableModel(models.ForRoleWithFailover("architect", reportFailover))
+	writerModel := wrapNonRetryableModel(models.ForRoleWithFailover("writer", reportFailover))
+	editorModel := wrapNonRetryableModel(models.ForRoleWithFailover("editor", reportFailover))
 
 	// ContextManager 由工厂每次调用重建，窗口随模型 swap 动态跟随（见下方工厂）。
 	architectProvider, architectModelName, _ := models.CurrentSelection("architect")
@@ -311,6 +313,7 @@ func BuildWorkers(
 	// 唯一组装路径:协议模板 {{VOICE}} 原位回填文风段,再追加风格预设。
 	// eval 的 voice A/B 走同一函数,保证两臂等价(docs/voice-layer.md §3.2)。
 	writerPrompt := assets.BuildWriterPrompt(bundle.Prompts.Writer, bundle.Voice, bundle.Styles[cfg.Style])
+	contextTool.SetPromptTokens(tools.EstimateTokens(writerPrompt))
 
 	restore := &ctxpack.WriterRestorePack{}
 	restore.Refresh(store)
@@ -446,4 +449,74 @@ func foundationReadyResult(toolName string, result json.RawMessage) bool {
 		FoundationReady bool `json:"foundation_ready"`
 	}
 	return json.Unmarshal(result, &r) == nil && r.FoundationReady
+}
+
+// nonRetryableModelWrapper bọc ChatModel để đảm bảo mọi lỗi 4xx (như exceed_context_size_error),
+// 401, 403 được gắn nhãn NonRetryableError, ngăn chặn AgentLoop và subagentMaxRetries thử lại vô ích.
+type nonRetryableModelWrapper struct {
+	model agentcore.ChatModel
+}
+
+func wrapNonRetryableModel(model agentcore.ChatModel) agentcore.ChatModel {
+	if model == nil {
+		return nil
+	}
+	return &nonRetryableModelWrapper{model: model}
+}
+
+func (w *nonRetryableModelWrapper) Generate(ctx context.Context, messages []agentcore.Message, tools []agentcore.ToolSpec, opts ...agentcore.CallOption) (*agentcore.LLMResponse, error) {
+	resp, err := w.model.Generate(ctx, messages, tools, opts...)
+	if err != nil && llmretry.IsNonRetryable(err) {
+		return nil, llmretry.AsNonRetryable(err)
+	}
+	return resp, err
+}
+
+func (w *nonRetryableModelWrapper) GenerateStream(ctx context.Context, messages []agentcore.Message, tools []agentcore.ToolSpec, opts ...agentcore.CallOption) (<-chan agentcore.StreamEvent, error) {
+	stream, err := w.model.GenerateStream(ctx, messages, tools, opts...)
+	if err != nil {
+		if llmretry.IsNonRetryable(err) {
+			return nil, llmretry.AsNonRetryable(err)
+		}
+		return nil, err
+	}
+	out := make(chan agentcore.StreamEvent, 100)
+	go func() {
+		defer close(out)
+		for ev := range stream {
+			if ev.Type == agentcore.StreamEventError && ev.Err != nil && llmretry.IsNonRetryable(ev.Err) {
+				ev.Err = llmretry.AsNonRetryable(ev.Err)
+			}
+			out <- ev
+		}
+	}()
+	return out, nil
+}
+
+func (w *nonRetryableModelWrapper) SupportsTools() bool {
+	if st, ok := w.model.(interface{ SupportsTools() bool }); ok {
+		return st.SupportsTools()
+	}
+	return true
+}
+
+func (w *nonRetryableModelWrapper) Capabilities() llm.Capabilities {
+	if cp, ok := w.model.(llm.CapabilityProvider); ok {
+		return cp.Capabilities()
+	}
+	return llm.Capabilities{}
+}
+
+func (w *nonRetryableModelWrapper) Info() llm.ModelInfo {
+	if mi, ok := w.model.(interface{ Info() llm.ModelInfo }); ok {
+		return mi.Info()
+	}
+	return llm.ModelInfo{}
+}
+
+func (w *nonRetryableModelWrapper) ProviderName() string {
+	if pn, ok := w.model.(interface{ ProviderName() string }); ok {
+		return pn.ProviderName()
+	}
+	return ""
 }

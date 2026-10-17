@@ -1,0 +1,20 @@
+{
+  "id": "doodle_explainer_writer",
+  "category": "quality",
+  "role": "writer",
+  "style": "doodle-explainer",
+  "description": "Biên soạn kịch bản video Doodle 5+ phút (700-1500 từ LỜI, 300-600s), tỷ lệ 1:1 Thoại - Hình (LỜI: / HÌNH:), đổi hình mỗi 3-6s, Tái Hook mỗi 60-90s, có CAPTION/HASHTAG/NGUỒN.",
+  "prompt": "Viết kịch bản video tập 1: Bí Ẩn Về Chiếc Cầu Vồng Sau Cơn Mưa. Kịch bản video người que giải thích tán sắc ánh sáng, bắt đầu bằng HOOK giật gân, nhịp thoại 1:1, kết thúc bằng lời khuyên chốt hài hước.",
+  "max_chapters": 1,
+  "target_prompts": ["writer.md"],
+  "rubric": "evals/rubrics/doodle_explainer.json",
+  "expect": {
+    "phase": "writing",
+    "min_completed_chapters": 1,
+    "required_checkpoints": ["chapter:1:commit"],
+    "no_pending": ["pending_commit", "pending_steer"]
+  },
+  "gate": {
+    "max_severity": "warning"
+  }
+}

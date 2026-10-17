@@ -1,0 +1,20 @@
+{
+  "id": "romance_writer",
+  "category": "quality",
+  "role": "writer",
+  "style": "romance",
+  "description": "Biên soạn chương 1 ngôn tình chữa lành: cuộc hội ngộ định mệnh tại xưởng tranh cổ, đối thoại ẩn ý (subtext), bộc lộ vết thương tâm lý ngấm ngầm, không sáo ngữ rẻ tiền.",
+  "prompt": "Viết chương 1: Bức Họa Dưới Mưa Tháng Sáu. An Hạ tìm đến xưởng tranh cũ của Minh Triết để tìm lại bức tranh kỷ niệm của người em gái đã mất, chạm trán chàng trai trầm lặng với đôi tay vương màu vẽ.",
+  "max_chapters": 1,
+  "target_prompts": ["writer.md"],
+  "rubric": "evals/rubrics/romance.json",
+  "expect": {
+    "phase": "writing",
+    "min_completed_chapters": 1,
+    "required_checkpoints": ["chapter:1:commit"],
+    "no_pending": ["pending_commit", "pending_steer"]
+  },
+  "gate": {
+    "max_severity": "warning"
+  }
+}

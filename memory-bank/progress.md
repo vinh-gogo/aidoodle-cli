@@ -1,20 +1,31 @@
 # Progress
 
-_Last updated: 2026-10-15 (Branches `doodle-explainer` & `main`: Mở rộng 7 Chế độ Sáng tác với 3 Thể loại Tiểu thuyết Nổi bật `suspense`, `romance`, `fantasy`, Web Dashboard, Native Word Exporter .docx)_
+_Last updated: 2026-10-17 (Production Readiness Upgrade v1.0.1: Security Hardening M1, Context & Mechanical Validators M2, W3C EPUB 3.3 Exporter M3, 7-Mode Evals, CI Release Hygiene & Documentation Alignment M4)_
 
 ## What works (per upstream docs; verified locally)
 - Deterministic Engine + Route table, Arbiter decisions, 3 Workers, Store with atomic IO, checkpoints, commit Saga.
 - Rolling volume/arc planning, layered summaries, related-chapter recommendation, compression pipeline.
 - TUI (+ co-create, `/config`, `/model`, `/review`, `/next`, `/diag`, `/simulate`, `/importsim`, `/sync`, `/import`, `/export`, `/start`, `/mode`, `/dash`, `/new`) and headless mode.
-- **Web UI Dashboard (`ainovel-cli web`)**: Retro terminal layout, 3-panel UI, realtime SSE stream, command executor, chapter reader, visual project manager.
-- **Multi-format Exporter**: TXT, EPUB, Video Scripts Package, and **Microsoft Word (.docx)** native OpenXML zero-dependency.
+- **Web UI Dashboard (`ainovel-cli web`)**: Retro terminal layout, 3-panel UI, realtime SSE stream, loopback 127.0.0.1 default, Origin/CSRF defense, SafeProjectDir traversal defense, XSS sanitized, non-blocking toast notifications.
+- **Multi-format Exporter**: TXT, Video Scripts Package, native Word (.docx) OpenXML, and **W3C EPUB 3.3 compliant exporter** with OCF uncompressed mimetype, OPF 3.0, Accessibility 1.1, hierarchical nav.xhtml, XHTML5 Unicode NFC normalization and XML control char stripping.
 - **Multi-mode support (7 specialized AI modes)**: 5 Novel modes (`novel-manga`, `suspense`, `romance`, `fantasy`, `vietnamese-history`) + 2 Video Script modes (`doodle-explainer`, `behavioral-psychology`).
-- Automated CI/CD: GitHub Actions building Windows AMD64 & ARM64 executables, Release v1.0.0.
-- Full unit test suite and integration tests passing 100% across all packages.
+- **6 Mechanical Output Validators**: CJK character rejection, word bounds validation, repetition loop detection, truncated mid-sentence detection, banned convert terms, leaked video tags guard.
+- **7-Mode Evaluation Suite & Mock LLM Smoke Suite**: Genre-specific eval cases and rubrics for all 7 modes in `evals/cases/` and `evals/rubrics/`, deterministic offline smoke test in `evals/smoke_test.go` generating short book end-to-end without network/API keys.
+- **CI/CD & Release Hygiene**: Matrix CI on Ubuntu + Windows (`.github/workflows/ci.yml`), multi-platform release workflow (`.github/workflows/release.yml`) generating SHA-256 `checksums.txt` compatible with `internal/version/update.go`, operational runbook `docs/runbook.md`, comprehensive Vietnamese `README.md`, and `CHANGELOG.md`.
+- Automated CI/CD: GitHub Actions building Windows AMD64 & ARM64 executables, Release v1.0.1.
+- Full test suite passing 100% across all 26 packages (unit, integration, e2e, evals).
 
 ---
 
-## Recent Milestones on branches `doodle-explainer` & `main` (2026-10-15)
+## Recent Milestones (2026-10-17)
+- [x] **Milestone M1 (Security Hardening — SEC-01 to SEC-07)**: Web UI host binding & opt-in auth, CSRF & Origin defense, SafeProjectDir path traversal defense, frontend XSS sanitization & toast notifications, Colab gateway API key auth & rate limiting, diagnostic secret redaction, Tavily prompt injection isolation.
+- [x] **Milestone M2 (Context Budget & Mechanical Validators — CTX-01 to VAL-06)**: Context window 32k/64k unification, token budget enforcement $\le$ 60% across 7 modes, non-retryable 4xx handling, proactive gateway health checks, $0 model circuit breakers, 6 mechanical output validators.
+- [x] **Milestone M3 (W3C EPUB 3.3 Exporter — EPUB-01 to EPUB-07)**: OCF container zip.Store, OPF 3.0 metadata, EPUB Accessibility 1.1, nested Volume->Arc->Chapter nav.xhtml with landmarks, XHTML5 NFC normalization & XML control character stripping, atomic file writes, fallback chapter pipeline, RFC 5987 headers, TUI `--epub` flag.
+- [x] **Milestone M4 (7-Mode Evals, CI Hygiene & Documentation — EVL-01 to DOC-01)**: 7-mode eval cases & rubrics, offline mock-LLM smoke test for all 7 modes, GitHub Actions CI & release workflows with SHA-256 checksums, CHANGELOG.md, operational runbook (`docs/runbook.md`), comprehensive Vietnamese README.md, memory-bank alignment, production-readiness checkoff.
+
+---
+
+## Historical Milestones (2026-10-15)
 - [x] **Mở Rộng 3 Thể Loại Tiểu Thuyết Nổi Bật Nhất (`suspense`, `romance`, `fantasy`) & Hệ Thống 7 Modes (`/mode` 1–7)**:
   - Xuất bản báo cáo nghiên cứu thị trường `docs/novel-genres-report.md` phân tích 8 nhóm thể loại và chọn 3 trụ cột tiểu thuyết ăn khách nhất.
   - Xây dựng trọn bộ 24 file tài nguyên chuyên sâu (Prompts `architect-short`, `architect-long`, `writer`, `editor`; `voices/`; `styles/`; `references/genres/{suspense,romance,fantasy}/{style-references,arc-templates}.md`) cho:

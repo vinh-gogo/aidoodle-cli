@@ -1,0 +1,20 @@
+{
+  "id": "novel_manga_writer",
+  "category": "quality",
+  "role": "writer",
+  "style": "novel-manga",
+  "description": "Biên soạn chương 1 tiểu thuyết/manga văn xuôi 2.000-4.000 từ, cấu trúc chương hồi, mô tả hành động giác quan sinh động, không rò rỉ tag video.",
+  "prompt": "Viết chương 1: Khói Lửa Bên Lò Rèn. Giới thiệu nhân vật thợ rèn Lôi Vân trong đêm mưa gió tại trấn Lạc Hà, lò rèn bị tập kích bất ngờ và bí mật về thanh gỉ kiếm phát sáng dưới ánh sét.",
+  "max_chapters": 1,
+  "target_prompts": ["writer.md"],
+  "rubric": "evals/rubrics/novel_manga.json",
+  "expect": {
+    "phase": "writing",
+    "min_completed_chapters": 1,
+    "required_checkpoints": ["chapter:1:commit"],
+    "no_pending": ["pending_commit", "pending_steer"]
+  },
+  "gate": {
+    "max_severity": "warning"
+  }
+}

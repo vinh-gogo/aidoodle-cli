@@ -1,0 +1,43 @@
+{
+  "id": "vietnamese_history_invariants_v1",
+  "version": "1.0.0",
+  "mode": "vietnamese-history",
+  "title": "Vietnamese History Invariant Table & Timeline Rubric",
+  "description": "Tiêu chuẩn đánh giá tiểu thuyết lịch sử Việt Nam: Bảng bất biến lịch sử (nhân vật, niên đại, trận đánh, địa danh thật), Bảng vùng tự do (đời tư, tâm lý), Xung đột kép và Ghi chú lịch sử tác giả.",
+  "invariants": [
+    "Bảng bất biến lịch sử: Tuyệt đối không thay đổi niên đại, kết cục sự kiện lớn hay tính cách cốt lõi của nhân vật chính sử.",
+    "Bảng vùng tự do: Hư cấu có chừng mực trong các khoảng trống sử liệu (tâm tư, đời sống thường nhật, nhân vật bình dân soi chiếu thời đại).",
+    "Xung đột kép: Đặt nhân vật vào ngã ba giữa trách nhiệm non sông và bi kịch/nỗi niềm cá nhân.",
+    "Chuẩn mực xưng hô Đại Việt, tiếng Việt thuần khiết có dấu, kèm mục '# Hậu ký và Ghi chú lịch sử của tác giả'."
+  ],
+  "dimensions": {
+    "consistency": {
+      "weight": 0.30,
+      "description": "Tính chính xác của niên đại, chức quan, địa danh cổ và bối cảnh chính trị - xã hội theo chính sử Việt Nam."
+    },
+    "character": {
+      "weight": 0.20,
+      "description": "Nhân vật lịch sử có hồn, không thần thánh hóa một chiều; nhân vật hư cấu đại diện cho tiếng nói thời đại."
+    },
+    "pacing": {
+      "weight": 0.10,
+      "description": "Nhịp điệu dồn dập của thế nước lâm nguy đan xen những nốt trầm thế sự và đời sống nhân dân."
+    },
+    "continuity": {
+      "weight": 0.15,
+      "description": "Diễn biến chiến sự và sự di chuyển của các đạo quân ăn khớp với bản đồ địa lý lịch sử."
+    },
+    "foreshadow": {
+      "weight": 0.10,
+      "description": "Gợi mở các biến chuyển chính trị ngấm ngầm và mưu kế quân sự trước trận đánh lớn."
+    },
+    "hook": {
+      "weight": 0.05,
+      "description": "Vận dụng 12 kỹ thuật hook lịch sử sắc sảo khơi dậy lòng tự hào dân tộc và sự tò mò của người đọc."
+    },
+    "aesthetic": {
+      "weight": 0.10,
+      "description": "Giọng văn trầm hùng, đĩnh đạc, ngôn ngữ trang nghiêm mang phong vị Đại Việt cổ xưa."
+    }
+  }
+}

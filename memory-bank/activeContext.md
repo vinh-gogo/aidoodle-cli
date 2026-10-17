@@ -1,10 +1,10 @@
 # Active Context
 
-_Last updated: 2026-10-15 (Branches: `doodle-explainer` & `main` - Mở rộng Hệ sinh thái 7 Chế độ Sáng tác với 3 Thể loại Tiểu thuyết Nổi bật: Trinh thám & Kinh dị, Ngôn tình & Chữa lành, Kỳ ảo & Tiên hiệp)_
+_Last updated: 2026-10-17 (Production Readiness Upgrade v1.0.1: M1 Security Hardening, M2 Context & Mechanical Validators, M3 W3C EPUB 3.3 Exporter, M4 7-Mode Evals, CI Release Hygiene & Documentation Alignment)_
 
 ## Current Status & Direction
 Repo đang hoạt động đồng bộ trên hai nhánh chính: **`doodle-explainer`** (mặc định) và **`main`**:
-- **Phiên bản phát hành chính thức v1.0.0**: Đã thiết lập GitHub Actions tự động build và xuất bản các bản thực thi Windows Portable (AMD64 & ARM64).
+- **Phiên bản phát hành chính thức v1.0.1**: Đã thiết lập GitHub Actions tự động build và xuất bản các bản thực thi Windows Portable (AMD64 & ARM64), Linux và macOS kèm mã băm SHA-256 `checksums.txt`.
 - **Hệ thống 7 Chế độ Sáng tác Chuyên biệt (`/mode` trong TUI & Web UI)**:
   1. `[1] Tiểu thuyết / Manga Đa năng` (`novel-manga`): Tiểu thuyết văn xuôi chương hồi, Light Novel, Manga/Webtoon đa thể loại (2.000 – 4.000 từ/chương).
   2. `[2] Tiểu thuyết Trinh thám & Kinh dị` (`suspense`): Trinh thám suy luận công bằng (Fair-Play Whodunit), Tâm lý tội phạm đen tối (Psychological Thriller) & Kinh dị tâm linh dân gian (Vietnamese Folk Horror) với **Ma trận Chân tướng Kép**, **Sổ cái Manh mối 3:2** và **Đồng hồ Đếm ngược Sinh tử**.

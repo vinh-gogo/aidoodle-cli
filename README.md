@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/aidoodle-cli-title.svg" alt="aidoodle-cli — Hệ Thống AI Đa Chế Độ &amp; Xưởng Sáng Tác Tự Động Hóa" width="100%">
+  <img src="assets/aidoodle-cli-title.svg" alt="ainovel-cli — Hệ Thống AI Đa Chế Độ &amp; Xưởng Sáng Tác Tự Động Hóa" width="100%">
 </p>
 
 <p align="center">
@@ -7,289 +7,241 @@
   <img src="https://img.shields.io/badge/Go-1.25+-00ADD8?style=for-the-badge&logo=go&logoColor=white" alt="Go Version">
   <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License">
   <img src="https://img.shields.io/badge/Architecture-Deterministic_Engine-blueviolet?style=for-the-badge" alt="Architecture">
-  <img src="https://img.shields.io/badge/AI_Modes-4_Specialized-orange?style=for-the-badge" alt="AI Modes">
+  <img src="https://img.shields.io/badge/AI_Modes-7_Specialized-orange?style=for-the-badge" alt="AI Modes">
+  <img src="https://img.shields.io/badge/Export-W3C_EPUB_3.3_|_Word_DOCX-success?style=for-the-badge" alt="Export Standards">
   <img src="https://img.shields.io/badge/Platform-Windows_|_macOS_|_Linux-lightgrey?style=for-the-badge" alt="Platform">
 </p>
 
 <p align="center">
-  <strong>Bộ công cụ dòng lệnh (CLI) tự động hóa quy trình sáng tác nội dung chuyên sâu bằng 100% Tiếng Việt.</strong><br>
-  Từ kịch bản video TikTok <strong>Doodle Explainer</strong> (nhân vật que đồ đá) triệu view, video <strong>Tâm lý học hành vi</strong> sâu sắc, cho đến <strong>Tiểu thuyết Lịch sử Việt Nam</strong> hào sảng và <strong>Tiểu thuyết / Manga</strong> kỳ ảo đa tầng.
-</p>
-
-<p align="center">
-  <img src="scripts/demo_mode.png" alt="Bộ chọn chế độ AI /mode" width="850">
-  <br>
-  <em>Giao diện modal chọn chế độ AI làm việc (/mode) với 4 phong cách chuyên biệt</em>
-  <br><br>
-  <img src="scripts/demo_workflow.png" alt="Quy trình làm việc TUI aidoodle-cli" width="850">
-  <br>
-  <em>Quy trình làm việc tương tác thời gian thực trong giao diện dòng lệnh TUI</em>
+  <strong>Bộ công cụ dòng lệnh (CLI) và Dashboard Web tự động hóa quy trình sáng tác nội dung chuyên sâu bằng 100% Tiếng Việt.</strong><br>
+  Hỗ trợ toàn diện <strong>7 Chế độ sáng tác chuyên biệt</strong>: từ kịch bản video viral <strong>Doodle Explainer</strong> (Người Que đồ đá), video <strong>Tâm lý học hành vi</strong> chuẩn khoa học não bộ, đến tiểu thuyết trường thiên <strong>Lịch sử Việt Nam</strong>, <strong>Trinh thám & Kinh dị</strong> (Fair-Play 3:2), <strong>Ngôn tình & Chữa lành</strong> (Lie/Ghost/Need), <strong>Kỳ ảo & Tiên hiệp</strong> (Quy tắc cứng Sanderson) và <strong>Tiểu thuyết / Manga</strong> kỳ ảo đa tầng.
 </p>
 
 ---
 
 ## 🌟 Điểm Nổi Bật Vượt Trội
 
-- 🎯 **4 Chế độ làm việc AI chuyên biệt (`/mode`)**: Phân tách độc lập 100% kho tài nguyên prompt, voice, style, reference và gated validator; chuyển đổi tức thì chỉ bằng một phím bấm.
-- 🗂️ **Dashboard Quản lý Tác phẩm Trực quan (`/dash`)**: Gõ `/dash` để mở giao diện quản lý toàn bộ outputs trong `output/`, tự động gắn **Tag Mode** (`[🧠 Tâm lý học]`, `[⚔️ Lịch sử VN]`, `[🦴 Video TikTok]`, `[📖 Tiểu thuyết]`), hiển thị tiến độ và chuyển đổi dự án lập tức.
-- ✨ **Khởi tạo Phiên mới Siêu Tốc (`/new`)**: Gõ `/new` -> Enter để bắt đầu ngay session mới trong thư mục output timestamp riêng mà không cần nhập thêm tham số.
-- 🏛️ **Tiểu thuyết Lịch sử Việt Nam Chuẩn mực**: Quán triệt tôn chỉ *"Đúng đủ để người đọc tin, sống đủ để người đọc quan tâm"*. Khung phương pháp luận gồm **Bảng bất biến lịch sử**, **Bảng vùng tự do**, **Xung đột kép** (đời tư va đập thời cuộc), **12 Kỹ thuật hook lịch sử sắc bén** và **Bộ kiểm tra nhanh 5 câu hỏi vàng**.
-- 🧠 **Tâm lý học Hành vi Chuẩn Khoa học**: Cấu trúc 8 bước kết hợp kể chuyện cuốn hút: mở đầu từ trải nghiệm người đọc, phân biệt rạch ròi tương quan vs nhân quả, cảnh báo khủng hoảng tái lập, mẫu nghiên cứu WEIRD và Cú hích hành vi (Nudge) thực chiến.
-- 🦴 **Quy cách Doodle Explainer 5+ Phút Chuẩn Viral**: Kịch bản video người que tiền sử (5–8 phút, 700–1500 từ LỜI), nhịp 1:1 Thoại - Hình xen kẽ liên tục (đổi nét vẽ mỗi 3–6s), cấu trúc 5 giai đoạn có Tái Hook mỗi 60–90s.
-- 🌐 **Tra cứu Thời gian thực & Tavily Graceful Fallback**: Tích hợp Tavily Search & Crawl tra cứu sử liệu và kiến thức học thuật. Khi mất mạng hoặc chưa có key, hệ thống tự động suy giảm chức năng an toàn (Graceful Fallback) để LLM vận dụng tri thức sẵn có mà không bao giờ bị đứt gãy luồng ReAct.
-- ⚙️ **Deterministic Engine & Checkpoint Saga**: Kiến trúc xác định độc quyền điều phối 3 tác tử (**Architect / Writer / Editor**) cùng trọng tài ngữ nghĩa (**Arbiter**). Lưu vết trạng thái từng bước (Step-level atomic IO), tự phục hồi khi tắt máy ngang.
-- 📦 **Xuất Trọn Gói Sản Xuất Video (`/export --video`)**: Kết xuất đồng bộ `scripts/` (kịch bản hoàn chỉnh), `voiceover/` (lời đọc sạch cho thu âm/TTS), `shotlist.csv` (bảng phân cảnh kèm UTF-8 BOM cho Excel) và `publish.csv` (tiêu đề, caption, hashtag, nguồn).
+- 🎯 **7 Chế độ làm việc AI chuyên biệt (`/mode` 1–7)**: Phân tách độc lập 100% kho tài nguyên prompt, voice, style, reference và cơ chế kiểm soát chất lượng (Gated mechanical validators); chuyển đổi tức thì trong TUI hoặc Web UI.
+- 🌐 **Web UI Dashboard Phong Cách Retro Terminal (`ainovel-cli web`)**:
+  - Giao diện SPA 3 panel hiện đại, theo dõi luồng viết trực tiếp qua Server-Sent Events (SSE) thời gian thực kèm chỉ báo tự động kết nối lại khi mất mạng.
+  - Bảo mật cao cấp: mặc định bind địa chỉ an toàn `127.0.0.1`, hỗ trợ token xác thực (`--token`), phòng vệ tấn công Origin/CSRF (`Sec-Fetch-Site`), ngăn chặn Path Traversal và lọc khử độc XSS cho nội dung Markdown.
+  - Hệ thống thông báo Toast phi phong tỏa (thay thế toàn bộ hộp thoại `alert` chặn luồng).
+- 📚 **Trình Xuất Bản Sách W3C EPUB 3.3 Thuần Go (Zero Dependency)**:
+  - Tuân thủ nghiêm ngặt chuẩn W3C EPUB 3.3 và EPUB Accessibility 1.1 bằng Go chuẩn (không cần cài thêm Java hay thư viện ngoài).
+  - Đóng gói OCF Container chuẩn xác (mimetype `zip.Store` uncompressed ở Entry 0), OPF 3.0 Dublin Core metadata, tài liệu điều hướng `nav.xhtml` lồng phân cấp **Quyển (Volume) $\rightarrow$ Hồi (Arc) $\rightarrow$ Chương (Chapter)** cùng `<nav epub:type="landmarks">`.
+  - Chuẩn hóa Unicode NFC (`norm.NFC`), lọc sạch 100% ký tự điều khiển cấm trong XML 1.0 (`0x00`–`0x1F`), an toàn tuyệt đối trên mọi thiết bị đọc sách (Apple Books, Calibre, Kindle, Kobo, Thorium).
+- 📄 **Xuất File Microsoft Word (.docx) Native**: Tạo tệp Office OpenXML (.docx) chuẩn in ấn: trang bìa tiêu đề sách, ngắt trang trang trọng, phân cấp Heading 1, thụt đầu dòng 0.5 inch, phông chữ Times New Roman 13pt thoáng đãng.
+- ⚙️ **Deterministic Engine & Checkpoint Saga**: Tầng sự thật xác định điều phối 3 tác tử (**Architect / Writer / Editor**) cùng trọng tài ngữ nghĩa (**Arbiter**). Lưu vết trạng thái từng bước (Step-level atomic IO), tự động phục hồi khi ngắt điện ngang.
+- 🔬 **Bộ Kiểm Tra Cơ Học Đầu Ra (Mechanical Output Validators)**:
+  - Tự động chặn và loại bỏ ký tự CJK (chữ Hán, tiếng Nhật, tiếng Hàn) trong văn xuôi tiếng Việt.
+  - Kiểm soát độ dài nghiêm ngặt: 2.000–4.500 từ/chương đối với 5 thể loại tiểu thuyết; 700–1.500 từ LỜI (300–600s) đối với 2 thể loại video.
+  - Tự động phát hiện vòng lặp câu/đoạn, phát hiện kết thúc cụt giữa câu, lọc danh sách từ cấm convert Hán-Việt và ngăn chặn rò rỉ thẻ video (`HOOK`, `LỜI:`, `HÌNH:`) vào tiểu thuyết.
+- 📦 **Xuất Trọn Gói Kịch Bản Video TikTok/Shorts (`/export --video`)**: Kết xuất đồng bộ `scripts/` (kịch bản chuẩn), `voiceover/` (lời đọc sạch cho thu âm/TTS), `shotlist.csv` (bảng phân cảnh kèm UTF-8 BOM cho Excel) và `publish.csv` (tiêu đề, caption, hashtag, nguồn).
 
 ---
 
 ## 📑 Mục Lục
 
-1. [4 Chế Độ Làm Việc AI Chuyên Biệt (/mode)](#4-chế-độ-làm-việc-ai-chuyên-biệt-mode)
-2. [Dashboard Quản Lý Outputs (/dash) & Khởi Tạo Mới (/new)](#dashboard-quản-lý-outputs-dash--khởi-tạo-mới-new)
-3. [Kiến Trúc Hệ Thống (Deterministic Engine)](#kiến-trúc-hệ-thống-deterministic-engine)
-4. [Định Dạng Kịch Bản Video Chuẩn TikTok](#định-dạng-kịch-bản-video-chuẩn-tiktok)
-5. [Cài Đặt & Khởi Động Nhanh Trong 60 Giây](#cài-đặt--khởi-động-nhanh-trong-60-giây)
-6. [Tích Hợp Tavily Search & Graceful Fallback](#tích-hợp-tavily-search--graceful-fallback)
-7. [An Toàn Nội Dung & Cổng Duyệt Người (/review)](#an-toàn-nội-dung--cổng-duyệt-người-review)
-8. [Xuất Gói Dữ Liệu Sản Xuất Video (/export)](#xuất-gói-dữ-liệu-sản-xuất-video-export)
-9. [Bảng Tra Cứu Lệnh TUI Thời Gian Thực](#bảng-tra-cứu-lệnh-tui-thời-gian-thực)
-10. [Giấy Phép & Đóng Góp](#giấy-phép--đóng-góp)
+1. [7 Chế Độ Sáng Tác AI Chuyên Biệt (/mode)](#7-chế-độ-sáng-tác-ai-chuyên-biệt-mode)
+2. [Cài Đặt & Khởi Động Nhanh Trong 60 Giây](#cài-đặt--khởi-động-nhanh-trong-60-giây)
+3. [Hướng Dẫn Web UI Dashboard (ainovel-cli web)](#hướng-dẫn-web-ui-dashboard-ainovel-cli-web)
+4. [Xuất Bản Đa Định Dạng (W3C EPUB 3.3, Word DOCX, Video)](#xuất-bản-đa-định-dạng-w3c-epub-33-word-docx-video)
+5. [Cấu Hình & Kết Nối Mô Hình AI (LLM Gateway)](#cấu-hình--kết-nối-mô-hình-ai-llm-gateway)
+6. [Bảng Tra Cứu Lệnh TUI & CLI](#bảng-tra-cứu-lệnh-tui--cli)
+7. [Hỏi Đáp & Xử Lý Sự Cố (FAQ) — Sửa Lỗi Font PowerShell](#hỏi-đáp--xử-lý-sự-cố-faq--sửa-lỗi-font-powershell)
+8. [Giấy Phép & Đóng Góp](#giấy-phép--đóng-góp)
 
 ---
 
-## 🎭 4 Chế Độ Làm Việc AI Chuyên Biệt (/mode)
+## 🎭 7 Chế Độ Sáng Tác AI Chuyên Biệt (/mode)
 
-Khi nhập lệnh `/mode` (hoặc alias `/topic`, `/topics`) trong TUI, bảng chọn trực quan cho phép bạn chuyển đổi linh hoạt:
+Khi nhập lệnh `/mode` trong TUI hoặc bấm nút chọn mode trên Web UI, bạn có thể chuyển đổi tức thì giữa 7 phong cách nghiệp vụ:
 
-| Phím | Chế độ | Định dạng | Quy cách & Trọng tâm nghiệp vụ |
+| Phím | Chế độ Canonical | Định dạng | Quy cách & Trọng tâm nghiệp vụ |
 | :---: | :--- | :--- | :--- |
-| **`1`** | **Tiểu thuyết / Manga**<br>`novel-manga` | Tiểu thuyết văn xuôi | 2.000 – 4.000 từ/chương, cấu trúc chương hồi, thế giới quan đa tầng, chiều sâu nội tâm nhân vật và quy tắc ma pháp/hệ thống chặt chẽ. |
-| **`2`** | **Doodle Explainer**<br>`doodle-explainer` | Kịch bản video người que | 5+ phút (300–600s, 700–1500 từ LỜI), nhịp 1:1 Thoại - Hình (đổi hình mỗi 3–6s), cấu trúc 5 giai đoạn, Tái Hook mỗi 60–90s, dí dỏm viral TikTok/Shorts. |
-| **`3`** | **Tâm lý học hành vi**<br>`behavioral-psychology` | Kịch bản video tâm lý | 5+ phút, chuẩn mực 8 bước khoa học kết hợp nghệ thuật kể chuyện cuốn hút. Phân biệt tương quan vs nhân quả, cảnh báo khủng hoảng tái lập, Cú hích hành vi (Nudge) và tự trắc ẩn vỗ về đứa trẻ bên trong. |
-| **`4`** | **Tiểu thuyết Lịch sử Việt Nam**<br>`vietnamese-history` | Tiểu thuyết sử thi dã sử | 2.000 – 4.000 từ/chương. Tôn chỉ *"Đúng đủ để người đọc tin, sống đủ để người đọc quan tâm"*. Lập Bảng bất biến & Bảng vùng tự do, Xung đột kép (đời tư chạm thời cuộc), 12 Kỹ thuật hook lịch sử, 5 câu hỏi vàng kiểm tra nhanh. Xưng hô Đại Việt, sạch chữ Hán 100%. |
-
-> [!TIP]
-> **Thao tác nhanh**: Nhấn trực tiếp các phím số `1`, `2`, `3`, `4` để chuyển đổi tức thì. Bộ kiểm tra kịch bản video (`lintScript`) chỉ kích hoạt ở mode `2` và `3`, hoàn toàn giải phóng độ dài cho các mode tiểu thuyết `1` và `4`.
-
----
-
-## 🗂️ Dashboard Quản Lý Outputs (/dash) & Khởi Tạo Mới (/new)
-
-### 1. Dashboard `/dash` (hoặc `/dashboard`, `/projects`, `/history`)
-Chỉ cần gõ `/dash` -> Enter, bạn sẽ thấy giao diện quản lý toàn bộ tác phẩm:
-- **Tự động gắn Tag Mode**: `[🧠 Tâm lý học hành vi]`, `[⚔️ Lịch sử Việt Nam]`, `[🦴 Video TikTok]`, `[📖 Tiểu thuyết / Manga]`.
-- **Hiển thị tiến độ rõ ràng**: `✓ Đã xong (3/3)`, `⏳ Đang viết (1/3)`, `🌱 Khởi tạo`, kèm đường dẫn thư mục và timestamp sửa đổi.
-- **Đánh dấu dự án hiện tại**: Ký hiệu `⭐ [Đang mở]` giúp định vị nhanh.
-- **Chuyển đổi tức thì**: Dùng mũi tên `↑`/`↓` hoặc `j`/`k`, nhấn `Enter` để chuyển đổi dự án, hệ thống sẽ tự động nạp đúng bundle chế độ và khôi phục tiến trình làm việc.
-
-### 2. Lệnh khởi tạo nhanh `/new`
-- Gõ `/new` -> Enter để bắt đầu ngay một phiên làm việc mới tinh tươm trong thư mục phân lập `output/novel-YYYYMMDD-HHMM` mà không cần nhập thêm bất kỳ tham số phức tạp nào.
+| **`1`** | **Tiểu thuyết / Manga**<br>`novel-manga` | Tiểu thuyết văn xuôi | 2.000 – 4.000 từ/chương, cấu trúc phân tầng Volume $\rightarrow$ Arc $\rightarrow$ Chapter, thế giới quan đa tầng, chiều sâu nội tâm nhân vật, không rò rỉ thẻ kịch bản video. |
+| **`2`** | **Trinh thám & Kinh dị**<br>`suspense` | Tiểu thuyết trinh thám / ly kỳ | 2.500 – 4.500 từ/chương. **Luật chơi công bằng Fair-Play 3:2** (3 manh mối thật, 2 manh mối giả/red herring), Ma trận Chân tướng Kép, suy luận logic nghiêm ngặt, Đồng hồ Đếm ngược Sinh tử, cấm deus ex machina. |
+| **`3`** | **Ngôn tình & Chữa lành**<br>`romance` | Tiểu thuyết tình cảm / chữa lành | 2.500 – 4.000 từ/chương. **Hồ sơ Vết thương Tâm lý (Lie/Ghost/Need)**, Thang đo Cảm xúc 6 Cấp độ chuyển biến tự nhiên, Đối thoại giàu ẩn ý (Subtext), xóa bỏ 100% sáo ngữ tổng tài áp đặt. |
+| **`4`** | **Kỳ ảo & Tiên hiệp**<br>`fantasy` | Tiểu thuyết tiên hiệp / kỳ ảo | 2.500 – 4.500 từ/chương. **Hệ thống ma thuật quy tắc cứng (3 Định luật Sanderson)**, Bản đồ Thế giới Đa tầng, Trận chiến chiến thuật 3 pha, bộ lọc sạch từ ngữ dịch máy convert Hán-Việt. |
+| **`5`** | **Tiểu thuyết Lịch sử Việt Nam**<br>`vietnamese-history` | Tiểu thuyết dã sử / sử thi | 2.000 – 4.000 từ/chương. Tôn chỉ *"Đúng đủ để người đọc tin, sống đủ để người đọc quan tâm"*. **Bảng bất biến lịch sử**, Bảng vùng tự do, Xung đột kép (đời tư va đập thời cuộc), xưng hô Đại Việt chuẩn thời, kèm mục **Hậu ký và Ghi chú lịch sử tác giả**. |
+| **`6`** | **Doodle Explainer**<br>`doodle-explainer` | Kịch bản video người que | 5–8 phút (700–1.500 từ LỜI, 300–600s), nhịp 1:1 Thoại - Hình xen kẽ liên tục (đổi nét vẽ mỗi 3–6s), cấu trúc 5 giai đoạn, Tái Hook mỗi 60–90s, dí dỏm viral TikTok/Shorts. |
+| **`7`** | **Tâm lý học hành vi**<br>`behavioral-psychology` | Kịch bản video tâm lý | 5–8 phút, chuẩn mực **Khung khoa học não bộ 8 bước**. Phân biệt rạch ròi tương quan vs nhân quả, cảnh báo mẫu WEIRD & khủng hoảng tái lập, Cú hích hành vi (Nudge), rào chắn đạo đức **tuyệt đối không chẩn đoán y tế**. |
 
 ---
 
-## 🏛️ Kiến Trúc Hệ Thống (Deterministic Engine)
+## ⚡ Cài Đặt & Khởi Động Nhanh Trong 60 Giây
 
-Hệ thống tuân thủ nguyên lý: **Tầng sự thật xác định, Tầng ngữ nghĩa tự chủ** (*Fact layer deterministic, Semantic layer autonomous*).
-
-```mermaid
-flowchart TD
-    Host["Engine / Host (Bộ điều phối xác định)"]
-    Store[("Store (Atomic IO + Saga Checkpoints)")]
-    Arbiter["Arbiter (Trọng tài ngữ nghĩa LLM)"]
-    Architect["Architect (Kiến trúc sư Series)"]
-    Writer["Writer (Biên kịch / Cây bút chính)"]
-    Editor["Editor (Biên tập viên 7 chiều)"]
-
-    Host -->|1. Đọc tiến độ & Tra bảng Route| Store
-    Host -->|2. Phân loại can thiệp & Đánh giá đề tài| Arbiter
-    Host -->|3. Lập đề cương & Worldbuilding| Architect
-    Host -->|4. Viết kịch bản theo nhịp 1:1| Writer
-    Host -->|5. Thẩm định chất lượng & Kiểm chứng| Editor
-
-    Architect -->|Gọi Context & Lưu Foundation| Store
-    Writer -->|novel_context, draft_chapter, commit| Store
-    Editor -->|save_review, checkpoint| Store
-```
-
-### Phân công tác tử chuyên biệt
-
-| Tác tử | Nhiệm vụ chính trong quy trình | Công cụ sử dụng |
-|---|---|---|
-| **Arbiter** | Trọng tài ngữ nghĩa: Lọc đề tài xu hướng, phân loại can thiệp của người dùng, phá vỡ bế tắc ReAct | Gọi LLM có cấu trúc chặt chẽ (Structured function call) |
-| **Architect** | Kiến trúc sư: Đọc dữ liệu, lập Series Bible, quy tắc thế giới, lập Bảng bất biến / Vùng tự do, phân bổ dàn ý các tập | `novel_context`, `save_book`, `save_foundation` |
-| **Writer** | Ngòi bút sáng tác: Nhận `source_pack`, nạp đầy đủ kỹ thuật hook và cẩm nang qua `novel_context`, triển khai bản thảo 2.000–4.000 từ (tiểu thuyết) hoặc nhịp 1:1 Thoại - Hình (video), nộp qua `commit_chapter` | `novel_context`, `plan_chapter`, `draft_chapter`, `check_consistency`, `commit_chapter` |
-| **Editor** | Biên tập viên: Thẩm định 7 chiều (nhất quán, nhân vật, nhịp độ, liên kết tập, chi tiết cài cắm, hook, mỹ cảm/sử liệu), đối soát nguồn và cảnh báo vi phạm | `novel_context`, `read_chapter`, `save_review`, `save_arc_summary`, `save_volume_summary` |
-
----
-
-## 🎬 Định Dạng Kịch Bản Video Chuẩn TikTok
-
-Mỗi tập video ở chế độ Doodle Explainer hoặc Tâm lý học hành vi tuân thủ nhịp 1:1 Thoại - Hình:
-
-```markdown
-# Tiêu đề video hấp dẫn (Không clickbait lừa dối)
-
-HOOK 0:00-0:03
-LỜI: Người lính chèo thuyền đêm ấy chỉ lo một chuyện: nước triều lên chậm quá.
-HÌNH: Bàn tay que run rẩy cắm mái chèo xuống dòng nước sông Bạch Đằng cuộn sóng dữ.
-
-CẢNH 1 0:03-0:45
-LỜI: Ai đọc sử cũng biết trận này quân ta sẽ đại thắng. Nhưng người lính ấy thì không biết...
-HÌNH: Nhân vật que ngồi co ro nơi mạn thuyền, ánh mắt đăm đăm nhìn vào màn đêm mù sương.
-ÂM: Tiếng gió bấc rít từng cơn buốt giá.
-
-CẢNH 2 0:45-1:45
-LỜI: [Chặng 1: Thiết lập mâu thuẫn đời thường, dẫn nhập cơ chế phản trực giác]
-HÌNH: [Minh họa sơ đồ que đơn giản, biểu cảm phóng đại]
-
-CẢNH 3 1:45-2:45
-LỜI: [Chặng 2: Tái Hook 1, đào sâu bằng chứng khoa học hoặc thế trận lịch sử]
-HÌNH: [Cú lật tình huống hài hước hoặc kịch tính]
-ÂM: [Hiệu ứng âm thanh nhấn mạnh]
-
-CẢNH 4 2:45-3:45
-LỜI: [Chặng 3: Tái Hook 2, cao trào, liên hệ thực tế nhân sinh hiện đại]
-HÌNH: [Soi chiếu tâm lý, chuyển đổi góc nhìn]
-
-CẢNH 5 3:45-4:30
-LỜI: [Reframe & Hành động nhỏ: Đổi góc nhìn nhận thức, việc làm thử được ngay]
-HÌNH: [Nhân vật que ngộ ra, hành động nhẹ nhõm tự tin]
-
-CHỐT 4:30-5:15
-LỜI: [Đúc kết bất ngờ, Loop Hook quay lại đầu video hoặc câu hỏi gợi mở thảo luận]
-HÌNH: [Cảnh kết tương tác, icon theo dõi và khung bình luận]
-
-CAPTION: Tóm tắt 1-2 câu súc tích mở rộng giá trị bài học.
-HASHTAG: #doodle #explainer #lichsu #tamly #kienthuc
-NGUỒN: Đại Việt Sử Ký Toàn Thư / Nghiên cứu Kahneman (2011)
-CẦN KIỂM CHỨNG: Số liệu ước đoán về quân số cần đối chiếu thêm với tài liệu khảo cổ.
-```
-
----
-
-### 🚀 Cách 1: Tải Bản Đóng Gói Sẵn Cho Windows (Khuyên Dùng — Không Cần Cài Go)
-
-Dành cho người dùng Windows muốn sử dụng ngay lập tức mà không cần cài đặt môi trường lập trình Go:
-
-1. Truy cập trang **[GitHub Releases](https://github.com/vinh-gogo/aidoodle-cli/releases)** để tải file **`aidoodle-cli-windows-amd64.zip`**.
-2. Giải nén file `.zip` vào bất kỳ thư mục nào trên máy tính.
-3. Chạy trực tiếp **`aidoodle-cli.exe`** (hoặc click đúp file **`Chay-AiDoodle.bat`**) để khởi chạy giao diện TUI ngay lập tức!
-
----
-
-### 🛠️ Cách 2: Cài Đặt & Biên Dịch Từ Mã Nguồn (Windows, Linux, macOS)
-
-Dành cho nhà phát triển muốn tùy biến hoặc người dùng Linux / macOS:
-
-- **Yêu cầu**: Đã cài đặt [Git](https://git-scm.com/) và [Go >= 1.25](https://go.dev/dl/).
-
-```bash
-# 1. Clone kho lưu trữ
-git clone https://github.com/vinh-gogo/aidoodle-cli.git
-cd aidoodle-cli
-
-# 2. Biên dịch chương trình
-go build -o aidoodle-cli.exe ./cmd/ainovel-cli   # Trên Windows
-# go build -o aidoodle-cli ./cmd/ainovel-cli     # Trên Linux / macOS
-
-# 3. Khởi chạy giao diện TUI
-.\aidoodle-cli.exe   # Hoặc ./aidoodle-cli
-```
-
----
-
-### 🌐 Cách 3: Chạy & Theo Dõi Trên Trình Duyệt Web (web)
-
-Bạn muốn trải nghiệm trên trình duyệt Web (Desktop, Điện thoại, Máy tính bảng)?
-Khởi chạy chế độ Web Dashboard với:
-
-```bash
-.\aidoodle-cli.exe web 8080   # Hoặc .\aidoodle-cli.exe --web 8080
-```
-
-Mở trình duyệt truy cập: **`http://localhost:8080`**
-- **Single Page App 3 cột hiện đại**:
-  - **Cột Trái**: Bộ chọn chế độ AI (`/mode`), mục lục các chương và lịch sử tác phẩm cũ (`/dash`).
-  - **Cột Giữa**: Luồng văn bản streaming Markdown thời gian thực + trình đọc truyện Reader ban đêm.
-  - **Cột Phải**: Luồng sự kiện live (hiển thị chi tiết từng truy vấn `tavily_search`, phán quyết Arbiter, tiến độ Writer/Editor).
-  - **Thanh Điều Khiển Dưới**: Nhập đề tài sáng tác hoặc gửi chỉ đạo can thiệp (Steer) trực tiếp cho AI.
-- **Zero dependencies**: Giao diện được nhúng trực tiếp vào file nhị phân Go bằng `//go:embed`, không cần Node.js hay npm.
-
----
-
-## 🔍 Tích Hợp Tavily Search & Graceful Fallback
-
-- **Cấu hình đơn giản**: Tạo file `.env` tại thư mục dự án:
-  ```env
-  TAVILY_API_KEY=tvly-xxxxxxxxxxxxxxxxxxxxxxxx
-  ```
-- **Tự động suy giảm chức năng an toàn (Graceful Fallback)**:
-  - Nếu chưa có key Tavily hoặc gặp sự cố mạng (HTTP 40x/50x), công cụ `tavily_search` tự động chuyển sang phản hồi mềm, hướng dẫn LLM khai thác tri thức học thuật sẵn có.
-  - **Triệt tiêu 100% sự cố đứt gãy luồng ReAct** hay bế tắc *"Chỉ lệnh liên tiếp 5 lần không có tiến triển"*.
-
----
-
-## 🛡️ An Toàn Nội Dung & Cổng Duyệt Người (/review)
-
-1. **Bộ quy tắc an toàn mặc định**: Tuân thủ Luật An ninh mạng Việt Nam 2018, Nghị định 15/2020/NĐ-CP (Điều 101) và Tiêu chuẩn cộng đồng TikTok.
-2. **Cổng duyệt người (Human-in-the-loop Gate)**:
-   - Khi chạy ở chế độ review, hệ thống sẽ tạm dừng sau mỗi tập để bạn thẩm định:
-   ```text
-   /review on    # Bật chế độ duyệt từng tập
-   /next         # Cấp phép cho máy sản xuất tập tiếp theo
-   /review off   # Tắt chế độ duyệt, cho phép máy chạy tự động
+### Cách 1: Tải Bản Cài Đặt Biên Dịch Sẵn (Khuyến nghị cho Windows)
+1. Tải bản phát hành mới nhất từ [Releases](https://github.com/vinh-gogo/aidoodle-cli/releases) (`ainovel-cli-windows-amd64.zip` hoặc file `.exe`).
+2. Giải nén vào một thư mục làm việc (ví dụ `D:\ainovel-cli`).
+3. Mở PowerShell trong thư mục đó và khởi động:
+   ```powershell
+   .\ainovel-cli.exe
    ```
 
+### Cách 2: Biên Dịch Từ Mã Nguồn (Dành cho nhà phát triển)
+Yêu cầu Go phiên bản 1.25 trở lên:
+```bash
+git clone https://github.com/voocel/ainovel-cli.git
+cd ainovel-cli
+go build -trimpath -o ainovel-cli.exe ./cmd/ainovel-cli
+.\ainovel-cli.exe --version
+```
+
 ---
 
-## 📦 Xuất Gói Dữ Liệu Sản Xuất Video (/export)
+## 🌐 Hướng Dẫn Web UI Dashboard (`ainovel-cli web`)
 
-Sau khi hoàn thành các tập kịch bản, bạn chỉ cần gõ:
+Trải nghiệm sáng tác trên giao diện trình duyệt Web hiện đại (Desktop, Tablet, Mobile) với đầy đủ các biện pháp gia cố an ninh mạng:
 
-```text
+```powershell
+# Khởi chạy trên cổng 8080 (mặc định bind an toàn 127.0.0.1)
+.\ainovel-cli.exe web 8080
+
+# Mở giao diện cho mạng nội bộ/LAN kèm Token xác thực bảo vệ
+.\ainovel-cli.exe web 8080 --external --token "bi-mat-cua-ban"
+```
+
+Mở trình duyệt truy cập: **`http://localhost:8080`** (hoặc URL kèm `?token=...` nếu bật auth).
+
+### Các tính năng cốt lõi trên Web UI:
+- **Panel 1 (Cột Trái)**: Bộ chọn 7 Chế độ AI (`/mode`), cây thư mục các chương và danh sách toàn bộ tác phẩm trong `output/` với Tag Mode trực quan.
+- **Panel 2 (Cột Giữa)**: Trình xem luồng viết trực tiếp (Live Streaming Markdown) theo thời gian thực và chế độ đọc sách ban đêm (Reader view).
+- **Panel 3 (Cột Phải)**: Bảng Event Logs trực quan hiển thị từng bước ra quyết định của Arbiter, truy vấn tìm kiếm Tavily và tiến độ của Writer/Editor.
+- **Thanh Điều Khiển Dưới**: Nhập ý tưởng sáng tác, gửi chỉ đạo can thiệp (Steer), nút xuất nhanh EPUB / Word và điều khiển tạm dừng/tiếp tục.
+- **An Toàn Tuyệt Đối**: Chống tấn công CSRF, chống Path Traversal đọc trộm file ngoài `output/`, lọc sạch mã độc XSS và hiển thị thông báo Toast không gây gián đoạn công việc.
+
+---
+
+## 📚 Xuất Bản Đa Định Dạng (W3C EPUB 3.3, Word DOCX, Video)
+
+Sau khi hoàn thành tác phẩm, bạn có thể xuất bản tác phẩm sang nhiều định dạng chuyên nghiệp:
+
+### 1. Xuất Sách Điện Tử Chuẩn W3C EPUB 3.3
+```powershell
+# Xuất EPUB bằng lệnh CLI
+.\ainovel-cli.exe --dir output/novel-20261017-1500 --epub
+
+# Hoặc gõ lệnh trong TUI console
+/export --epub
+```
+- Tệp `.epub` được sinh ra đạt chuẩn **W3C EPUB 3.3** và **EPUB Accessibility 1.1**:
+  - Entry đầu tiên là `mimetype` lưu trữ không nén (`zip.Store`).
+  - Mục lục phân cấp đa tầng trong `nav.xhtml` (Quyển $\rightarrow$ Hồi $\rightarrow$ Chương).
+  - Tự động chuẩn hóa Unicode NFC tiếng Việt, lọc sạch ký tự điều khiển cấm trong XML 1.0.
+  - Tương thích 100% với Calibre, Apple Books, Kobo, Kindle Previewer.
+
+### 2. Xuất Tài Liệu Microsoft Word OpenXML (.docx)
+```powershell
+# Xuất file Word qua TUI
+/export --word    # hoặc /export --docx
+```
+- Định dạng chuẩn bản in chuyên nghiệp: Phông chữ Times New Roman 13pt, thụt đầu dòng 0.5 inch, ngắt trang giữa các chương, tiêu đề Heading 1 trang trọng.
+
+### 3. Xuất Gói Sản Xuất Video TikTok / YouTube Shorts
+```powershell
+# Dành cho 2 mode video (doodle-explainer & behavioral-psychology)
 /export --video
 ```
+- Tạo trọn bộ 4 thư mục/tệp bàn giao:
+  - `scripts/`: Toàn bộ kịch bản hoàn chỉnh định dạng Markdown.
+  - `voiceover/`: Lời đọc sạch 100% (bóc tách thẻ hình ảnh) phục vụ thu âm hoặc Voice AI (TTS).
+  - `shotlist.csv`: Bảng phân cảnh chi tiết có gắn UTF-8 BOM, mở bằng Microsoft Excel hiển thị tiếng Việt hoàn hảo.
+  - `publish.csv`: Bảng dữ liệu đăng bài gồm Tiêu đề, Caption, Hashtags và Nguồn tham khảo.
 
-Hệ thống sẽ tạo ngay thư mục bàn giao sản xuất chuyên nghiệp:
+---
 
-```
-output/novel-YYYYMMDD-HHMM/export/
-├── scripts/                    # Kịch bản hoàn chỉnh chuẩn Markdown
-│   ├── 01-dem-dien-hong.md
-│   └── 02-khoi-lo-ren-van-kiep.md
-├── voiceover/                  # Lời đọc sạch 100% dành cho thu âm / Voice AI (TTS)
-│   ├── 01-dem-dien-hong.txt
-│   └── 02-khoi-lo-ren-van-kiep.txt
-├── shotlist.csv                # Bảng phân cảnh chi tiết (Tập, Cảnh, Thời gian, LỜI, HÌNH, ÂM)
-└── publish.csv                 # Bảng metadata đăng bài TikTok (Tiêu đề, Caption, Hashtag, Nguồn)
+## ⚙️ Cấu Hình & Kết Nối Mô Hình AI (LLM Gateway)
+
+Hệ thống hỗ trợ mọi LLM tương thích chuẩn OpenAI API (OpenAI, OpenRouter, DeepSeek, vLLM, Ollama, Llama.cpp):
+
+Tạo hoặc chỉnh sửa tệp `.ainovel/config.json` (hoặc cấu hình toàn cục `~/.ainovel/config.json`):
+
+```jsonc
+{
+  "provider": "openai",
+  "model": "main-llm",
+  "context_window": 32768,
+  "providers": {
+    "openai": {
+      "type": "openai",
+      "api_key": "YOUR_GATEWAY_API_KEY",
+      "base_url": "https://api.gloryvocab.com/v1",
+      "models": [
+        {
+          "name": "main-llm",
+          "context_window": 32768
+        }
+      ]
+    }
+  },
+  "roles": {
+    "architect": { "provider": "openai", "model": "main-llm" },
+    "writer":    { "provider": "openai", "model": "main-llm" },
+    "editor":    { "provider": "openai", "model": "main-llm" }
+  }
+}
 ```
 
 > [!TIP]
-> Tất cả file `.csv` được xuất kèm **UTF-8 BOM** (`\xef\xbb\xbf`), đảm bảo mở bằng **Microsoft Excel** trên Windows hiển thị tiếng Việt có dấu chuẩn xác 100% không bị lỗi font.
+> **Khuyến nghị kích thước ngữ cảnh**: Đặt `context_window: 32768` ở cấu hình client, và khởi động `llama-server` trên backend với `--ctx-size 65536`. Điều này cung cấp 32K token vùng đệm an toàn cho KV Cache và lượt suy luận dài, triệt tiêu 100% lỗi tràn context.
 
 ---
 
-## ⌨️ Bảng Tra Cứu Lệnh TUI Thời Gian Thực
+## ⌨️ Bảng Tra Cứu Lệnh TUI & CLI
 
-| Lệnh | Phím tắt / Alias | Chức năng chi tiết |
+| Lệnh TUI | Phím tắt / Tham số | Mô tả chức năng |
 |---|---|---|
-| `/dash` | `/dashboard`, `/projects`, `/history` | Mở Dashboard trực quan quản lý toàn bộ tác phẩm, hiển thị tag mode và chuyển đổi dự án lập tức |
+| `/mode` | `/topic` (Phím `1`–`7`) | Mở bảng chuyển đổi giữa 7 chế độ sáng tác AI chuyên biệt |
+| `/dash` | `/dashboard`, `/projects` | Mở Dashboard quản lý toàn bộ tác phẩm trong `output/` kèm Tag Mode |
 | `/new` | — | Khởi tạo phiên sáng tác mới sạch trong thư mục timestamp riêng |
-| `/mode` | `/topic`, `/topics` (Phím `1`-`4`) | Mở modal chọn 1 trong 4 chế độ AI chuyên biệt |
-| `/review` | `on` / `off` | Bật / tắt chế độ duyệt kịch bản từng tập |
-| `/next` | — | Cấp phép sản xuất tập tiếp theo khi đang ở chế độ duyệt |
-| `/export` | `--video`, `format=video` | Xuất trọn gói dữ liệu sản xuất video (scripts, voiceover, shotlist, publish) |
-| `/config` | — | Mở màn hình cấu hình Provider, API Key, Base URL |
-| `/model` | — | Đổi nhanh Model LLM hoặc tinh chỉnh Reasoning Effort |
-| `/sync` | — | Đồng bộ hóa các chỉnh sửa thủ công từ file `.md` vào Store |
-| `/diag` | — | Chạy báo cáo chẩn đoán chất lượng nội dung, tiến độ và cấu trúc kịch bản |
-| `/help` | — | Xem danh sách tất cả các lệnh khả dụng |
-| *(Gõ tự do)* | Steer | Can thiệp trực tiếp ý kiến vào thanh lệnh để Arbiter điều phối áp dụng ngay |
+| `/review` | `on` / `off` | Bật / tắt cổng duyệt người (Human-in-the-loop Gate) sau mỗi chương |
+| `/next` | — | Cấp phép sản xuất chương tiếp theo khi đang ở chế độ duyệt |
+| `/export` | `--epub`, `--word`, `--video` | Xuất bản tác phẩm sang EPUB 3.3, Word DOCX hoặc gói video TikTok |
+| `/diag` | — | Chạy chẩn đoán toàn diện về tiến độ, cấu trúc và chất lượng nội dung |
+| `/status` | — | Hiển thị tiến độ hoàn thành, số từ và chi phí ước tính |
+| `/config` | — | Xem và điều chỉnh nhà cung cấp LLM, API Key, Base URL |
+| `/model` | — | Đổi nhanh mô hình LLM hoặc mức độ tư duy (Reasoning Effort) |
+| `/sync` | — | Đồng bộ các chỉnh sửa thủ công từ file `.md` vào bộ nhớ Store |
+| *(Gõ tự do)* | Steer | Can thiệp chỉ đạo ý kiến trực tiếp vào thanh lệnh để AI điều chỉnh cốt truyện |
 
 ---
 
-## 📄 Giấy Phép & Lời Cảm Ơn
+## ❓ Hỏi Đáp & Xử Lý Sự Cố (FAQ) — Sửa Lỗi Font PowerShell
 
-- Phần mềm được phát hành theo giấy phép mã nguồn mở **[MIT License](LICENSE)**.
-- Kế thừa và phát triển từ nền tảng kiến trúc Deterministic Engine của dự án gốc [ainovel-cli](https://github.com/voocel/ainovel-cli) bởi tác giả [voocel](https://github.com/voocel) và cộng đồng [linux.do](https://linux.do/).
-- Bản quyền thuộc về cộng đồng sáng tạo nội dung Tiếng Việt. Chúc bạn tạo nên những tác phẩm xuất sắc! 🇻🇳
+### 1. Tại sao chữ tiếng Việt hiển thị trên PowerShell bị lỗi font (Mojibake)?
+Đây là hiện tượng mã hóa mặc định của Windows PowerShell (sử dụng Code Page 437 hoặc 1252), **không phải lỗi hỏng file hay lỗi phần mềm**. Toàn bộ dữ liệu của `ainovel-cli` được lưu chuẩn UTF-8.
+
+Để hiển thị tiếng Việt có dấu sắc nét 100% trên Windows PowerShell, hãy chạy lệnh sau trước khi dùng:
+
+```powershell
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+$OutputEncoding = [System.Text.Encoding]::UTF8
+chcp 65001
+```
+
+> [!NOTE]
+> Để áp dụng vĩnh viễn cho mọi phiên PowerShell, bạn có thể thêm dòng lệnh trên vào tệp cấu hình profile của PowerShell (`$PROFILE`).
+
+### 2. Làm thế nào khi bị báo lỗi "thư mục output đang bị khóa bởi tiến trình khác (.ainovel.lock)"?
+Khi phiên làm việc trước bị tắt ngang (đóng terminal đột ngột), file khóa an toàn `.ainovel.lock` có thể chưa kịp giải phóng.
+Xử lý bằng cách xóa file khóa còn sót:
+
+```powershell
+# Trên Windows PowerShell:
+Remove-Item -Path "output/novel-YYYYMMDD-HHMM/.ainovel.lock" -Force
+
+# Trên Linux / macOS:
+rm -f output/novel-YYYYMMDD-HHMM/.ainovel.lock
+```
+
+### 3. Quy trình chi tiết khi gặp lỗi chương treo hoặc mất mạng?
+Vui lòng tham khảo tài liệu vận hành chi tiết tại: **[`docs/runbook.md`](docs/runbook.md)** để biết quy trình từng bước phục hồi sau sự cố bằng Saga Checkpoint.
+
+---
+
+## 📄 Giấy Phép & Đóng Góp
+
+- Dự án được phát hành theo giấy phép mã nguồn mở **[MIT License](LICENSE)**.
+- Kế thừa và phát triển từ nền tảng kiến trúc Deterministic Engine của dự án gốc [ainovel-cli](https://github.com/voocel/ainovel-cli) bởi tác giả [voocel](https://github.com/voocel) và cộng đồng sáng tạo [linux.do](https://linux.do/).
+- Bản quyền nâng cấp thuộc về cộng đồng sáng tạo nội dung Tiếng Việt. Chúc bạn tạo nên những tác phẩm tuyệt vời! 🇻🇳

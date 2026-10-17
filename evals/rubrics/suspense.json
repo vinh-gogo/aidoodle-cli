@@ -1,0 +1,43 @@
+{
+  "id": "suspense_fair_play_v1",
+  "version": "1.0.0",
+  "mode": "suspense",
+  "title": "Suspense Fair-Play 3:2 Clues, Deduction & Reveals Rubric",
+  "description": "Tiêu chuẩn đánh giá tiểu thuyết trinh thám và kinh dị: Luật chơi công bằng Fair-Play 3:2 (3 manh mối thật, 2 manh mối giả/red herring), Ma trận Chân tướng Kép, suy luận logic nghiêm ngặt và Đồng hồ Đếm ngược Sinh tử.",
+  "invariants": [
+    "Fair-Play 3:2: Cung cấp đúng tỷ lệ 3 manh mối thật và 2 manh mối giả trước màn lật bài chân tướng.",
+    "Không sử dụng deus ex machina hoặc yếu tố ngẫu nhiên vô căn cứ để giải quyết vụ án.",
+    "Hiện trường và chứng cứ vật lý phải tuân thủ quy luật vật lý và logic hình sự.",
+    "Đồng hồ đếm ngược sinh tử tạo áp lực thời gian dồn dập cho nhân vật chính."
+  ],
+  "dimensions": {
+    "consistency": {
+      "weight": 0.25,
+      "description": "Tính logic chặt chẽ của hiện trường, chuỗi nhân quả và sự khớp nối giữa các bằng chứng thực tế."
+    },
+    "character": {
+      "weight": 0.15,
+      "description": "Tâm lý tội phạm sâu sắc, động cơ gây án thuyết phục và sự quan sát sắc bén của thám tử."
+    },
+    "pacing": {
+      "weight": 0.15,
+      "description": "Nhịp thở căng thẳng, phân bổ manh mối đan xen hợp lý, đẩy dần nhịp độ tới cao trào."
+    },
+    "continuity": {
+      "weight": 0.15,
+      "description": "Sổ cái manh mối được cập nhật chính xác, không bỏ quên hay thay đổi tính chất chứng cứ giữa chừng."
+    },
+    "foreshadow": {
+      "weight": 0.15,
+      "description": "Manh mối thật được ẩn giấu khéo léo trong các chi tiết tưởng như vô hại; manh mối giả dẫn dắt tâm lý tự nhiên."
+    },
+    "hook": {
+      "weight": 0.10,
+      "description": "Vụ án mở màn ám ảnh hoặc hiểm nguy cận kề; kết thúc chương gieo rắc mối nghi ngờ tột độ."
+    },
+    "aesthetic": {
+      "weight": 0.05,
+      "description": "Bầu không khí u ám ngột ngạt được tái hiện qua câu chữ giàu sức gợi, không lạm dụng jumpscare rẻ tiền."
+    }
+  }
+}

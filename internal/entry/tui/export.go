@@ -52,6 +52,14 @@ func parseExportArgs(args []string) (exp.Options, error) {
 			opts.Format = exp.FormatWord
 			continue
 		}
+		if a == "--epub" {
+			opts.Format = exp.FormatEPUB
+			continue
+		}
+		if a == "--txt" {
+			opts.Format = exp.FormatTXT
+			continue
+		}
 		if k, v, ok := strings.Cut(a, "="); ok {
 			switch strings.ToLower(k) {
 			case "from":

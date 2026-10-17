@@ -1,0 +1,20 @@
+{
+  "id": "behavioral_psychology_rubric",
+  "category": "quality",
+  "role": "editor",
+  "style": "behavioral-psychology",
+  "description": "Rubric thẩm định video tâm lý học hành vi: Khung 8 bước chuẩn khoa học, phân biệt tương quan vs nhân quả, cảnh báo khủng hoảng tái lập / mẫu WEIRD, giải pháp Nudge và ranh giới đạo đức (cấm chẩn đoán y khoa).",
+  "prompt": "Thẩm định kịch bản tâm lý học hành vi: kiểm tra cấu trúc 8 bước, tính chính xác khoa học của các trích dẫn nghiên cứu, và khẳng định không có bất kỳ kết luận chẩn đoán hay điều trị y tế nào.",
+  "max_chapters": 1,
+  "target_prompts": ["editor.md"],
+  "rubric": "evals/rubrics/behavioral_psychology.json",
+  "expect": {
+    "phase": "writing",
+    "min_completed_chapters": 1,
+    "required_checkpoints": ["chapter:1:commit"],
+    "no_pending": ["pending_commit", "pending_steer"]
+  },
+  "gate": {
+    "max_severity": "warning"
+  }
+}

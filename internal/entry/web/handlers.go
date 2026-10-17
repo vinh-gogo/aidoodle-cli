@@ -89,7 +89,13 @@ func (s *Server) handleStream(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/event-stream")
 	w.Header().Set("Cache-Control", "no-cache")
 	w.Header().Set("Connection", "keep-alive")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
+
+	// Chỉ cho phép origin được ủy quyền (loại bỏ wildcard "*")
+	origin := r.Header.Get("Origin")
+	if origin != "" && s.isOriginAllowed(origin) {
+		w.Header().Set("Access-Control-Allow-Origin", origin)
+		w.Header().Set("Vary", "Origin")
+	}
 
 	// Đăng ký client
 	ch := make(chan SSEEvent, 64)
@@ -135,7 +141,16 @@ func (s *Server) handleChapters(w http.ResponseWriter, r *http.Request) {
 		s.mu.RUnlock()
 	}
 
-	chapters, err := ListProjectChapters(dir)
+	safeDir, err := SafeProjectDir(s.baseDir(), dir)
+	if err != nil {
+		writeJSON(w, http.StatusBadRequest, map[string]interface{}{
+			"ok":    false,
+			"error": "Đường dẫn không hợp lệ: " + err.Error(),
+		})
+		return
+	}
+
+	chapters, err := ListProjectChapters(safeDir)
 	if err != nil {
 		writeJSON(w, http.StatusInternalServerError, map[string]interface{}{
 			"ok":    false,
@@ -165,7 +180,16 @@ func (s *Server) handleChapter(w http.ResponseWriter, r *http.Request) {
 		s.mu.RUnlock()
 	}
 
-	content, err := ReadProjectChapter(dir, ch)
+	safeDir, err := SafeProjectDir(s.baseDir(), dir)
+	if err != nil {
+		writeJSON(w, http.StatusBadRequest, map[string]interface{}{
+			"ok":    false,
+			"error": "Đường dẫn không hợp lệ: " + err.Error(),
+		})
+		return
+	}
+
+	content, err := ReadProjectChapter(safeDir, ch)
 	if err != nil {
 		writeJSON(w, http.StatusNotFound, map[string]interface{}{
 			"ok":    false,
@@ -211,7 +235,16 @@ func (s *Server) handleExport(w http.ResponseWriter, r *http.Request) {
 		s.mu.RUnlock()
 	}
 
-	res, err := s.Export(format, dir)
+	safeDir, err := SafeProjectDir(s.baseDir(), dir)
+	if err != nil {
+		writeJSON(w, http.StatusBadRequest, map[string]interface{}{
+			"ok":    false,
+			"error": "Đường dẫn không hợp lệ: " + err.Error(),
+		})
+		return
+	}
+
+	res, err := s.Export(format, safeDir)
 	if err != nil {
 		writeJSON(w, http.StatusBadRequest, map[string]interface{}{
 			"ok":    false,
@@ -222,6 +255,16 @@ func (s *Server) handleExport(w http.ResponseWriter, r *http.Request) {
 
 	// Nếu client yêu cầu tải trực tiếp file (download=1)
 	if r.URL.Query().Get("download") == "1" {
+		cleanResPath := filepath.Clean(res.Path)
+		rel, relErr := filepath.Rel(safeDir, cleanResPath)
+		if relErr != nil || rel == ".." || strings.HasPrefix(rel, ".."+string(filepath.Separator)) {
+			writeJSON(w, http.StatusForbidden, map[string]interface{}{
+				"ok":    false,
+				"error": "Truy cập file tải về bị từ chối",
+			})
+			return
+		}
+
 		fileName := filepath.Base(res.Path)
 		contentType := "application/octet-stream"
 		switch strings.ToLower(format) {
@@ -259,13 +302,40 @@ func (s *Server) handleExport(w http.ResponseWriter, r *http.Request) {
 		"path":         res.Path,
 		"chapters":     res.Chapters,
 		"bytes":        res.Bytes,
-		"download_url": fmt.Sprintf("/api/export?format=%s&dir=%s&download=1", format, url.QueryEscape(dir)),
+		"download_url": fmt.Sprintf("/api/export?format=%s&dir=%s&download=1", format, url.QueryEscape(safeDir)),
 	})
 }
 
 func (s *Server) handleAction(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "Chỉ chấp nhận phương thức POST", http.StatusMethodNotAllowed)
+		return
+	}
+
+	// Yêu cầu custom header X-Requested-With: ainovel-web (SEC-02-04)
+	if r.Header.Get("X-Requested-With") != "ainovel-web" {
+		writeJSON(w, http.StatusForbidden, map[string]interface{}{
+			"ok":    false,
+			"error": "Yêu cầu thiếu header bảo mật X-Requested-With: ainovel-web",
+		})
+		return
+	}
+
+	// Kiểm tra Sec-Fetch-Site (SEC-02-03)
+	if secSite := r.Header.Get("Sec-Fetch-Site"); strings.EqualFold(secSite, "cross-site") {
+		writeJSON(w, http.StatusForbidden, map[string]interface{}{
+			"ok":    false,
+			"error": "Yêu cầu cross-site bị từ chối",
+		})
+		return
+	}
+
+	// Kiểm tra Origin (SEC-02-02)
+	if origin := r.Header.Get("Origin"); origin != "" && !s.isOriginAllowed(origin) {
+		writeJSON(w, http.StatusForbidden, map[string]interface{}{
+			"ok":    false,
+			"error": "Origin không được phép",
+		})
 		return
 	}
 
@@ -293,11 +363,27 @@ func (s *Server) handleAction(w http.ResponseWriter, r *http.Request) {
 	case "new":
 		actionErr = s.NewProject(req.Prompt, req.Style)
 	case "switch":
-		actionErr = s.SwitchProject(req.Dir)
+		safeDir, err := SafeProjectDir(s.baseDir(), req.Dir)
+		if err != nil {
+			actionErr = fmt.Errorf("đường dẫn dự án không hợp lệ: %w", err)
+		} else {
+			actionErr = s.SwitchProject(safeDir)
+		}
 	case "set_style":
 		actionErr = s.SetStyle(req.Style)
 	case "export":
-		_, actionErr = s.Export(req.Format, req.Dir)
+		safeDir := req.Dir
+		if safeDir == "" {
+			s.mu.RLock()
+			safeDir = s.cfg.OutputDir
+			s.mu.RUnlock()
+		}
+		safeDir, err := SafeProjectDir(s.baseDir(), safeDir)
+		if err != nil {
+			actionErr = fmt.Errorf("đường dẫn xuất file không hợp lệ: %w", err)
+		} else {
+			_, actionErr = s.Export(req.Format, safeDir)
+		}
 	default:
 		actionErr = fmt.Errorf("hành động không xác định: %s", req.Action)
 	}
