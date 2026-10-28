@@ -2,12 +2,15 @@ package llmretry
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
+	"strings"
 	"sync/atomic"
 	"testing"
 	"time"
 
 	"github.com/voocel/agentcore"
+	"github.com/voocel/litellm"
 )
 
 func TestRetryDelayCapsWithoutOverflow(t *testing.T) {
@@ -129,5 +132,75 @@ func TestGenerate_RetryableRecovers(t *testing.T) {
 	}
 	if mock.calls.Load() != 2 {
 		t.Fatalf("expected 2 calls, got %d", mock.calls.Load())
+	}
+}
+
+type wrappedProviderErr struct {
+	err error
+}
+
+func (w wrappedProviderErr) Error() string   { return w.err.Error() + " [provider, openai]" }
+func (w wrappedProviderErr) Unwrap() error   { return w.err }
+func (w wrappedProviderErr) Retryable() bool { return litellm.IsRetryableError(w.err) }
+
+func TestGenerate_NonRetryableHTMLDecodeResponse(t *testing.T) {
+	var parsed map[string]any
+	syntaxErr := json.Unmarshal([]byte("<html><head><title>302 Found</title></head><body>cloudflare</body></html>"), &parsed)
+	if syntaxErr == nil {
+		t.Fatal("expected syntax error unmarshaling HTML")
+	}
+	le := litellm.NewProviderErrorWithCause("openai", litellm.ErrorTypeProvider, "openai: decode response", syntaxErr)
+	providerErr := wrappedProviderErr{err: le}
+
+	mock := &mockGenerator{
+		fn: func(attempt int) (*agentcore.LLMResponse, error) {
+			return nil, providerErr
+		},
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 2500*time.Millisecond)
+	defer cancel()
+
+	_, err := Generate(ctx, mock, Config{Agent: "rules"}, nil)
+	if err == nil {
+		t.Fatal("expected error, got nil")
+	}
+	if errors.Is(err, context.DeadlineExceeded) {
+		t.Fatalf("expected immediate non-retryable failure, but looped until context deadline: %v", err)
+	}
+	if mock.calls.Load() != 1 {
+		t.Fatalf("expected 1 call without retries on HTML decode response, got %d calls", mock.calls.Load())
+	}
+	if !strings.Contains(err.Error(), "HTML") && !strings.Contains(err.Error(), "invalid character '<'") {
+		t.Fatalf("expected error to surface underlying HTML decode cause, got: %v", err)
+	}
+}
+
+func TestGenerate_NonRetryableJSONTypeMismatch(t *testing.T) {
+	var parsed struct {
+		Choices []string `json:"choices"`
+	}
+	typeErr := json.Unmarshal([]byte(`{"choices":"unexpected-string"}`), &parsed)
+	if typeErr == nil {
+		t.Fatal("expected json.UnmarshalTypeError")
+	}
+	le := litellm.NewProviderErrorWithCause("openai", litellm.ErrorTypeProvider, "openai: decode response", typeErr)
+	providerErr := wrappedProviderErr{err: le}
+
+	mock := &mockGenerator{
+		fn: func(attempt int) (*agentcore.LLMResponse, error) {
+			return nil, providerErr
+		},
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 2500*time.Millisecond)
+	defer cancel()
+
+	_, err := Generate(ctx, mock, Config{Agent: "rules"}, nil)
+	if err == nil {
+		t.Fatal("expected error, got nil")
+	}
+	if mock.calls.Load() != 1 {
+		t.Fatalf("expected 1 call without retries on JSON type mismatch, got %d calls", mock.calls.Load())
 	}
 }

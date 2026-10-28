@@ -143,6 +143,42 @@ func (pc ProviderConfig) StreamIdleTimeoutValue() (time.Duration, error) {
 	return d, nil
 }
 
+// ExtraHeaders trích xuất các HTTP header tùy chỉnh từ pc.Extra["headers"]
+// (ví dụ CF-Access-Client-Id và CF-Access-Client-Secret cho Cloudflare Zero Trust).
+func (pc ProviderConfig) ExtraHeaders() map[string]string {
+	if len(pc.Extra) == 0 {
+		return nil
+	}
+	raw, ok := pc.Extra["headers"]
+	if !ok || raw == nil {
+		return nil
+	}
+	out := make(map[string]string)
+	switch m := raw.(type) {
+	case map[string]string:
+		for k, v := range m {
+			k, v = strings.TrimSpace(k), strings.TrimSpace(v)
+			if k != "" && v != "" {
+				out[k] = v
+			}
+		}
+	case map[string]any:
+		for k, v := range m {
+			k = strings.TrimSpace(k)
+			if s, ok := v.(string); ok {
+				s = strings.TrimSpace(s)
+				if k != "" && s != "" {
+					out[k] = s
+				}
+			}
+		}
+	}
+	if len(out) == 0 {
+		return nil
+	}
+	return out
+}
+
 // RequiresAPIKey 返回该 provider 是否必须显式配置 api_key。
 // 约定：
 // 1. ollama / bedrock 允许无 key；

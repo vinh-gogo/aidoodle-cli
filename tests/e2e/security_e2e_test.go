@@ -588,8 +588,21 @@ func TestSEC04_FrontendXSSAndNotification_Tier2_Corners(t *testing.T) {
 // SEC-05: Colab Gateway Security & Logging
 // -----------------------------------------------------------------------------
 
+func colabNotebookPath() string {
+	candidates := []string{
+		filepath.Join("..", "..", "kaggle", "colab_llama_cpp_ngrok.ipynb"),
+		filepath.Join("..", "..", "kaggle", "colab_llama_cpp.ipynb"),
+	}
+	for _, p := range candidates {
+		if _, err := os.Stat(p); err == nil {
+			return p
+		}
+	}
+	return candidates[0]
+}
+
 func TestSEC05_ColabGatewaySecurity_Tier1(t *testing.T) {
-	nbPath := filepath.Join("..", "..", "kaggle", "colab_llama_cpp.ipynb")
+	nbPath := colabNotebookPath()
 	nbBytes, err := os.ReadFile(nbPath)
 	if err != nil {
 		t.Fatalf("[SEC-05] Failed to read notebook: %v", err)
@@ -652,7 +665,7 @@ func TestSEC05_ColabGatewaySecurity_Tier1(t *testing.T) {
 }
 
 func TestSEC05_ColabGatewaySecurity_Tier2_Corners(t *testing.T) {
-	nbPath := filepath.Join("..", "..", "kaggle", "colab_llama_cpp.ipynb")
+	nbPath := colabNotebookPath()
 	nbBytes, err := os.ReadFile(nbPath)
 	if err != nil {
 		t.Fatalf("[SEC-05] Failed to read notebook: %v", err)

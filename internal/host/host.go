@@ -332,6 +332,11 @@ func (h *Host) PrepareUserRules(rawPrompt string) error {
 	if err := h.refuseNewBookOverExisting(); err != nil {
 		return err
 	}
+	healthCtx, healthCancel := context.WithTimeout(h.runCtx, 5*time.Second)
+	defer healthCancel()
+	if err := h.CheckGateway(healthCtx); err != nil {
+		return err
+	}
 	// 归一化是启动期的第一次 LLM 调用：必须可取消(runCtx)且有超时上限——
 	// llmretry 对 retryable 错误(429/5xx/超时)会一直重试到 ctx 结束,
 	// 裸 context.Background() 会让 provider 持续限流时永久卡在这里(issue #125)。
@@ -398,6 +403,7 @@ func (h *Host) CheckGateway(ctx context.Context) error {
 	return bootstrap.CheckGatewayHealth(ctx, bootstrap.GatewayHealthOptions{
 		BaseURL: pc.BaseURL,
 		APIKey:  pc.APIKey,
+		Headers: pc.ExtraHeaders(),
 		Model:   h.cfg.ModelName,
 	})
 }

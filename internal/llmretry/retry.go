@@ -8,6 +8,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"strings"
 	"time"
 
@@ -45,12 +46,16 @@ func Generate(ctx context.Context, model Generator, cfg Config, messages []agent
 		if ctx.Err() != nil {
 			return nil, ctx.Err()
 		}
-		if errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded) || !isRetryable(err) {
+		if errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded) {
 			return nil, err
 		}
+		if !isRetryable(err) {
+			return nil, AsNonRetryable(err)
+		}
 
+		enriched := enrichDecodeError(err)
 		delay := retryDelay(err, retry-1)
-		event := Event{Attempt: retry, Delay: delay, Err: err}
+		event := Event{Attempt: retry, Delay: delay, Err: enriched}
 		if cfg.OnRetry != nil {
 			cfg.OnRetry(event)
 		}
@@ -61,7 +66,7 @@ func Generate(ctx context.Context, model Generator, cfg Config, messages []agent
 			Kind:    agentcore.ProgressRetry,
 			Agent:   cfg.Agent,
 			Attempt: retry,
-			Message: err.Error(),
+			Message: enriched.Error(),
 			Meta:    meta,
 		})
 		timer := time.NewTimer(delay)
@@ -99,16 +104,43 @@ func (e NonRetryableError) FailoverEligible() bool {
 	return false
 }
 
-// AsNonRetryable bọc err thành NonRetryableError nếu chưa bọc.
+// AsNonRetryable bọc err thành NonRetryableError nếu chưa bọc (đồng thời hiển thị nguyên nhân giải mã ẩn nếu có).
 func AsNonRetryable(err error) error {
 	if err == nil {
 		return nil
 	}
+	err = enrichDecodeError(err)
 	var nr NonRetryableError
 	if errors.As(err, &nr) {
 		return err
 	}
 	return NonRetryableError{Err: err}
+}
+
+func enrichDecodeError(err error) error {
+	if err == nil {
+		return nil
+	}
+	msg := err.Error()
+	var syntaxErr *json.SyntaxError
+	if errors.As(err, &syntaxErr) {
+		causeMsg := syntaxErr.Error()
+		if strings.Contains(strings.ToLower(causeMsg), "invalid character '<'") {
+			if !strings.Contains(msg, "HTML") {
+				return fmt.Errorf("%w: endpoint trả về trang HTML thay vì JSON (%s) — kiểm tra Cloudflare Zero Trust Access hoặc base_url", err, causeMsg)
+			}
+		} else if !strings.Contains(msg, causeMsg) {
+			return fmt.Errorf("%w (%s)", err, causeMsg)
+		}
+	}
+	var typeErr *json.UnmarshalTypeError
+	if errors.As(err, &typeErr) {
+		causeMsg := typeErr.Error()
+		if !strings.Contains(msg, causeMsg) {
+			return fmt.Errorf("%w (%s)", err, causeMsg)
+		}
+	}
+	return err
 }
 
 type statusCodeGetter interface {
@@ -123,7 +155,7 @@ type statusGetter interface {
 	Status() int
 }
 
-// IsNonRetryable xác định một lỗi có phải là lỗi 4xx / tràn ngữ cảnh / xác thực không thể thử lại hay không.
+// IsNonRetryable xác định một lỗi có phải là lỗi 4xx / tràn ngữ cảnh / xác thực / phản hồi HTML-sai định dạng không thể thử lại hay không.
 func IsNonRetryable(err error) bool {
 	if err == nil {
 		return false
@@ -134,6 +166,19 @@ func IsNonRetryable(err error) bool {
 	}
 	if agentcore.IsContextOverflow(err) {
 		return true
+	}
+
+	var typeErr *json.UnmarshalTypeError
+	if errors.As(err, &typeErr) {
+		return true
+	}
+	var syntaxErr *json.SyntaxError
+	if errors.As(err, &syntaxErr) {
+		causeLower := strings.ToLower(syntaxErr.Error())
+		if strings.Contains(causeLower, "invalid character '<'") ||
+			(syntaxErr.Offset <= 2 && strings.Contains(causeLower, "looking for beginning of value")) {
+			return true
+		}
 	}
 
 	var sc statusCodeGetter
