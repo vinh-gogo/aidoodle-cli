@@ -21,7 +21,7 @@ jobs:
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
-          go-version: '1.25.x'
+          go-version: 'stable'
           check-latest: true
 
       - name: Verify Formatting (gofmt)
@@ -57,7 +57,7 @@ jobs:
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
-          go-version: '1.25.x'
+          go-version: 'stable'
           check-latest: true
 
       - name: Cache Go modules
