@@ -96,10 +96,12 @@ func (t *TavilyCrawlTool) Execute(ctx context.Context, args json.RawMessage) (js
 	words := domain.WordCount(content)
 
 	resultMap := map[string]any{
-		"url":        targetURL,
-		"content":    content,
-		"word_count": words,
-		"instruction": "Hãy sử dụng thông tin chi tiết này để làm sáng tỏ các cơ chế khoa học trong kịch bản và trích dẫn URL vào 'NGUỒN:'.",
+		"url": targetURL,
+		// Wrap content in <untrusted_web_source> tag to mitigate prompt injection risks (SEC-07)
+		"content":         WrapUntrustedContent(content, targetURL),
+		"word_count":      words,
+		"guard_directive": PromptInjectionGuardDirective,
+		"instruction":     PromptInjectionGuardDirective + " Hãy sử dụng thông tin chi tiết này để làm sáng tỏ các cơ chế khoa học trong kịch bản và trích dẫn URL vào 'NGUỒN:'.",
 	}
 
 	data, err := json.Marshal(resultMap)

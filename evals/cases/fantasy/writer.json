@@ -1,0 +1,20 @@
+{
+  "id": "fantasy_writer",
+  "category": "quality",
+  "role": "writer",
+  "style": "fantasy",
+  "description": "Biên soạn chương 1 kỳ ảo: trận chiến chiến thuật 3 pha, sử dụng ma thuật tuân thủ quy tắc cứng, lọc bỏ 100% từ cấm convert Hán-Việt lai căng.",
+  "prompt": "Viết chương 1: Đêm Trăng Trên Đỉnh Thiên Nhai. Nhân vật Tiêu Dao bị môn phái truy sát tại vực sâu Vô Vọng, vận dụng ma thuật gió cấp thấp kết hợp địa hình hiểm trở để phá vây trong gang tấc.",
+  "max_chapters": 1,
+  "target_prompts": ["writer.md"],
+  "rubric": "evals/rubrics/fantasy.json",
+  "expect": {
+    "phase": "writing",
+    "min_completed_chapters": 1,
+    "required_checkpoints": ["chapter:1:commit"],
+    "no_pending": ["pending_commit", "pending_steer"]
+  },
+  "gate": {
+    "max_severity": "warning"
+  }
+}

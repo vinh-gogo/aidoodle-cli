@@ -8,6 +8,7 @@ import (
 	"github.com/voocel/agentcore/schema"
 	"github.com/voocel/ainovel-cli/internal/domain"
 	"github.com/voocel/ainovel-cli/internal/errs"
+	"github.com/voocel/ainovel-cli/internal/llmcontract"
 	"github.com/voocel/ainovel-cli/internal/store"
 )
 
@@ -29,13 +30,30 @@ func (t *SaveBookTool) Schema() map[string]any {
 	return schema.Object(
 		schema.Property("title", schema.String("Tên sách chính thức, không kèm dấu ngoặc tên sách")).Required(),
 		schema.Property("synopsis", schema.String("Lời giới thiệu tiểu thuyết dành cho độc giả, không tiết lộ nội dung")).Required(),
+		schema.Property("author", llmcontract.Nullable(schema.String("Tên tác giả hoặc bút danh (tùy chọn)"))).Required(),
+		schema.Property("subject", llmcontract.Nullable(schema.String("Thể loại hoặc đề tài chính của tác phẩm (tùy chọn)"))).Required(),
 	)
 }
 
 func (t *SaveBookTool) Execute(_ context.Context, args json.RawMessage) (json.RawMessage, error) {
-	var book domain.BookMetadata
-	if err := json.Unmarshal(args, &book); err != nil {
+	var raw struct {
+		Title    string  `json:"title"`
+		Synopsis string  `json:"synopsis"`
+		Author   *string `json:"author"`
+		Subject  *string `json:"subject"`
+	}
+	if err := json.Unmarshal(args, &raw); err != nil {
 		return nil, fmt.Errorf("invalid args: %w: %w", errs.ErrToolArgs, err)
+	}
+	book := domain.BookMetadata{
+		Title:    raw.Title,
+		Synopsis: raw.Synopsis,
+	}
+	if raw.Author != nil {
+		book.Author = *raw.Author
+	}
+	if raw.Subject != nil {
+		book.Subject = *raw.Subject
 	}
 	if err := book.Validate(); err != nil {
 		return nil, fmt.Errorf("invalid book metadata: %w: %w", errs.ErrToolArgs, err)

@@ -1,0 +1,43 @@
+{
+  "id": "novel_manga_v1",
+  "version": "1.0.0",
+  "mode": "novel-manga",
+  "title": "Novel/Manga Prose & Layering Quality Rubric",
+  "description": "Tiêu chuẩn đánh giá tiểu thuyết và manga văn xuôi: cấu trúc phân tầng Volume -> Arc -> Chapter, độ dài 2.000-4.000 từ, phát triển nhân vật và nhịp độ hành động giác quan.",
+  "invariants": [
+    "Dung lượng chương đạt 2.000 đến 4.000 từ văn xuôi tiếng Việt.",
+    "Tuyệt đối không rò rỉ các thẻ kịch bản video (HOOK, LỜI:, HÌNH:).",
+    "Không chứa chữ Hán hoặc ký tự CJK.",
+    "Cấu trúc phân tầng Volume/Arc/Chapter nhất quán."
+  ],
+  "dimensions": {
+    "consistency": {
+      "weight": 0.15,
+      "description": "Tính nhất quán của thiết lập thế giới quan, quy tắc tu luyện/chiến đấu và dòng thời gian."
+    },
+    "character": {
+      "weight": 0.20,
+      "description": "Động cơ nhân vật rõ ràng, giọng thoại tự nhiên, có sự phát triển tâm lý qua từng biến cố."
+    },
+    "pacing": {
+      "weight": 0.15,
+      "description": "Nhịp điệu cân bằng giữa miêu tả, đối thoại và hành động cao trào; không kéo dài lê thê."
+    },
+    "continuity": {
+      "weight": 0.15,
+      "description": "Mạch truyện liền mạch giữa các chương, kế thừa đúng trạng thái nhân vật và sự kiện trước đó."
+    },
+    "foreshadow": {
+      "weight": 0.15,
+      "description": "Cài cắm chi tiết gợi mở hợp lý, phục bút cho các biến cố lớn ở các hồi tiếp theo."
+    },
+    "hook": {
+      "weight": 0.10,
+      "description": "Mở đầu lôi cuốn bằng xung đột hoặc hình ảnh ấn tượng; kết chương tạo sự tò mò thúc giục đọc tiếp."
+    },
+    "aesthetic": {
+      "weight": 0.10,
+      "description": "Văn phong tiếng Việt thuần khiết, giàu hình ảnh giác quan, không lạm dụng từ dịch thô convert."
+    }
+  }
+}

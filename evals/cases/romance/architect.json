@@ -1,0 +1,19 @@
+{
+  "id": "romance_architect",
+  "category": "workflow",
+  "role": "architect",
+  "style": "romance",
+  "description": "Lập kế hoạch tiểu thuyết ngôn tình - chữa lành với Hồ sơ Vết thương Tâm lý (Lie/Ghost/Need), Thang đo Cảm xúc 6 Cấp độ, cấm cliché tổng tài cưỡng ép sáo ngữ.",
+  "prompt": "Lập dàn ý tác phẩm tình cảm chữa lành hiện đại: Nữ bác sĩ tâm lý An Hạ mang vết thương tự trách sau tai nạn của em gái, gặp gỡ nhà phục dựng tranh cổ Minh Triết mắc hội chứng mất trí nhớ ngắn hạn. Thiết lập hồ sơ Lie/Ghost/Need cho 2 nhân vật.",
+  "max_chapters": 0,
+  "target_prompts": ["architect-short.md"],
+  "rubric": "evals/rubrics/romance.json",
+  "expect": {
+    "phase": "writing",
+    "required_checkpoints": ["global:outline", "global:characters"],
+    "no_pending": ["pending_commit", "pending_steer"]
+  },
+  "gate": {
+    "max_severity": "warning"
+  }
+}

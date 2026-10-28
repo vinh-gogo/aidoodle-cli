@@ -256,6 +256,7 @@ func New(cfg bootstrap.Config, bundle assets.Bundle, options ...NewOption) (*Hos
 	); sentinel != nil {
 		h.budget = sentinel
 		usage.SetOnCost(sentinel.OnCost)
+		usage.SetOnUsage(sentinel.OnUsage)
 		// 计费盲区告警：模型不报 usage 时成本恒 0，预算永不触发——保险丝没接上必须喊人。
 		usage.SetOnMissingUsage(func() {
 			const blind = "Điểm mù ngân sách: Mô hình không trả về dữ liệu usage, thống kê chi phí bằng 0, giới hạn ngân sách sẽ không được kích hoạt (với mô hình tùy chỉnh, hãy xác nhận giá trong bảng đăng ký hoặc include_usage ở upstream)"
@@ -331,6 +332,11 @@ func (h *Host) PrepareUserRules(rawPrompt string) error {
 	if err := h.refuseNewBookOverExisting(); err != nil {
 		return err
 	}
+	healthCtx, healthCancel := context.WithTimeout(h.runCtx, 5*time.Second)
+	defer healthCancel()
+	if err := h.CheckGateway(healthCtx); err != nil {
+		return err
+	}
 	// 归一化是启动期的第一次 LLM 调用：必须可取消(runCtx)且有超时上限——
 	// llmretry 对 retryable 错误(429/5xx/超时)会一直重试到 ctx 结束,
 	// 裸 context.Background() 会让 provider 持续限流时永久卡在这里(issue #125)。
@@ -388,6 +394,20 @@ func logUserRulesSnapshot(snap *rules.Snapshot) {
 	}
 }
 
+// CheckGateway thực hiện tiền kiểm tra kết nối tới LLM Gateway nếu có cấu hình BaseURL.
+func (h *Host) CheckGateway(ctx context.Context) error {
+	pc := h.cfg.DefaultProviderConfig()
+	if strings.TrimSpace(pc.BaseURL) == "" {
+		return nil
+	}
+	return bootstrap.CheckGatewayHealth(ctx, bootstrap.GatewayHealthOptions{
+		BaseURL: pc.BaseURL,
+		APIKey:  pc.APIKey,
+		Headers: pc.ExtraHeaders(),
+		Model:   h.cfg.ModelName,
+	})
+}
+
 // StartPrepared 用用户的**原始**创作要求开始创作:plan_start 裁定选规划师并扩充
 // 需求，裁定结果先固化为
 // 事实(PlanStartRecord)再启动 Engine——恢复永远依赖已落盘事实,不重做已有裁定。
@@ -413,6 +433,11 @@ func (h *Host) StartPrepared(rawRequirement string) error {
 		return err
 	}
 	if err := h.budget.Refuse(); err != nil {
+		return err
+	}
+	healthCtx, healthCancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer healthCancel()
+	if err := h.CheckGateway(healthCtx); err != nil {
 		return err
 	}
 	if err := h.store.Checkpoints.Reset(); err != nil {
@@ -631,6 +656,11 @@ func (h *Host) Resume() (string, error) {
 	if err := h.budget.Refuse(); err != nil {
 		return "", err
 	}
+	healthCtx, healthCancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer healthCancel()
+	if err := h.CheckGateway(healthCtx); err != nil {
+		return "", err
+	}
 
 	h.emitEvent(Event{Time: time.Now(), Category: "SYSTEM", Summary: "Khôi phục sáng tác: " + label, Level: "info"})
 	for _, w := range h.store.CheckConsistency() {
@@ -838,6 +868,11 @@ func (h *Host) Continue(text string) error {
 		return err
 	}
 	if err := h.budget.Refuse(); err != nil {
+		return err
+	}
+	healthCtx, healthCancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer healthCancel()
+	if err := h.CheckGateway(healthCtx); err != nil {
 		return err
 	}
 

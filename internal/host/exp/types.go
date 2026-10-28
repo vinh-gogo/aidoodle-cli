@@ -41,6 +41,9 @@ type Options struct {
 
 	// Overwrite 文件存在时是否覆盖；默认拒绝。
 	Overwrite bool
+
+	// CoverPath Ảnh bìa tùy chọn (JPEG/PNG/WEBP). Nếu rỗng, tự động tìm cover.jpg/png trong store.
+	CoverPath string
 }
 
 // Deps 是 Run 所需依赖。仅 store；导出无需 LLM、prompt、bundle。

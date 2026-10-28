@@ -74,6 +74,11 @@ type UsageTracker struct {
 	// 必须在并发 Record 开始前通过 SetOnCost 设置，之后只读。
 	onCost func(total float64)
 
+	// onUsage 在每次记账后携带累计 calls 与 tokens 调用（BudgetSentinel 熔断检测）。
+	onUsage func(calls int64, tokens int64)
+
+	overallCalls int64
+
 	// onMissingUsage 在首次发现"assistant 消息无 Usage"时调用一次（与 slog warn
 	// 同时机）。预算启用时这意味着计费盲区——成本恒 0、预算永不触发，必须喊人。
 	onMissingUsage func()
@@ -278,11 +283,17 @@ func (t *UsageTracker) accumulate(role, provider, modelName string, u agentcore.
 		addUsage(perModel, u, cost, saved, capable)
 	}
 	total := t.overall.Cost
+	t.overallCalls++
+	calls := t.overallCalls
+	tokens := int64(t.overall.Input + t.overall.Output + t.overall.CacheRead + t.overall.CacheWrite)
 	t.mu.Unlock()
 
 	t.notifyDirty()
 	if t.onCost != nil {
 		t.onCost(total)
+	}
+	if t.onUsage != nil {
+		t.onUsage(calls, tokens)
 	}
 }
 
@@ -293,6 +304,14 @@ func (t *UsageTracker) SetOnCost(cb func(total float64)) {
 		return
 	}
 	t.onCost = cb
+}
+
+// SetOnUsage 注册用量回调（携带累计 calls 与 tokens，锁外调用）。
+func (t *UsageTracker) SetOnUsage(cb func(calls int64, tokens int64)) {
+	if t == nil {
+		return
+	}
+	t.onUsage = cb
 }
 
 func (t *UsageTracker) effectiveModel(role, provider, modelName string) (string, string) {

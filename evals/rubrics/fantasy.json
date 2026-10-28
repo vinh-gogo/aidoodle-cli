@@ -1,0 +1,43 @@
+{
+  "id": "fantasy_sanderson_rules_v1",
+  "version": "1.0.0",
+  "mode": "fantasy",
+  "title": "Fantasy Sanderson Hard Magic & World Constraints Rubric",
+  "description": "Tiêu chuẩn đánh giá tiểu thuyết kỳ ảo và tiên hiệp: 3 Định luật Sanderson về ma thuật cứng (Hard Magic), Giới hạn và Cái giá Đánh đổi, Bản đồ Thế giới Đa tầng và Bộ lọc Chống từ ngữ Convert Hán-Việt.",
+  "invariants": [
+    "Định luật Sanderson 1: Khả năng giải quyết vấn đề bằng ma thuật tỷ lệ thuận với mức độ người đọc hiểu cơ chế của nó.",
+    "Định luật Sanderson 2: Điểm yếu, giới hạn và cái giá phải trả của ma thuật thú vị hơn sức mạnh của nó.",
+    "Định luật Sanderson 3: Mở rộng và phát triển chiều sâu từ hệ thống sẵn có trước khi sáng chế thêm ma thuật mới.",
+    "Lọc sạch 100% các từ ngữ convert Hán-Việt lai căng (ngao du, xuất thủ, thân ảnh, nháy mắt...)."
+  ],
+  "dimensions": {
+    "consistency": {
+      "weight": 0.25,
+      "description": "Tuân thủ nghiêm ngặt các quy tắc ma thuật đã công bố; cấm bẻ gãy quy luật để giải cứu nhân vật chính."
+    },
+    "character": {
+      "weight": 0.15,
+      "description": "Nhân vật vận dụng trí tuệ và chiến thuật thay vì dựa dẫm vào may mắn hay buff sức mạnh vô lý."
+    },
+    "pacing": {
+      "weight": 0.15,
+      "description": "Chiến đấu 3 pha kịch tính (khảo sát, biến cố, giải quyết) kết hợp các khoảng nghỉ khám phá thế giới."
+    },
+    "continuity": {
+      "weight": 0.15,
+      "description": "Cấp bậc sức mạnh, tiêu hao tài nguyên và tổn thương cơ thể được ghi nhận chính xác qua các chương."
+    },
+    "foreshadow": {
+      "weight": 0.10,
+      "description": "Cài cắm kiến thức về môi trường hoặc quy tắc ma thuật từ sớm trước khi chúng trở thành đòn quyết định."
+    },
+    "hook": {
+      "weight": 0.10,
+      "description": "Mở đầu trận chiến hoặc khủng hoảng thế giới quan; kết thúc với tình thế nan giải trước mắt."
+    },
+    "aesthetic": {
+      "weight": 0.10,
+      "description": "Văn phong tiếng Việt khoáng đạt, hùng tráng, hình tượng ma pháp và chiêu thức thuần Việt đặc sắc."
+    }
+  }
+}

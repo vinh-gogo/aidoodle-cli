@@ -5,6 +5,9 @@ import (
 	"fmt"
 	"log/slog"
 	"net/http"
+	"net/url"
+	"os"
+	"path/filepath"
 	"strings"
 	"sync"
 	"time"
@@ -24,13 +27,27 @@ type SSEEvent struct {
 	Data interface{} `json:"data"`
 }
 
+// Options chứa các cấu hình khởi tạo máy chủ Web Dashboard.
+type Options struct {
+	Host        string
+	Port        int
+	AuthToken   string
+	Token       string // Alias for AuthToken
+	BaseDir     string
+	AllowedHost []string
+}
+
 // Server quản lý HTTP Server và kết nối thời gian thực với host.Host.
 type Server struct {
-	mu        sync.RWMutex
-	cfg       bootstrap.Config
-	bundle    assets.Bundle
-	port      int
-	buildInfo buildversion.Info
+	mu           sync.RWMutex
+	cfg          bootstrap.Config
+	bundle       assets.Bundle
+	hostAddr     string
+	port         int
+	authToken    string
+	basePath     string
+	allowedHosts []string
+	buildInfo    buildversion.Info
 
 	host       *host.Host
 	hostCancel context.CancelFunc
@@ -46,16 +63,56 @@ type Server struct {
 	httpServer *http.Server
 }
 
-// NewServer khởi tạo một phiên bản Web Server mới.
-func NewServer(cfg bootstrap.Config, bundle assets.Bundle, port int, buildInfo buildversion.Info) (*Server, error) {
+// HostAddr trả về địa chỉ IP hoặc hostname mà server đang lắng nghe.
+func (s *Server) HostAddr() string {
+	s.mu.RLock()
+	defer s.mu.RUnlock()
+	return s.hostAddr
+}
+
+// AuthToken trả về token xác thực đã cấu hình (nếu có).
+func (s *Server) AuthToken() string {
+	s.mu.RLock()
+	defer s.mu.RUnlock()
+	return s.authToken
+}
+
+// NewServerWithOptions khởi tạo một phiên bản Web Server với các tùy chọn bảo mật.
+func NewServerWithOptions(cfg bootstrap.Config, bundle assets.Bundle, opts Options, buildInfo buildversion.Info) (*Server, error) {
+	port := opts.Port
 	if port <= 0 {
 		port = 8080
+	}
+	hostAddr := strings.TrimSpace(opts.Host)
+	if hostAddr == "" {
+		hostAddr = "127.0.0.1"
+	}
+	baseDir := strings.TrimSpace(opts.BaseDir)
+	if baseDir == "" {
+		if cfg.OutputDir != "" {
+			parent := filepath.Dir(cfg.OutputDir)
+			if parent != "" && parent != "." {
+				baseDir = parent
+			}
+		}
+		if baseDir == "" {
+			baseDir = "output"
+		}
+	}
+
+	tok := strings.TrimSpace(opts.AuthToken)
+	if tok == "" {
+		tok = strings.TrimSpace(opts.Token)
 	}
 
 	s := &Server{
 		cfg:          cfg,
 		bundle:       bundle,
+		hostAddr:     hostAddr,
 		port:         port,
+		authToken:    tok,
+		basePath:     baseDir,
+		allowedHosts: opts.AllowedHost,
 		buildInfo:    buildInfo,
 		clients:      make(map[chan SSEEvent]struct{}),
 		recentEvents: make([]host.Event, 0, 200),
@@ -75,6 +132,20 @@ func NewServer(cfg bootstrap.Config, bundle assets.Bundle, port int, buildInfo b
 	}
 
 	return s, nil
+}
+
+// NewServer khởi tạo một phiên bản Web Server mới (tương thích ngược).
+func NewServer(cfg bootstrap.Config, bundle assets.Bundle, port int, buildInfo buildversion.Info) (*Server, error) {
+	return NewServerWithOptions(cfg, bundle, Options{Port: port}, buildInfo)
+}
+
+func (s *Server) baseDir() string {
+	s.mu.RLock()
+	defer s.mu.RUnlock()
+	if s.basePath != "" {
+		return s.basePath
+	}
+	return "output"
 }
 
 // attachHost gắn host mới và kích hoạt vòng lặp lắng nghe sự kiện & streaming.
@@ -131,7 +202,10 @@ func (s *Server) consumeHost(ctx context.Context, h *host.Host) {
 func (s *Server) recordEvent(ev host.Event) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
+	s.recordEventLocked(ev)
+}
 
+func (s *Server) recordEventLocked(ev host.Event) {
 	// Nếu sự kiện có ID (lifecycle event), cập nhật bản ghi cũ nếu cùng ID
 	if ev.ID != "" {
 		for i := len(s.recentEvents) - 1; i >= 0; i-- {
@@ -253,6 +327,19 @@ func (s *Server) StartProject(prompt, style string) error {
 
 // SwitchProject chuyển sang một dự án khác trong thư mục output.
 func (s *Server) SwitchProject(dir string) error {
+	safeDir, err := SafeProjectDir(s.basePath, dir)
+	if err != nil {
+		return fmt.Errorf("không thể chuyển dự án: %w", err)
+	}
+
+	fi, err := os.Stat(safeDir)
+	if err != nil {
+		return fmt.Errorf("thư mục dự án không tồn tại: %w", err)
+	}
+	if !fi.IsDir() {
+		return fmt.Errorf("đường dẫn không phải là thư mục: %s", safeDir)
+	}
+
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
@@ -261,8 +348,8 @@ func (s *Server) SwitchProject(dir string) error {
 		s.host = nil
 	}
 
-	s.cfg.OutputDir = dir
-	if targetStyle := DetectProjectStyle(dir); targetStyle != "" {
+	s.cfg.OutputDir = safeDir
+	if targetStyle := DetectProjectStyle(safeDir); targetStyle != "" {
 		s.cfg.Style = targetStyle
 	}
 	s.cfg.FillDefaults()
@@ -272,17 +359,17 @@ func (s *Server) SwitchProject(dir string) error {
 		slog.String("version", s.buildInfo.Version),
 	))
 	if err != nil {
-		slog.Warn("Mở host cho dự án thất bại, dự án có thể đã hoàn thành", "dir", dir, "err", err)
-	} else {
-		s.attachHost(h)
+		slog.Warn("Mở host cho dự án thất bại", "dir", safeDir, "err", err)
+		return fmt.Errorf("mở host cho dự án thất bại: %w", err)
 	}
+	s.attachHost(h)
 	s.clearStreaming()
 
 	// Phát lại replay log gần đây nếu có
 	if h != nil {
 		if items, err := h.ReplayQueue(20); err == nil {
 			for _, it := range items {
-				s.recordEvent(host.Event{
+				s.recordEventLocked(host.Event{
 					Time:     it.Time,
 					Category: it.Category,
 					Summary:  it.Summary,
@@ -411,7 +498,14 @@ func (s *Server) Export(format, dir string) (*exp.Result, error) {
 	if dir == "" {
 		dir = s.cfg.OutputDir
 	}
+	base := s.basePath
 	s.mu.RUnlock()
+
+	safeDir, err := SafeProjectDir(base, dir)
+	if err != nil {
+		return nil, err
+	}
+	dir = safeDir
 
 	st := store.NewStore(dir)
 	f := exp.Format(strings.ToLower(format))
@@ -443,6 +537,143 @@ func (s *Server) Export(format, dir string) (*exp.Result, error) {
 	return res, nil
 }
 
+// isOriginAllowed kiểm tra Origin có nằm trong danh sách được phép không.
+func (s *Server) isOriginAllowed(origin string) bool {
+	if origin == "" {
+		return true
+	}
+	u, err := url.Parse(origin)
+	if err != nil {
+		return false
+	}
+	hostname := strings.ToLower(u.Hostname())
+	if hostname == "localhost" || hostname == "127.0.0.1" || hostname == "::1" || hostname == "[::1]" {
+		return true
+	}
+	if s.hostAddr != "" && strings.EqualFold(hostname, s.hostAddr) {
+		return true
+	}
+	for _, h := range s.allowedHosts {
+		if strings.EqualFold(hostname, h) {
+			return true
+		}
+	}
+	return false
+}
+
+// securityMiddleware bảo vệ token auth, CSRF, Origin và custom header.
+func (s *Server) securityMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// 1. Kiểm tra xác thực Bearer token nếu đã cấu hình authToken (SEC-01)
+		if s.authToken != "" {
+			authenticated := false
+
+			// Check Authorization: Bearer <token>
+			authHeader := r.Header.Get("Authorization")
+			if strings.HasPrefix(strings.ToLower(authHeader), "bearer ") {
+				token := strings.TrimSpace(authHeader[7:])
+				if token == s.authToken {
+					authenticated = true
+				}
+			}
+
+			// Check X-Auth-Token: <token>
+			if !authenticated && r.Header.Get("X-Auth-Token") == s.authToken {
+				authenticated = true
+			}
+
+			// Check Cookie: ainovel_token
+			if !authenticated {
+				if cookie, err := r.Cookie("ainovel_token"); err == nil && cookie.Value == s.authToken {
+					authenticated = true
+				}
+			}
+
+			// Check Query param: ?token=<token>
+			if !authenticated {
+				if qToken := r.URL.Query().Get("token"); qToken == s.authToken {
+					authenticated = true
+					http.SetCookie(w, &http.Cookie{
+						Name:     "ainovel_token",
+						Value:    s.authToken,
+						Path:     "/",
+						HttpOnly: true,
+						SameSite: http.SameSiteStrictMode,
+					})
+				}
+			}
+
+			if !authenticated {
+				writeJSON(w, http.StatusUnauthorized, map[string]interface{}{
+					"ok":    false,
+					"error": "Yêu cầu mã xác thực truy cập (Bearer token)",
+				})
+				return
+			}
+		}
+
+		// 2. CSRF & Origin checks cho state-mutating requests (SEC-02)
+		isStateMutating := r.Method == http.MethodPost || (r.Method == http.MethodGet && strings.HasPrefix(r.URL.Path, "/api/export") && r.URL.Query().Get("download") != "1")
+
+		if isStateMutating {
+			// Sec-Fetch-Site check
+			if secSite := r.Header.Get("Sec-Fetch-Site"); strings.EqualFold(secSite, "cross-site") {
+				writeJSON(w, http.StatusForbidden, map[string]interface{}{
+					"ok":    false,
+					"error": "Yêu cầu cross-site bị từ chối",
+				})
+				return
+			}
+
+			// Origin check
+			if origin := r.Header.Get("Origin"); origin != "" {
+				if !s.isOriginAllowed(origin) {
+					writeJSON(w, http.StatusForbidden, map[string]interface{}{
+						"ok":    false,
+						"error": "Origin không được phép",
+					})
+					return
+				}
+			}
+
+			// Referer check if Origin is empty
+			if r.Header.Get("Origin") == "" {
+				if ref := r.Header.Get("Referer"); ref != "" {
+					if u, err := url.Parse(ref); err == nil && u.Hostname() != "" {
+						if !s.isOriginAllowed(u.Scheme + "://" + u.Host) {
+							writeJSON(w, http.StatusForbidden, map[string]interface{}{
+								"ok":    false,
+								"error": "Referer không được phép",
+							})
+							return
+						}
+					}
+				}
+			}
+
+			// Require custom header X-Requested-With: ainovel-web on AJAX POST requests
+			if r.Method == http.MethodPost && strings.HasPrefix(r.URL.Path, "/api/") {
+				if r.Header.Get("X-Requested-With") != "ainovel-web" {
+					writeJSON(w, http.StatusForbidden, map[string]interface{}{
+						"ok":    false,
+						"error": "Yêu cầu thiếu header bảo mật X-Requested-With: ainovel-web",
+					})
+					return
+				}
+			}
+		}
+
+		next.ServeHTTP(w, r)
+	})
+}
+
+// Handler trả về http.Handler đã gắn toàn bộ routes và security middleware.
+func (s *Server) Handler() http.Handler {
+	mux := http.NewServeMux()
+	s.registerRoutes(mux)
+	return s.securityMiddleware(mux)
+}
+
 // Close giải phóng tài nguyên server và host.
 func (s *Server) Close() error {
 	s.mu.Lock()
@@ -463,30 +694,41 @@ func (s *Server) Close() error {
 	return nil
 }
 
-// Run bắt đầu HTTP server và lắng nghe trên port được cấu hình.
-func Run(cfg bootstrap.Config, bundle assets.Bundle, port int, buildInfo buildversion.Info) error {
-	srv, err := NewServer(cfg, bundle, port, buildInfo)
+// RunWithOptions bắt đầu HTTP server với các tùy chọn bảo mật.
+func RunWithOptions(cfg bootstrap.Config, bundle assets.Bundle, opts Options, buildInfo buildversion.Info) error {
+	srv, err := NewServerWithOptions(cfg, bundle, opts, buildInfo)
 	if err != nil {
 		return err
 	}
 	defer srv.Close()
 
-	mux := http.NewServeMux()
-	srv.registerRoutes(mux)
-
-	addr := fmt.Sprintf(":%d", srv.port)
+	host := srv.hostAddr
+	if host == "" {
+		host = "127.0.0.1"
+	}
+	addr := fmt.Sprintf("%s:%d", host, srv.port)
 	srv.httpServer = &http.Server{
 		Addr:    addr,
-		Handler: mux,
+		Handler: srv.Handler(),
 	}
 
 	fmt.Println()
 	fmt.Println("==================================================================")
 	fmt.Printf(" 🚀 aiNovel Studio Web Dashboard đang chạy tại:\n")
-	fmt.Printf("    👉 http://localhost:%d\n", srv.port)
+	if srv.authToken != "" {
+		fmt.Printf("    👉 http://%s:%d/?token=%s\n", host, srv.port, srv.authToken)
+		fmt.Printf("    🔑 Token: %s\n", srv.authToken)
+	} else {
+		fmt.Printf("    👉 http://%s:%d\n", host, srv.port)
+	}
 	fmt.Println("==================================================================")
 	fmt.Println(" Nhấn Ctrl+C trong terminal này để tắt máy chủ Web.")
 	fmt.Println()
 
 	return srv.httpServer.ListenAndServe()
+}
+
+// Run bắt đầu HTTP server và lắng nghe trên host mặc định (127.0.0.1).
+func Run(cfg bootstrap.Config, bundle assets.Bundle, port int, buildInfo buildversion.Info) error {
+	return RunWithOptions(cfg, bundle, Options{Port: port}, buildInfo)
 }

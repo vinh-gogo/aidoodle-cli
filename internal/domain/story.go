@@ -10,12 +10,16 @@ import (
 type BookMetadata struct {
 	Title    string `json:"title"`
 	Synopsis string `json:"synopsis"`
+	Author   string `json:"author,omitempty"`
+	Subject  string `json:"subject,omitempty"`
 }
 
 // Normalized 返回可持久化、可比较的规范值。
 func (b BookMetadata) Normalized() BookMetadata {
 	b.Title = strings.TrimSpace(b.Title)
 	b.Synopsis = strings.TrimSpace(b.Synopsis)
+	b.Author = strings.TrimSpace(b.Author)
+	b.Subject = strings.TrimSpace(b.Subject)
 	return b
 }
 

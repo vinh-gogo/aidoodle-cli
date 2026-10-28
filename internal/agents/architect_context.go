@@ -51,7 +51,7 @@ Chỉ tóm tắt thông tin cần thiết để hiểu nửa sau bằng tiếng 
 
 var architectContextProfile = roleContextProfile{
 	Agent:           "architect",
-	KeepRecentReads: 3,
+	KeepRecentReads: 1,
 	Summary: corecontext.FullSummaryConfig{
 		SystemPrompt:        architectSummarySystemPrompt,
 		SummaryPrompt:       architectSummaryPrompt,

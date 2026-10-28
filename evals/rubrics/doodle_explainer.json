@@ -1,0 +1,44 @@
+{
+  "id": "doodle_explainer_video_v1",
+  "version": "1.0.0",
+  "mode": "doodle-explainer",
+  "title": "Doodle Explainer Educational Video Script Rubric",
+  "description": "Tiêu chuẩn đánh giá kịch bản video hoạt hình người que giải thích kiến thức: chuẩn độ dài 5-8 phút (700-1500 từ LỜI, 300-600s), tỷ lệ 1:1 Thoại - Hình, Tái Hook mỗi 60-90s và định dạng Viral.",
+  "invariants": [
+    "Dung lượng từ LỜI thoại đạt từ 700 đến 1.500 từ (thời lượng đọc chuẩn 300–600 giây).",
+    "Tỷ lệ 1:1 nghiêm ngặt giữa thẻ LỜI: và HÌNH: trong mỗi phân cảnh (đổi nét vẽ mỗi 3–6s).",
+    "Bắt đầu bằng thẻ HOOK giật gân (0:00–0:03) và chốt bằng lời khuyên/hành động cụ thể.",
+    "Tái Hook liên tục mỗi 60–90s để giữ chân người xem xuyên suốt video.",
+    "Đầy đủ metadata cuối kịch bản: CAPTION, HASHTAG, NGUỒN, CẦN KIỂM CHỨNG."
+  ],
+  "dimensions": {
+    "consistency": {
+      "weight": 0.15,
+      "description": "Tính chính xác của kiến thức khoa học/tài chính được giải thích bằng ngôn ngữ đơn giản."
+    },
+    "character": {
+      "weight": 0.15,
+      "description": "Nhân vật người que ngộ nghĩnh, hài hước, mang lại sự đồng cảm tức thì cho người xem."
+    },
+    "pacing": {
+      "weight": 0.25,
+      "description": "Nhịp độ nhanh, chuyển cảnh dứt khoát, không có đoạn thoại chết hay hình ảnh đứng yên."
+    },
+    "continuity": {
+      "weight": 0.10,
+      "description": "Mạch lập luận tiến triển mạch lạc qua 5 giai đoạn: Đặt vấn đề -> Giải ảo -> Cơ chế -> Ứng dụng -> Chốt."
+    },
+    "foreshadow": {
+      "weight": 0.10,
+      "description": "Cài cắm chi tiết hài hước hoặc câu hỏi lửng đầu video và giải quyết trọn vẹn ở phần chốt."
+    },
+    "hook": {
+      "weight": 0.20,
+      "description": "Hook mở màn đánh trúng nỗi đau/tò mò của khán giả; các điểm Tái Hook kéo lại sự tập trung hiệu quả."
+    },
+    "aesthetic": {
+      "weight": 0.05,
+      "description": "Mô tả hình ảnh đồ họa người que trực quan, dễ vẽ, sáng tạo và mang tính biểu tượng cao."
+    }
+  }
+}

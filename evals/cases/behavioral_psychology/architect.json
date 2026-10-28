@@ -1,0 +1,19 @@
+{
+  "id": "behavioral_psychology_architect",
+  "category": "workflow",
+  "role": "architect",
+  "style": "behavioral-psychology",
+  "description": "Lập kế hoạch kịch bản video tâm lý học hành vi theo Khung khoa học não bộ 8 bước, phân biệt Tương quan vs Nhân quả, cảnh báo mẫu WEIRD, cấm chẩn đoán y tế.",
+  "prompt": "Lập dàn ý video tâm lý học: Giải mã hội chứng Kẻ mạo danh (Imposter Syndrome) theo khung 8 bước: từ trải nghiệm người xem, cơ chế hạch hạnh nhân (amygdala), thí nghiệm kinh điển, cảnh báo mẫu WEIRD đến Cú hích hành vi (Nudge) thực tế.",
+  "max_chapters": 0,
+  "target_prompts": ["architect-short.md"],
+  "rubric": "evals/rubrics/behavioral_psychology.json",
+  "expect": {
+    "phase": "writing",
+    "required_checkpoints": ["global:outline", "global:characters"],
+    "no_pending": ["pending_commit", "pending_steer"]
+  },
+  "gate": {
+    "max_severity": "warning"
+  }
+}

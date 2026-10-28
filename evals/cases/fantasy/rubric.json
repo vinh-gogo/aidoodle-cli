@@ -1,0 +1,20 @@
+{
+  "id": "fantasy_rubric",
+  "category": "quality",
+  "role": "editor",
+  "style": "fantasy",
+  "description": "Rubric thẩm định kỳ ảo/tiên hiệp: Định luật ma thuật Sanderson, tính nhất quán quy tắc thế giới, không dùng sức mạnh phi lý cứu vãn cốt truyện (no deus ex machina), lọc sạch từ convert.",
+  "prompt": "Thẩm định chương tiểu thuyết kỳ ảo: kiểm tra việc tuân thủ giới hạn ma thuật đã công bố, tính mạch lạc của hệ thống sức mạnh, và kiểm tra không sót từ convert Hán-Việt.",
+  "max_chapters": 1,
+  "target_prompts": ["editor.md"],
+  "rubric": "evals/rubrics/fantasy.json",
+  "expect": {
+    "phase": "writing",
+    "min_completed_chapters": 1,
+    "required_checkpoints": ["chapter:1:commit"],
+    "no_pending": ["pending_commit", "pending_steer"]
+  },
+  "gate": {
+    "max_severity": "warning"
+  }
+}

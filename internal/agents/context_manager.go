@@ -80,7 +80,12 @@ func newRoleContextManager(p roleContextProfile, model agentcore.ChatModel, wind
 		ToolMicrocompact: &corecontext.ToolResultMicrocompactConfig{
 			KeepRecent:      p.KeepRecentReads,
 			MinResultTokens: 200,
-			Classifier:      func(toolName string) bool { return toolName == contextToolName },
+			Classifier: func(toolName string) bool {
+				if p.Agent == "architect" && (toolName == "tavily_search" || toolName == "tavily_crawl") {
+					return true
+				}
+				return toolName == contextToolName
+			},
 		},
 		Summary: &summary,
 	})

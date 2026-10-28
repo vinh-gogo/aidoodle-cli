@@ -1,0 +1,20 @@
+{
+  "id": "behavioral_psychology_writer",
+  "category": "quality",
+  "role": "writer",
+  "style": "behavioral-psychology",
+  "description": "Biên soạn kịch bản video tâm lý học hành vi 8 bước hoàn chỉnh (700-1500 từ LỜI), tỷ lệ 1:1 LỜI:/HÌNH:, giọng văn thấu cảm, giải pháp Nudge thực tiễn, tuyệt đối không chẩn đoán y tế.",
+  "prompt": "Viết kịch bản video: Thoát Khỏi Cái Bẫy Trì Hoãn Của Não Bộ. Triển khai trọn vẹn 8 bước khoa học não bộ: nghịch lý giữa vỏ não trước trán và hệ viền, giải pháp quy tắc 2 phút (Nudge), giữ vững chuẩn mực đạo đức không chẩn đoán bệnh lý.",
+  "max_chapters": 1,
+  "target_prompts": ["writer.md"],
+  "rubric": "evals/rubrics/behavioral_psychology.json",
+  "expect": {
+    "phase": "writing",
+    "min_completed_chapters": 1,
+    "required_checkpoints": ["chapter:1:commit"],
+    "no_pending": ["pending_commit", "pending_steer"]
+  },
+  "gate": {
+    "max_severity": "warning"
+  }
+}

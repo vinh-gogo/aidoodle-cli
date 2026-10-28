@@ -1046,4 +1046,3 @@ func TestSaveFoundationRecoversFromVietnameseAlias(t *testing.T) {
 		t.Fatalf("expected normalized type 'outline', got %v", res["type"])
 	}
 }
-

@@ -209,6 +209,9 @@ func mergeConfig(base, overlay Config) Config {
 			if len(v.Extra) > 0 {
 				existing.Extra = cloneMap(v.Extra)
 			}
+			if v.StreamIdleTimeout != "" {
+				existing.StreamIdleTimeout = v.StreamIdleTimeout
+			}
 			base.Providers[k] = existing
 		}
 	}
@@ -376,7 +379,8 @@ func WriteStartupError(msg string) string {
 		return ""
 	}
 	defer f.Close()
-	if _, err := fmt.Fprintf(f, "[%s] %s\n", time.Now().Format(time.RFC3339), msg); err != nil {
+	redactedMsg := RedactSecrets(msg)
+	if _, err := fmt.Fprintf(f, "[%s] %s\n", time.Now().Format(time.RFC3339), redactedMsg); err != nil {
 		return ""
 	}
 	return path

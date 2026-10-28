@@ -48,6 +48,17 @@
       // suy luận chậm cục bộ chunk đầu có thể quá 5 phút, nới lỏng theo provider, không ảnh hưởng kênh khác
       "stream_idle_timeout": "15m"
     },
+    "kaggle-llama": {
+      // Server llama.cpp trên Colab/Kaggle phát hành qua Cloudflare Tunnel cố định.
+      "type": "openai",
+      "api_key": "kaggle-key",
+      "base_url": "https://my_url/v1",
+      "models": [
+        { "name": "main-llm", "context_window": 65536 },
+        { "name": "gemma-4-26B-A4B-it-Q4_K_M.gguf", "context_window": 65536 }
+      ],
+      "stream_idle_timeout": "15m"
+    },
     "claude-code-proxy": {
       // Proxy Anthropic tùy chỉnh. Nếu upstream giới hạn chỉ cho phép client Claude Code truy cập,
       // dùng extra để chuyển tiếp user_agent / anthropic_beta / headers.
@@ -160,7 +171,7 @@
   // để làm cơ sở khoa học (source_pack), trích dẫn cụ thể vào phần 'NGUỒN:' và đánh dấu các tranh luận vào 'CẦN KIỂM CHỨNG:'.
   // "tavily": {
   //   "enabled": true,
-  //   "api_key": "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",
+  //   "api_key": "tvly-dev-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
   //   "base_url": "https://api.tavily.com",
   //   "search_depth": "advanced",
   //   "max_results": 5
