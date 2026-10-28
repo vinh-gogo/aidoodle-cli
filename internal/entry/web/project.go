@@ -100,12 +100,26 @@ func SafeProjectDir(baseDir, requestedDir string) (string, error) {
 		return "", fmt.Errorf("truy cập bị từ chối: không hỗ trợ đường dẫn mạng UNC %q", requestedDir)
 	}
 
-	// 5. Windows root-relative bypass check:
+	// 5. Windows root-relative & cross-OS drive-letter bypass check:
 	// A path starting with '/' or '\' without a matching drive volume is root-relative (e.g. /etc/passwd or \Windows).
-	// It is NEVER relative to baseDir.
+	// On non-Windows hosts, Windows drive-letter paths (e.g. C:\Windows) are not recognized by filepath.IsAbs and must be rejected.
 	if strings.HasPrefix(decoded, "/") || strings.HasPrefix(decoded, "\\") {
 		if !filepath.IsAbs(decoded) || filepath.VolumeName(decoded) != filepath.VolumeName(baseAbs) {
 			return "", fmt.Errorf("truy cập bị từ chối: đường dẫn gốc %q không hợp lệ ngoài thư mục cơ sở", requestedDir)
+		}
+	}
+	if len(decoded) >= 2 && ((decoded[0] >= 'a' && decoded[0] <= 'z') || (decoded[0] >= 'A' && decoded[0] <= 'Z')) && decoded[1] == ':' {
+		if !filepath.IsAbs(decoded) {
+			return "", fmt.Errorf("truy cập bị từ chối: đường dẫn ổ đĩa %q không hợp lệ ngoài thư mục cơ sở", requestedDir)
+		}
+	}
+	if filepath.Separator != '\\' && strings.Contains(decoded, `\`) {
+		decoded = strings.ReplaceAll(decoded, `\`, "/")
+		if strings.Contains(decoded, "..") {
+			cleanDecoded := filepath.Clean(decoded)
+			if cleanDecoded == ".." || strings.HasPrefix(cleanDecoded, "../") {
+				return "", fmt.Errorf("truy cập bị từ chối: đường dẫn %q cố gắng thoát khỏi thư mục cơ sở", requestedDir)
+			}
 		}
 	}
 
